@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <!-- Allow vertical scrolling; disable horizontal scrolling -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>肉</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: #fff;
+            width: 100%;
+        }
+        body {
+            font-family: "SimSun", Arial, sans-serif;
+        }
+        .header {
+            text-align: center;
+            margin: 10px;
+            background-color: gray;
+        }
+        .header img {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+            object-fit: cover;
+        }
+        .header h1 {
+            font-size: 1.8em;
+            margin: 10px 0;
+            color: #fff;
+        }
+        .products {
+            padding: 10px;
+        }
+        .product {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            border-bottom: 1px solid #ccc;
+            padding: 15px 0;
+        }
+        .product:last-child {
+            border-bottom: none;
+        }
+        .product-image {
+            flex: 0 0 35%;
+            max-width: 35%;
+            padding: 0 10px;
+        }
+        .product-image img {
+            width: 100%;
+            height: auto;
+        }
+        .product-details {
+            flex: 0 0 65%;
+            padding: 0 10px;
+            font-size: 1.2em;
+        }
+        .product-details h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.0em;
+        }
+        .product-details p {
+            margin: 5px 0;
+        }
+        .discount {
+            background-color: yellow;
+            padding: 5px;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <!-- Header image updated to the provided URL -->
+        <img src="https://images.squarespace-cdn.com/content/v1/55ae8dc2e4b0f797555a62f8/eb1f1312-cbef-4d07-a199-1801fa7bcbc2/Atlantic+Superstore+Logo.png" alt="Header Image">
+        <h1>肉</h1>
+    </div>
+    <div class="products">
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20520970/b3/en/angle/20520970_angle_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#1</span> 猪里脊肉 2 包</h2>
+                <p>截止: 2025-02-19</p>
+                <p>原价:  <del>$16.33</del></p>
+                <p style="color: red;">现价:  $6.99</p>
+                <p class="discount">直降：57.2%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20636671/b3/en/angle/20636671_angle_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#2</span> 腌制猪里脊肉</h2>
+                <p>截止: 2025-02-19</p>
+                <p>原价:  <del>$8.19</del></p>
+                <p style="color: red;">现价:  $4.09</p>
+                <p class="discount">直降：50.1%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20729008/b3/en/beauty/20729008_beauty_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#3</span> 袋装整鸡</h2>
+                <p>截止: 2025-02-19</p>
+                <p>原价:  <del>$17.32</del></p>
+                <p style="color: red;">现价:  $9.00</p>
+                <p class="discount">直降：48.0%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20829806/b3/en/angle/20829806_angle_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#4</span> 猪里脊肉</h2>
+                <p>截止: 2025-02-19</p>
+                <p>原价:  <del>$7.67</del></p>
+                <p style="color: red;">现价:  $4.38</p>
+                <p class="discount">直降：42.9%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20836871/b3/en/beauty/20836871_beauty_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#5</span> 猪肋排</h2>
+                <p>截止: 2025-02-15</p>
+                <p>原价:  <del>$16.86</del></p>
+                <p style="color: red;">现价:  $10.52</p>
+                <p class="discount">直降：37.6%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20959377/b3/en/angle/20959377_angle_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#6</span> 带骨西冷牛排，俱乐部套餐</h2>
+                <p>截止: 2025-02-16</p>
+                <p>原价:  <del>$26.52</del></p>
+                <p style="color: red;">现价:  $16.84</p>
+                <p class="discount">直降：36.5%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20836824/b3/en/front/20836824_front_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#7</span> 俱乐部装猪排骨条</h2>
+                <p>截止: 2025-02-15</p>
+                <p>原价:  <del>$18.68</del></p>
+                <p style="color: red;">现价:  $12.00</p>
+                <p class="discount">直降：35.8%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20836826/b3/en/beauty/20836826_beauty_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#8</span> 排骨条</h2>
+                <p>截止: 2025-02-15</p>
+                <p>原价:  <del>$14.97</del></p>
+                <p style="color: red;">现价:  $10.29</p>
+                <p class="discount">直降：31.3%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20836828/b3/en/beauty/20836828_beauty_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#9</span> 猪肋排中心部分</h2>
+                <p>截止: 2025-02-15</p>
+                <p>原价:  <del>$12.14</del></p>
+                <p style="color: red;">现价:  $8.49</p>
+                <p class="discount">直降：30.1%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/21554465/b3/en/front/21554465_front_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#10</span> 熟食店，Gran Piatto</h2>
+                <p>截止: 2025-02-19</p>
+                <p>原价:  <del>$15.49</del></p>
+                <p style="color: red;">现价:  $11.00</p>
+                <p class="discount">直降：29.0%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/21403522/b3/en/front/21403522_front_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#11</span> 用植物制成的仿真肉汉堡肉饼</h2>
+                <p>截止: 2025-02-19</p>
+                <p>原价:  <del>$9.49</del></p>
+                <p style="color: red;">现价:  $7.00</p>
+                <p class="discount">直降：26.2%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/21403513/b3/en/front/21403513_front_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#12</span> 植物汉堡</h2>
+                <p>截止: 2025-02-19</p>
+                <p>原价:  <del>$11.99</del></p>
+                <p style="color: red;">现价:  $9.00</p>
+                <p class="discount">直降：24.9%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20772383/b3/en/angle/20772383_angle_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#13</span> 懒惰枫天然培根</h2>
+                <p>截止: 2025-02-26</p>
+                <p>原价:  <del>$8.99</del></p>
+                <p style="color: red;">现价:  $7.00</p>
+                <p class="discount">直降：22.1%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20772300/b3/en/angle/20772300_angle_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#14</span> 天然少盐培根</h2>
+                <p>截止: 2025-02-26</p>
+                <p>原价:  <del>$8.99</del></p>
+                <p style="color: red;">现价:  $7.00</p>
+                <p class="discount">直降：22.1%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20732366/b3/en/angle/20732366_angle_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#15</span> 原味天然培根</h2>
+                <p>截止: 2025-02-26</p>
+                <p>原价:  <del>$8.99</del></p>
+                <p style="color: red;">现价:  $7.00</p>
+                <p class="discount">直降：22.1%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20164959/b3/en/angle/20164959_angle_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#16</span> 现成的酥脆全熟天然培根片</h2>
+                <p>截止: 2025-02-26</p>
+                <p>原价:  <del>$8.99</del></p>
+                <p style="color: red;">现价:  $7.00</p>
+                <p class="discount">直降：22.1%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/20996152/b3/en/front/20996152_front_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#17</span> 火腿爷爷</h2>
+                <p>截止: 2025-02-19</p>
+                <p>原价:  <del>$3.79</del></p>
+                <p style="color: red;">现价:  $2.99</p>
+                <p class="discount">直降：21.1%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/21290136/b3/en/front/21290136_front_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#18</span> 冷冻 Twisters 巨型香肠</h2>
+                <p>截止: 2025-02-26</p>
+                <p>原价:  <del>$9.99</del></p>
+                <p style="color: red;">现价:  $8.00</p>
+                <p class="discount">直降：19.9%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/21289868/b3/en/front/21289868_front_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#19</span> 意大利辣香肠</h2>
+                <p>截止: 2025-02-26</p>
+                <p>原价:  <del>$9.99</del></p>
+                <p style="color: red;">现价:  $8.00</p>
+                <p class="discount">直降：19.9%</p>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://assets.shop.loblaws.ca/products/21289731/b3/en/front/21289731_front_a06_@2.png" alt="Product Image">
+            </div>
+            <div class="product-details">
+                <h2><span style="color: red; font-weight: bold;">#20</span> 意大利甜香肠</h2>
+                <p>截止: 2025-02-26</p>
+                <p>原价:  <del>$9.99</del></p>
+                <p style="color: red;">现价:  $8.00</p>
+                <p class="discount">直降：19.9%</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
