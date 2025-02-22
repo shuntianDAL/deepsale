@@ -13,7 +13,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #fff;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
+  overflow-x: hidden;
 }
 .page-title {
   text-align: center;
@@ -49,12 +49,16 @@ body {
   align-items: flex-start;
   gap: 20px;
 }
+.item-image {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .item-image img {
   width: 80px;
   height: auto;
 }
 .view-button {
-  display: inline-block;
   margin-top: 10px;
   padding: 6px 12px;
   background-color: #007BFF;
@@ -93,11 +97,11 @@ body {
 </head>
 <body>
 <div class='page-title'>Top Sales - Meat</div>
-<div class='creation-time'>Created on: 2025-02-22 13:12:47</div>
+<div class='creation-time'>Created on: 2025-02-22 13:19:09</div>
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822350/b3/en/front/20822350_front_a06_@2.png' alt='Pork Loin Chop Rib End, Club Pack' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-end-club-pack/p/20822350_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-end-club-pack/p/20822350_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -114,7 +118,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822150/b3/en/angle/20822150_angle_a06_@2.png' alt='Pork Sirloin Roast' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-roast/p/20822150_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-roast/p/20822150_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -131,7 +135,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822343/b3/en/angle/20822343_angle_a06_@2.png' alt='Pork Rib Loin & Sirloin Combination Chop' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-loin-sirloin-combination-chop/p/20822343_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-loin-sirloin-combination-chop/p/20822343_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -148,7 +152,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822906/b3/en/front/20822906_front_a06_@2.png' alt='Pork Loin Rib End Chop' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-end-chop/p/20822906_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-end-chop/p/20822906_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -165,7 +169,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822347/b3/en/front/20822347_front_a06_@2.png' alt='Pork Loin Chop Rib, Fast Fry' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-fast-fry/p/20822347_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-fast-fry/p/20822347_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -182,7 +186,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822459/b3/en/front/20822459_front_a06_@2.png' alt='Pork Loin Rib Roast Portion' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-roast-portion/p/20822459_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-roast-portion/p/20822459_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -199,7 +203,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822322/b3/en/front/20822322_front_a06_@2.png' alt='Pork Sirloin Chop, End Portion' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chop-end-portion/p/20822322_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chop-end-portion/p/20822322_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -216,7 +220,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822452/b3/en/front/20822452_front_a06_@2.png' alt='Pork Loin Roast, Center Cut with Bone' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-roast-center-cut-with-bone/p/20822452_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-roast-center-cut-with-bone/p/20822452_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -233,7 +237,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20823075/b3/en/front/20823075_front_a06_@2.png' alt='Pork Loin Chop Center Chop, Club Pack' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-chop-club-pack/p/20823075_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-chop-club-pack/p/20823075_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -250,7 +254,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20058163/b3/en/angle/20058163_angle_a06_@2.png' alt='Chicken Thighs, Club Pack' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-thighs-club-pack/p/20058163_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-thighs-club-pack/p/20058163_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -267,7 +271,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822907/b3/en/angle/20822907_angle_a06_@2.png' alt='Pork Loin Chop, Bone In Center Cut' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-bone-in-center-cut/p/20822907_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-bone-in-center-cut/p/20822907_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -284,7 +288,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20823073/b3/en/front/20823073_front_a06_@2.png' alt='Pork Loin Chop Center Cut Fast Fry' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-cut-fast-fry/p/20823073_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-cut-fast-fry/p/20823073_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -301,7 +305,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20822532/b3/en/front/20822532_front_a06_@2.png' alt='Loin Rib End Country Style Portion' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/loin-rib-end-country-style-portion/p/20822532_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/loin-rib-end-country-style-portion/p/20822532_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -318,7 +322,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20797926/b3/en/angle/20797926_angle_a06_@2.png' alt='Medium Ground Beef, Big Pack' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/medium-ground-beef-big-pack/p/20797926_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/medium-ground-beef-big-pack/p/20797926_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -335,7 +339,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20798010/b3/en/angle/20798010_angle_a06_@2.png' alt='Medium Ground Beef' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/medium-ground-beef/p/20798010_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/medium-ground-beef/p/20798010_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -352,7 +356,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21352008/b3/en/angle/21352008_angle_a06_@2.png' alt='Free From Australian Lean Ground Lamb' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-australian-lean-ground-lamb/p/21352008_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-australian-lean-ground-lamb/p/21352008_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -369,7 +373,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21378346/b3/en/front/21378346_front_a06_@2.png' alt='Ultimate Dinner Sausage Hot' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/ultimate-dinner-sausage-hot/p/21378346_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/ultimate-dinner-sausage-hot/p/21378346_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -386,7 +390,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21378310/b3/en/front/21378310_front_a06_@2.png' alt='Ultimate Mild Chicken Dinner Sausage' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/ultimate-mild-chicken-dinner-sausage/p/21378310_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/ultimate-mild-chicken-dinner-sausage/p/21378310_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -403,7 +407,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20321514/b3/en/angle/20321514_angle_a06_@2.png' alt='Calabrese Spicy Salami (Thin Sliced)' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/calabrese-spicy-salami-thin-sliced/p/20321514_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/calabrese-spicy-salami-thin-sliced/p/20321514_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -420,7 +424,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20319035/b3/en/angle/20319035_angle_a06_@2.png' alt='Soppressata (Thin Sliced)' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/soppressata-thin-sliced/p/20319035_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/soppressata-thin-sliced/p/20319035_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -437,7 +441,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20772383/b3/en/angle/20772383_angle_a06_@2.png' alt='Lazy Maple Natural Bacon' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/lazy-maple-natural-bacon/p/20772383_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/lazy-maple-natural-bacon/p/20772383_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -454,7 +458,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20772300/b3/en/angle/20772300_angle_a06_@2.png' alt='Natural Less Salt Bacon' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/natural-less-salt-bacon/p/20772300_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/natural-less-salt-bacon/p/20772300_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -471,7 +475,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20732366/b3/en/angle/20732366_angle_a06_@2.png' alt='Original Natural Bacon' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/original-natural-bacon/p/20732366_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/original-natural-bacon/p/20732366_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -488,7 +492,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20164959/b3/en/angle/20164959_angle_a06_@2.png' alt='Ready Crisp Fully Cooked Natural Bacon Slices' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/ready-crisp-fully-cooked-natural-bacon-slices/p/20164959_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/ready-crisp-fully-cooked-natural-bacon-slices/p/20164959_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -505,7 +509,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20089413/b3/en/angle/20089413_angle_a06_@2.png' alt='Air Chilled Chicken, Whole' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/air-chilled-chicken-whole/p/20089413_KG'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/air-chilled-chicken-whole/p/20089413_KG'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -522,7 +526,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21290136/b3/en/front/21290136_front_a06_@2.png' alt='Frozen Twisters Jumbo Sausage' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/frozen-twisters-jumbo-sausage/p/21290136_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/frozen-twisters-jumbo-sausage/p/21290136_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -539,7 +543,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21289868/b3/en/front/21289868_front_a06_@2.png' alt='Hot Italian Jumbo Sausage' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/hot-italian-jumbo-sausage/p/21289868_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/hot-italian-jumbo-sausage/p/21289868_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -556,7 +560,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21289731/b3/en/front/21289731_front_a06_@2.png' alt='Sweet Italian Jumbo Sausage' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/sweet-italian-jumbo-sausage/p/21289731_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/sweet-italian-jumbo-sausage/p/21289731_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -573,7 +577,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21539970/b3/en/front/21539970_front_a06_@2.png' alt='Ultimate Chicken Breakfast Sausages Original' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/ultimate-chicken-breakfast-sausages-original/p/21539970_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/ultimate-chicken-breakfast-sausages-original/p/21539970_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -590,7 +594,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21539969/b3/en/front/21539969_front_a06_@2.png' alt='Ultimate Chicken Breakfast Sausages Maple Flavour' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/ultimate-chicken-breakfast-sausages-maple-flavour/p/21539969_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/ultimate-chicken-breakfast-sausages-maple-flavour/p/21539969_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -607,7 +611,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21464136/b3/en/angle/21464136_angle_a06_@2.png' alt='Pizzeria Style Pepperoni' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/pizzeria-style-pepperoni/p/21464136_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pizzeria-style-pepperoni/p/21464136_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -624,7 +628,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21463330/b3/en/angle/21463330_angle_a06_@2.png' alt='Fully Cooked Sausage Crumble' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-sausage-crumble/p/21463330_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-sausage-crumble/p/21463330_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -641,7 +645,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21463309/b3/en/angle/21463309_angle_a06_@2.png' alt='Fully Cooked Diced Smoked Ham ' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-diced-smoked-ham/p/21463309_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-diced-smoked-ham/p/21463309_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -658,7 +662,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20772671/b3/en/angle/20772671_angle_a06_@2.png' alt='Hickory Smoked Classic Cut Bacon' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/hickory-smoked-classic-cut-bacon/p/20772671_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/hickory-smoked-classic-cut-bacon/p/20772671_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -675,7 +679,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20772637/b3/en/angle/20772637_angle_a06_@2.png' alt='Hickory Smoked 50% Less Salt Bacon' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/hickory-smoked-50-less-salt-bacon/p/20772637_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/hickory-smoked-50-less-salt-bacon/p/20772637_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -692,7 +696,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20174909/b3/en/front/20174909_front_a06_@2.png' alt='Bacon, Mild Sugar Cured with Reduced Salt, Uncooked' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/bacon-mild-sugar-cured-with-reduced-salt-uncooked/p/20174909_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/bacon-mild-sugar-cured-with-reduced-salt-uncooked/p/20174909_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -709,7 +713,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20156771/b3/en/front/20156771_front_a06_@2.png' alt='Mild Sugar-Cured Bacon' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/mild-sugar-cured-bacon/p/20156771_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mild-sugar-cured-bacon/p/20156771_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -726,7 +730,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/21366170/b3/en/front/21366170_front_a06_@2.png' alt='Marc Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/marc-angelo-pork-sausages-with-rapini-and-parmigia/p/21366170_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/marc-angelo-pork-sausages-with-rapini-and-parmigia/p/21366170_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -743,7 +747,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20924959/b3/en/angle/20924959_angle_a06_@2.png' alt='Honey Maple Turkey Breast' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/honey-maple-turkey-breast/p/20924959_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/honey-maple-turkey-breast/p/20924959_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
@@ -760,7 +764,7 @@ body {
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20871869/b3/en/angle/20871869_angle_a06_@2.png' alt='Original Angus Roast Beef Slices' />
-    <div><a class='view-button' href='https://www.atlanticsuperstore.ca/en/original-angus-roast-beef-slices/p/20871869_EA'>View</a></div>
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/original-angus-roast-beef-slices/p/20871869_EA'>View</a>
   </div>
   <div class='item-details'>
     <div class='item-name'>
