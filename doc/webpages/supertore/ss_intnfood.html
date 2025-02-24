@@ -12,16 +12,15 @@
   <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
   <script>
     window.addEventListener('pageshow', function(event) {
-      if (event.persisted) {
-        window.location.reload();
-      }
+      if (event.persisted) { window.location.reload(); }
     });
   </script>
   <style>
     #floatingSearchButton {
       position: fixed;
-      top: 10px;
-      right: 10px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       background-color: #3e7d53;
       color: #fff;
       padding: 8px 12px;
@@ -32,10 +31,10 @@
     }
     #searchBarContainer {
       position: fixed;
-      top: 10px;
+      top: 50%;
       left: 50%;
       width: 300px;
-      transform: translateX(150%);
+      transform: translate(150%, -50%);
       opacity: 0;
       transition: transform 0.5s ease, opacity 0.5s ease;
       z-index: 1000;
@@ -47,7 +46,7 @@
       text-align: center;
     }
     #searchBarContainer.active {
-      transform: translateX(-50%);
+      transform: translate(-50%, -50%);
       opacity: 1;
     }
     #searchInput {
@@ -169,6 +168,13 @@
     }
   </style>
   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var items = document.getElementsByClassName('item-container');
+      for (var i = 0; i < items.length; i++) {
+        items[i].dataset.original = items[i].innerHTML;
+      }
+    });
+
     function showSearchBar() {
       document.getElementById('searchBarContainer').classList.add('active');
       document.getElementById('floatingSearchButton').style.display = 'none';
@@ -185,7 +191,7 @@
     function clearHighlights() {
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
-        items[i].innerHTML = items[i].innerHTML.replace(/<mark>(.*?)<\/mark>/g, '$1');
+        items[i].innerHTML = items[i].dataset.original;
         items[i].style.display = '';
       }
     }
@@ -195,14 +201,15 @@
       var term = input.toLowerCase();
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
-        // Remove previous highlights
-        items[i].innerHTML = items[i].innerHTML.replace(/<mark>(.*?)<\/mark>/g, '$1');
-        var text = items[i].textContent.toLowerCase();
+        var original = items[i].dataset.original;
+        var text = original.toLowerCase();
         if (term === '' || text.indexOf(term) > -1) {
           items[i].style.display = '';
           if (term !== '') {
-            // Highlight all occurrences of the term
-            items[i].innerHTML = items[i].innerHTML.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            var highlighted = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            items[i].innerHTML = highlighted;
+          } else {
+            items[i].innerHTML = original;
           }
         } else {
           items[i].style.display = 'none';
@@ -218,7 +225,7 @@
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
   <div class='page-title'>Top Sales - International</div>
-  <div class='creation-time'>Created on: 2025-02-24 00:43:20</div>
+  <div class='creation-time'>Created on: 2025-02-24 00:47:39</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20925691/b3/en/angle/20925691_angle_a06_@2.png' alt='Crackers, Snack Pack' />
