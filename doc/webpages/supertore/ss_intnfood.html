@@ -20,18 +20,19 @@
   <style>
     #floatingSearchButton {
       position: fixed;
-      top: 20%;
-      right: 20px;
+      top: 10px;
+      right: 10px;
       background-color: #3e7d53;
       color: #fff;
       padding: 8px 12px;
       border-radius: 4px;
       cursor: pointer;
       z-index: 1000;
+      font-size: 18px;
     }
     #searchBarContainer {
       position: fixed;
-      top: 20%;
+      top: 10px;
       left: 50%;
       width: 300px;
       transform: translateX(150%);
@@ -43,6 +44,7 @@
       padding: 10px;
       border-radius: 4px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      text-align: center;
     }
     #searchBarContainer.active {
       transform: translateX(-50%);
@@ -57,7 +59,7 @@
     #closeSearchButton {
       background: none;
       border: none;
-      font-size: 18px;
+      font-size: 24px;
       cursor: pointer;
       color: #3e7d53;
       margin-left: 10px;
@@ -72,12 +74,12 @@
     .page-title {
       text-align: center;
       margin: 20px;
-      font-size: 22px; /* slightly smaller than before */
+      font-size: 22px;
       font-weight: 600;
     }
     .creation-time {
       text-align: center;
-      font-size: 12px; /* slightly smaller */
+      font-size: 12px;
       color: gray;
       margin-bottom: 20px;
     }
@@ -120,10 +122,10 @@
     .view-button {
       margin-top: 6px;
       padding: 8px 16px;
-      background-color: #3e7d53; /* approximate green */
+      background-color: #3e7d53;
       color: #fff;
       text-decoration: none;
-      border-radius: 9999px; /* large radius for pill shape */
+      border-radius: 9999px;
       font-size: 12px;
       font-weight: 600;
       text-transform: uppercase;
@@ -135,7 +137,7 @@
       animation: fadeIn 0.8s forwards ease-in;
     }
     .view-button:hover {
-      background-color: #2c5f3d; /* darker green on hover */
+      background-color: #2c5f3d;
     }
     .item-details {
       flex: 1;
@@ -176,13 +178,16 @@
     function hideSearchBar() {
       document.getElementById('searchBarContainer').classList.remove('active');
       document.getElementById('floatingSearchButton').style.display = 'block';
-      // Remove all <mark> tags
+      clearHighlights();
+      document.getElementById('searchInput').value = '';
+    }
+
+    function clearHighlights() {
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
         items[i].innerHTML = items[i].innerHTML.replace(/<mark>(.*?)<\/mark>/g, '$1');
         items[i].style.display = '';
       }
-      document.getElementById('searchInput').value = '';
     }
 
     function inPageSearch() {
@@ -196,7 +201,7 @@
         if (term === '' || text.indexOf(term) > -1) {
           items[i].style.display = '';
           if (term !== '') {
-            // Highlight all occurrences
+            // Highlight all occurrences of the term
             items[i].innerHTML = items[i].innerHTML.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
           }
         } else {
@@ -213,7 +218,7 @@
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
   <div class='page-title'>Top Sales - International</div>
-  <div class='creation-time'>Created on: 2025-02-24 00:40:38</div>
+  <div class='creation-time'>Created on: 2025-02-24 00:43:20</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20925691/b3/en/angle/20925691_angle_a06_@2.png' alt='Crackers, Snack Pack' />
