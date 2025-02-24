@@ -18,35 +18,6 @@
   });
 </script>
 <style>
-#floatingSearchButton {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background-color: #3e7d53;
-  color: #fff;
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  z-index: 1000;
-}
-#searchBarContainer {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 1000;
-  display: none;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 5px;
-  border-radius: 4px;
-}
-#searchInput {
-  padding: 5px;
-  width: 200px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-/* Other minimal styling */
 body {
   font-family: 'Montserrat', Arial, sans-serif;
   margin: 0;
@@ -157,42 +128,10 @@ body {
   text-decoration: line-through;
 }
 </style>
-<script>
-  function toggleSearchBar() {
-    var searchBar = document.getElementById('searchBarContainer');
-    var searchButton = document.getElementById('floatingSearchButton');
-    if (searchBar.style.display === 'none' || searchBar.style.display === '') {
-      searchBar.style.display = 'block';
-      searchButton.style.display = 'none';
-      document.getElementById('searchInput').focus();
-    } else {
-      searchBar.style.display = 'none';
-      searchButton.style.display = 'block';
-    }
-  }
-
-  function inPageSearch() {
-    var input = document.getElementById('searchInput').value.toLowerCase();
-    var items = document.getElementsByClassName('item-container');
-    for (var i = 0; i < items.length; i++) {
-      var text = items[i].textContent.toLowerCase();
-      if (text.indexOf(input) > -1) {
-        items[i].style.display = '';
-      } else {
-        items[i].style.display = 'none';
-      }
-    }
-  }
-</script>
 </head>
 <body>
-<div id='floatingSearchButton' onclick='toggleSearchBar()'>Search</div>
-<div id='searchBarContainer'>
-  <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
-  <button onclick='toggleSearchBar()'>Close</button>
-</div>
 <div class='page-title'>Top Sales - Vegetable</div>
-<div class='creation-time'>Created on: 2025-02-24 00:16:53</div>
+<div class='creation-time'>Created on: 2025-02-24 00:17:44</div>
 <div class='item-container'>
   <div class='item-image'>
     <img src='https://assets.shop.loblaws.ca/products/20316397/b3/en/angle/20316397_angle_a06_@2.png' alt='Strawberry Banana' />
