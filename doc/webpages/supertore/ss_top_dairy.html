@@ -27,22 +27,17 @@
       right: 0;
       background: #fff;
       padding: 10px 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      z-index: 1000;
-    }
-    .header-top {
       display: flex;
+      justify-content: center;
       align-items: center;
       gap: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
     }
     .page-title {
       font-size: 22px;
       font-weight: 600;
       font-family: 'Montserrat', Arial, sans-serif;
-    }
-    .creation-time-header {
-      font-size: 12px;
-      color: gray;
     }
     .divider {
       border: 0;
@@ -103,7 +98,33 @@
       color: #3e7d53;
       margin-left: 10px;
     }
-    .header-spacer { height: 50px; }
+    .header-spacer { height: 70px; }
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      overflow-x: hidden;
+    }
+    .creation-time {
+      text-align: center;
+      font-size: 12px;
+      color: gray;
+      margin-bottom: 20px;
+    }
+    .item-number {
+      color: red;
+      font-weight: 600;
+      border: 2px solid red;
+      border-radius: 50%;
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 20px;
+      margin-right: 8px;
+      font-size: 12px;
+    }
     .item-container {
       width: 90%;
       max-width: 600px;
@@ -193,6 +214,7 @@
       document.getElementById('searchBarContainer').classList.remove('active');
       clearHighlights();
       document.getElementById('searchInput').value = '';
+      // Restore display of all items.
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
           items[i].style.display = '';
@@ -236,19 +258,15 @@
 </head>
 <body>
   <div class='header-container'>
-    <div class='header-top'>
-      <button class='search-button' onclick='showSearchBar()'>
-        <span class='search-icon'>🔍</span>
-        FIND →
-      </button>
-      <div>
-         <div class='page-title'>Dairy</div>
-         <div class='creation-time-header'>Created on: 2025-02-25 00:00:31</div>
-      </div>
-    </div>
+    <button class='search-button' onclick='showSearchBar()'>
+      <span class='search-icon'>🔍</span>
+      FIND ➜
+    </button>
+    <div class='page-title'>Dairy</div>
   </div>
   <hr class='divider'>
   <div class='header-spacer'></div>
+  <div class='creation-time'>Created on: 2025-02-25 00:02:40</div>
   <div id='searchBarContainer'>
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
@@ -269,8 +287,8 @@
       </div>
       <div class='now-price'>NOW: $1.00</div>
       <div class='discount-badge'>59.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21040956/b3/en/front/21040956_front_a06_@2.png' alt='Chocolate Milkshake' />
@@ -287,8 +305,8 @@
       </div>
       <div class='now-price'>NOW: $1.00</div>
       <div class='discount-badge'>59.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21040942/b3/en/front/21040942_front_a06_@2.png' alt='Caramel Chocolate Milkshake' />
@@ -305,8 +323,8 @@
       </div>
       <div class='now-price'>NOW: $1.00</div>
       <div class='discount-badge'>59.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21040932/b3/en/front/21040932_front_a06_@2.png' alt='French Vanilla Milkshake' />
@@ -323,8 +341,8 @@
       </div>
       <div class='now-price'>NOW: $1.00</div>
       <div class='discount-badge'>59.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21520700/b3/en/angle/21520700_angle_a06_@2.png' alt='Chickpea Beverage Vanilla' />
@@ -341,8 +359,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>41.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21201138/b3/en/angle/21201138_angle_a06_@2.png' alt='Miylk10 Chickpea & Flaxseed Beverage Unsweetened Original' />
@@ -359,8 +377,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>41.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20659606001/b3/en/angle/20659606001_angle_a06_@2.png' alt='Cheez Whiz Cheese Spread' />
@@ -377,8 +395,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>38.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21189807/b3/en/angle/21189807_angle_a06_@2.png' alt='Singles Original Thick Slices' />
@@ -395,8 +413,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>33.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20279976/b3/en/front/20279976_front_a06_@2.png' alt='Vegetable Oil Margarine' />
@@ -413,8 +431,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>29.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20056004/b3/en/back/20056004_back_a06_@2.png' alt='Original Margarine Square Spread, 12 units' />
@@ -431,8 +449,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>29.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20638003003/b3/en/angle/20638003003_angle_a06_@2.png' alt='Organic Yogurt Mango 3%' />
@@ -449,8 +467,8 @@
       </div>
       <div class='now-price'>NOW: $4.99</div>
       <div class='discount-badge'>23.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20316485005/b3/en/angle/20316485005_angle_a06_@2.png' alt='Organic Plain Yogurt 3.5%' />
@@ -467,8 +485,8 @@
       </div>
       <div class='now-price'>NOW: $4.99</div>
       <div class='discount-badge'>23.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20122818002/b3/en/angle/20122818002_angle_a06_@2.png' alt='Natur-A Rice Vanilla' />
@@ -485,8 +503,8 @@
       </div>
       <div class='now-price'>NOW: $2.79</div>
       <div class='discount-badge'>20.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20122818001/b3/en/angle/20122818001_angle_a06_@2.png' alt='Natur-A  Rice Original' />
@@ -503,8 +521,8 @@
       </div>
       <div class='now-price'>NOW: $2.79</div>
       <div class='discount-badge'>20.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21161998/b3/en/angle/21161998_angle_a06_@2.png' alt='Barista Blend' />
@@ -521,8 +539,8 @@
       </div>
       <div class='now-price'>NOW: $5.99</div>
       <div class='discount-badge'>20.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20043357004/b3/en/angle/20043357004_angle_a06_@2.png' alt='1% Chocolate Milk' />
@@ -539,8 +557,8 @@
       </div>
       <div class='now-price'>NOW: $5.00</div>
       <div class='discount-badge'>19.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20043357003/b3/en/angle/20043357003_angle_a06_@2.png' alt='1% Chocolate Milk' />
@@ -557,8 +575,8 @@
       </div>
       <div class='now-price'>NOW: $5.00</div>
       <div class='discount-badge'>19.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21588326/b3/en/angle/21588326_angle_a06_@2.png' alt='Greek Yogourt Crunch Café Latte Flavour 2 % M.F.' />
@@ -575,8 +593,8 @@
       </div>
       <div class='now-price'>NOW: $4.49</div>
       <div class='discount-badge'>18.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21041543002/b3/en/angle/21041543002_angle_a06_@2.png' alt='Greek 2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct' />
@@ -593,8 +611,8 @@
       </div>
       <div class='now-price'>NOW: $4.49</div>
       <div class='discount-badge'>18.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21099328/b3/en/front/21099328_front_a06_@2.png' alt='Paneer' />
@@ -611,8 +629,8 @@
       </div>
       <div class='now-price'>NOW: $4.98</div>
       <div class='discount-badge'>16.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20316485002/b3/en/angle/20316485002_angle_a06_@2.png' alt='Organic Yogurt Plain 0%' />
@@ -629,8 +647,8 @@
       </div>
       <div class='now-price'>NOW: $4.99</div>
       <div class='discount-badge'>16.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20866971/b3/en/angle/20866971_angle_a06_@2.png' alt='Mixed Berry Whipped Cream Cheese Product' />
@@ -647,8 +665,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>15.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20866924005/b3/en/angle/20866924005_angle_a06_@2.png' alt='Light Original Cream Cheese Product' />
@@ -665,8 +683,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>15.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20866816001/b3/en/angle/20866816001_angle_a06_@2.png' alt='Chive Whipped Cream Cheese Product' />
@@ -683,8 +701,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>15.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20641267/b3/en/angle/20641267_angle_a06_@2.png' alt='Original Brick Cream Cheese' />
@@ -701,8 +719,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>15.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20324286002/b3/en/angle/20324286002_angle_a06_@2.png' alt='Light Cream Cheese Spread' />
@@ -719,8 +737,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>15.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20299760001/b3/en/angle/20299760001_angle_a06_@2.png' alt='Onion Dip' />
@@ -737,8 +755,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>15.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21619809/b3/en/angle/21619809_angle_a06_@2.png' alt='Coffee Enhancer Maple Brown Sugar Oat Dairy-Free Creamer' />
@@ -755,8 +773,8 @@
       </div>
       <div class='now-price'>NOW: $2.79</div>
       <div class='discount-badge'>15.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21592483/b3/en/front/21592483_front_a06_@2.png' alt='Dairy-free Cheese, Crumbled Parmesan Style' />
@@ -773,8 +791,8 @@
       </div>
       <div class='now-price'>NOW: $7.99</div>
       <div class='discount-badge'>14.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20317317001/b3/en/angle/20317317001_angle_a06_@2.png' alt='Source 0% Smooth Traditional Yogurt Cups Variety Pack, No Added Sugar - Strawberry, Peach, Raspberry, Fieldberry' />
@@ -791,8 +809,8 @@
       </div>
       <div class='now-price'>NOW: $6.49</div>
       <div class='discount-badge'>13.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20310980001/b3/en/angle/20310980001_angle_a06_@2.png' alt='Source 0% Smooth Traditional Yogurt Cups Variety Pack, No Added Sugar' />
@@ -809,8 +827,8 @@
       </div>
       <div class='now-price'>NOW: $6.49</div>
       <div class='discount-badge'>13.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20120316002/b3/en/angle/20120316002_angle_a06_@2.png' alt='Creamy 1% Smooth Traditional Yogurt Cups, Variety Pack with Real Fruit Puree' />
@@ -827,8 +845,8 @@
       </div>
       <div class='now-price'>NOW: $6.49</div>
       <div class='discount-badge'>13.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21216416/b3/en/angle/21216416_angle_a06_@2.png' alt='1% Kefir, Plain' />
@@ -845,8 +863,8 @@
       </div>
       <div class='now-price'>NOW: $5.00</div>
       <div class='discount-badge'>13.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21216411/b3/en/angle/21216411_angle_a06_@2.png' alt='1% Kefir, Mango' />
@@ -863,8 +881,8 @@
       </div>
       <div class='now-price'>NOW: $5.00</div>
       <div class='discount-badge'>13.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21337480/b3/en/angle/21337480_angle_a06_@2.png' alt='Protein Almond & Cashew Milk Alternative, Unsweetened Original' />
@@ -881,8 +899,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>12.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21243598/b3/en/angle/21243598_angle_a06_@2.png' alt='Oat Milk Alternative, Unsweetened, Plant Based, Dairy Free' />
@@ -899,8 +917,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>12.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20914285/b3/en/back/20914285_back_a06_@2.png' alt='Creamy Cashew Milk Alternative, Unsweetened, Vanilla Flavour' />
@@ -917,8 +935,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>12.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20328231004/b3/en/back/20328231004_back_a06_@2.png' alt='Almond Milk Alternative, Unsweetened, Vanilla Flavour, Dairy-Free' />
@@ -935,8 +953,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>12.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20328231002/b3/en/front/20328231002_front_a06_@2.png' alt='Almond Milk Alternative, Zero Sugar Original, Dairy-Free' />
@@ -953,8 +971,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>12.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20315090001/b3/en/front/20315090001_front_a06_@2.png' alt='Almond Milk Alternative, Original, Plant Based Dairy-Free Milk' />
@@ -971,7 +989,7 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>12.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
 </body>
 </html>
