@@ -164,9 +164,13 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var nameElems = document.getElementsByClassName('product-name-text');
-      for (var i = 0; i < nameElems.length; i++) {
-        nameElems[i].dataset.original = nameElems[i].innerHTML;
+      var firstElems = document.getElementsByClassName('first-word');
+      for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].dataset.original = firstElems[i].innerHTML;
+      }
+      var secondElems = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].dataset.original = secondElems[i].innerHTML;
       }
     });
 
@@ -184,9 +188,13 @@
     }
 
     function clearHighlights() {
-      var nameElems = document.getElementsByClassName('product-name-text');
-      for (var i = 0; i < nameElems.length; i++) {
-        nameElems[i].innerHTML = nameElems[i].dataset.original;
+      var firstElems = document.getElementsByClassName('first-word');
+      for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].innerHTML = firstElems[i].dataset.original;
+      }
+      var secondElems = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].innerHTML = secondElems[i].dataset.original;
       }
     }
 
@@ -197,18 +205,14 @@
       for (var i = 0; i < items.length; i++) {
         var firstElem = items[i].querySelector('.first-word');
         var secondElem = items[i].querySelector('.product-name-text');
-        // For filtering, use the full product name (first + second parts).
-        var fullName = '';
-        if (firstElem) { fullName += firstElem.textContent + ' '; }
-        if (secondElem) { fullName += secondElem.textContent; }
-        fullName = fullName.toLowerCase();
+        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
         if (term === '' || fullName.indexOf(term) > -1) {
           items[i].style.display = '';
-          // Only highlight matches in the second part
-          if (secondElem && term !== '') {
-            var original = secondElem.dataset.original;
-            secondElem.innerHTML = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-          } else if (secondElem) {
+          if (term !== '') {
+            firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+          } else {
+            firstElem.innerHTML = firstElem.dataset.original;
             secondElem.innerHTML = secondElem.dataset.original;
           }
         } else {
@@ -225,7 +229,7 @@
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
   <div class='page-title'>Dairy</div>
-  <div class='creation-time'>Created on: 2025-02-24 22:51:54</div>
+  <div class='creation-time'>Created on: 2025-02-24 22:58:04</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21040974/b3/en/front/21040974_front_a06_@2.png' alt='Original Chocolate Milkshake' />
