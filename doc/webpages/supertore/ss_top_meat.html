@@ -33,6 +33,7 @@
       gap: 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       z-index: 1000;
+      flex-direction: column;
     }
     .page-title {
       font-size: 22px;
@@ -110,7 +111,6 @@
       text-align: center;
       font-size: 12px;
       color: gray;
-      margin-bottom: 20px;
     }
     .item-number {
       color: red;
@@ -262,11 +262,13 @@
       <span class='search-icon'>🔍</span>
       FIND ➜
     </button>
-    <div class='page-title'>Meat</div>
+    <div>
+      <div class='page-title'>Meat</div>
+      <div class='creation-time'>Created on: 2025-02-25 00:03:49</div>
+    </div>
   </div>
   <hr class='divider'>
   <div class='header-spacer'></div>
-  <div class='creation-time'>Created on: 2025-02-25 00:02:36</div>
   <div id='searchBarContainer'>
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
