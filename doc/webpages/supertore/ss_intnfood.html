@@ -16,6 +16,10 @@
     });
   </script>
   <style>
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
     .header-container {
       display: flex;
       justify-content: center;
@@ -32,15 +36,18 @@
       background-color: #3e7d53;
       border: none;
       color: #fff;
-      padding: 8px 16px;
-      border-radius: 4px;
+      padding: 6px 12px;
+      border-radius: 9999px;
       cursor: pointer;
-      font-size: 18px;
-      display: flex;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
       align-items: center;
       gap: 5px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      transition: background-color 0.3s ease;
+      animation: fadeIn 0.8s forwards ease-in;
     }
     .search-button:hover {
       background-color: #2c5f3d;
@@ -123,10 +130,6 @@
       width: 60px;
       height: auto;
     }
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
     .view-button {
       margin-top: 6px;
       padding: 8px 16px;
@@ -197,7 +200,7 @@
       document.getElementById('searchBarContainer').classList.remove('active');
       clearHighlights();
       document.getElementById('searchInput').value = '';
-      // Restore display of all items
+      // Restore display of all items.
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
           items[i].style.display = '';
@@ -251,7 +254,7 @@
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
-  <div class='creation-time'>Created on: 2025-02-24 23:08:30</div>
+  <div class='creation-time'>Created on: 2025-02-24 23:13:00</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20925691/b3/en/angle/20925691_angle_a06_@2.png' alt='Crackers, Snack Pack' />
