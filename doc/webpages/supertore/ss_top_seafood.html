@@ -16,14 +16,34 @@
     });
   </script>
   <style>
-    #floatingSearchButton {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      color: #3e7d53;
+    .header-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin: 20px;
+    }
+    .page-title {
+      font-size: 22px;
+      font-weight: 600;
+      font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .search-button {
+      background-color: #3e7d53;
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 4px;
       cursor: pointer;
-      z-index: 1000;
-      font-size: 24px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: background-color 0.3s ease;
+    }
+    .search-button:hover {
+      background-color: #2c5f3d;
     }
     #searchBarContainer {
       position: fixed;
@@ -64,12 +84,6 @@
       padding: 0;
       background-color: #fff;
       overflow-x: hidden;
-    }
-    .page-title {
-      text-align: center;
-      margin: 20px;
-      font-size: 22px;
-      font-weight: 600;
     }
     .creation-time {
       text-align: center;
@@ -176,13 +190,11 @@
 
     function showSearchBar() {
       document.getElementById('searchBarContainer').classList.add('active');
-      document.getElementById('floatingSearchButton').style.display = 'none';
       document.getElementById('searchInput').focus();
     }
 
     function hideSearchBar() {
       document.getElementById('searchBarContainer').classList.remove('active');
-      document.getElementById('floatingSearchButton').style.display = 'block';
       clearHighlights();
       document.getElementById('searchInput').value = '';
       // Restore display of all items
@@ -228,13 +240,18 @@
   </script>
 </head>
 <body>
-  <div id='floatingSearchButton' onclick='showSearchBar()'>🔍</div>
+  <div class='header-container'>
+    <div class='page-title'>Seafood</div>
+    <button class='search-button' onclick='showSearchBar()'>
+      <span class='search-icon'>🔍</span>
+      Search
+    </button>
+  </div>
   <div id='searchBarContainer'>
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
-  <div class='page-title'>Seafood</div>
-  <div class='creation-time'>Created on: 2025-02-24 23:02:22</div>
+  <div class='creation-time'>Created on: 2025-02-24 23:08:28</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20985188/b3/en/front/20985188_front_a06_@2.png' alt='Haddock Fillets, Previously Frozen' />
