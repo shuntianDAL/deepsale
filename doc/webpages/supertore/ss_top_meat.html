@@ -99,11 +99,31 @@
       margin-left: 10px;
     }
     .header-spacer { height: 70px; }
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      overflow-x: hidden;
+    }
     .creation-time {
       text-align: center;
       font-size: 12px;
       color: gray;
       margin-bottom: 20px;
+    }
+    .item-number {
+      color: red;
+      font-weight: 600;
+      border: 2px solid red;
+      border-radius: 50%;
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 20px;
+      margin-right: 8px;
+      font-size: 12px;
     }
     .item-container {
       width: 90%;
@@ -194,6 +214,7 @@
       document.getElementById('searchBarContainer').classList.remove('active');
       clearHighlights();
       document.getElementById('searchInput').value = '';
+      // Restore display of all items.
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
           items[i].style.display = '';
@@ -239,13 +260,13 @@
   <div class='header-container'>
     <button class='search-button' onclick='showSearchBar()'>
       <span class='search-icon'>🔍</span>
-      FIND →
+      FIND ➜
     </button>
     <div class='page-title'>Meat</div>
   </div>
   <hr class='divider'>
   <div class='header-spacer'></div>
-  <div class='creation-time'>Created on: 2025-02-24 23:42:35</div>
+  <div class='creation-time'>Created on: 2025-02-24 23:43:54</div>
   <div id='searchBarContainer'>
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
@@ -266,8 +287,8 @@
       </div>
       <div class='now-price'>NOW: $5.35</div>
       <div class='discount-badge'>59.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822150/b3/en/angle/20822150_angle_a06_@2.png' alt='Pork Sirloin Roast' />
@@ -284,8 +305,26 @@
       </div>
       <div class='now-price'>NOW: $7.44</div>
       <div class='discount-badge'>59.7% OFF</div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
+  <div class='item-container'>
+    <div class='item-image'>
+      <img src='https://assets.shop.loblaws.ca/products/21618256/b3/en/front/21618256_front_a06_@2.png' alt='Pork Loin Combination Chops, Sirloin and Rib' />
+      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-combination-chops-sirloin-and-rib/p/21618256_KG' target='_top'>SHOP →</a>
     </div>
-  </div>
+    <div class='item-details'>
+      <div class='item-name'>
+        <span class='item-number'>#3</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Combination Chops, Sirloin and Rib</span>
+      </div>
+      <div>Expire On: 2025-02-26</div>
+      <div>
+        WAS: <span class='was-price'>$24.54</span>
+      </div>
+      <div class='now-price'>NOW: $10.74</div>
+      <div class='discount-badge'>56.2% OFF</div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822343/b3/en/angle/20822343_angle_a06_@2.png' alt='Pork Rib Loin & Sirloin Combination Chop' />
@@ -293,7 +332,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#3</span>
+        <span class='item-number'>#4</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Rib Loin & Sirloin Combination Chop</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -302,8 +341,8 @@
       </div>
       <div class='now-price'>NOW: $7.62</div>
       <div class='discount-badge'>56.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822906/b3/en/front/20822906_front_a06_@2.png' alt='Pork Loin Rib End Chop' />
@@ -311,7 +350,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#4</span>
+        <span class='item-number'>#5</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Rib End Chop</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -320,8 +359,8 @@
       </div>
       <div class='now-price'>NOW: $3.24</div>
       <div class='discount-badge'>55.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822347/b3/en/front/20822347_front_a06_@2.png' alt='Pork Loin Chop Rib, Fast Fry' />
@@ -329,7 +368,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#5</span>
+        <span class='item-number'>#6</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chop Rib, Fast Fry</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -338,8 +377,8 @@
       </div>
       <div class='now-price'>NOW: $5.01</div>
       <div class='discount-badge'>54.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822459/b3/en/front/20822459_front_a06_@2.png' alt='Pork Loin Rib Roast Portion' />
@@ -347,7 +386,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#6</span>
+        <span class='item-number'>#7</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Rib Roast Portion</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -356,8 +395,8 @@
       </div>
       <div class='now-price'>NOW: $8.35</div>
       <div class='discount-badge'>51.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822322/b3/en/front/20822322_front_a06_@2.png' alt='Pork Sirloin Chop, End Portion' />
@@ -365,7 +404,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#7</span>
+        <span class='item-number'>#8</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Sirloin Chop, End Portion</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -374,8 +413,8 @@
       </div>
       <div class='now-price'>NOW: $4.44</div>
       <div class='discount-badge'>51.6% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822452/b3/en/front/20822452_front_a06_@2.png' alt='Pork Loin Roast, Center Cut with Bone' />
@@ -383,7 +422,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#8</span>
+        <span class='item-number'>#9</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Roast, Center Cut with Bone</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -392,8 +431,8 @@
       </div>
       <div class='now-price'>NOW: $9.36</div>
       <div class='discount-badge'>51.5% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20823075/b3/en/front/20823075_front_a06_@2.png' alt='Pork Loin Chop Center Chop, Club Pack' />
@@ -401,7 +440,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#9</span>
+        <span class='item-number'>#10</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chop Center Chop, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -410,8 +449,8 @@
       </div>
       <div class='now-price'>NOW: $7.60</div>
       <div class='discount-badge'>51.5% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20058163/b3/en/angle/20058163_angle_a06_@2.png' alt='Chicken Thighs, Club Pack' />
@@ -419,7 +458,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#10</span>
+        <span class='item-number'>#11</span>
         <span class='first-word'>Chicken</span> <span class='product-name-text'>Thighs, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -428,8 +467,8 @@
       </div>
       <div class='now-price'>NOW: $8.17</div>
       <div class='discount-badge'>50.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20823076/b3/en/front/20823076_front_a06_@2.png' alt='Pork Loin Chopfast Fry  Bone In, Club Pack' />
@@ -437,7 +476,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#11</span>
+        <span class='item-number'>#12</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chopfast Fry  Bone In, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -446,8 +485,8 @@
       </div>
       <div class='now-price'>NOW: $6.47</div>
       <div class='discount-badge'>48.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822907/b3/en/angle/20822907_angle_a06_@2.png' alt='Pork Loin Chop, Bone In Center Cut' />
@@ -455,7 +494,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#12</span>
+        <span class='item-number'>#13</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chop, Bone In Center Cut</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -464,8 +503,8 @@
       </div>
       <div class='now-price'>NOW: $4.40</div>
       <div class='discount-badge'>48.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20823073/b3/en/front/20823073_front_a06_@2.png' alt='Pork Loin Chop Center Cut Fast Fry' />
@@ -473,7 +512,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#13</span>
+        <span class='item-number'>#14</span>
         <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chop Center Cut Fast Fry</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -482,8 +521,8 @@
       </div>
       <div class='now-price'>NOW: $5.09</div>
       <div class='discount-badge'>45.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822532/b3/en/front/20822532_front_a06_@2.png' alt='Loin Rib End Country Style Portion' />
@@ -491,7 +530,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#14</span>
+        <span class='item-number'>#15</span>
         <span class='first-word'>Loin</span> <span class='product-name-text'>Rib End Country Style Portion</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -500,8 +539,8 @@
       </div>
       <div class='now-price'>NOW: $7.43</div>
       <div class='discount-badge'>45.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797926/b3/en/angle/20797926_angle_a06_@2.png' alt='Medium Ground Beef, Big Pack' />
@@ -509,7 +548,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#15</span>
+        <span class='item-number'>#16</span>
         <span class='first-word'>Medium</span> <span class='product-name-text'>Ground Beef, Big Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -518,8 +557,8 @@
       </div>
       <div class='now-price'>NOW: $9.66</div>
       <div class='discount-badge'>34.6% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20798010/b3/en/angle/20798010_angle_a06_@2.png' alt='Medium Ground Beef' />
@@ -527,7 +566,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#16</span>
+        <span class='item-number'>#17</span>
         <span class='first-word'>Medium</span> <span class='product-name-text'>Ground Beef</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -536,8 +575,8 @@
       </div>
       <div class='now-price'>NOW: $5.03</div>
       <div class='discount-badge'>31.5% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21352008/b3/en/angle/21352008_angle_a06_@2.png' alt='Free From Australian Lean Ground Lamb' />
@@ -545,7 +584,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#17</span>
+        <span class='item-number'>#18</span>
         <span class='first-word'>Free</span> <span class='product-name-text'>From Australian Lean Ground Lamb</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -554,8 +593,8 @@
       </div>
       <div class='now-price'>NOW: $11.00</div>
       <div class='discount-badge'>31.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21378346/b3/en/front/21378346_front_a06_@2.png' alt='Ultimate Dinner Sausage Hot' />
@@ -563,7 +602,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#18</span>
+        <span class='item-number'>#19</span>
         <span class='first-word'>Ultimate</span> <span class='product-name-text'>Dinner Sausage Hot</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -572,8 +611,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>24.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21378310/b3/en/front/21378310_front_a06_@2.png' alt='Ultimate Mild Chicken Dinner Sausage' />
@@ -581,7 +620,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#19</span>
+        <span class='item-number'>#20</span>
         <span class='first-word'>Ultimate</span> <span class='product-name-text'>Mild Chicken Dinner Sausage</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -590,8 +629,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>24.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20321514/b3/en/angle/20321514_angle_a06_@2.png' alt='Calabrese Spicy Salami (Thin Sliced)' />
@@ -599,7 +638,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#20</span>
+        <span class='item-number'>#21</span>
         <span class='first-word'>Calabrese</span> <span class='product-name-text'>Spicy Salami (Thin Sliced)</span>
       </div>
       <div>Expire On: 2025-03-19</div>
@@ -608,8 +647,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>24.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20319035/b3/en/angle/20319035_angle_a06_@2.png' alt='Soppressata (Thin Sliced)' />
@@ -617,7 +656,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#21</span>
+        <span class='item-number'>#22</span>
         <span class='first-word'>Soppressata</span> <span class='product-name-text'>(Thin Sliced)</span>
       </div>
       <div>Expire On: 2025-03-19</div>
@@ -626,8 +665,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>24.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20772383/b3/en/angle/20772383_angle_a06_@2.png' alt='Lazy Maple Natural Bacon' />
@@ -635,7 +674,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#22</span>
+        <span class='item-number'>#23</span>
         <span class='first-word'>Lazy</span> <span class='product-name-text'>Maple Natural Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -644,8 +683,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>22.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20772300/b3/en/angle/20772300_angle_a06_@2.png' alt='Natural Less Salt Bacon' />
@@ -653,7 +692,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#23</span>
+        <span class='item-number'>#24</span>
         <span class='first-word'>Natural</span> <span class='product-name-text'>Less Salt Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -662,8 +701,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>22.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20732366/b3/en/angle/20732366_angle_a06_@2.png' alt='Original Natural Bacon' />
@@ -671,7 +710,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#24</span>
+        <span class='item-number'>#25</span>
         <span class='first-word'>Original</span> <span class='product-name-text'>Natural Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -680,8 +719,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>22.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20164959/b3/en/angle/20164959_angle_a06_@2.png' alt='Ready Crisp Fully Cooked Natural Bacon Slices' />
@@ -689,7 +728,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#25</span>
+        <span class='item-number'>#26</span>
         <span class='first-word'>Ready</span> <span class='product-name-text'>Crisp Fully Cooked Natural Bacon Slices</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -698,8 +737,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>22.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20089413/b3/en/angle/20089413_angle_a06_@2.png' alt='Air Chilled Chicken, Whole' />
@@ -707,7 +746,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#26</span>
+        <span class='item-number'>#27</span>
         <span class='first-word'>Air</span> <span class='product-name-text'>Chilled Chicken, Whole</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -716,8 +755,8 @@
       </div>
       <div class='now-price'>NOW: $13.80</div>
       <div class='discount-badge'>20.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21290136/b3/en/front/21290136_front_a06_@2.png' alt='Frozen Twisters Jumbo Sausage' />
@@ -725,7 +764,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#27</span>
+        <span class='item-number'>#28</span>
         <span class='first-word'>Frozen</span> <span class='product-name-text'>Twisters Jumbo Sausage</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -734,8 +773,8 @@
       </div>
       <div class='now-price'>NOW: $8.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21289868/b3/en/front/21289868_front_a06_@2.png' alt='Hot Italian Jumbo Sausage' />
@@ -743,7 +782,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#28</span>
+        <span class='item-number'>#29</span>
         <span class='first-word'>Hot</span> <span class='product-name-text'>Italian Jumbo Sausage</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -752,8 +791,8 @@
       </div>
       <div class='now-price'>NOW: $8.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21289731/b3/en/front/21289731_front_a06_@2.png' alt='Sweet Italian Jumbo Sausage' />
@@ -761,7 +800,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#29</span>
+        <span class='item-number'>#30</span>
         <span class='first-word'>Sweet</span> <span class='product-name-text'>Italian Jumbo Sausage</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -770,8 +809,8 @@
       </div>
       <div class='now-price'>NOW: $8.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21539970/b3/en/front/21539970_front_a06_@2.png' alt='Ultimate Chicken Breakfast Sausages Original' />
@@ -779,7 +818,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#30</span>
+        <span class='item-number'>#31</span>
         <span class='first-word'>Ultimate</span> <span class='product-name-text'>Chicken Breakfast Sausages Original</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -788,8 +827,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21539969/b3/en/front/21539969_front_a06_@2.png' alt='Ultimate Chicken Breakfast Sausages Maple Flavour' />
@@ -797,7 +836,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#31</span>
+        <span class='item-number'>#32</span>
         <span class='first-word'>Ultimate</span> <span class='product-name-text'>Chicken Breakfast Sausages Maple Flavour</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -806,8 +845,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21464136/b3/en/angle/21464136_angle_a06_@2.png' alt='Pizzeria Style Pepperoni' />
@@ -815,7 +854,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#32</span>
+        <span class='item-number'>#33</span>
         <span class='first-word'>Pizzeria</span> <span class='product-name-text'>Style Pepperoni</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -824,8 +863,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>19.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21463330/b3/en/angle/21463330_angle_a06_@2.png' alt='Fully Cooked Sausage Crumble' />
@@ -833,7 +872,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#33</span>
+        <span class='item-number'>#34</span>
         <span class='first-word'>Fully</span> <span class='product-name-text'>Cooked Sausage Crumble</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -842,8 +881,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>19.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21463309/b3/en/angle/21463309_angle_a06_@2.png' alt='Fully Cooked Diced Smoked Ham ' />
@@ -851,7 +890,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#34</span>
+        <span class='item-number'>#35</span>
         <span class='first-word'>Fully</span> <span class='product-name-text'>Cooked Diced Smoked Ham </span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -860,8 +899,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>19.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20772671/b3/en/angle/20772671_angle_a06_@2.png' alt='Hickory Smoked Classic Cut Bacon' />
@@ -869,7 +908,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#35</span>
+        <span class='item-number'>#36</span>
         <span class='first-word'>Hickory</span> <span class='product-name-text'>Smoked Classic Cut Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -878,8 +917,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>17.6% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20772637/b3/en/angle/20772637_angle_a06_@2.png' alt='Hickory Smoked 50% Less Salt Bacon' />
@@ -887,7 +926,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#36</span>
+        <span class='item-number'>#37</span>
         <span class='first-word'>Hickory</span> <span class='product-name-text'>Smoked 50% Less Salt Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -896,8 +935,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>17.6% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20174909/b3/en/front/20174909_front_a06_@2.png' alt='Bacon, Mild Sugar Cured with Reduced Salt, Uncooked' />
@@ -905,7 +944,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#37</span>
+        <span class='item-number'>#38</span>
         <span class='first-word'>Bacon,</span> <span class='product-name-text'>Mild Sugar Cured with Reduced Salt, Uncooked</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -914,8 +953,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>14.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20156771/b3/en/front/20156771_front_a06_@2.png' alt='Mild Sugar-Cured Bacon' />
@@ -923,7 +962,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#38</span>
+        <span class='item-number'>#39</span>
         <span class='first-word'>Mild</span> <span class='product-name-text'>Sugar-Cured Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -932,8 +971,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>14.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21366170/b3/en/front/21366170_front_a06_@2.png' alt='Marc Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g' />
@@ -941,7 +980,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#39</span>
+        <span class='item-number'>#40</span>
         <span class='first-word'>Marc</span> <span class='product-name-text'>Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -950,8 +989,8 @@
       </div>
       <div class='now-price'>NOW: $8.00</div>
       <div class='discount-badge'>13.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20924959/b3/en/angle/20924959_angle_a06_@2.png' alt='Honey Maple Turkey Breast' />
@@ -959,7 +998,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#40</span>
+        <span class='item-number'>#41</span>
         <span class='first-word'>Honey</span> <span class='product-name-text'>Maple Turkey Breast</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -968,8 +1007,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20871869/b3/en/angle/20871869_angle_a06_@2.png' alt='Original Angus Roast Beef Slices' />
@@ -977,7 +1016,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#41</span>
+        <span class='item-number'>#42</span>
         <span class='first-word'>Original</span> <span class='product-name-text'>Angus Roast Beef Slices</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -986,8 +1025,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20326202/b3/en/angle/20326202_angle_a06_@2.png' alt='Oven Roasted Turkey Breast' />
@@ -995,7 +1034,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#42</span>
+        <span class='item-number'>#43</span>
         <span class='first-word'>Oven</span> <span class='product-name-text'>Roasted Turkey Breast</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1004,8 +1043,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20796887/b3/en/front/20796887_front_a06_@2.png' alt='Top Sirloin, Fast Fry' />
@@ -1013,7 +1052,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#43</span>
+        <span class='item-number'>#44</span>
         <span class='first-word'>Top</span> <span class='product-name-text'>Sirloin, Fast Fry</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1022,8 +1061,8 @@
       </div>
       <div class='now-price'>NOW: $6.58</div>
       <div class='discount-badge'>9.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20416522/b3/en/front/20416522_front_a06_@2.png' alt='Classic Wieners, Family Pack' />
@@ -1031,7 +1070,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#44</span>
+        <span class='item-number'>#45</span>
         <span class='first-word'>Classic</span> <span class='product-name-text'>Wieners, Family Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1040,8 +1079,8 @@
       </div>
       <div class='now-price'>NOW: $10.00</div>
       <div class='discount-badge'>9.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20415978/b3/en/front/20415978_front_a06_@2.png' alt='Barbecue Style Wieners' />
@@ -1049,7 +1088,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#45</span>
+        <span class='item-number'>#46</span>
         <span class='first-word'>Barbecue</span> <span class='product-name-text'>Style Wieners</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1058,8 +1097,8 @@
       </div>
       <div class='now-price'>NOW: $10.00</div>
       <div class='discount-badge'>9.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20796098/b3/en/front/20796098_front_a06_@2.png' alt='Top Sirloin, Oven Roast' />
@@ -1067,7 +1106,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#46</span>
+        <span class='item-number'>#47</span>
         <span class='first-word'>Top</span> <span class='product-name-text'>Sirloin, Oven Roast</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1076,8 +1115,8 @@
       </div>
       <div class='now-price'>NOW: $25.95</div>
       <div class='discount-badge'>7.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797507/b3/en/beauty/20797507_beauty_a06_@2.png' alt='Top Sirloin Steak, Club Pack' />
@@ -1085,7 +1124,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#47</span>
+        <span class='item-number'>#48</span>
         <span class='first-word'>Top</span> <span class='product-name-text'>Sirloin Steak, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1094,8 +1133,8 @@
       </div>
       <div class='now-price'>NOW: $21.59</div>
       <div class='discount-badge'>7.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20787394/b3/en/angle/20787394_angle_a06_@2.png' alt='Sirloin Beef Strips' />
@@ -1103,7 +1142,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#48</span>
+        <span class='item-number'>#49</span>
         <span class='first-word'>Sirloin</span> <span class='product-name-text'>Beef Strips</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1112,8 +1151,8 @@
       </div>
       <div class='now-price'>NOW: $13.00</div>
       <div class='discount-badge'>7.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797591/b3/en/angle/20797591_angle_a06_@2.png' alt='Beef Top Sirloin Steak' />
@@ -1121,7 +1160,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#49</span>
+        <span class='item-number'>#50</span>
         <span class='first-word'>Beef</span> <span class='product-name-text'>Top Sirloin Steak</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1130,8 +1169,8 @@
       </div>
       <div class='now-price'>NOW: $9.87</div>
       <div class='discount-badge'>6.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797072/b3/en/angle/20797072_angle_a06_@2.png' alt='Beef Top Sirloin Cap Steak, Boneless' />
@@ -1139,7 +1178,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#50</span>
+        <span class='item-number'>#51</span>
         <span class='first-word'>Beef</span> <span class='product-name-text'>Top Sirloin Cap Steak, Boneless</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1148,8 +1187,8 @@
       </div>
       <div class='now-price'>NOW: $9.87</div>
       <div class='discount-badge'>6.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797930/b3/en/angle/20797930_angle_a06_@2.png' alt='Lean Ground Beef' />
@@ -1157,7 +1196,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#51</span>
+        <span class='item-number'>#52</span>
         <span class='first-word'>Lean</span> <span class='product-name-text'>Ground Beef</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1166,8 +1205,8 @@
       </div>
       <div class='now-price'>NOW: $7.27</div>
       <div class='discount-badge'>6.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20796099/b3/en/front/20796099_front_a06_@2.png' alt='Beef Top Sirloin Beefeater Steak ' />
@@ -1175,7 +1214,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#52</span>
+        <span class='item-number'>#53</span>
         <span class='first-word'>Beef</span> <span class='product-name-text'>Top Sirloin Beefeater Steak </span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1184,8 +1223,8 @@
       </div>
       <div class='now-price'>NOW: $11.35</div>
       <div class='discount-badge'>6.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20311865/b3/en/angle/20311865_angle_a06_@2.png' alt='Mediterranean Chicken Breast Slices' />
@@ -1193,7 +1232,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#53</span>
+        <span class='item-number'>#54</span>
         <span class='first-word'>Mediterranean</span> <span class='product-name-text'>Chicken Breast Slices</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1202,8 +1241,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>6.5% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21076606/b3/en/front/21076606_front_a06_@2.png' alt='Free From Oven-Roasted Chicken Breast' />
@@ -1211,7 +1250,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#54</span>
+        <span class='item-number'>#55</span>
         <span class='first-word'>Free</span> <span class='product-name-text'>From Oven-Roasted Chicken Breast</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1220,8 +1259,8 @@
       </div>
       <div class='now-price'>NOW: $14.99</div>
       <div class='discount-badge'>6.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20923814/b3/en/front/20923814_front_a06_@2.png' alt='Free From Oven Roasted Turkey, Club Pack' />
@@ -1229,7 +1268,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#55</span>
+        <span class='item-number'>#56</span>
         <span class='first-word'>Free</span> <span class='product-name-text'>From Oven Roasted Turkey, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1238,8 +1277,8 @@
       </div>
       <div class='now-price'>NOW: $14.99</div>
       <div class='discount-badge'>6.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20903492/b3/en/front/20903492_front_a06_@2.png' alt='Free From Black Forrest Ham, Club Pack' />
@@ -1247,7 +1286,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#56</span>
+        <span class='item-number'>#57</span>
         <span class='first-word'>Free</span> <span class='product-name-text'>From Black Forrest Ham, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1256,8 +1295,8 @@
       </div>
       <div class='now-price'>NOW: $14.99</div>
       <div class='discount-badge'>6.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20903241/b3/en/front/20903241_front_a06_@2.png' alt='Free From Honey Ham, Club Pack' />
@@ -1265,7 +1304,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#57</span>
+        <span class='item-number'>#58</span>
         <span class='first-word'>Free</span> <span class='product-name-text'>From Honey Ham, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1274,8 +1313,8 @@
       </div>
       <div class='now-price'>NOW: $14.99</div>
       <div class='discount-badge'>6.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20798252/b3/en/angle/20798252_angle_a06_@2.png' alt='Extra Lean Ground Beef, Club Pack' />
@@ -1283,7 +1322,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#58</span>
+        <span class='item-number'>#59</span>
         <span class='first-word'>Extra</span> <span class='product-name-text'>Lean Ground Beef, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
@@ -1292,7 +1331,7 @@
       </div>
       <div class='now-price'>NOW: $13.52</div>
       <div class='discount-badge'>6.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
 </body>
 </html>
