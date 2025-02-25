@@ -32,6 +32,12 @@
       font-weight: 600;
       font-family: 'Montserrat', Arial, sans-serif;
     }
+    .divider {
+      border: 0;
+      height: 1px;
+      background: #ccc;
+      margin: 0 20px 20px;
+    }
     .search-button {
       background-color: #3e7d53;
       border: none;
@@ -246,15 +252,16 @@
   <div class='header-container'>
     <button class='search-button' onclick='showSearchBar()'>
       <span class='search-icon'>🔍</span>
-      Search →
+      FIND →
     </button>
     <div class='page-title'>Meat</div>
   </div>
+  <hr class='divider'>
+  <div class='creation-time'>Created on: 2025-02-24 23:20:14</div>
   <div id='searchBarContainer'>
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
-  <div class='creation-time'>Created on: 2025-02-24 23:15:58</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822350/b3/en/front/20822350_front_a06_@2.png' alt='Pork Loin Chop Rib End, Club Pack' />
