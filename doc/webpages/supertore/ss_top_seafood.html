@@ -6,7 +6,7 @@
   <meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate'>
   <meta http-equiv='Pragma' content='no-cache'>
   <meta http-equiv='Expires' content='0'>
-  <title>Top Discounted Items - Seafood</title>
+  <title>Top 20 Most Discounted Items - Seafood</title>
   <link rel='preconnect' href='https://fonts.googleapis.com'>
   <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
   <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
@@ -164,9 +164,9 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var nameElements = document.getElementsByClassName('product-name-text');
-      for (var i = 0; i < nameElements.length; i++) {
-        nameElements[i].dataset.original = nameElements[i].innerHTML;
+      var nameElems = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < nameElems.length; i++) {
+        nameElems[i].dataset.original = nameElems[i].innerHTML;
       }
     });
 
@@ -184,9 +184,9 @@
     }
 
     function clearHighlights() {
-      var nameElements = document.getElementsByClassName('product-name-text');
-      for (var i = 0; i < nameElements.length; i++) {
-        nameElements[i].innerHTML = nameElements[i].dataset.original;
+      var nameElems = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < nameElems.length; i++) {
+        nameElems[i].innerHTML = nameElems[i].dataset.original;
       }
     }
 
@@ -195,15 +195,21 @@
       var term = input.toLowerCase();
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
-        var nameElem = items[i].querySelector('.product-name-text');
-        var text = nameElem.textContent.toLowerCase();
-        if (term === '' || text.indexOf(term) > -1) {
+        var firstElem = items[i].querySelector('.first-word');
+        var secondElem = items[i].querySelector('.product-name-text');
+        // For filtering, use the full product name (first + second parts).
+        var fullName = '';
+        if (firstElem) { fullName += firstElem.textContent + ' '; }
+        if (secondElem) { fullName += secondElem.textContent; }
+        fullName = fullName.toLowerCase();
+        if (term === '' || fullName.indexOf(term) > -1) {
           items[i].style.display = '';
-          if (term !== '') {
-            var original = nameElem.dataset.original;
-            nameElem.innerHTML = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-          } else {
-            nameElem.innerHTML = nameElem.dataset.original;
+          // Only highlight matches in the second part
+          if (secondElem && term !== '') {
+            var original = secondElem.dataset.original;
+            secondElem.innerHTML = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+          } else if (secondElem) {
+            secondElem.innerHTML = secondElem.dataset.original;
           }
         } else {
           items[i].style.display = 'none';
@@ -219,7 +225,7 @@
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
   <div class='page-title'>Seafood</div>
-  <div class='creation-time'>Created on: 2025-02-24 22:46:36</div>
+  <div class='creation-time'>Created on: 2025-02-24 22:51:56</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20985188/b3/en/front/20985188_front_a06_@2.png' alt='Haddock Fillets, Previously Frozen' />
@@ -232,7 +238,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$8.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $5.39</div>
       <div class='discount-badge'>40.0% OFF</div>
@@ -250,7 +256,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$11.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $7.99</div>
       <div class='discount-badge'>33.4% OFF</div>
@@ -268,7 +274,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$12.40</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $8.58</div>
       <div class='discount-badge'>30.8% OFF</div>
@@ -286,7 +292,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$9.49</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $7.99</div>
       <div class='discount-badge'>15.8% OFF</div>
@@ -304,7 +310,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$7.49</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $6.49</div>
       <div class='discount-badge'>13.4% OFF</div>
@@ -322,7 +328,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$11.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $10.99</div>
       <div class='discount-badge'>8.3% OFF</div>
@@ -340,7 +346,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$11.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $10.99</div>
       <div class='discount-badge'>8.3% OFF</div>
@@ -358,7 +364,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$11.49</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $10.99</div>
       <div class='discount-badge'>4.4% OFF</div>
