@@ -6,7 +6,7 @@
   <meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate'>
   <meta http-equiv='Pragma' content='no-cache'>
   <meta http-equiv='Expires' content='0'>
-  <title>Top Discounted Items - Veg.&Fruit</title>
+  <title>Top 20 Most Discounted Items - Veg.&Fruit</title>
   <link rel='preconnect' href='https://fonts.googleapis.com'>
   <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
   <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
@@ -164,9 +164,9 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var nameElements = document.getElementsByClassName('product-name-text');
-      for (var i = 0; i < nameElements.length; i++) {
-        nameElements[i].dataset.original = nameElements[i].innerHTML;
+      var nameElems = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < nameElems.length; i++) {
+        nameElems[i].dataset.original = nameElems[i].innerHTML;
       }
     });
 
@@ -184,9 +184,9 @@
     }
 
     function clearHighlights() {
-      var nameElements = document.getElementsByClassName('product-name-text');
-      for (var i = 0; i < nameElements.length; i++) {
-        nameElements[i].innerHTML = nameElements[i].dataset.original;
+      var nameElems = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < nameElems.length; i++) {
+        nameElems[i].innerHTML = nameElems[i].dataset.original;
       }
     }
 
@@ -195,15 +195,21 @@
       var term = input.toLowerCase();
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
-        var nameElem = items[i].querySelector('.product-name-text');
-        var text = nameElem.textContent.toLowerCase();
-        if (term === '' || text.indexOf(term) > -1) {
+        var firstElem = items[i].querySelector('.first-word');
+        var secondElem = items[i].querySelector('.product-name-text');
+        // For filtering, use the full product name (first + second parts).
+        var fullName = '';
+        if (firstElem) { fullName += firstElem.textContent + ' '; }
+        if (secondElem) { fullName += secondElem.textContent; }
+        fullName = fullName.toLowerCase();
+        if (term === '' || fullName.indexOf(term) > -1) {
           items[i].style.display = '';
-          if (term !== '') {
-            var original = nameElem.dataset.original;
-            nameElem.innerHTML = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-          } else {
-            nameElem.innerHTML = nameElem.dataset.original;
+          // Only highlight matches in the second part
+          if (secondElem && term !== '') {
+            var original = secondElem.dataset.original;
+            secondElem.innerHTML = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+          } else if (secondElem) {
+            secondElem.innerHTML = secondElem.dataset.original;
           }
         } else {
           items[i].style.display = 'none';
@@ -219,7 +225,7 @@
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
   <div class='page-title'>Veg.&Fruit</div>
-  <div class='creation-time'>Created on: 2025-02-24 22:46:34</div>
+  <div class='creation-time'>Created on: 2025-02-24 22:51:52</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20316397/b3/en/angle/20316397_angle_a06_@2.png' alt='Strawberry Banana' />
@@ -232,7 +238,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$7.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $3.00</div>
       <div class='discount-badge'>62.5% OFF</div>
@@ -250,7 +256,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$4.96</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $2.49</div>
       <div class='discount-badge'>49.8% OFF</div>
@@ -268,7 +274,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$8.81</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $5.51</div>
       <div class='discount-badge'>37.5% OFF</div>
@@ -286,7 +292,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$5.87</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $3.82</div>
       <div class='discount-badge'>34.9% OFF</div>
@@ -304,7 +310,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$6.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $3.99</div>
       <div class='discount-badge'>33.5% OFF</div>
@@ -322,7 +328,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$4.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $3.50</div>
       <div class='discount-badge'>29.9% OFF</div>
@@ -340,7 +346,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$16.09</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $12.09</div>
       <div class='discount-badge'>24.9% OFF</div>
@@ -358,7 +364,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$10.44</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $7.87</div>
       <div class='discount-badge'>24.6% OFF</div>
@@ -376,7 +382,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$6.49</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $5.00</div>
       <div class='discount-badge'>23.0% OFF</div>
@@ -394,7 +400,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$6.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $5.49</div>
       <div class='discount-badge'>21.5% OFF</div>
@@ -412,7 +418,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$2.50</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $1.99</div>
       <div class='discount-badge'>20.4% OFF</div>
@@ -430,7 +436,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$5.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>20.0% OFF</div>
@@ -448,7 +454,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$3.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $2.49</div>
       <div class='discount-badge'>17.0% OFF</div>
@@ -466,7 +472,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$6.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.99</div>
       <div class='discount-badge'>16.8% OFF</div>
@@ -484,7 +490,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$6.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $5.00</div>
       <div class='discount-badge'>16.7% OFF</div>
@@ -502,7 +508,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$1.09</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $0.91</div>
       <div class='discount-badge'>16.5% OFF</div>
@@ -520,7 +526,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$0.79</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $0.66</div>
       <div class='discount-badge'>16.5% OFF</div>
@@ -538,7 +544,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$1.19</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $1.00</div>
       <div class='discount-badge'>16.0% OFF</div>
@@ -556,7 +562,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$6.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>14.2% OFF</div>
@@ -574,7 +580,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$14.50</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $12.49</div>
       <div class='discount-badge'>13.9% OFF</div>
@@ -592,7 +598,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$2.17</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $1.89</div>
       <div class='discount-badge'>12.9% OFF</div>
@@ -610,7 +616,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$12.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $10.49</div>
       <div class='discount-badge'>12.6% OFF</div>
@@ -628,7 +634,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$8.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.5% OFF</div>
@@ -646,7 +652,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$7.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.4% OFF</div>
@@ -664,7 +670,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$3.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $3.50</div>
       <div class='discount-badge'>12.3% OFF</div>
@@ -682,7 +688,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$3.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $3.50</div>
       <div class='discount-badge'>12.3% OFF</div>
@@ -700,7 +706,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$3.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $3.50</div>
       <div class='discount-badge'>12.3% OFF</div>
@@ -718,7 +724,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$1.98</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $1.74</div>
       <div class='discount-badge'>12.1% OFF</div>
@@ -736,7 +742,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$1.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $1.75</div>
       <div class='discount-badge'>12.1% OFF</div>
@@ -754,7 +760,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$5.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
@@ -772,7 +778,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$5.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
@@ -790,7 +796,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$5.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
@@ -808,7 +814,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$5.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
@@ -826,7 +832,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$5.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
@@ -844,7 +850,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$5.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
@@ -862,7 +868,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$4.21</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $3.79</div>
       <div class='discount-badge'>10.0% OFF</div>
@@ -880,7 +886,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$4.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>9.8% OFF</div>
@@ -898,7 +904,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$4.99</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>9.8% OFF</div>
@@ -916,7 +922,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$7.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $6.50</div>
       <div class='discount-badge'>7.1% OFF</div>
@@ -934,7 +940,7 @@
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
-        WAS: <span class='was-price'>$7.00</span>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
       </div>
       <div class='now-price'>NOW: $6.50</div>
       <div class='discount-badge'>7.1% OFF</div>
