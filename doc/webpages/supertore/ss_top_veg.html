@@ -27,17 +27,26 @@
       right: 0;
       background: #fff;
       padding: 10px 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
     .page-title {
       font-size: 22px;
       font-weight: 600;
       font-family: 'Montserrat', Arial, sans-serif;
+    }
+    .creation-time-header {
+      font-size: 12px;
+      color: gray;
     }
     .divider {
       border: 0;
@@ -98,33 +107,7 @@
       color: #3e7d53;
       margin-left: 10px;
     }
-    .header-spacer { height: 70px; }
-    body {
-      font-family: 'Montserrat', Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #fff;
-      overflow-x: hidden;
-    }
-    .creation-time {
-      text-align: center;
-      font-size: 12px;
-      color: gray;
-      margin-bottom: 20px;
-    }
-    .item-number {
-      color: red;
-      font-weight: 600;
-      border: 2px solid red;
-      border-radius: 50%;
-      display: inline-block;
-      width: 22px;
-      height: 22px;
-      text-align: center;
-      line-height: 20px;
-      margin-right: 8px;
-      font-size: 12px;
-    }
+    .header-spacer { height: 90px; }
     .item-container {
       width: 90%;
       max-width: 600px;
@@ -214,7 +197,6 @@
       document.getElementById('searchBarContainer').classList.remove('active');
       clearHighlights();
       document.getElementById('searchInput').value = '';
-      // Restore display of all items.
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
           items[i].style.display = '';
@@ -258,15 +240,17 @@
 </head>
 <body>
   <div class='header-container'>
-    <button class='search-button' onclick='showSearchBar()'>
-      <span class='search-icon'>🔍</span>
-      FIND ➜
-    </button>
-    <div class='page-title'>Veg.&Fruit</div>
+    <div class='header-top'>
+      <button class='search-button' onclick='showSearchBar()'>
+        <span class='search-icon'>🔍</span>
+        FIND →
+      </button>
+      <div class='page-title'>Veg.&Fruit</div>
+    </div>
+    <div class='creation-time-header'>Created on: 2025-02-24 23:49:30</div>
   </div>
   <hr class='divider'>
   <div class='header-spacer'></div>
-  <div class='creation-time'>Created on: 2025-02-24 23:43:56</div>
   <div id='searchBarContainer'>
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
@@ -287,8 +271,8 @@
       </div>
       <div class='now-price'>NOW: $3.00</div>
       <div class='discount-badge'>62.5% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20020863001/b3/en/front/20020863001_front_a06_@2.png' alt='Taiwanese Flat Cabbage' />
@@ -305,8 +289,8 @@
       </div>
       <div class='now-price'>NOW: $2.49</div>
       <div class='discount-badge'>49.8% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20162500001/b3/en/front/20162500001_front_a06_@2.png' alt='Guava' />
@@ -323,8 +307,8 @@
       </div>
       <div class='now-price'>NOW: $5.51</div>
       <div class='discount-badge'>37.5% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21022511001/b3/en/front/21022511001_front_a06_@2.png' alt='Canary Melon' />
@@ -341,8 +325,8 @@
       </div>
       <div class='now-price'>NOW: $3.82</div>
       <div class='discount-badge'>34.9% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21626132/b3/en/front/21626132_front_a06_@2.png' alt='Brusselslaw' />
@@ -359,8 +343,8 @@
       </div>
       <div class='now-price'>NOW: $3.99</div>
       <div class='discount-badge'>33.5% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20119760001/b3/en/front/20119760001_front_a06_@2.png' alt='Caribbean Avocado' />
@@ -377,8 +361,8 @@
       </div>
       <div class='now-price'>NOW: $3.50</div>
       <div class='discount-badge'>29.9% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21051297001/b3/en/front/21051297001_front_a06_@2.png' alt='Hami Melons' />
@@ -395,8 +379,8 @@
       </div>
       <div class='now-price'>NOW: $12.09</div>
       <div class='discount-badge'>24.9% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21023094001/b3/en/front/21023094001_front_a06_@2.png' alt='Santa Claus Melons' />
@@ -413,8 +397,8 @@
       </div>
       <div class='now-price'>NOW: $7.87</div>
       <div class='discount-badge'>24.6% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20119813001/b3/en/angle/20119813001_angle_a06_@2.png' alt='Pineapple' />
@@ -431,8 +415,8 @@
       </div>
       <div class='now-price'>NOW: $5.00</div>
       <div class='discount-badge'>23.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20162945001/b3/en/front/20162945001_front_a06_@2.png' alt='Navel Oranges, 3 lb Bag' />
@@ -449,8 +433,8 @@
       </div>
       <div class='now-price'>NOW: $5.49</div>
       <div class='discount-badge'>21.5% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20005774001/b3/en/front/20005774001_front_a06_@2.png' alt='Coconuts' />
@@ -467,8 +451,8 @@
       </div>
       <div class='now-price'>NOW: $1.99</div>
       <div class='discount-badge'>20.4% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21644936001/b3/en/angle/21644936001_angle_a06_@2.png' alt='Avocado Bag' />
@@ -485,8 +469,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>20.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20159689001/b3/en/front/20159689001_front_a06_@2.png' alt='Fenugreek Bunch' />
@@ -503,8 +487,8 @@
       </div>
       <div class='now-price'>NOW: $2.49</div>
       <div class='discount-badge'>17.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20085851001/b3/en/front/20085851001_front_a06_@2.png' alt='Greenhouse Peppers' />
@@ -521,8 +505,8 @@
       </div>
       <div class='now-price'>NOW: $4.99</div>
       <div class='discount-badge'>16.8% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20811362001/b3/en/front/20811362001_front_a06_@2.png' alt='Red Onions, 3 lb Bag' />
@@ -539,8 +523,8 @@
       </div>
       <div class='now-price'>NOW: $5.00</div>
       <div class='discount-badge'>16.7% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20111926001/b3/en/angle/20111926001_angle_a06_@2.png' alt='Plantains, Single' />
@@ -557,8 +541,8 @@
       </div>
       <div class='now-price'>NOW: $0.91</div>
       <div class='discount-badge'>16.5% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20143381001/b3/en/front/20143381001_front_a06_@2.png' alt='Roma Tomatoes' />
@@ -575,8 +559,8 @@
       </div>
       <div class='now-price'>NOW: $0.66</div>
       <div class='discount-badge'>16.5% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20130242001/b3/en/front/20130242001_front_a06_@2.png' alt='Kiwis' />
@@ -593,8 +577,8 @@
       </div>
       <div class='now-price'>NOW: $1.00</div>
       <div class='discount-badge'>16.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20920821001/b3/en/front/20920821001_front_a06_@2.png' alt='Mini Sweet Peppers' />
@@ -611,8 +595,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>14.2% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21597090/b3/en/angle/21597090_angle_a06_@2.png' alt='Organic Fresh Medjool Dates Whole' />
@@ -629,8 +613,8 @@
       </div>
       <div class='now-price'>NOW: $12.49</div>
       <div class='discount-badge'>13.9% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20033488001/b3/en/front/20033488001_front_a06_@2.png' alt='Mini Bananas, Bunch' />
@@ -647,8 +631,8 @@
       </div>
       <div class='now-price'>NOW: $1.89</div>
       <div class='discount-badge'>12.9% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21097786001/b3/en/angle/21097786001_angle_a06_@2.png' alt='Bard Valley Natural Delights Pitted Medjool Dates' />
@@ -665,8 +649,8 @@
       </div>
       <div class='now-price'>NOW: $10.49</div>
       <div class='discount-badge'>12.6% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20868985001/b3/en/front/20868985001_front_a06_@2.png' alt='Imperfect Apples, 6 lb bag' />
@@ -683,8 +667,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.5% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20045276001/b3/en/front/20045276001_front_a06_@2.png' alt='Honeydew Melon' />
@@ -701,8 +685,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.4% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20811994001/b3/en/front/20811994001_front_a06_@2.png' alt='Yellow Onions, 3 lb Bag' />
@@ -719,8 +703,8 @@
       </div>
       <div class='now-price'>NOW: $3.50</div>
       <div class='discount-badge'>12.3% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20168395001/b3/en/angle/20168395001_angle_a06_@2.png' alt='Dragon Fruit' />
@@ -737,8 +721,8 @@
       </div>
       <div class='now-price'>NOW: $3.50</div>
       <div class='discount-badge'>12.3% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20145621001/b3/en/front/20145621001_front_a06_@2.png' alt='Broccoli' />
@@ -755,8 +739,8 @@
       </div>
       <div class='now-price'>NOW: $3.50</div>
       <div class='discount-badge'>12.3% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21549854001/b3/en/front/21549854001_front_a06_@2.png' alt='Jackfruit Slice' />
@@ -773,8 +757,8 @@
       </div>
       <div class='now-price'>NOW: $1.74</div>
       <div class='discount-badge'>12.1% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20121509001/b3/en/front/20121509001_front_a06_@2.png' alt='Ataulfo Mango' />
@@ -791,8 +775,8 @@
       </div>
       <div class='now-price'>NOW: $1.75</div>
       <div class='discount-badge'>12.1% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21203751/b3/en/angle/21203751_angle_a06_@2.png' alt='Sweet Baby Lettuce' />
@@ -809,8 +793,8 @@
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21203748/b3/en/angle/21203748_angle_a06_@2.png' alt='Spring Mix' />
@@ -827,8 +811,8 @@
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21203747/b3/en/angle/21203747_angle_a06_@2.png' alt='Baby Spinach And Tender Red Lettuce' />
@@ -845,8 +829,8 @@
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21203746/b3/en/angle/21203746_angle_a06_@2.png' alt='Baby Spinach' />
@@ -863,8 +847,8 @@
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21203744/b3/en/angle/21203744_angle_a06_@2.png' alt='Baby Arugula Spinach Blend' />
@@ -881,8 +865,8 @@
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21203743/b3/en/angle/21203743_angle_a06_@2.png' alt='Arugula' />
@@ -899,8 +883,8 @@
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>10.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20649591001/b3/en/front/20649591001_front_a06_@2.png' alt='Manzano Bananas, Bunch' />
@@ -917,8 +901,8 @@
       </div>
       <div class='now-price'>NOW: $3.79</div>
       <div class='discount-badge'>10.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21049092001/b3/en/front/21049092001_front_a06_@2.png' alt='Green House Beefsteak Tomatoes ' />
@@ -935,8 +919,8 @@
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>9.8% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20167017001/b3/en/front/20167017001_front_a06_@2.png' alt='Cantaloupe' />
@@ -953,8 +937,8 @@
       </div>
       <div class='now-price'>NOW: $4.50</div>
       <div class='discount-badge'>9.8% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21204386/b3/en/angle/21204386_angle_a06_@2.png' alt='Baby Spinach' />
@@ -971,8 +955,8 @@
       </div>
       <div class='now-price'>NOW: $6.50</div>
       <div class='discount-badge'>7.1% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21204385/b3/en/angle/21204385_angle_a06_@2.png' alt='Spring Mix' />
@@ -989,8 +973,8 @@
       </div>
       <div class='now-price'>NOW: $6.50</div>
       <div class='discount-badge'>7.1% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21204253/b3/en/angle/21204253_angle_a06_@2.png' alt='50-50 Blend - A Blend of Baby Spinach and Field Greens' />
@@ -1007,7 +991,7 @@
       </div>
       <div class='now-price'>NOW: $6.50</div>
       <div class='discount-badge'>7.1% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
+    </div>
+  </div>
 </body>
 </html>
