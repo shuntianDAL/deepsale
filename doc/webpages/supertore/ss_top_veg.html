@@ -164,9 +164,9 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var items = document.getElementsByClassName('item-container');
-      for (var i = 0; i < items.length; i++) {
-        items[i].dataset.original = items[i].innerHTML;
+      var nameElements = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < nameElements.length; i++) {
+        nameElements[i].dataset.original = nameElements[i].innerHTML;
       }
     });
 
@@ -184,10 +184,9 @@
     }
 
     function clearHighlights() {
-      var items = document.getElementsByClassName('item-container');
-      for (var i = 0; i < items.length; i++) {
-        items[i].innerHTML = items[i].dataset.original;
-        items[i].style.display = '';
+      var nameElements = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < nameElements.length; i++) {
+        nameElements[i].innerHTML = nameElements[i].dataset.original;
       }
     }
 
@@ -196,15 +195,15 @@
       var term = input.toLowerCase();
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
-        var original = items[i].dataset.original;
-        var text = original.toLowerCase();
+        var nameElem = items[i].querySelector('.product-name-text');
+        var text = nameElem.textContent.toLowerCase();
         if (term === '' || text.indexOf(term) > -1) {
           items[i].style.display = '';
           if (term !== '') {
-            var highlighted = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-            items[i].innerHTML = highlighted;
+            var original = nameElem.dataset.original;
+            nameElem.innerHTML = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
           } else {
-            items[i].innerHTML = original;
+            nameElem.innerHTML = nameElem.dataset.original;
           }
         } else {
           items[i].style.display = 'none';
@@ -220,7 +219,7 @@
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
   <div class='page-title'>Veg.&Fruit</div>
-  <div class='creation-time'>Created on: 2025-02-24 20:31:27</div>
+  <div class='creation-time'>Created on: 2025-02-24 20:36:35</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20316397/b3/en/angle/20316397_angle_a06_@2.png' alt='Strawberry Banana' />
@@ -228,7 +227,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#1</span>Strawberry Banana
+        <span class='item-number'>#1</span>
+        <span class='first-word'>Strawberry</span> <span class='product-name-text'>Banana</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -245,7 +245,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#2</span>Taiwanese Flat Cabbage
+        <span class='item-number'>#2</span>
+        <span class='first-word'>Taiwanese</span> <span class='product-name-text'>Flat Cabbage</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -262,7 +263,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#3</span>Guava
+        <span class='item-number'>#3</span>
+        <span class='first-word'>Guava</span> <span class='product-name-text'></span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -279,7 +281,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#4</span>Canary Melon
+        <span class='item-number'>#4</span>
+        <span class='first-word'>Canary</span> <span class='product-name-text'>Melon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -296,7 +299,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#5</span>Brusselslaw
+        <span class='item-number'>#5</span>
+        <span class='first-word'>Brusselslaw</span> <span class='product-name-text'></span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -313,7 +317,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#6</span>Caribbean Avocado
+        <span class='item-number'>#6</span>
+        <span class='first-word'>Caribbean</span> <span class='product-name-text'>Avocado</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -330,7 +335,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#7</span>Hami Melons
+        <span class='item-number'>#7</span>
+        <span class='first-word'>Hami</span> <span class='product-name-text'>Melons</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -347,7 +353,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#8</span>Santa Claus Melons
+        <span class='item-number'>#8</span>
+        <span class='first-word'>Santa</span> <span class='product-name-text'>Claus Melons</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -364,7 +371,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#9</span>Pineapple
+        <span class='item-number'>#9</span>
+        <span class='first-word'>Pineapple</span> <span class='product-name-text'></span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -381,7 +389,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#10</span>Navel Oranges, 3 lb Bag
+        <span class='item-number'>#10</span>
+        <span class='first-word'>Navel</span> <span class='product-name-text'>Oranges, 3 lb Bag</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -398,7 +407,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#11</span>Coconuts
+        <span class='item-number'>#11</span>
+        <span class='first-word'>Coconuts</span> <span class='product-name-text'></span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -415,7 +425,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#12</span>Avocado Bag
+        <span class='item-number'>#12</span>
+        <span class='first-word'>Avocado</span> <span class='product-name-text'>Bag</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -432,7 +443,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#13</span>Fenugreek Bunch
+        <span class='item-number'>#13</span>
+        <span class='first-word'>Fenugreek</span> <span class='product-name-text'>Bunch</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -449,7 +461,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#14</span>Greenhouse Peppers
+        <span class='item-number'>#14</span>
+        <span class='first-word'>Greenhouse</span> <span class='product-name-text'>Peppers</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -466,7 +479,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#15</span>Red Onions, 3 lb Bag
+        <span class='item-number'>#15</span>
+        <span class='first-word'>Red</span> <span class='product-name-text'>Onions, 3 lb Bag</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -483,7 +497,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#16</span>Plantains, Single
+        <span class='item-number'>#16</span>
+        <span class='first-word'>Plantains,</span> <span class='product-name-text'>Single</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -500,7 +515,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#17</span>Roma Tomatoes
+        <span class='item-number'>#17</span>
+        <span class='first-word'>Roma</span> <span class='product-name-text'>Tomatoes</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -517,7 +533,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#18</span>Kiwis
+        <span class='item-number'>#18</span>
+        <span class='first-word'>Kiwis</span> <span class='product-name-text'></span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -534,7 +551,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#19</span>Mini Sweet Peppers
+        <span class='item-number'>#19</span>
+        <span class='first-word'>Mini</span> <span class='product-name-text'>Sweet Peppers</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -551,7 +569,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#20</span>Organic Fresh Medjool Dates Whole
+        <span class='item-number'>#20</span>
+        <span class='first-word'>Organic</span> <span class='product-name-text'>Fresh Medjool Dates Whole</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -568,7 +587,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#21</span>Mini Bananas, Bunch
+        <span class='item-number'>#21</span>
+        <span class='first-word'>Mini</span> <span class='product-name-text'>Bananas, Bunch</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -585,7 +605,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#22</span>Bard Valley Natural Delights Pitted Medjool Dates
+        <span class='item-number'>#22</span>
+        <span class='first-word'>Bard</span> <span class='product-name-text'>Valley Natural Delights Pitted Medjool Dates</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -602,7 +623,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#23</span>Imperfect Apples, 6 lb bag
+        <span class='item-number'>#23</span>
+        <span class='first-word'>Imperfect</span> <span class='product-name-text'>Apples, 6 lb bag</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -619,7 +641,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#24</span>Honeydew Melon
+        <span class='item-number'>#24</span>
+        <span class='first-word'>Honeydew</span> <span class='product-name-text'>Melon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -636,7 +659,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#25</span>Yellow Onions, 3 lb Bag
+        <span class='item-number'>#25</span>
+        <span class='first-word'>Yellow</span> <span class='product-name-text'>Onions, 3 lb Bag</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -653,7 +677,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#26</span>Dragon Fruit
+        <span class='item-number'>#26</span>
+        <span class='first-word'>Dragon</span> <span class='product-name-text'>Fruit</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -670,7 +695,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#27</span>Broccoli
+        <span class='item-number'>#27</span>
+        <span class='first-word'>Broccoli</span> <span class='product-name-text'></span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -687,7 +713,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#28</span>Jackfruit Slice
+        <span class='item-number'>#28</span>
+        <span class='first-word'>Jackfruit</span> <span class='product-name-text'>Slice</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -704,7 +731,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#29</span>Ataulfo Mango
+        <span class='item-number'>#29</span>
+        <span class='first-word'>Ataulfo</span> <span class='product-name-text'>Mango</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -721,7 +749,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#30</span>Sweet Baby Lettuce
+        <span class='item-number'>#30</span>
+        <span class='first-word'>Sweet</span> <span class='product-name-text'>Baby Lettuce</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -738,7 +767,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#31</span>Spring Mix
+        <span class='item-number'>#31</span>
+        <span class='first-word'>Spring</span> <span class='product-name-text'>Mix</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -755,7 +785,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#32</span>Baby Spinach And Tender Red Lettuce
+        <span class='item-number'>#32</span>
+        <span class='first-word'>Baby</span> <span class='product-name-text'>Spinach And Tender Red Lettuce</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -772,7 +803,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#33</span>Baby Spinach
+        <span class='item-number'>#33</span>
+        <span class='first-word'>Baby</span> <span class='product-name-text'>Spinach</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -789,7 +821,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#34</span>Baby Arugula Spinach Blend
+        <span class='item-number'>#34</span>
+        <span class='first-word'>Baby</span> <span class='product-name-text'>Arugula Spinach Blend</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -806,7 +839,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#35</span>Arugula
+        <span class='item-number'>#35</span>
+        <span class='first-word'>Arugula</span> <span class='product-name-text'></span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -823,7 +857,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#36</span>Manzano Bananas, Bunch
+        <span class='item-number'>#36</span>
+        <span class='first-word'>Manzano</span> <span class='product-name-text'>Bananas, Bunch</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -840,7 +875,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#37</span>Green House Beefsteak Tomatoes 
+        <span class='item-number'>#37</span>
+        <span class='first-word'>Green</span> <span class='product-name-text'>House Beefsteak Tomatoes </span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -857,7 +893,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#38</span>Cantaloupe
+        <span class='item-number'>#38</span>
+        <span class='first-word'>Cantaloupe</span> <span class='product-name-text'></span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -874,7 +911,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#39</span>Baby Spinach
+        <span class='item-number'>#39</span>
+        <span class='first-word'>Baby</span> <span class='product-name-text'>Spinach</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -891,7 +929,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#40</span>Spring Mix
+        <span class='item-number'>#40</span>
+        <span class='first-word'>Spring</span> <span class='product-name-text'>Mix</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
