@@ -185,6 +185,11 @@
       document.getElementById('floatingSearchButton').style.display = 'block';
       clearHighlights();
       document.getElementById('searchInput').value = '';
+      // Restore display of all items
+      var items = document.getElementsByClassName('item-container');
+      for (var i = 0; i < items.length; i++) {
+          items[i].style.display = '';
+      }
     }
 
     function clearHighlights() {
@@ -229,7 +234,7 @@
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
   <div class='page-title'>Veg.&Fruit</div>
-  <div class='creation-time'>Created on: 2025-02-24 22:58:02</div>
+  <div class='creation-time'>Created on: 2025-02-24 23:02:18</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20316397/b3/en/angle/20316397_angle_a06_@2.png' alt='Strawberry Banana' />
@@ -941,6 +946,24 @@
       <div class='item-name'>
         <span class='item-number'>#40</span>
         <span class='first-word'>Spring</span> <span class='product-name-text'>Mix</span>
+      </div>
+      <div>Expire On: 2025-02-26</div>
+      <div>
+        WAS: <span class='was-price'>${was_price:.2f}</span>
+      </div>
+      <div class='now-price'>NOW: $6.50</div>
+      <div class='discount-badge'>7.1% OFF</div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
+  <div class='item-container'>
+    <div class='item-image'>
+      <img src='https://assets.shop.loblaws.ca/products/21204253/b3/en/angle/21204253_angle_a06_@2.png' alt='50-50 Blend - A Blend of Baby Spinach and Field Greens' />
+      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/50-50-blend-a-blend-of-baby-spinach-and-field-gree/p/21204253_EA' target='_top'>SHOP →</a>
+    </div>
+    <div class='item-details'>
+      <div class='item-name'>
+        <span class='item-number'>#41</span>
+        <span class='first-word'>50-50</span> <span class='product-name-text'>Blend - A Blend of Baby Spinach and Field Greens</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
