@@ -29,15 +29,16 @@
       padding: 10px 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       z-index: 1000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
     }
     .header-top {
       display: flex;
       align-items: center;
       gap: 20px;
+    }
+    .header-info {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
     .page-title {
       font-size: 22px;
@@ -107,7 +108,7 @@
       color: #3e7d53;
       margin-left: 10px;
     }
-    .header-spacer { height: 90px; }
+    .header-spacer { height: 50px; }
     .item-container {
       width: 90%;
       max-width: 600px;
@@ -245,9 +246,11 @@
         <span class='search-icon'>🔍</span>
         FIND →
       </button>
-      <div class='page-title'>Seafood</div>
+      <div class='header-info'>
+          <div class='page-title'>Seafood</div>
+          <div class='creation-time-header'>Created on: 2025-02-24 23:57:28</div>
+      </div>
     </div>
-    <div class='creation-time-header'>Created on: 2025-02-24 23:49:34</div>
   </div>
   <hr class='divider'>
   <div class='header-spacer'></div>
