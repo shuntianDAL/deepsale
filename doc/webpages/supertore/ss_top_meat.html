@@ -6,7 +6,7 @@
   <meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate'>
   <meta http-equiv='Pragma' content='no-cache'>
   <meta http-equiv='Expires' content='0'>
-  <title>Top 20 Most Discounted Items - Meat</title>
+  <title>Top Discounted Items - Meat</title>
   <link rel='preconnect' href='https://fonts.googleapis.com'>
   <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
   <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
@@ -164,9 +164,9 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var items = document.getElementsByClassName('item-container');
-      for (var i = 0; i < items.length; i++) {
-        items[i].dataset.original = items[i].innerHTML;
+      var nameElements = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < nameElements.length; i++) {
+        nameElements[i].dataset.original = nameElements[i].innerHTML;
       }
     });
 
@@ -184,10 +184,9 @@
     }
 
     function clearHighlights() {
-      var items = document.getElementsByClassName('item-container');
-      for (var i = 0; i < items.length; i++) {
-        items[i].innerHTML = items[i].dataset.original;
-        items[i].style.display = '';
+      var nameElements = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < nameElements.length; i++) {
+        nameElements[i].innerHTML = nameElements[i].dataset.original;
       }
     }
 
@@ -196,15 +195,15 @@
       var term = input.toLowerCase();
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
-        var original = items[i].dataset.original;
-        var text = original.toLowerCase();
+        var nameElem = items[i].querySelector('.product-name-text');
+        var text = nameElem.textContent.toLowerCase();
         if (term === '' || text.indexOf(term) > -1) {
           items[i].style.display = '';
           if (term !== '') {
-            var highlighted = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-            items[i].innerHTML = highlighted;
+            var original = nameElem.dataset.original;
+            nameElem.innerHTML = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
           } else {
-            items[i].innerHTML = original;
+            nameElem.innerHTML = nameElem.dataset.original;
           }
         } else {
           items[i].style.display = 'none';
@@ -219,8 +218,8 @@
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
-  <div class='page-title'>Top Sales - Meat</div>
-  <div class='creation-time'>Created on: 2025-02-24 22:42:52</div>
+  <div class='page-title'>Meat</div>
+  <div class='creation-time'>Created on: 2025-02-24 22:46:33</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822350/b3/en/front/20822350_front_a06_@2.png' alt='Pork Loin Chop Rib End, Club Pack' />
@@ -228,7 +227,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#1</span>Pork Loin Chop Rib End, Club Pack
+        <span class='item-number'>#1</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chop Rib End, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -245,7 +245,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#2</span>Pork Sirloin Roast
+        <span class='item-number'>#2</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Sirloin Roast</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -262,7 +263,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#3</span>Pork Rib Loin & Sirloin Combination Chop
+        <span class='item-number'>#3</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Rib Loin & Sirloin Combination Chop</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -279,7 +281,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#4</span>Pork Loin Rib End Chop
+        <span class='item-number'>#4</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Rib End Chop</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -296,7 +299,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#5</span>Pork Loin Chop Rib, Fast Fry
+        <span class='item-number'>#5</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chop Rib, Fast Fry</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -313,7 +317,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#6</span>Pork Loin Rib Roast Portion
+        <span class='item-number'>#6</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Rib Roast Portion</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -330,7 +335,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#7</span>Pork Sirloin Chop, End Portion
+        <span class='item-number'>#7</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Sirloin Chop, End Portion</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -347,7 +353,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#8</span>Pork Loin Roast, Center Cut with Bone
+        <span class='item-number'>#8</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Roast, Center Cut with Bone</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -364,7 +371,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#9</span>Pork Loin Chop Center Chop, Club Pack
+        <span class='item-number'>#9</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chop Center Chop, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -381,7 +389,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#10</span>Chicken Thighs, Club Pack
+        <span class='item-number'>#10</span>
+        <span class='first-word'>Chicken</span> <span class='product-name-text'>Thighs, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -398,7 +407,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#11</span>Pork Loin Chopfast Fry  Bone In, Club Pack
+        <span class='item-number'>#11</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chopfast Fry  Bone In, Club Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -415,7 +425,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#12</span>Pork Loin Chop, Bone In Center Cut
+        <span class='item-number'>#12</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chop, Bone In Center Cut</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -432,7 +443,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#13</span>Pork Loin Chop Center Cut Fast Fry
+        <span class='item-number'>#13</span>
+        <span class='first-word'>Pork</span> <span class='product-name-text'>Loin Chop Center Cut Fast Fry</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -449,7 +461,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#14</span>Medium Ground Beef, Big Pack
+        <span class='item-number'>#14</span>
+        <span class='first-word'>Medium</span> <span class='product-name-text'>Ground Beef, Big Pack</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -466,7 +479,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#15</span>Medium Ground Beef
+        <span class='item-number'>#15</span>
+        <span class='first-word'>Medium</span> <span class='product-name-text'>Ground Beef</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -483,7 +497,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#16</span>Free From Australian Lean Ground Lamb
+        <span class='item-number'>#16</span>
+        <span class='first-word'>Free</span> <span class='product-name-text'>From Australian Lean Ground Lamb</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -500,7 +515,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#17</span>Ultimate Dinner Sausage Hot
+        <span class='item-number'>#17</span>
+        <span class='first-word'>Ultimate</span> <span class='product-name-text'>Dinner Sausage Hot</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -517,7 +533,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#18</span>Ultimate Mild Chicken Dinner Sausage
+        <span class='item-number'>#18</span>
+        <span class='first-word'>Ultimate</span> <span class='product-name-text'>Mild Chicken Dinner Sausage</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -534,7 +551,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#19</span>Calabrese Spicy Salami (Thin Sliced)
+        <span class='item-number'>#19</span>
+        <span class='first-word'>Calabrese</span> <span class='product-name-text'>Spicy Salami (Thin Sliced)</span>
       </div>
       <div>Expire On: 2025-03-19</div>
       <div>
@@ -551,7 +569,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#20</span>Soppressata (Thin Sliced)
+        <span class='item-number'>#20</span>
+        <span class='first-word'>Soppressata</span> <span class='product-name-text'>(Thin Sliced)</span>
       </div>
       <div>Expire On: 2025-03-19</div>
       <div>
@@ -568,7 +587,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#21</span>Lazy Maple Natural Bacon
+        <span class='item-number'>#21</span>
+        <span class='first-word'>Lazy</span> <span class='product-name-text'>Maple Natural Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -585,7 +605,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#22</span>Natural Less Salt Bacon
+        <span class='item-number'>#22</span>
+        <span class='first-word'>Natural</span> <span class='product-name-text'>Less Salt Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -602,7 +623,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#23</span>Original Natural Bacon
+        <span class='item-number'>#23</span>
+        <span class='first-word'>Original</span> <span class='product-name-text'>Natural Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -619,7 +641,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#24</span>Ready Crisp Fully Cooked Natural Bacon Slices
+        <span class='item-number'>#24</span>
+        <span class='first-word'>Ready</span> <span class='product-name-text'>Crisp Fully Cooked Natural Bacon Slices</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -636,7 +659,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#25</span>Air Chilled Chicken, Whole
+        <span class='item-number'>#25</span>
+        <span class='first-word'>Air</span> <span class='product-name-text'>Chilled Chicken, Whole</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -653,7 +677,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#26</span>Frozen Twisters Jumbo Sausage
+        <span class='item-number'>#26</span>
+        <span class='first-word'>Frozen</span> <span class='product-name-text'>Twisters Jumbo Sausage</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -670,7 +695,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#27</span>Hot Italian Jumbo Sausage
+        <span class='item-number'>#27</span>
+        <span class='first-word'>Hot</span> <span class='product-name-text'>Italian Jumbo Sausage</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -687,7 +713,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#28</span>Sweet Italian Jumbo Sausage
+        <span class='item-number'>#28</span>
+        <span class='first-word'>Sweet</span> <span class='product-name-text'>Italian Jumbo Sausage</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -704,7 +731,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#29</span>Ultimate Chicken Breakfast Sausages Original
+        <span class='item-number'>#29</span>
+        <span class='first-word'>Ultimate</span> <span class='product-name-text'>Chicken Breakfast Sausages Original</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -721,7 +749,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#30</span>Ultimate Chicken Breakfast Sausages Maple Flavour
+        <span class='item-number'>#30</span>
+        <span class='first-word'>Ultimate</span> <span class='product-name-text'>Chicken Breakfast Sausages Maple Flavour</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -738,7 +767,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#31</span>Pizzeria Style Pepperoni
+        <span class='item-number'>#31</span>
+        <span class='first-word'>Pizzeria</span> <span class='product-name-text'>Style Pepperoni</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -755,7 +785,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#32</span>Fully Cooked Sausage Crumble
+        <span class='item-number'>#32</span>
+        <span class='first-word'>Fully</span> <span class='product-name-text'>Cooked Sausage Crumble</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -772,7 +803,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#33</span>Fully Cooked Diced Smoked Ham 
+        <span class='item-number'>#33</span>
+        <span class='first-word'>Fully</span> <span class='product-name-text'>Cooked Diced Smoked Ham </span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -789,7 +821,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#34</span>Hickory Smoked Classic Cut Bacon
+        <span class='item-number'>#34</span>
+        <span class='first-word'>Hickory</span> <span class='product-name-text'>Smoked Classic Cut Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -806,7 +839,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#35</span>Hickory Smoked 50% Less Salt Bacon
+        <span class='item-number'>#35</span>
+        <span class='first-word'>Hickory</span> <span class='product-name-text'>Smoked 50% Less Salt Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -823,7 +857,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#36</span>Bacon, Mild Sugar Cured with Reduced Salt, Uncooked
+        <span class='item-number'>#36</span>
+        <span class='first-word'>Bacon,</span> <span class='product-name-text'>Mild Sugar Cured with Reduced Salt, Uncooked</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -840,7 +875,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#37</span>Mild Sugar-Cured Bacon
+        <span class='item-number'>#37</span>
+        <span class='first-word'>Mild</span> <span class='product-name-text'>Sugar-Cured Bacon</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -857,7 +893,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#38</span>Marc Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g
+        <span class='item-number'>#38</span>
+        <span class='first-word'>Marc</span> <span class='product-name-text'>Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -874,7 +911,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#39</span>Honey Maple Turkey Breast
+        <span class='item-number'>#39</span>
+        <span class='first-word'>Honey</span> <span class='product-name-text'>Maple Turkey Breast</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -891,7 +929,8 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#40</span>Original Angus Roast Beef Slices
+        <span class='item-number'>#40</span>
+        <span class='first-word'>Original</span> <span class='product-name-text'>Angus Roast Beef Slices</span>
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
