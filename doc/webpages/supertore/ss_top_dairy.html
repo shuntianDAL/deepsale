@@ -164,9 +164,9 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      var nameElements = document.getElementsByClassName('product-name-text');
-      for (var i = 0; i < nameElements.length; i++) {
-        nameElements[i].dataset.original = nameElements[i].innerHTML;
+      var items = document.getElementsByClassName('item-container');
+      for (var i = 0; i < items.length; i++) {
+        items[i].dataset.original = items[i].innerHTML;
       }
     });
 
@@ -184,9 +184,10 @@
     }
 
     function clearHighlights() {
-      var nameElements = document.getElementsByClassName('product-name-text');
-      for (var i = 0; i < nameElements.length; i++) {
-        nameElements[i].innerHTML = nameElements[i].dataset.original;
+      var items = document.getElementsByClassName('item-container');
+      for (var i = 0; i < items.length; i++) {
+        items[i].innerHTML = items[i].dataset.original;
+        items[i].style.display = '';
       }
     }
 
@@ -195,15 +196,15 @@
       var term = input.toLowerCase();
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
-        var nameElem = items[i].querySelector('.product-name-text');
-        var text = nameElem.textContent.toLowerCase();
+        var original = items[i].dataset.original;
+        var text = original.toLowerCase();
         if (term === '' || text.indexOf(term) > -1) {
           items[i].style.display = '';
           if (term !== '') {
-            var original = nameElem.dataset.original;
-            nameElem.innerHTML = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            var highlighted = original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            items[i].innerHTML = highlighted;
           } else {
-            nameElem.innerHTML = nameElem.dataset.original;
+            items[i].innerHTML = original;
           }
         } else {
           items[i].style.display = 'none';
@@ -218,8 +219,8 @@
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
   </div>
-  <div class='page-title'>Dairy</div>
-  <div class='creation-time'>Created on: 2025-02-24 20:36:37</div>
+  <div class='page-title'>Top Sales - Dairy</div>
+  <div class='creation-time'>Created on: 2025-02-24 21:08:14</div>
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21040974/b3/en/front/21040974_front_a06_@2.png' alt='Original Chocolate Milkshake' />
@@ -227,8 +228,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#1</span>
-        <span class='first-word'>Original</span> <span class='product-name-text'>Chocolate Milkshake</span>
+        <span class='item-number'>#1</span>Original Chocolate Milkshake
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -245,8 +245,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#2</span>
-        <span class='first-word'>Chocolate</span> <span class='product-name-text'>Milkshake</span>
+        <span class='item-number'>#2</span>Chocolate Milkshake
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -263,8 +262,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#3</span>
-        <span class='first-word'>Caramel</span> <span class='product-name-text'>Chocolate Milkshake</span>
+        <span class='item-number'>#3</span>Caramel Chocolate Milkshake
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -281,8 +279,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#4</span>
-        <span class='first-word'>French</span> <span class='product-name-text'>Vanilla Milkshake</span>
+        <span class='item-number'>#4</span>French Vanilla Milkshake
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -299,8 +296,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#5</span>
-        <span class='first-word'>Chickpea</span> <span class='product-name-text'>Beverage Vanilla</span>
+        <span class='item-number'>#5</span>Chickpea Beverage Vanilla
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -317,8 +313,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#6</span>
-        <span class='first-word'>Miylk10</span> <span class='product-name-text'>Chickpea & Flaxseed Beverage Unsweetened Original</span>
+        <span class='item-number'>#6</span>Miylk10 Chickpea & Flaxseed Beverage Unsweetened Original
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -335,8 +330,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#7</span>
-        <span class='first-word'>Cheez</span> <span class='product-name-text'>Whiz Cheese Spread</span>
+        <span class='item-number'>#7</span>Cheez Whiz Cheese Spread
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -348,31 +342,12 @@
   </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
-      <img src='https://assets.shop.loblaws.ca/products/21189807/b3/en/angle/21189807_angle_a06_@2.png' alt='Singles Original Thick Slices' />
-      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/singles-original-thick-slices/p/21189807_EA' target='_top'>SHOP →</a>
-    </div>
-    <div class='item-details'>
-      <div class='item-name'>
-        <span class='item-number'>#8</span>
-        <span class='first-word'>Singles</span> <span class='product-name-text'>Original Thick Slices</span>
-      </div>
-      <div>Expire On: 2025-02-26</div>
-      <div>
-        WAS: <span class='was-price'>$5.99</span>
-      </div>
-      <div class='now-price'>NOW: $4.00</div>
-      <div class='discount-badge'>33.2% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
-  <div class='item-container'>
-    <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20279976/b3/en/front/20279976_front_a06_@2.png' alt='Vegetable Oil Margarine' />
       <a class='view-button' href='https://www.atlanticsuperstore.ca/en/vegetable-oil-margarine/p/20279976_EA' target='_top'>SHOP →</a>
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#9</span>
-        <span class='first-word'>Vegetable</span> <span class='product-name-text'>Oil Margarine</span>
+        <span class='item-number'>#8</span>Vegetable Oil Margarine
       </div>
       <div>Expire On: 2025-03-12</div>
       <div>
@@ -389,8 +364,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#10</span>
-        <span class='first-word'>Original</span> <span class='product-name-text'>Margarine Square Spread, 12 units</span>
+        <span class='item-number'>#9</span>Original Margarine Square Spread, 12 units
       </div>
       <div>Expire On: 2025-03-12</div>
       <div>
@@ -407,26 +381,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#11</span>
-        <span class='first-word'>Organic</span> <span class='product-name-text'>Yogurt Mango 3%</span>
-      </div>
-      <div>Expire On: 2025-03-05</div>
-      <div>
-        WAS: <span class='was-price'>$6.49</span>
-      </div>
-      <div class='now-price'>NOW: $4.99</div>
-      <div class='discount-badge'>23.1% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
-  <div class='item-container'>
-    <div class='item-image'>
-      <img src='https://assets.shop.loblaws.ca/products/20316485005/b3/en/angle/20316485005_angle_a06_@2.png' alt='Organic Plain Yogurt 3.5%' />
-      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-plain-yogurt-3-5/p/20316485005_EA' target='_top'>SHOP →</a>
-    </div>
-    <div class='item-details'>
-      <div class='item-name'>
-        <span class='item-number'>#12</span>
-        <span class='first-word'>Organic</span> <span class='product-name-text'>Plain Yogurt 3.5%</span>
+        <span class='item-number'>#10</span>Organic Yogurt Mango 3%
       </div>
       <div>Expire On: 2025-03-05</div>
       <div>
@@ -443,8 +398,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#13</span>
-        <span class='first-word'>Natur-A</span> <span class='product-name-text'>Rice Vanilla</span>
+        <span class='item-number'>#11</span>Natur-A Rice Vanilla
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -461,8 +415,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#14</span>
-        <span class='first-word'>Natur-A</span> <span class='product-name-text'> Rice Original</span>
+        <span class='item-number'>#12</span>Natur-A  Rice Original
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -474,31 +427,12 @@
   </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
-      <img src='https://assets.shop.loblaws.ca/products/21161998/b3/en/angle/21161998_angle_a06_@2.png' alt='Barista Blend' />
-      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/barista-blend/p/21161998_EA' target='_top'>SHOP →</a>
-    </div>
-    <div class='item-details'>
-      <div class='item-name'>
-        <span class='item-number'>#15</span>
-        <span class='first-word'>Barista</span> <span class='product-name-text'>Blend</span>
-      </div>
-      <div>Expire On: 2025-03-12</div>
-      <div>
-        WAS: <span class='was-price'>$7.49</span>
-      </div>
-      <div class='now-price'>NOW: $5.99</div>
-      <div class='discount-badge'>20.0% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
-  <div class='item-container'>
-    <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20043357004/b3/en/angle/20043357004_angle_a06_@2.png' alt='1% Chocolate Milk' />
       <a class='view-button' href='https://www.atlanticsuperstore.ca/en/1-chocolate-milk/p/20043357004_EA' target='_top'>SHOP →</a>
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#16</span>
-        <span class='first-word'>1%</span> <span class='product-name-text'>Chocolate Milk</span>
+        <span class='item-number'>#13</span>1% Chocolate Milk
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -515,8 +449,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#17</span>
-        <span class='first-word'>1%</span> <span class='product-name-text'>Chocolate Milk</span>
+        <span class='item-number'>#14</span>1% Chocolate Milk
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -533,8 +466,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#18</span>
-        <span class='first-word'>Greek</span> <span class='product-name-text'>Yogourt Crunch Café Latte Flavour 2 % M.F.</span>
+        <span class='item-number'>#15</span>Greek Yogourt Crunch Café Latte Flavour 2 % M.F.
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -551,8 +483,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#19</span>
-        <span class='first-word'>Greek</span> <span class='product-name-text'>2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct</span>
+        <span class='item-number'>#16</span>Greek 2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -569,8 +500,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#20</span>
-        <span class='first-word'>Paneer</span> <span class='product-name-text'></span>
+        <span class='item-number'>#17</span>Paneer
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -587,8 +517,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#21</span>
-        <span class='first-word'>Organic</span> <span class='product-name-text'>Yogurt Plain 0%</span>
+        <span class='item-number'>#18</span>Organic Yogurt Plain 0%
       </div>
       <div>Expire On: 2025-03-05</div>
       <div>
@@ -600,31 +529,12 @@
   </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
-      <img src='https://assets.shop.loblaws.ca/products/20866971/b3/en/angle/20866971_angle_a06_@2.png' alt='Mixed Berry Whipped Cream Cheese Product' />
-      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mixed-berry-whipped-cream-cheese-product/p/20866971_EA' target='_top'>SHOP →</a>
-    </div>
-    <div class='item-details'>
-      <div class='item-name'>
-        <span class='item-number'>#22</span>
-        <span class='first-word'>Mixed</span> <span class='product-name-text'>Berry Whipped Cream Cheese Product</span>
-      </div>
-      <div>Expire On: 2025-02-26</div>
-      <div>
-        WAS: <span class='was-price'>$4.75</span>
-      </div>
-      <div class='now-price'>NOW: $4.00</div>
-      <div class='discount-badge'>15.8% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
-  <div class='item-container'>
-    <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20866924005/b3/en/angle/20866924005_angle_a06_@2.png' alt='Light Original Cream Cheese Product' />
       <a class='view-button' href='https://www.atlanticsuperstore.ca/en/light-original-cream-cheese-product/p/20866924005_EA' target='_top'>SHOP →</a>
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#23</span>
-        <span class='first-word'>Light</span> <span class='product-name-text'>Original Cream Cheese Product</span>
+        <span class='item-number'>#19</span>Light Original Cream Cheese Product
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -641,8 +551,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#24</span>
-        <span class='first-word'>Chive</span> <span class='product-name-text'>Whipped Cream Cheese Product</span>
+        <span class='item-number'>#20</span>Chive Whipped Cream Cheese Product
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -659,8 +568,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#25</span>
-        <span class='first-word'>Original</span> <span class='product-name-text'>Brick Cream Cheese</span>
+        <span class='item-number'>#21</span>Original Brick Cream Cheese
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -677,26 +585,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#26</span>
-        <span class='first-word'>Light</span> <span class='product-name-text'>Cream Cheese Spread</span>
-      </div>
-      <div>Expire On: 2025-02-26</div>
-      <div>
-        WAS: <span class='was-price'>$4.75</span>
-      </div>
-      <div class='now-price'>NOW: $4.00</div>
-      <div class='discount-badge'>15.8% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
-  <div class='item-container'>
-    <div class='item-image'>
-      <img src='https://assets.shop.loblaws.ca/products/20299760001/b3/en/angle/20299760001_angle_a06_@2.png' alt='Onion Dip' />
-      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/onion-dip/p/20299760001_EA' target='_top'>SHOP →</a>
-    </div>
-    <div class='item-details'>
-      <div class='item-name'>
-        <span class='item-number'>#27</span>
-        <span class='first-word'>Onion</span> <span class='product-name-text'>Dip</span>
+        <span class='item-number'>#22</span>Light Cream Cheese Spread
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -713,8 +602,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#28</span>
-        <span class='first-word'>Coffee</span> <span class='product-name-text'>Enhancer Maple Brown Sugar Oat Dairy-Free Creamer</span>
+        <span class='item-number'>#23</span>Coffee Enhancer Maple Brown Sugar Oat Dairy-Free Creamer
       </div>
       <div>Expire On: 2025-03-19</div>
       <div>
@@ -731,8 +619,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#29</span>
-        <span class='first-word'>Dairy-free</span> <span class='product-name-text'>Cheese, Crumbled Parmesan Style</span>
+        <span class='item-number'>#24</span>Dairy-free Cheese, Crumbled Parmesan Style
       </div>
       <div>Expire On: 2025-03-19</div>
       <div>
@@ -749,8 +636,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#30</span>
-        <span class='first-word'>Source</span> <span class='product-name-text'>0% Smooth Traditional Yogurt Cups Variety Pack, No Added Sugar - Strawberry, Peach, Raspberry, Fieldberry</span>
+        <span class='item-number'>#25</span>Source 0% Smooth Traditional Yogurt Cups Variety Pack, No Added Sugar - Strawberry, Peach, Raspberry, Fieldberry
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -767,8 +653,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#31</span>
-        <span class='first-word'>Source</span> <span class='product-name-text'>0% Smooth Traditional Yogurt Cups Variety Pack, No Added Sugar</span>
+        <span class='item-number'>#26</span>Source 0% Smooth Traditional Yogurt Cups Variety Pack, No Added Sugar
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -785,8 +670,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#32</span>
-        <span class='first-word'>Creamy</span> <span class='product-name-text'>1% Smooth Traditional Yogurt Cups, Variety Pack with Real Fruit Puree</span>
+        <span class='item-number'>#27</span>Creamy 1% Smooth Traditional Yogurt Cups, Variety Pack with Real Fruit Puree
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -803,8 +687,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#33</span>
-        <span class='first-word'>1%</span> <span class='product-name-text'>Kefir, Plain</span>
+        <span class='item-number'>#28</span>1% Kefir, Plain
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -821,8 +704,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#34</span>
-        <span class='first-word'>1%</span> <span class='product-name-text'>Kefir, Mango</span>
+        <span class='item-number'>#29</span>1% Kefir, Mango
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -839,26 +721,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#35</span>
-        <span class='first-word'>Protein</span> <span class='product-name-text'>Almond & Cashew Milk Alternative, Unsweetened Original</span>
-      </div>
-      <div>Expire On: 2025-02-26</div>
-      <div>
-        WAS: <span class='was-price'>$4.00</span>
-      </div>
-      <div class='now-price'>NOW: $3.49</div>
-      <div class='discount-badge'>12.7% OFF</div>
-    </div> <!-- end item-details -->
-  </div> <!-- end item-container -->
-  <div class='item-container'>
-    <div class='item-image'>
-      <img src='https://assets.shop.loblaws.ca/products/21243598/b3/en/angle/21243598_angle_a06_@2.png' alt='Oat Milk Alternative, Unsweetened, Plant Based, Dairy Free' />
-      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/oat-milk-alternative-unsweetened-plant-based-dairy/p/21243598_EA' target='_top'>SHOP →</a>
-    </div>
-    <div class='item-details'>
-      <div class='item-name'>
-        <span class='item-number'>#36</span>
-        <span class='first-word'>Oat</span> <span class='product-name-text'>Milk Alternative, Unsweetened, Plant Based, Dairy Free</span>
+        <span class='item-number'>#30</span>Protein Almond & Cashew Milk Alternative, Unsweetened Original
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -875,8 +738,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#37</span>
-        <span class='first-word'>Creamy</span> <span class='product-name-text'>Cashew Milk Alternative, Unsweetened, Vanilla Flavour</span>
+        <span class='item-number'>#31</span>Creamy Cashew Milk Alternative, Unsweetened, Vanilla Flavour
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -893,8 +755,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#38</span>
-        <span class='first-word'>Almond</span> <span class='product-name-text'>Milk Alternative, Unsweetened, Vanilla Flavour, Dairy-Free</span>
+        <span class='item-number'>#32</span>Almond Milk Alternative, Unsweetened, Vanilla Flavour, Dairy-Free
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -911,8 +772,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#39</span>
-        <span class='first-word'>Almond</span> <span class='product-name-text'>Milk Alternative, Zero Sugar Original, Dairy-Free</span>
+        <span class='item-number'>#33</span>Almond Milk Alternative, Zero Sugar Original, Dairy-Free
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -929,8 +789,7 @@
     </div>
     <div class='item-details'>
       <div class='item-name'>
-        <span class='item-number'>#40</span>
-        <span class='first-word'>Almond</span> <span class='product-name-text'>Milk Alternative, Original, Plant Based Dairy-Free Milk</span>
+        <span class='item-number'>#34</span>Almond Milk Alternative, Original, Plant Based Dairy-Free Milk
       </div>
       <div>Expire On: 2025-02-26</div>
       <div>
@@ -938,6 +797,108 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>12.7% OFF</div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
+  <div class='item-container'>
+    <div class='item-image'>
+      <img src='https://assets.shop.loblaws.ca/products/20124384001/b3/en/front/20124384001_front_a06_@2.png' alt='Organic Soy Milk Alternative, Original, Dairy-Free' />
+      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-soy-milk-alternative-original-dairy-free/p/20124384001_EA' target='_top'>SHOP →</a>
+    </div>
+    <div class='item-details'>
+      <div class='item-name'>
+        <span class='item-number'>#35</span>Organic Soy Milk Alternative, Original, Dairy-Free
+      </div>
+      <div>Expire On: 2025-02-26</div>
+      <div>
+        WAS: <span class='was-price'>$4.00</span>
+      </div>
+      <div class='now-price'>NOW: $3.49</div>
+      <div class='discount-badge'>12.7% OFF</div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
+  <div class='item-container'>
+    <div class='item-image'>
+      <img src='https://assets.shop.loblaws.ca/products/21279389/b3/en/front/21279389_front_a06_@2.png' alt='Margarine with Olive Oil' />
+      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/margarine-with-olive-oil/p/21279389_EA' target='_top'>SHOP →</a>
+    </div>
+    <div class='item-details'>
+      <div class='item-name'>
+        <span class='item-number'>#36</span>Margarine with Olive Oil
+      </div>
+      <div>Expire On: 2025-02-26</div>
+      <div>
+        WAS: <span class='was-price'>$7.99</span>
+      </div>
+      <div class='now-price'>NOW: $7.00</div>
+      <div class='discount-badge'>12.4% OFF</div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
+  <div class='item-container'>
+    <div class='item-image'>
+      <img src='https://assets.shop.loblaws.ca/products/21279362/b3/en/front/21279362_front_a06_@2.png' alt='Buttery Taste Margarine' />
+      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/buttery-taste-margarine/p/21279362_EA' target='_top'>SHOP →</a>
+    </div>
+    <div class='item-details'>
+      <div class='item-name'>
+        <span class='item-number'>#37</span>Buttery Taste Margarine
+      </div>
+      <div>Expire On: 2025-02-26</div>
+      <div>
+        WAS: <span class='was-price'>$7.99</span>
+      </div>
+      <div class='now-price'>NOW: $7.00</div>
+      <div class='discount-badge'>12.4% OFF</div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
+  <div class='item-container'>
+    <div class='item-image'>
+      <img src='https://assets.shop.loblaws.ca/products/21044725/b3/en/front/21044725_front_a06_@2.png' alt='Margarine with Avocado Oil' />
+      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/margarine-with-avocado-oil/p/21044725_EA' target='_top'>SHOP →</a>
+    </div>
+    <div class='item-details'>
+      <div class='item-name'>
+        <span class='item-number'>#38</span>Margarine with Avocado Oil
+      </div>
+      <div>Expire On: 2025-02-26</div>
+      <div>
+        WAS: <span class='was-price'>$7.99</span>
+      </div>
+      <div class='now-price'>NOW: $7.00</div>
+      <div class='discount-badge'>12.4% OFF</div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
+  <div class='item-container'>
+    <div class='item-image'>
+      <img src='https://assets.shop.loblaws.ca/products/20297818003/b3/en/front/20297818003_front_a06_@2.png' alt='Calorie-Reduced Margarine Light' />
+      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/calorie-reduced-margarine-light/p/20297818003_EA' target='_top'>SHOP →</a>
+    </div>
+    <div class='item-details'>
+      <div class='item-name'>
+        <span class='item-number'>#39</span>Calorie-Reduced Margarine Light
+      </div>
+      <div>Expire On: 2025-02-26</div>
+      <div>
+        WAS: <span class='was-price'>$7.99</span>
+      </div>
+      <div class='now-price'>NOW: $7.00</div>
+      <div class='discount-badge'>12.4% OFF</div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
+  <div class='item-container'>
+    <div class='item-image'>
+      <img src='https://assets.shop.loblaws.ca/products/21619591/b3/en/angle/21619591_angle_a06_@2.png' alt='Méditerranée 9% Yogurt Special Edition' />
+      <a class='view-button' href='https://www.atlanticsuperstore.ca/en/m-diterran-e-9-yogurt-special-edition/p/21619591_EA' target='_top'>SHOP →</a>
+    </div>
+    <div class='item-details'>
+      <div class='item-name'>
+        <span class='item-number'>#40</span>Méditerranée 9% Yogurt Special Edition
+      </div>
+      <div>Expire On: 2025-02-26</div>
+      <div>
+        WAS: <span class='was-price'>$4.49</span>
+      </div>
+      <div class='now-price'>NOW: $4.00</div>
+      <div class='discount-badge'>10.9% OFF</div>
     </div> <!-- end item-details -->
   </div> <!-- end item-container -->
 </body>
