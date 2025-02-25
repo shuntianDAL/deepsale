@@ -28,12 +28,15 @@
       background: #fff;
       padding: 10px 20px;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      gap: 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       z-index: 1000;
-      flex-direction: column;
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
     }
     .page-title {
       font-size: 22px;
@@ -258,14 +261,14 @@
 </head>
 <body>
   <div class='header-container'>
-    <button class='search-button' onclick='showSearchBar()'>
-      <span class='search-icon'>🔍</span>
-      FIND ➜
-    </button>
-    <div>
+    <div class='header-row'>
+      <button class='search-button' onclick='showSearchBar()'>
+        <span class='search-icon'>🔍</span>
+        FIND ➜
+      </button>
       <div class='page-title'>Meat</div>
-      <div class='creation-time'>Created on: 2025-02-25 00:03:49</div>
     </div>
+    <div class='creation-time'>Created on: 2025-02-25 00:07:02</div>
   </div>
   <hr class='divider'>
   <div class='header-spacer'></div>
