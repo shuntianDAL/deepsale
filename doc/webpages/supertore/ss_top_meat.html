@@ -27,22 +27,17 @@
       right: 0;
       background: #fff;
       padding: 10px 20px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      z-index: 1000;
-    }
-    .header-top {
       display: flex;
+      justify-content: center;
       align-items: center;
       gap: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
     }
     .page-title {
       font-size: 22px;
       font-weight: 600;
       font-family: 'Montserrat', Arial, sans-serif;
-    }
-    .creation-time-header {
-      font-size: 12px;
-      color: gray;
     }
     .divider {
       border: 0;
@@ -103,7 +98,33 @@
       color: #3e7d53;
       margin-left: 10px;
     }
-    .header-spacer { height: 50px; }
+    .header-spacer { height: 70px; }
+    body {
+      font-family: 'Montserrat', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+      overflow-x: hidden;
+    }
+    .creation-time {
+      text-align: center;
+      font-size: 12px;
+      color: gray;
+      margin-bottom: 20px;
+    }
+    .item-number {
+      color: red;
+      font-weight: 600;
+      border: 2px solid red;
+      border-radius: 50%;
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 20px;
+      margin-right: 8px;
+      font-size: 12px;
+    }
     .item-container {
       width: 90%;
       max-width: 600px;
@@ -193,6 +214,7 @@
       document.getElementById('searchBarContainer').classList.remove('active');
       clearHighlights();
       document.getElementById('searchInput').value = '';
+      // Restore display of all items.
       var items = document.getElementsByClassName('item-container');
       for (var i = 0; i < items.length; i++) {
           items[i].style.display = '';
@@ -236,19 +258,15 @@
 </head>
 <body>
   <div class='header-container'>
-    <div class='header-top'>
-      <button class='search-button' onclick='showSearchBar()'>
-        <span class='search-icon'>🔍</span>
-        FIND →
-      </button>
-      <div>
-         <div class='page-title'>Meat</div>
-         <div class='creation-time-header'>Created on: 2025-02-25 00:00:26</div>
-      </div>
-    </div>
+    <button class='search-button' onclick='showSearchBar()'>
+      <span class='search-icon'>🔍</span>
+      FIND ➜
+    </button>
+    <div class='page-title'>Meat</div>
   </div>
   <hr class='divider'>
   <div class='header-spacer'></div>
+  <div class='creation-time'>Created on: 2025-02-25 00:02:36</div>
   <div id='searchBarContainer'>
     <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
     <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
@@ -269,8 +287,8 @@
       </div>
       <div class='now-price'>NOW: $5.35</div>
       <div class='discount-badge'>59.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822150/b3/en/angle/20822150_angle_a06_@2.png' alt='Pork Sirloin Roast' />
@@ -287,8 +305,8 @@
       </div>
       <div class='now-price'>NOW: $7.44</div>
       <div class='discount-badge'>59.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21618256/b3/en/front/21618256_front_a06_@2.png' alt='Pork Loin Combination Chops, Sirloin and Rib' />
@@ -305,8 +323,8 @@
       </div>
       <div class='now-price'>NOW: $10.74</div>
       <div class='discount-badge'>56.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822343/b3/en/angle/20822343_angle_a06_@2.png' alt='Pork Rib Loin & Sirloin Combination Chop' />
@@ -323,8 +341,8 @@
       </div>
       <div class='now-price'>NOW: $7.62</div>
       <div class='discount-badge'>56.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822906/b3/en/front/20822906_front_a06_@2.png' alt='Pork Loin Rib End Chop' />
@@ -341,8 +359,8 @@
       </div>
       <div class='now-price'>NOW: $3.24</div>
       <div class='discount-badge'>55.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822347/b3/en/front/20822347_front_a06_@2.png' alt='Pork Loin Chop Rib, Fast Fry' />
@@ -359,8 +377,8 @@
       </div>
       <div class='now-price'>NOW: $5.01</div>
       <div class='discount-badge'>54.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822459/b3/en/front/20822459_front_a06_@2.png' alt='Pork Loin Rib Roast Portion' />
@@ -377,8 +395,8 @@
       </div>
       <div class='now-price'>NOW: $8.35</div>
       <div class='discount-badge'>51.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822322/b3/en/front/20822322_front_a06_@2.png' alt='Pork Sirloin Chop, End Portion' />
@@ -395,8 +413,8 @@
       </div>
       <div class='now-price'>NOW: $4.44</div>
       <div class='discount-badge'>51.6% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822452/b3/en/front/20822452_front_a06_@2.png' alt='Pork Loin Roast, Center Cut with Bone' />
@@ -413,8 +431,8 @@
       </div>
       <div class='now-price'>NOW: $9.36</div>
       <div class='discount-badge'>51.5% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20823075/b3/en/front/20823075_front_a06_@2.png' alt='Pork Loin Chop Center Chop, Club Pack' />
@@ -431,8 +449,8 @@
       </div>
       <div class='now-price'>NOW: $7.60</div>
       <div class='discount-badge'>51.5% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20058163/b3/en/angle/20058163_angle_a06_@2.png' alt='Chicken Thighs, Club Pack' />
@@ -449,8 +467,8 @@
       </div>
       <div class='now-price'>NOW: $8.17</div>
       <div class='discount-badge'>50.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20823076/b3/en/front/20823076_front_a06_@2.png' alt='Pork Loin Chopfast Fry  Bone In, Club Pack' />
@@ -467,8 +485,8 @@
       </div>
       <div class='now-price'>NOW: $6.47</div>
       <div class='discount-badge'>48.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822907/b3/en/angle/20822907_angle_a06_@2.png' alt='Pork Loin Chop, Bone In Center Cut' />
@@ -485,8 +503,8 @@
       </div>
       <div class='now-price'>NOW: $4.40</div>
       <div class='discount-badge'>48.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20823073/b3/en/front/20823073_front_a06_@2.png' alt='Pork Loin Chop Center Cut Fast Fry' />
@@ -503,8 +521,8 @@
       </div>
       <div class='now-price'>NOW: $5.09</div>
       <div class='discount-badge'>45.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20822532/b3/en/front/20822532_front_a06_@2.png' alt='Loin Rib End Country Style Portion' />
@@ -521,8 +539,8 @@
       </div>
       <div class='now-price'>NOW: $7.43</div>
       <div class='discount-badge'>45.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797926/b3/en/angle/20797926_angle_a06_@2.png' alt='Medium Ground Beef, Big Pack' />
@@ -539,8 +557,8 @@
       </div>
       <div class='now-price'>NOW: $9.66</div>
       <div class='discount-badge'>34.6% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20798010/b3/en/angle/20798010_angle_a06_@2.png' alt='Medium Ground Beef' />
@@ -557,8 +575,8 @@
       </div>
       <div class='now-price'>NOW: $5.03</div>
       <div class='discount-badge'>31.5% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21352008/b3/en/angle/21352008_angle_a06_@2.png' alt='Free From Australian Lean Ground Lamb' />
@@ -575,8 +593,8 @@
       </div>
       <div class='now-price'>NOW: $11.00</div>
       <div class='discount-badge'>31.2% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21378346/b3/en/front/21378346_front_a06_@2.png' alt='Ultimate Dinner Sausage Hot' />
@@ -593,8 +611,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>24.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21378310/b3/en/front/21378310_front_a06_@2.png' alt='Ultimate Mild Chicken Dinner Sausage' />
@@ -611,8 +629,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>24.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20321514/b3/en/angle/20321514_angle_a06_@2.png' alt='Calabrese Spicy Salami (Thin Sliced)' />
@@ -629,8 +647,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>24.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20319035/b3/en/angle/20319035_angle_a06_@2.png' alt='Soppressata (Thin Sliced)' />
@@ -647,8 +665,8 @@
       </div>
       <div class='now-price'>NOW: $3.49</div>
       <div class='discount-badge'>24.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20772383/b3/en/angle/20772383_angle_a06_@2.png' alt='Lazy Maple Natural Bacon' />
@@ -665,8 +683,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>22.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20772300/b3/en/angle/20772300_angle_a06_@2.png' alt='Natural Less Salt Bacon' />
@@ -683,8 +701,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>22.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20732366/b3/en/angle/20732366_angle_a06_@2.png' alt='Original Natural Bacon' />
@@ -701,8 +719,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>22.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20164959/b3/en/angle/20164959_angle_a06_@2.png' alt='Ready Crisp Fully Cooked Natural Bacon Slices' />
@@ -719,8 +737,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>22.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20089413/b3/en/angle/20089413_angle_a06_@2.png' alt='Air Chilled Chicken, Whole' />
@@ -737,8 +755,8 @@
       </div>
       <div class='now-price'>NOW: $13.80</div>
       <div class='discount-badge'>20.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21290136/b3/en/front/21290136_front_a06_@2.png' alt='Frozen Twisters Jumbo Sausage' />
@@ -755,8 +773,8 @@
       </div>
       <div class='now-price'>NOW: $8.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21289868/b3/en/front/21289868_front_a06_@2.png' alt='Hot Italian Jumbo Sausage' />
@@ -773,8 +791,8 @@
       </div>
       <div class='now-price'>NOW: $8.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21289731/b3/en/front/21289731_front_a06_@2.png' alt='Sweet Italian Jumbo Sausage' />
@@ -791,8 +809,8 @@
       </div>
       <div class='now-price'>NOW: $8.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21539970/b3/en/front/21539970_front_a06_@2.png' alt='Ultimate Chicken Breakfast Sausages Original' />
@@ -809,8 +827,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21539969/b3/en/front/21539969_front_a06_@2.png' alt='Ultimate Chicken Breakfast Sausages Maple Flavour' />
@@ -827,8 +845,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>19.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21464136/b3/en/angle/21464136_angle_a06_@2.png' alt='Pizzeria Style Pepperoni' />
@@ -845,8 +863,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>19.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21463330/b3/en/angle/21463330_angle_a06_@2.png' alt='Fully Cooked Sausage Crumble' />
@@ -863,8 +881,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>19.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21463309/b3/en/angle/21463309_angle_a06_@2.png' alt='Fully Cooked Diced Smoked Ham ' />
@@ -881,8 +899,8 @@
       </div>
       <div class='now-price'>NOW: $4.00</div>
       <div class='discount-badge'>19.8% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20772671/b3/en/angle/20772671_angle_a06_@2.png' alt='Hickory Smoked Classic Cut Bacon' />
@@ -899,8 +917,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>17.6% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20772637/b3/en/angle/20772637_angle_a06_@2.png' alt='Hickory Smoked 50% Less Salt Bacon' />
@@ -917,8 +935,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>17.6% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20174909/b3/en/front/20174909_front_a06_@2.png' alt='Bacon, Mild Sugar Cured with Reduced Salt, Uncooked' />
@@ -935,8 +953,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>14.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20156771/b3/en/front/20156771_front_a06_@2.png' alt='Mild Sugar-Cured Bacon' />
@@ -953,8 +971,8 @@
       </div>
       <div class='now-price'>NOW: $6.00</div>
       <div class='discount-badge'>14.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21366170/b3/en/front/21366170_front_a06_@2.png' alt='Marc Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g' />
@@ -971,8 +989,8 @@
       </div>
       <div class='now-price'>NOW: $8.00</div>
       <div class='discount-badge'>13.9% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20924959/b3/en/angle/20924959_angle_a06_@2.png' alt='Honey Maple Turkey Breast' />
@@ -989,8 +1007,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20871869/b3/en/angle/20871869_angle_a06_@2.png' alt='Original Angus Roast Beef Slices' />
@@ -1007,8 +1025,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20326202/b3/en/angle/20326202_angle_a06_@2.png' alt='Oven Roasted Turkey Breast' />
@@ -1025,8 +1043,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>12.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20796887/b3/en/front/20796887_front_a06_@2.png' alt='Top Sirloin, Fast Fry' />
@@ -1043,8 +1061,8 @@
       </div>
       <div class='now-price'>NOW: $6.58</div>
       <div class='discount-badge'>9.4% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20416522/b3/en/front/20416522_front_a06_@2.png' alt='Classic Wieners, Family Pack' />
@@ -1061,8 +1079,8 @@
       </div>
       <div class='now-price'>NOW: $10.00</div>
       <div class='discount-badge'>9.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20415978/b3/en/front/20415978_front_a06_@2.png' alt='Barbecue Style Wieners' />
@@ -1079,8 +1097,8 @@
       </div>
       <div class='now-price'>NOW: $10.00</div>
       <div class='discount-badge'>9.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20796098/b3/en/front/20796098_front_a06_@2.png' alt='Top Sirloin, Oven Roast' />
@@ -1097,8 +1115,8 @@
       </div>
       <div class='now-price'>NOW: $25.95</div>
       <div class='discount-badge'>7.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797507/b3/en/beauty/20797507_beauty_a06_@2.png' alt='Top Sirloin Steak, Club Pack' />
@@ -1115,8 +1133,8 @@
       </div>
       <div class='now-price'>NOW: $21.59</div>
       <div class='discount-badge'>7.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20787394/b3/en/angle/20787394_angle_a06_@2.png' alt='Sirloin Beef Strips' />
@@ -1133,8 +1151,8 @@
       </div>
       <div class='now-price'>NOW: $13.00</div>
       <div class='discount-badge'>7.1% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797591/b3/en/angle/20797591_angle_a06_@2.png' alt='Beef Top Sirloin Steak' />
@@ -1151,8 +1169,8 @@
       </div>
       <div class='now-price'>NOW: $9.87</div>
       <div class='discount-badge'>6.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797072/b3/en/angle/20797072_angle_a06_@2.png' alt='Beef Top Sirloin Cap Steak, Boneless' />
@@ -1169,8 +1187,8 @@
       </div>
       <div class='now-price'>NOW: $9.87</div>
       <div class='discount-badge'>6.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20797930/b3/en/angle/20797930_angle_a06_@2.png' alt='Lean Ground Beef' />
@@ -1187,8 +1205,8 @@
       </div>
       <div class='now-price'>NOW: $7.27</div>
       <div class='discount-badge'>6.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20796099/b3/en/front/20796099_front_a06_@2.png' alt='Beef Top Sirloin Beefeater Steak ' />
@@ -1205,8 +1223,8 @@
       </div>
       <div class='now-price'>NOW: $11.35</div>
       <div class='discount-badge'>6.7% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20311865/b3/en/angle/20311865_angle_a06_@2.png' alt='Mediterranean Chicken Breast Slices' />
@@ -1223,8 +1241,8 @@
       </div>
       <div class='now-price'>NOW: $7.00</div>
       <div class='discount-badge'>6.5% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/21076606/b3/en/front/21076606_front_a06_@2.png' alt='Free From Oven-Roasted Chicken Breast' />
@@ -1241,8 +1259,8 @@
       </div>
       <div class='now-price'>NOW: $14.99</div>
       <div class='discount-badge'>6.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20923814/b3/en/front/20923814_front_a06_@2.png' alt='Free From Oven Roasted Turkey, Club Pack' />
@@ -1259,8 +1277,8 @@
       </div>
       <div class='now-price'>NOW: $14.99</div>
       <div class='discount-badge'>6.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20903492/b3/en/front/20903492_front_a06_@2.png' alt='Free From Black Forrest Ham, Club Pack' />
@@ -1277,8 +1295,8 @@
       </div>
       <div class='now-price'>NOW: $14.99</div>
       <div class='discount-badge'>6.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20903241/b3/en/front/20903241_front_a06_@2.png' alt='Free From Honey Ham, Club Pack' />
@@ -1295,8 +1313,8 @@
       </div>
       <div class='now-price'>NOW: $14.99</div>
       <div class='discount-badge'>6.3% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
   <div class='item-container'>
     <div class='item-image'>
       <img src='https://assets.shop.loblaws.ca/products/20798252/b3/en/angle/20798252_angle_a06_@2.png' alt='Extra Lean Ground Beef, Club Pack' />
@@ -1313,7 +1331,7 @@
       </div>
       <div class='now-price'>NOW: $13.52</div>
       <div class='discount-badge'>6.0% OFF</div>
-    </div>
-  </div>
+    </div> <!-- end item-details -->
+  </div> <!-- end item-container -->
 </body>
 </html>
