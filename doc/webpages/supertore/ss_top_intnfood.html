@@ -7,7 +7,251 @@
 <meta http-equiv='Pragma' content='no-cache'>
 <meta http-equiv='Expires' content='0'>
 <title>Top 20 Most Discounted Items - International</title>
-<!-- Include your styles and scripts here -->
+<!-- Import Montserrat from Google Fonts -->
+<link rel='preconnect' href='https://fonts.googleapis.com'>
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+<link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
+<!-- Force reload when page is loaded from cache -->
+<script>
+window.addEventListener('pageshow', function(event) {
+if (event.persisted) { window.location.reload(); }
+});
+</script>
+<style>
+@keyframes fadeIn {
+0% { opacity: 0; transform: translateY(10px); }
+100% { opacity: 1; transform: translateY(0); }
+}
+.header-container {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+background: #fff;
+padding: 10px 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+z-index: 1000;
+}
+.header-row {
+display: flex;
+align-items: center;
+gap: 20px;
+}
+.page-title {
+font-size: 22px;
+font-weight: 600;
+font-family: 'Montserrat', Arial, sans-serif;
+}
+.divider {
+border: 0;
+height: 1px;
+background: #ccc;
+margin: 0 20px 20px;
+}
+.search-button {
+background-color: #3e7d53;
+border: none;
+color: #fff;
+padding: 6px 12px;
+border-radius: 9999px;
+cursor: pointer;
+font-size: 12px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+display: inline-flex;
+align-items: center;
+gap: 5px;
+box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+animation: fadeIn 0.8s forwards ease-in;
+}
+.search-button:hover {
+background-color: #2c5f3d;
+}
+position: fixed;
+top: -60px;
+left: 0;
+width: 100%;
+background-color: #fff;
+border-bottom: 1px solid #ccc;
+padding: 10px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+text-align: center;
+transition: top 0.5s ease, opacity 0.5s ease;
+opacity: 0;
+z-index: 1000;
+}
+top: 0;
+opacity: 1;
+}
+padding: 8px;
+width: 80%;
+border: 1px solid #ccc;
+border-radius: 4px;
+font-size: 16px;
+}
+background: none;
+border: none;
+font-size: 24px;
+cursor: pointer;
+color: #3e7d53;
+margin-left: 10px;
+}
+.header-spacer { height: 70px; }
+body {
+font-family: 'Montserrat', Arial, sans-serif;
+margin: 0;
+padding: 0;
+background-color: #fff;
+overflow-x: hidden;
+}
+.creation-time {
+text-align: center;
+font-size: 12px;
+color: gray;
+margin-top: 10px;
+}
+.item-number {
+color: red;
+font-weight: 600;
+border: 2px solid red;
+border-radius: 50%;
+display: inline-block;
+width: 22px;
+height: 22px;
+text-align: center;
+line-height: 20px;
+margin-right: 8px;
+font-size: 12px;
+}
+.item-container {
+width: 90%;
+max-width: 600px;
+margin: 20px auto;
+border-bottom: 1px solid #ccc;
+padding-bottom: 15px;
+display: flex;
+align-items: flex-start;
+gap: 15px;
+}
+.item-image {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.item-image img {
+width: 60px;
+height: auto;
+}
+.view-button {
+margin-top: 6px;
+padding: 8px 16px;
+background-color: #3e7d53;
+color: #fff;
+text-decoration: none;
+border-radius: 9999px;
+font-size: 12px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+display: inline-block;
+border: none;
+cursor: pointer;
+outline: none;
+animation: fadeIn 0.8s forwards ease-in;
+}
+.view-button:hover {
+background-color: #2c5f3d;
+}
+.item-details {
+flex: 1;
+text-align: left;
+font-size: 13px;
+}
+.item-name {
+font-size: 14px;
+margin-bottom: 6px;
+font-weight: 600;
+color: black;
+}
+.now-price {
+color: red;
+font-weight: 600;
+font-size: 12px;
+margin: 6px 0;
+}
+.discount-badge {
+background-color: yellow;
+display: inline-block;
+font-weight: 600;
+padding: 2px 5px;
+margin: 6px 0;
+font-size: 16px;
+}
+.was-price {
+text-decoration: line-through;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+var firstElems = document.getElementsByClassName('first-word');
+for (var i = 0; i < firstElems.length; i++) {
+firstElems[i].dataset.original = firstElems[i].innerHTML;
+}
+var secondElems = document.getElementsByClassName('product-name-text');
+for (var i = 0; i < secondElems.length; i++) {
+secondElems[i].dataset.original = secondElems[i].innerHTML;
+}
+});
+function showSearchBar() {
+document.getElementById('searchBarContainer').classList.add('active');
+document.getElementById('searchInput').focus();
+}
+function hideSearchBar() {
+document.getElementById('searchBarContainer').classList.remove('active');
+clearHighlights();
+document.getElementById('searchInput').value = '';
+var items = document.getElementsByClassName('item-container');
+for (var i = 0; i < items.length; i++) {
+items[i].style.display = '';
+}
+}
+function clearHighlights() {
+var firstElems = document.getElementsByClassName('first-word');
+for (var i = 0; i < firstElems.length; i++) {
+firstElems[i].innerHTML = firstElems[i].dataset.original;
+}
+var secondElems = document.getElementsByClassName('product-name-text');
+for (var i = 0; i < secondElems.length; i++) {
+secondElems[i].innerHTML = secondElems[i].dataset.original;
+}
+}
+function inPageSearch() {
+var input = document.getElementById('searchInput').value.trim();
+var term = input.toLowerCase();
+var items = document.getElementsByClassName('item-container');
+for (var i = 0; i < items.length; i++) {
+var firstElem = items[i].querySelector('.first-word');
+var secondElem = items[i].querySelector('.product-name-text');
+var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+if (term === '' || fullName.indexOf(term) > -1) {
+items[i].style.display = '';
+if (term !== '') {
+firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+} else {
+firstElem.innerHTML = firstElem.dataset.original;
+secondElem.innerHTML = secondElem.dataset.original;
+}
+} else {
+items[i].style.display = 'none';
+}
+}
+}
+</script>
 </head>
 <body>
 <div class='header-container'>
@@ -17,7 +261,7 @@
 </button>
 <div class='page-title'>International</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 14:29:05</div>
+<div class='creation-time'>Created on: 2025-02-26 15:09:38</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
@@ -1216,12 +1460,30 @@
         
         <div class='item-container'>
           <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20710715/b3/en/front/20710715_front_a06_@2.png' alt='Punjabi Samosa' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/punjabi-samosa/p/20710715_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#67</span>
+              <span class='first-word'>Punjabi</span>
+              <span class='product-name-text'>Samosa</span>
+            </div>
+            <div>Expire On: 2025-02-26</div>
+            <div>WAS: <span class='was-price'>$6.99</span></div>
+            <div class='now-price'>NOW: $6.29</div>
+            <div class='discount-badge'>10.0% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20707769/b3/en/front/20707769_front_a06_@2.png' alt='Paneer Paratha' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/paneer-paratha/p/20707769_EA' target='_top'>SHOP →</a>
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#67</span>
+              <span class='item-number'>#68</span>
               <span class='first-word'>Paneer</span>
               <span class='product-name-text'>Paratha</span>
             </div>
@@ -1239,7 +1501,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#68</span>
+              <span class='item-number'>#69</span>
               <span class='first-word'>Manzano</span>
               <span class='product-name-text'>Bananas, Bunch</span>
             </div>
@@ -1257,7 +1519,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#69</span>
+              <span class='item-number'>#70</span>
               <span class='first-word'>Liquid</span>
               <span class='product-name-text'>Honey     </span>
             </div>
@@ -1275,7 +1537,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#70</span>
+              <span class='item-number'>#71</span>
               <span class='first-word'>Couscous</span>
               <span class='product-name-text'>     </span>
             </div>
@@ -1293,7 +1555,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#71</span>
+              <span class='item-number'>#72</span>
               <span class='first-word'>Pure</span>
               <span class='product-name-text'>Natural White Honey</span>
             </div>
@@ -1311,7 +1573,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#72</span>
+              <span class='item-number'>#73</span>
               <span class='first-word'>Noodles,</span>
               <span class='product-name-text'>Masala</span>
             </div>
@@ -1329,7 +1591,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#73</span>
+              <span class='item-number'>#74</span>
               <span class='first-word'>Young</span>
               <span class='product-name-text'>Green Jackfruit In Brine</span>
             </div>
@@ -1347,7 +1609,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#74</span>
+              <span class='item-number'>#75</span>
               <span class='first-word'>Coconut</span>
               <span class='product-name-text'>Milk Organic</span>
             </div>
@@ -1365,7 +1627,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#75</span>
+              <span class='item-number'>#76</span>
               <span class='first-word'>Parathas</span>
               <span class='product-name-text'>Whole Wheat Lacha</span>
             </div>
@@ -1383,7 +1645,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#76</span>
+              <span class='item-number'>#77</span>
               <span class='first-word'>Parathas</span>
               <span class='product-name-text'>Plain Lacha</span>
             </div>
@@ -1401,7 +1663,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#77</span>
+              <span class='item-number'>#78</span>
               <span class='first-word'>Wholemeal</span>
               <span class='product-name-text'>Chapatti 10 Wholewheat Chapatti  </span>
             </div>
@@ -1419,7 +1681,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#78</span>
+              <span class='item-number'>#79</span>
               <span class='first-word'>Bouillon</span>
               <span class='product-name-text'>Cubes, Pork</span>
             </div>
@@ -1437,7 +1699,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#79</span>
+              <span class='item-number'>#80</span>
               <span class='first-word'>Bouillon</span>
               <span class='product-name-text'>Cubes, Beef</span>
             </div>
@@ -1455,7 +1717,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#80</span>
+              <span class='item-number'>#81</span>
               <span class='first-word'>Bouillon</span>
               <span class='product-name-text'>Cubes, Chicken</span>
             </div>
@@ -1473,7 +1735,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#81</span>
+              <span class='item-number'>#82</span>
               <span class='first-word'>Rice</span>
               <span class='product-name-text'>Vermicelli Noodles</span>
             </div>
@@ -1491,7 +1753,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#82</span>
+              <span class='item-number'>#83</span>
               <span class='first-word'>Medium</span>
               <span class='product-name-text'>Grain Sushi Rice </span>
             </div>
@@ -1509,7 +1771,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#83</span>
+              <span class='item-number'>#84</span>
               <span class='first-word'>Thai</span>
               <span class='product-name-text'>Hom Mali Brown Jasmine Rice</span>
             </div>
@@ -1527,7 +1789,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#84</span>
+              <span class='item-number'>#85</span>
               <span class='first-word'>Chili</span>
               <span class='product-name-text'>Paste</span>
             </div>
@@ -1545,7 +1807,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#85</span>
+              <span class='item-number'>#86</span>
               <span class='first-word'>Chow</span>
               <span class='product-name-text'>Style Chili</span>
             </div>
@@ -1563,7 +1825,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#86</span>
+              <span class='item-number'>#87</span>
               <span class='first-word'>Dressing</span>
               <span class='product-name-text'>& Marinade Roasted Garlic Onion</span>
             </div>
@@ -1581,7 +1843,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#87</span>
+              <span class='item-number'>#88</span>
               <span class='first-word'>Crispy</span>
               <span class='product-name-text'>Shrimp Cheeks Snacks Original</span>
             </div>
@@ -1599,7 +1861,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#88</span>
+              <span class='item-number'>#89</span>
               <span class='first-word'>Samosa</span>
               <span class='product-name-text'>Spinach Paneer</span>
             </div>
@@ -1617,7 +1879,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#89</span>
+              <span class='item-number'>#90</span>
               <span class='first-word'>Samosa</span>
               <span class='product-name-text'>Jalapeño & Cheese</span>
             </div>
@@ -1635,7 +1897,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#90</span>
+              <span class='item-number'>#91</span>
               <span class='first-word'>Authentic</span>
               <span class='product-name-text'>Mini Samosas</span>
             </div>
@@ -1653,7 +1915,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#91</span>
+              <span class='item-number'>#92</span>
               <span class='first-word'>Instant</span>
               <span class='product-name-text'>Coffee & Roasted Chicory</span>
             </div>
@@ -1671,7 +1933,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#92</span>
+              <span class='item-number'>#93</span>
               <span class='first-word'>Halal</span>
               <span class='product-name-text'>Yogurt 2% Plain</span>
             </div>
@@ -1689,7 +1951,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#93</span>
+              <span class='item-number'>#94</span>
               <span class='first-word'>Halal</span>
               <span class='product-name-text'>Yogurt 3% Plain</span>
             </div>
@@ -1707,7 +1969,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#94</span>
+              <span class='item-number'>#95</span>
               <span class='first-word'>Organic</span>
               <span class='product-name-text'>Virgin Coconut Oil</span>
             </div>
@@ -1725,7 +1987,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#95</span>
+              <span class='item-number'>#96</span>
               <span class='first-word'>Jack</span>
               <span class='product-name-text'>Mackerel In Brine</span>
             </div>
@@ -1743,7 +2005,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#96</span>
+              <span class='item-number'>#97</span>
               <span class='first-word'>Chee</span>
               <span class='product-name-text'>Zees Crunchy Cheese Flavoured Snack Original</span>
             </div>
@@ -1761,7 +2023,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#97</span>
+              <span class='item-number'>#98</span>
               <span class='first-word'>Panda</span>
               <span class='product-name-text'>Brand Oyster Sauce</span>
             </div>
@@ -1779,7 +2041,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#98</span>
+              <span class='item-number'>#99</span>
               <span class='first-word'>M.Y</span>
               <span class='product-name-text'>Sans Crackers</span>
             </div>
@@ -1797,7 +2059,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#99</span>
+              <span class='item-number'>#100</span>
               <span class='first-word'>Zoomers</span>
               <span class='product-name-text'>Crunchy Cheese Flavoured Wheels Snack</span>
             </div>
@@ -1815,7 +2077,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#100</span>
+              <span class='item-number'>#101</span>
               <span class='first-word'>Diced</span>
               <span class='product-name-text'>Chipotle Peppers</span>
             </div>
@@ -1833,7 +2095,7 @@
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#101</span>
+              <span class='item-number'>#102</span>
               <span class='first-word'>Green</span>
               <span class='product-name-text'>Mexican Sauce</span>
             </div>
