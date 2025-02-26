@@ -28,7 +28,7 @@ top: 0;
 left: 0;
 right: 0;
 background: #fff;
-padding: 1px 20px;
+padding: 15px 20px;
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -72,7 +72,7 @@ animation: fadeIn 0.8s forwards ease-in;
 background-color: #2c5f3d;
 }
 position: fixed;
-top: -60px;
+top: -70px;
 left: 0;
 width: 100%;
 background-color: #fff;
@@ -80,9 +80,9 @@ border-bottom: 1px solid #ccc;
 padding: 10px;
 box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 text-align: center;
-transition: top 0.5s ease, opacity 0.5s ease;
+transition: top 0.4s ease, opacity 0.4s ease;
 opacity: 0;
-z-index: 1000;
+z-index: 1500;
 }
 top: 0;
 opacity: 1;
@@ -100,11 +100,10 @@ cursor: pointer;
 color: #3e7d53;
 margin-left: 10px;
 }
-.header-spacer { height: 120px; }
 body {
 font-family: 'Montserrat', Arial, sans-serif;
 margin: 0;
-padding: 0;
+padding: 100px 0 0;  /* Push content below header */
 background-color: #fff;
 overflow-x: hidden;
 }
@@ -136,10 +135,6 @@ padding-bottom: 15px;
 display: flex;
 align-items: flex-start;
 gap: 15px;
-}
-/* Push the first product further down so it doesn't overlap the fixed header */
-.item-container:first-of-type {
-margin-top: 120px;
 }
 .item-image {
 display: flex;
@@ -200,60 +195,13 @@ text-decoration: line-through;
 }
 </style>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-var firstElems = document.getElementsByClassName('first-word');
-for (var i = 0; i < firstElems.length; i++) {
-firstElems[i].dataset.original = firstElems[i].innerHTML;
-}
-var secondElems = document.getElementsByClassName('product-name-text');
-for (var i = 0; i < secondElems.length; i++) {
-secondElems[i].dataset.original = secondElems[i].innerHTML;
-}
-});
 function showSearchBar() {
 document.getElementById('searchBarContainer').classList.add('active');
 document.getElementById('searchInput').focus();
 }
 function hideSearchBar() {
 document.getElementById('searchBarContainer').classList.remove('active');
-clearHighlights();
 document.getElementById('searchInput').value = '';
-var items = document.getElementsByClassName('item-container');
-for (var i = 0; i < items.length; i++) {
-items[i].style.display = '';
-}
-}
-function clearHighlights() {
-var firstElems = document.getElementsByClassName('first-word');
-for (var i = 0; i < firstElems.length; i++) {
-firstElems[i].innerHTML = firstElems[i].dataset.original;
-}
-var secondElems = document.getElementsByClassName('product-name-text');
-for (var i = 0; i < secondElems.length; i++) {
-secondElems[i].innerHTML = secondElems[i].dataset.original;
-}
-}
-function inPageSearch() {
-var input = document.getElementById('searchInput').value.trim();
-var term = input.toLowerCase();
-var items = document.getElementsByClassName('item-container');
-for (var i = 0; i < items.length; i++) {
-var firstElem = items[i].querySelector('.first-word');
-var secondElem = items[i].querySelector('.product-name-text');
-var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-if (term === '' || fullName.indexOf(term) > -1) {
-items[i].style.display = '';
-if (term !== '') {
-firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-} else {
-firstElem.innerHTML = firstElem.dataset.original;
-secondElem.innerHTML = secondElem.dataset.original;
-}
-} else {
-items[i].style.display = 'none';
-}
-}
 }
 </script>
 </head>
@@ -265,12 +213,11 @@ items[i].style.display = 'none';
 </button>
 <div class='page-title'>Dairy</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 15:38:37</div>
+<div class='creation-time'>Created on: 2025-02-26 15:40:24</div>
 </div>
 <hr class='divider'>
-<div class='header-spacer'></div>
 <div id='searchBarContainer'>
-<input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
+<input type='text' id='searchInput' placeholder='Search in page...'>
 <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
 </div>
 
