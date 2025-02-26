@@ -71,10 +71,12 @@ animation: fadeIn 0.8s forwards ease-in;
 .search-button:hover {
 background-color: #2c5f3d;
 }
+/* Center the search bar container */
 position: fixed;
 top: -60px;
-left: 0;
-width: 100%;
+left: 50%;
+transform: translateX(-50%);
+width: 80%;
 background-color: #fff;
 border-bottom: 1px solid #ccc;
 padding: 10px;
@@ -207,22 +209,14 @@ secondElems[i].dataset.original = secondElems[i].innerHTML;
 }
 });
 function showSearchBar() {
-// Hide the header section and show the search bar.
+// Hide the header and show the search bar centered.
 document.querySelector('.header-container').style.display = 'none';
 document.getElementById('searchBarContainer').classList.add('active');
 document.getElementById('searchInput').focus();
 }
 function hideSearchBar() {
-// Hide the search bar and show the header section.
-document.getElementById('searchBarContainer').classList.remove('active');
-document.getElementById('searchInput').value = '';
-clearHighlights();
-document.querySelector('.header-container').style.display = 'flex';
-// Also reset item display if needed.
-var items = document.getElementsByClassName('item-container');
-for (var i = 0; i < items.length; i++) {
-items[i].style.display = '';
-}
+// When closing, refresh the page to show all original results.
+window.location.reload();
 }
 function clearHighlights() {
 var firstElems = document.getElementsByClassName('first-word');
@@ -267,7 +261,7 @@ FIND ➜
 </button>
 <div class='page-title'>Dairy</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 15:53:00</div>
+<div class='creation-time'>Created on: 2025-02-26 15:56:14</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
