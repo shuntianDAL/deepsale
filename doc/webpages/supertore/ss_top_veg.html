@@ -71,18 +71,17 @@ animation: fadeIn 0.8s forwards ease-in;
 .search-button:hover {
 background-color: #2c5f3d;
 }
-/* Fixed, smaller, centered search bar container */
+/* Smaller, centered search bar container */
 position: fixed;
 top: -60px;
 left: 50%;
 transform: translateX(-50%);
-width: 300px;
-max-width: 90%;
+width: 80%;
+max-width: 300px;
 background-color: #fff;
-border-bottom: 1px solid #ccc;
-padding: 10px;
+border: 1px solid #ccc;
+padding: 8px;
 box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-text-align: center;
 transition: top 0.5s ease, opacity 0.5s ease;
 opacity: 0;
 z-index: 1500;
@@ -90,8 +89,14 @@ z-index: 1500;
 top: 0;
 opacity: 1;
 }
+/* Flex container for input and close button */
+.search-bar-wrapper {
+display: flex;
+align-items: center;
+justify-content: center;
+}
 padding: 8px;
-width: 80%;
+width: 70%;
 border: 1px solid #ccc;
 border-radius: 4px;
 font-size: 16px;
@@ -101,7 +106,7 @@ border: none;
 font-size: 24px;
 cursor: pointer;
 color: #3e7d53;
-margin-left: 10px;
+margin-left: 8px;
 }
 .header-spacer { height: 120px; }
 body {
@@ -210,13 +215,13 @@ secondElems[i].dataset.original = secondElems[i].innerHTML;
 }
 });
 function showSearchBar() {
-// Hide the header and show the search bar.
+// Hide the header and show the search bar container.
 document.querySelector('.header-container').style.display = 'none';
 document.getElementById('searchBarContainer').classList.add('active');
 document.getElementById('searchInput').focus();
 }
 function hideSearchBar() {
-// Refresh the page to restore original results.
+// Refresh the page to restore the header and original results.
 window.location.reload();
 }
 function clearHighlights() {
@@ -262,13 +267,15 @@ FIND ➜
 </button>
 <div class='page-title'>Veg.&Fruit</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 16:01:06</div>
+<div class='creation-time'>Created on: 2025-02-26 16:04:12</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
 <div id='searchBarContainer'>
+<div class='search-bar-wrapper'>
 <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
 <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
+</div>
 </div>
 
         <div class='item-container'>
