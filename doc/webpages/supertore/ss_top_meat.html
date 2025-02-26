@@ -82,7 +82,7 @@ box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 text-align: center;
 transition: top 0.5s ease, opacity 0.5s ease;
 opacity: 0;
-z-index: 1000;
+z-index: 1500;
 }
 top: 0;
 opacity: 1;
@@ -100,7 +100,7 @@ cursor: pointer;
 color: #3e7d53;
 margin-left: 10px;
 }
-.header-spacer { height: 70px; }
+.header-spacer { height: 120px; }
 body {
 font-family: 'Montserrat', Arial, sans-serif;
 margin: 0;
@@ -207,13 +207,18 @@ secondElems[i].dataset.original = secondElems[i].innerHTML;
 }
 });
 function showSearchBar() {
+// Hide the header section and show the search bar.
+document.querySelector('.header-container').style.display = 'none';
 document.getElementById('searchBarContainer').classList.add('active');
 document.getElementById('searchInput').focus();
 }
 function hideSearchBar() {
+// Hide the search bar and show the header section.
 document.getElementById('searchBarContainer').classList.remove('active');
-clearHighlights();
 document.getElementById('searchInput').value = '';
+clearHighlights();
+document.querySelector('.header-container').style.display = 'flex';
+// Also reset item display if needed.
 var items = document.getElementsByClassName('item-container');
 for (var i = 0; i < items.length; i++) {
 items[i].style.display = '';
@@ -262,7 +267,7 @@ FIND ➜
 </button>
 <div class='page-title'>Meat</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 15:45:36</div>
+<div class='creation-time'>Created on: 2025-02-26 15:52:56</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
