@@ -82,7 +82,7 @@ box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 text-align: center;
 transition: top 0.5s ease, opacity 0.5s ease;
 opacity: 0;
-z-index: 1500;
+z-index: 1000;
 }
 top: 0;
 opacity: 1;
@@ -100,10 +100,11 @@ cursor: pointer;
 color: #3e7d53;
 margin-left: 10px;
 }
+.header-spacer { height: 120px; }
 body {
 font-family: 'Montserrat', Arial, sans-serif;
 margin: 0;
-padding-top: 120px;  /* Adjust this value to push content below the fixed header */
+padding: 0;
 background-color: #fff;
 overflow-x: hidden;
 }
@@ -135,6 +136,10 @@ padding-bottom: 15px;
 display: flex;
 align-items: flex-start;
 gap: 15px;
+}
+/* Push the first product further down so it doesn't overlap the fixed header */
+.item-container:first-of-type {
+margin-top: 120px;
 }
 .item-image {
 display: flex;
@@ -260,9 +265,10 @@ items[i].style.display = 'none';
 </button>
 <div class='page-title'>Veg.&Fruit</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 15:35:15</div>
+<div class='creation-time'>Created on: 2025-02-26 15:38:34</div>
 </div>
 <hr class='divider'>
+<div class='header-spacer'></div>
 <div id='searchBarContainer'>
 <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
 <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
