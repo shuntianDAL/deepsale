@@ -70,33 +70,36 @@ animation: fadeIn 0.8s forwards ease-in;
 background-color: #2c5f3d;
 }
 position: fixed;
-top: -60px;
-left: 0;
-width: 100%;
+top: 20px;
+left: 50%;
+transform: translateX(-50%);
+width: 300px;
 background-color: #fff;
-border-bottom: 1px solid #ccc;
+border: 1px solid #ccc;
+border-radius: 20px;
 padding: 10px;
 box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 text-align: center;
-transition: top 0.5s ease, opacity 0.5s ease;
+transition: opacity 0.5s ease;
 opacity: 0;
-z-index: 1000;
+display: none;
+z-index: 1001;
 }
-top: 0;
+display: block;
 opacity: 1;
 }
-padding: 8px;
-width: 80%;
-border: 1px solid #ccc;
-border-radius: 4px;
-font-size: 16px;
+padding: 6px;
+width: calc(100% - 40px);
+border: none;
+outline: none;
+font-size: 14px;
 }
 background: none;
 border: none;
-font-size: 24px;
+font-size: 18px;
 cursor: pointer;
 color: #3e7d53;
-margin-left: 10px;
+margin-left: 5px;
 }
 .header-spacer { height: 70px; }
 body {
@@ -206,29 +209,14 @@ secondElems[i].dataset.original = secondElems[i].innerHTML;
 });
 
 function showSearchBar() {
-document.getElementById('searchBarContainer').classList.add('active');
+document.querySelector('.header-container').style.display = 'none';
+var searchBar = document.getElementById('searchBarContainer');
+searchBar.classList.add('active');
 document.getElementById('searchInput').focus();
 }
 
 function hideSearchBar() {
-document.getElementById('searchBarContainer').classList.remove('active');
-clearHighlights();
-document.getElementById('searchInput').value = '';
-var items = document.getElementsByClassName('item-container');
-for (var i = 0; i < items.length; i++) {
-items[i].style.display = '';
-}
-}
-
-function clearHighlights() {
-var firstElems = document.getElementsByClassName('first-word');
-for (var i = 0; i < firstElems.length; i++) {
-firstElems[i].innerHTML = firstElems[i].dataset.original;
-}
-var secondElems = document.getElementsByClassName('product-name-text');
-for (var i = 0; i < secondElems.length; i++) {
-secondElems[i].innerHTML = secondElems[i].dataset.original;
-}
+window.location.reload();
 }
 
 function inPageSearch() {
@@ -264,7 +252,7 @@ FIND ➜
 </button>
 <div class='page-title'>Veg.&Fruit</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 19:52:55</div>
+<div class='creation-time'>Created on: 2025-02-26 20:07:17</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
@@ -275,18 +263,468 @@ FIND ➜
 
         <div class='item-container'>
           <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20143381001/b3/en/front/20143381001_front_a06_@2.png' alt='Roma Tomatoes' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/roma-tomatoes/p/20143381001_KG' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#1</span>
+              <span class='first-word'>Roma</span>
+              <span class='product-name-text'>Tomatoes</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$0.79</span></div>
+            <div class='now-price'>NOW: $0.47</div>
+            <div class='discount-badge'>40.5% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20811994001/b3/en/front/20811994001_front_a06_@2.png' alt='Yellow Onions, 3 lb Bag' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/yellow-onions-3-lb-bag/p/20811994001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#2</span>
+              <span class='first-word'>Yellow</span>
+              <span class='product-name-text'>Onions, 3 lb Bag</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.99</span></div>
+            <div class='now-price'>NOW: $2.50</div>
+            <div class='discount-badge'>37.3% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21626132/b3/en/front/21626132_front_a06_@2.png' alt='Brusselslaw' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/brusselslaw/p/21626132_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#3</span>
+              <span class='first-word'>Brusselslaw</span>
+              <span class='product-name-text'></span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$6.00</span></div>
+            <div class='now-price'>NOW: $3.99</div>
+            <div class='discount-badge'>33.5% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21022511001/b3/en/front/21022511001_front_a06_@2.png' alt='Canary Melon' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/canary-melon/p/21022511001_KG' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#4</span>
+              <span class='first-word'>Canary</span>
+              <span class='product-name-text'>Melon</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$5.87</span></div>
+            <div class='now-price'>NOW: $4.10</div>
+            <div class='discount-badge'>30.2% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21023094001/b3/en/front/21023094001_front_a06_@2.png' alt='Santa Claus Melons' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/santa-claus-melons/p/21023094001_KG' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#5</span>
+              <span class='first-word'>Santa</span>
+              <span class='product-name-text'>Claus Melons</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$10.44</span></div>
+            <div class='now-price'>NOW: $7.34</div>
+            <div class='discount-badge'>29.7% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20020863001/b3/en/front/20020863001_front_a06_@2.png' alt='Taiwanese Flat Cabbage' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/taiwanese-flat-cabbage/p/20020863001_KG' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#6</span>
+              <span class='first-word'>Taiwanese</span>
+              <span class='product-name-text'>Flat Cabbage</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$4.96</span></div>
+            <div class='now-price'>NOW: $3.68</div>
+            <div class='discount-badge'>25.8% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20162500001/b3/en/front/20162500001_front_a06_@2.png' alt='Guava' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/guava/p/20162500001_KG' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#7</span>
+              <span class='first-word'>Guava</span>
+              <span class='product-name-text'></span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$8.81</span></div>
+            <div class='now-price'>NOW: $6.62</div>
+            <div class='discount-badge'>24.9% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20119813001/b3/en/angle/20119813001_angle_a06_@2.png' alt='Pineapple' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pineapple/p/20119813001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#8</span>
+              <span class='first-word'>Pineapple</span>
+              <span class='product-name-text'></span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$6.49</span></div>
+            <div class='now-price'>NOW: $5.00</div>
+            <div class='discount-badge'>23.0% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20005774001/b3/en/front/20005774001_front_a06_@2.png' alt='Coconuts' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/coconuts/p/20005774001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#9</span>
+              <span class='first-word'>Coconuts</span>
+              <span class='product-name-text'></span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$2.50</span></div>
+            <div class='now-price'>NOW: $1.99</div>
+            <div class='discount-badge'>20.4% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20119760001/b3/en/front/20119760001_front_a06_@2.png' alt='Caribbean Avocado' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/caribbean-avocado/p/20119760001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#10</span>
+              <span class='first-word'>Caribbean</span>
+              <span class='product-name-text'>Avocado</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$4.99</span></div>
+            <div class='now-price'>NOW: $3.99</div>
+            <div class='discount-badge'>20.0% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20167017001/b3/en/front/20167017001_front_a06_@2.png' alt='Cantaloupe' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/cantaloupe/p/20167017001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#11</span>
+              <span class='first-word'>Cantaloupe</span>
+              <span class='product-name-text'></span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$4.99</span></div>
+            <div class='now-price'>NOW: $4.00</div>
+            <div class='discount-badge'>19.8% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20159689001/b3/en/front/20159689001_front_a06_@2.png' alt='Fenugreek Bunch' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fenugreek-bunch/p/20159689001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#12</span>
+              <span class='first-word'>Fenugreek</span>
+              <span class='product-name-text'>Bunch</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.00</span></div>
+            <div class='now-price'>NOW: $2.49</div>
+            <div class='discount-badge'>17.0% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20811362001/b3/en/front/20811362001_front_a06_@2.png' alt='Red Onions, 3 lb Bag' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/red-onions-3-lb-bag/p/20811362001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#13</span>
+              <span class='first-word'>Red</span>
+              <span class='product-name-text'>Onions, 3 lb Bag</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$6.00</span></div>
+            <div class='now-price'>NOW: $5.00</div>
+            <div class='discount-badge'>16.7% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20696626001/b3/en/front/20696626001_front_a06_@2.png' alt='Granadilla' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/granadilla/p/20696626001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#14</span>
+              <span class='first-word'>Granadilla</span>
+              <span class='product-name-text'></span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.00</span></div>
+            <div class='now-price'>NOW: $2.50</div>
+            <div class='discount-badge'>16.7% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20130242001/b3/en/front/20130242001_front_a06_@2.png' alt='Kiwis' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/kiwis/p/20130242001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#15</span>
+              <span class='first-word'>Kiwis</span>
+              <span class='product-name-text'></span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$1.19</span></div>
+            <div class='now-price'>NOW: $1.00</div>
+            <div class='discount-badge'>16.0% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20047112001/b3/en/beauty/20047112001_beauty_a06_@2.png' alt='Quince' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/quince/p/20047112001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#16</span>
+              <span class='first-word'>Quince</span>
+              <span class='product-name-text'></span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.49</span></div>
+            <div class='now-price'>NOW: $2.99</div>
+            <div class='discount-badge'>14.3% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20920821001/b3/en/front/20920821001_front_a06_@2.png' alt='Mini Sweet Peppers' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mini-sweet-peppers/p/20920821001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#17</span>
+              <span class='first-word'>Mini</span>
+              <span class='product-name-text'>Sweet Peppers</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$6.99</span></div>
+            <div class='now-price'>NOW: $6.00</div>
+            <div class='discount-badge'>14.2% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20033488001/b3/en/front/20033488001_front_a06_@2.png' alt='Mini Bananas, Bunch' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mini-bananas-bunch/p/20033488001_KG' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#18</span>
+              <span class='first-word'>Mini</span>
+              <span class='product-name-text'>Bananas, Bunch</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$2.17</span></div>
+            <div class='now-price'>NOW: $1.89</div>
+            <div class='discount-badge'>12.9% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20868985001/b3/en/front/20868985001_front_a06_@2.png' alt='Imperfect Apples, 6 lb bag' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/imperfect-apples-6-lb-bag/p/20868985001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#19</span>
+              <span class='first-word'>Imperfect</span>
+              <span class='product-name-text'>Apples, 6 lb bag</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$8.00</span></div>
+            <div class='now-price'>NOW: $7.00</div>
+            <div class='discount-badge'>12.5% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20045276001/b3/en/front/20045276001_front_a06_@2.png' alt='Honeydew Melon' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/honeydew-melon/p/20045276001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#20</span>
+              <span class='first-word'>Honeydew</span>
+              <span class='product-name-text'>Melon</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$7.99</span></div>
+            <div class='now-price'>NOW: $7.00</div>
+            <div class='discount-badge'>12.4% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20168395001/b3/en/angle/20168395001_angle_a06_@2.png' alt='Dragon Fruit' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/dragon-fruit/p/20168395001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#21</span>
+              <span class='first-word'>Dragon</span>
+              <span class='product-name-text'>Fruit</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.99</span></div>
+            <div class='now-price'>NOW: $3.50</div>
+            <div class='discount-badge'>12.3% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21549854001/b3/en/front/21549854001_front_a06_@2.png' alt='Jackfruit Slice' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/jackfruit-slice/p/21549854001_KG' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#22</span>
+              <span class='first-word'>Jackfruit</span>
+              <span class='product-name-text'>Slice</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$1.98</span></div>
+            <div class='now-price'>NOW: $1.74</div>
+            <div class='discount-badge'>12.1% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20121509001/b3/en/front/20121509001_front_a06_@2.png' alt='Ataulfo Mango' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/ataulfo-mango/p/20121509001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#23</span>
+              <span class='first-word'>Ataulfo</span>
+              <span class='product-name-text'>Mango</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$1.99</span></div>
+            <div class='now-price'>NOW: $1.75</div>
+            <div class='discount-badge'>12.1% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20157487001/b3/en/front/20157487001_front_a06_@2.png' alt='Fresh Coconut Young' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fresh-coconut-young/p/20157487001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#24</span>
+              <span class='first-word'>Fresh</span>
+              <span class='product-name-text'>Coconut Young</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$4.99</span></div>
+            <div class='now-price'>NOW: $4.49</div>
+            <div class='discount-badge'>10.0% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20067389001/b3/en/front/20067389001_front_a06_@2.png' alt='Romaine Heart, 3 Pack' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/romaine-heart-3-pack/p/20067389001_EA' target='_top'>SHOP →</a>
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#1</span>
+              <span class='item-number'>#25</span>
               <span class='first-word'>Romaine</span>
               <span class='product-name-text'>Heart, 3 Pack</span>
             </div>
             <div>Expire On: 2025-02-28</div>
             <div>WAS: <span class='was-price'>$5.00</span></div>
             <div class='now-price'>NOW: $4.50</div>
+            <div class='discount-badge'>10.0% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20649591001/b3/en/front/20649591001_front_a06_@2.png' alt='Manzano Bananas, Bunch' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/manzano-bananas-bunch/p/20649591001_KG' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#26</span>
+              <span class='first-word'>Manzano</span>
+              <span class='product-name-text'>Bananas, Bunch</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$4.21</span></div>
+            <div class='now-price'>NOW: $3.79</div>
             <div class='discount-badge'>10.0% OFF</div>
           </div>
         </div>
