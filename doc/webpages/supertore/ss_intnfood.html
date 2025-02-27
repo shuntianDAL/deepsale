@@ -14,6 +14,54 @@
 window.addEventListener('pageshow', function(event) {
     if (event.persisted) { window.location.reload(); }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    var findButton = document.querySelector('.search-button');
+    findButton.addEventListener('click', showSearchBar);
+
+    var firstElems = document.getElementsByClassName('first-word');
+    for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].dataset.original = firstElems[i].innerHTML;
+    }
+    var secondElems = document.getElementsByClassName('product-name-text');
+    for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].dataset.original = secondElems[i].innerHTML;
+    }
+});
+
+function showSearchBar() {
+    document.querySelector('.header-container').style.display = 'none';
+    var searchBar = document.getElementById('searchBarContainer');
+    searchBar.classList.add('active');
+    document.getElementById('searchInput').focus();
+}
+
+function hideSearchBar() {
+    window.location.reload();
+}
+
+function inPageSearch() {
+    var input = document.getElementById('searchInput').value.trim();
+    var term = input.toLowerCase();
+    var items = document.getElementsByClassName('item-container');
+    for (var i = 0; i < items.length; i++) {
+        var firstElem = items[i].querySelector('.first-word');
+        var secondElem = items[i].querySelector('.product-name-text');
+        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+        if (term === '' || fullName.indexOf(term) > -1) {
+            items[i].style.display = '';
+            if (term !== '') {
+                firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            } else {
+                firstElem.innerHTML = firstElem.dataset.original;
+                secondElem.innerHTML = secondElem.dataset.original;
+            }
+        } else {
+            items[i].style.display = 'none';
+        }
+    }
+}
 </script>
 <style>
 @keyframes fadeIn {
@@ -74,40 +122,40 @@ window.addEventListener('pageshow', function(event) {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 200px; /* Reduced from 300px to make it smaller */
+    width: 200px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 20px;
-    padding: 8px; /* Slightly reduced padding */
+    padding: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     text-align: center;
     transition: opacity 0.5s ease;
     opacity: 0;
-    display: flex; /* Changed to flex to align input and button horizontally */
+    display: flex;
     align-items: center;
     z-index: 1001;
 }
 #searchBarContainer.active {
-    display: flex; /* Ensure it remains flex when active */
+    display: flex;
     opacity: 1;
 }
 #searchInput {
-    padding: 4px; /* Reduced padding for a smaller look */
-    width: calc(100% - 30px); /* Adjusted width to fit alongside button */
+    padding: 4px;
+    width: calc(100% - 30px);
     border: none;
     outline: none;
-    font-size: 12px; /* Slightly smaller font */
-    flex-grow: 1; /* Allows input to take available space */
+    font-size: 12px;
+    flex-grow: 1;
 }
 #closeSearchButton {
     background: none;
     border: none;
-    font-size: 16px; /* Slightly smaller than before */
+    font-size: 16px;
     cursor: pointer;
     color: #3e7d53;
-    margin-left: 8px; /* Added space between input and button */
-    line-height: 1; /* Ensures vertical alignment */
-    padding: 0; /* Remove padding to keep it compact */
+    margin-left: 8px;
+    line-height: 1;
+    padding: 0;
 }
 .header-spacer { height: 70px; }
 body {
@@ -204,63 +252,17 @@ body {
     text-decoration: line-through;
 }
 </style>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var firstElems = document.getElementsByClassName('first-word');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].dataset.original = firstElems[i].innerHTML;
-    }
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].dataset.original = secondElems[i].innerHTML;
-    }
-});
-
-function showSearchBar() {
-    document.querySelector('.header-container').style.display = 'none';
-    var searchBar = document.getElementById('searchBarContainer');
-    searchBar.classList.add('active');
-    document.getElementById('searchInput').focus();
-}
-
-function hideSearchBar() {
-    window.location.reload();
-}
-
-function inPageSearch() {
-    var input = document.getElementById('searchInput').value.trim();
-    var term = input.toLowerCase();
-    var items = document.getElementsByClassName('item-container');
-    for (var i = 0; i < items.length; i++) {
-        var firstElem = items[i].querySelector('.first-word');
-        var secondElem = items[i].querySelector('.product-name-text');
-        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-        if (term === '' || fullName.indexOf(term) > -1) {
-            items[i].style.display = '';
-            if (term !== '') {
-                firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-                secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-            } else {
-                firstElem.innerHTML = firstElem.dataset.original;
-                secondElem.innerHTML = secondElem.dataset.original;
-            }
-        } else {
-            items[i].style.display = 'none';
-        }
-    }
-}
-</script>
 </head>
 <body>
 <div class='header-container'>
 <div class='header-row'>
-<button class='search-button' onclick='showSearchBar()'>
+<button class='search-button'>
 <span class='search-icon'>🔍</span>
 FIND ➜
 </button>
 <div class='page-title'>International</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-27 00:07:40</div>
+<div class='creation-time'>Created on: 2025-02-27 00:10:04</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
