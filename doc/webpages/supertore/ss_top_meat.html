@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function showSearchBar() {
+    // Hide header and show search bar
     document.querySelector('.header-container').style.display = 'none';
     var searchBar = document.getElementById('searchBarContainer');
     searchBar.classList.add('active');
@@ -34,7 +35,9 @@ function showSearchBar() {
 }
 
 function hideSearchBar() {
-    window.location.reload();
+    // Show header and hide search bar without reloading
+    document.querySelector('.header-container').style.display = 'flex';
+    document.getElementById('searchBarContainer').classList.remove('active');
 }
 
 function inPageSearch() {
@@ -252,20 +255,20 @@ body {
 </head>
 <body>
 <div class='header-container'>
-<div class='header-row'>
-<button class='search-button' onclick='showSearchBar()'>
-<span class='search-icon'>🔍</span>
-FIND ➜
-</button>
-<div class='page-title'>Meat</div>
-</div>
-<div class='creation-time'>Created on: 2025-02-27 00:20:53</div>
+  <div class='header-row'>
+    <button class='search-button' onclick='showSearchBar()'>
+      <span class='search-icon'>🔍</span>
+      FIND ➜
+    </button>
+    <div class='page-title'>Meat</div>
+  </div>
+  <div class='creation-time'>Created on: 2025-02-27 00:27:56</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
 <div id='searchBarContainer'>
-<input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
-<button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
+  <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
+  <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
 </div>
 
         <div class='item-container'>
