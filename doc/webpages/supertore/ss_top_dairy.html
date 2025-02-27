@@ -61,6 +61,9 @@ function hideSearchBar() {
         items[i].style.display = "";
     }
 
+    // Clear the search count text
+    document.getElementById('searchCount').innerText = "";
+
     // Fade out the search bar and restore the header
     var searchBar = document.getElementById('searchBarContainer');
     var header = document.querySelector('.header-container');
@@ -75,12 +78,14 @@ function inPageSearch() {
     var input = document.getElementById('searchInput').value.trim();
     var term = input.toLowerCase();
     var items = document.getElementsByClassName('item-container');
+    var visibleCount = 0;
     for (var i = 0; i < items.length; i++) {
         var firstElem = items[i].querySelector('.first-word');
         var secondElem = items[i].querySelector('.product-name-text');
         var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
         if (term === '' || fullName.indexOf(term) > -1) {
             items[i].style.display = '';
+            visibleCount++;
             if (term !== '') {
                 firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
                 secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
@@ -92,6 +97,8 @@ function inPageSearch() {
             items[i].style.display = 'none';
         }
     }
+    // Update the counter text next to the search input
+    document.getElementById('searchCount').innerText = visibleCount + " found";
 }
 </script>
 <style>
@@ -153,7 +160,7 @@ function inPageSearch() {
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;
+    width: 240px;
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 20px;
@@ -168,11 +175,17 @@ function inPageSearch() {
 }
 #searchInput {
     padding: 4px;
-    width: calc(100% - 30px);
+    width: calc(100% - 60px);
     border: none;
     outline: none;
     font-size: 12px;
     flex-grow: 1;
+}
+#searchCount {
+    font-size: 12px;
+    color: #3e7d53;
+    margin-left: 8px;
+    white-space: nowrap;
 }
 #closeSearchButton {
     background: none;
@@ -289,12 +302,13 @@ body {
     </button>
     <div class='page-title'>Dairy</div>
   </div>
-  <div class='creation-time'>Created on: 2025-02-27 00:38:18</div>
+  <div class='creation-time'>Created on: 2025-02-27 00:44:56</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
 <div id='searchBarContainer'>
   <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
+  <span id='searchCount'></span>
   <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
 </div>
 
