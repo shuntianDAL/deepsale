@@ -16,9 +16,6 @@ window.addEventListener('pageshow', function(event) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-    var findButton = document.querySelector('.search-button');
-    findButton.addEventListener('click', showSearchBar);
-
     var firstElems = document.getElementsByClassName('first-word');
     for (var i = 0; i < firstElems.length; i++) {
         firstElems[i].dataset.original = firstElems[i].innerHTML;
@@ -256,13 +253,13 @@ body {
 <body>
 <div class='header-container'>
 <div class='header-row'>
-<button class='search-button'>
+<button class='search-button' onclick='showSearchBar()'>
 <span class='search-icon'>🔍</span>
 FIND ➜
 </button>
 <div class='page-title'>International</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-27 00:10:04</div>
+<div class='creation-time'>Created on: 2025-02-27 00:12:47</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
