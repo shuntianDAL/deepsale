@@ -70,33 +70,36 @@ animation: fadeIn 0.8s forwards ease-in;
 background-color: #2c5f3d;
 }
 position: fixed;
-top: -60px;
-left: 0;
-width: 100%;
+top: 20px;
+left: 50%;
+transform: translateX(-50%);
+width: 300px;
 background-color: #fff;
-border-bottom: 1px solid #ccc;
+border: 1px solid #ccc;
+border-radius: 20px;
 padding: 10px;
 box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 text-align: center;
-transition: top 0.5s ease, opacity 0.5s ease;
+transition: opacity 0.5s ease;
 opacity: 0;
-z-index: 1000;
+display: none;
+z-index: 1001;
 }
-top: 0;
+display: block;
 opacity: 1;
 }
-padding: 8px;
-width: 80%;
-border: 1px solid #ccc;
-border-radius: 4px;
-font-size: 16px;
+padding: 6px;
+width: calc(100% - 40px);
+border: none;
+outline: none;
+font-size: 14px;
 }
 background: none;
 border: none;
-font-size: 24px;
+font-size: 18px;
 cursor: pointer;
 color: #3e7d53;
-margin-left: 10px;
+margin-left: 5px;
 }
 .header-spacer { height: 70px; }
 body {
@@ -206,29 +209,14 @@ secondElems[i].dataset.original = secondElems[i].innerHTML;
 });
 
 function showSearchBar() {
-document.getElementById('searchBarContainer').classList.add('active');
+document.querySelector('.header-container').style.display = 'none';
+var searchBar = document.getElementById('searchBarContainer');
+searchBar.classList.add('active');
 document.getElementById('searchInput').focus();
 }
 
 function hideSearchBar() {
-document.getElementById('searchBarContainer').classList.remove('active');
-clearHighlights();
-document.getElementById('searchInput').value = '';
-var items = document.getElementsByClassName('item-container');
-for (var i = 0; i < items.length; i++) {
-items[i].style.display = '';
-}
-}
-
-function clearHighlights() {
-var firstElems = document.getElementsByClassName('first-word');
-for (var i = 0; i < firstElems.length; i++) {
-firstElems[i].innerHTML = firstElems[i].dataset.original;
-}
-var secondElems = document.getElementsByClassName('product-name-text');
-for (var i = 0; i < secondElems.length; i++) {
-secondElems[i].innerHTML = secondElems[i].dataset.original;
-}
+window.location.reload();
 }
 
 function inPageSearch() {
@@ -264,7 +252,7 @@ FIND ➜
 </button>
 <div class='page-title'>Dairy</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 19:52:57</div>
+<div class='creation-time'>Created on: 2025-02-26 20:07:20</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
@@ -275,12 +263,102 @@ FIND ➜
 
         <div class='item-container'>
           <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21040974/b3/en/beauty/21040974_beauty_a06_@2.png' alt='Original Chocolate Milkshake' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/original-chocolate-milkshake/p/21040974_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#1</span>
+              <span class='first-word'>Original</span>
+              <span class='product-name-text'>Chocolate Milkshake</span>
+            </div>
+            <div>Expire On: 2025-03-12</div>
+            <div>WAS: <span class='was-price'>$2.49</span></div>
+            <div class='now-price'>NOW: $1.00</div>
+            <div class='discount-badge'>59.8% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21040956/b3/en/beauty/21040956_beauty_a06_@2.png' alt='Chocolate Milkshake' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chocolate-milkshake/p/21040956_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#2</span>
+              <span class='first-word'>Chocolate</span>
+              <span class='product-name-text'>Milkshake</span>
+            </div>
+            <div>Expire On: 2025-03-12</div>
+            <div>WAS: <span class='was-price'>$2.49</span></div>
+            <div class='now-price'>NOW: $1.00</div>
+            <div class='discount-badge'>59.8% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21040932/b3/en/beauty/21040932_beauty_a06_@2.png' alt='French Vanilla Milkshake' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/french-vanilla-milkshake/p/21040932_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#3</span>
+              <span class='first-word'>French</span>
+              <span class='product-name-text'>Vanilla Milkshake</span>
+            </div>
+            <div>Expire On: 2025-03-12</div>
+            <div>WAS: <span class='was-price'>$2.49</span></div>
+            <div class='now-price'>NOW: $1.00</div>
+            <div class='discount-badge'>59.8% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21547597/b3/en/angle/21547597_angle_a06_@2.png' alt='Tubes Yogurt Raspberry Flavour 1% M.F.' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/tubes-yogurt-raspberry-flavour-1-m-f/p/21547597_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#4</span>
+              <span class='first-word'>Tubes</span>
+              <span class='product-name-text'>Yogurt Raspberry Flavour 1% M.F.</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.99</span></div>
+            <div class='now-price'>NOW: $2.50</div>
+            <div class='discount-badge'>37.3% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21547587/b3/en/angle/21547587_angle_a06_@2.png' alt='Tubes Yogurt Mixed Berry Flavour 1% M.F.' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/tubes-yogurt-mixed-berry-flavour-1-m-f/p/21547587_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#5</span>
+              <span class='first-word'>Tubes</span>
+              <span class='product-name-text'>Yogurt Mixed Berry Flavour 1% M.F.</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.99</span></div>
+            <div class='now-price'>NOW: $2.50</div>
+            <div class='discount-badge'>37.3% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20279976/b3/en/front/20279976_front_a06_@2.png' alt='Vegetable Oil Margarine' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/vegetable-oil-margarine/p/20279976_EA' target='_top'>SHOP →</a>
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#1</span>
+              <span class='item-number'>#6</span>
               <span class='first-word'>Vegetable</span>
               <span class='product-name-text'>Oil Margarine</span>
             </div>
@@ -298,7 +376,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#2</span>
+              <span class='item-number'>#7</span>
               <span class='first-word'>Original</span>
               <span class='product-name-text'>Margarine Square Spread, 12 units</span>
             </div>
@@ -316,7 +394,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#3</span>
+              <span class='item-number'>#8</span>
               <span class='first-word'>Organic</span>
               <span class='product-name-text'>Yogurt Mango 3%</span>
             </div>
@@ -334,7 +412,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#4</span>
+              <span class='item-number'>#9</span>
               <span class='first-word'>Organic</span>
               <span class='product-name-text'>Plain Yogurt 3.5%</span>
             </div>
@@ -352,7 +430,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#5</span>
+              <span class='item-number'>#10</span>
               <span class='first-word'>Barista</span>
               <span class='product-name-text'>Blend</span>
             </div>
@@ -365,12 +443,48 @@ FIND ➜
         
         <div class='item-container'>
           <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21588326/b3/en/angle/21588326_angle_a06_@2.png' alt='Greek Yogourt Crunch Café Latte Flavour 2 % M.F.' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/greek-yogourt-crunch-caf-latte-flavour-2-m-f/p/21588326_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#11</span>
+              <span class='first-word'>Greek</span>
+              <span class='product-name-text'>Yogourt Crunch Café Latte Flavour 2 % M.F.</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$5.49</span></div>
+            <div class='now-price'>NOW: $4.49</div>
+            <div class='discount-badge'>18.2% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21041543002/b3/en/angle/21041543002_angle_a06_@2.png' alt='Greek 2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/greek-2-vanilla-bean-yogurt-crunch-cups-with-dark/p/21041543002_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#12</span>
+              <span class='first-word'>Greek</span>
+              <span class='product-name-text'>2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$5.49</span></div>
+            <div class='now-price'>NOW: $4.49</div>
+            <div class='discount-badge'>18.2% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20316485002/b3/en/angle/20316485002_angle_a06_@2.png' alt='Organic Yogurt Plain 0%' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-yogurt-plain-0/p/20316485002_EA' target='_top'>SHOP →</a>
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#6</span>
+              <span class='item-number'>#13</span>
               <span class='first-word'>Organic</span>
               <span class='product-name-text'>Yogurt Plain 0%</span>
             </div>
@@ -388,7 +502,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#7</span>
+              <span class='item-number'>#14</span>
               <span class='first-word'>Coffee</span>
               <span class='product-name-text'>Enhancer Maple Brown Sugar Oat Dairy-Free Creamer</span>
             </div>
@@ -406,7 +520,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#8</span>
+              <span class='item-number'>#15</span>
               <span class='first-word'>Dairy-free</span>
               <span class='product-name-text'>Cheese, Crumbled Parmesan Style</span>
             </div>
@@ -419,12 +533,66 @@ FIND ➜
         
         <div class='item-container'>
           <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21619591/b3/en/angle/21619591_angle_a06_@2.png' alt='Méditerranée 9% Yogurt Special Edition' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/m-diterran-e-9-yogurt-special-edition/p/21619591_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#16</span>
+              <span class='first-word'>Méditerranée</span>
+              <span class='product-name-text'>9% Yogurt Special Edition</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$4.49</span></div>
+            <div class='now-price'>NOW: $4.00</div>
+            <div class='discount-badge'>10.9% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21547567/b3/en/angle/21547567_angle_a06_@2.png' alt='Méditerranée Yogourt Mango 9 % M.F.' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/m-diterran-e-yogourt-mango-9-m-f/p/21547567_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#17</span>
+              <span class='first-word'>Méditerranée</span>
+              <span class='product-name-text'>Yogourt Mango 9 % M.F.</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$4.49</span></div>
+            <div class='now-price'>NOW: $4.00</div>
+            <div class='discount-badge'>10.9% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21547564/b3/en/angle/21547564_angle_a06_@2.png' alt='Méditerranée Yogourt Key Lime Pie 9 % M.F.' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/m-diterran-e-yogourt-key-lime-pie-9-m-f/p/21547564_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#18</span>
+              <span class='first-word'>Méditerranée</span>
+              <span class='product-name-text'>Yogourt Key Lime Pie 9 % M.F.</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$4.49</span></div>
+            <div class='now-price'>NOW: $4.00</div>
+            <div class='discount-badge'>10.9% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21593578/b3/en/angle/21593578_angle_a06_@2.png' alt='Plant Based Oils Spread Salted' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/plant-based-oils-spread-salted/p/21593578_EA' target='_top'>SHOP →</a>
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#9</span>
+              <span class='item-number'>#19</span>
               <span class='first-word'>Plant</span>
               <span class='product-name-text'>Based Oils Spread Salted</span>
             </div>
@@ -437,12 +605,66 @@ FIND ➜
         
         <div class='item-container'>
           <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21391318006/b3/en/angle/21391318006_angle_a06_@2.png' alt='Source 0% Smooth Traditional Yogurt, Strawberry, No Added Sugar' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/source-0-smooth-traditional-yogurt-strawberry-no-a/p/21391318006_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#20</span>
+              <span class='first-word'>Source</span>
+              <span class='product-name-text'>0% Smooth Traditional Yogurt, Strawberry, No Added Sugar</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.99</span></div>
+            <div class='now-price'>NOW: $3.69</div>
+            <div class='discount-badge'>7.5% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21391318005/b3/en/angle/21391318005_angle_a06_@2.png' alt='Source 0% Smooth Traditional Yogurt, Raspberry, No Added Sugar' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/source-0-smooth-traditional-yogurt-raspberry-no-ad/p/21391318005_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#21</span>
+              <span class='first-word'>Source</span>
+              <span class='product-name-text'>0% Smooth Traditional Yogurt, Raspberry, No Added Sugar</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.99</span></div>
+            <div class='now-price'>NOW: $3.69</div>
+            <div class='discount-badge'>7.5% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21391318001/b3/en/angle/21391318001_angle_a06_@2.png' alt='Source 0% Smooth Traditional Yogurt, Vanilla, No Added Sugar' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/source-0-smooth-traditional-yogurt-vanilla-no-adde/p/21391318001_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#22</span>
+              <span class='first-word'>Source</span>
+              <span class='product-name-text'>0% Smooth Traditional Yogurt, Vanilla, No Added Sugar</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$3.99</span></div>
+            <div class='now-price'>NOW: $3.69</div>
+            <div class='discount-badge'>7.5% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21553708/b3/en/front/21553708_front_a06_@2.png' alt='Dairy-Free Shredded Cheese, Cheddar Style' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/dairy-free-shredded-cheese-cheddar-style/p/21553708_EA' target='_top'>SHOP →</a>
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#10</span>
+              <span class='item-number'>#23</span>
               <span class='first-word'>Dairy-Free</span>
               <span class='product-name-text'>Shredded Cheese, Cheddar Style</span>
             </div>
@@ -460,7 +682,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#11</span>
+              <span class='item-number'>#24</span>
               <span class='first-word'>Dairy-free</span>
               <span class='product-name-text'>Cheese Grated Mozzarella Style</span>
             </div>
@@ -478,7 +700,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#12</span>
+              <span class='item-number'>#25</span>
               <span class='first-word'>Almond</span>
               <span class='product-name-text'>For Coffee, Vanilla, Plant Based, Dairy Free Coffee Creamer</span>
             </div>
@@ -491,12 +713,30 @@ FIND ➜
         
         <div class='item-container'>
           <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20343515/b3/en/angle/20343515_angle_a06_@2.png' alt='Halal Yogurt 3% Plain' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/halal-yogurt-3-plain/p/20343515_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#26</span>
+              <span class='first-word'>Halal</span>
+              <span class='product-name-text'>Yogurt 3% Plain</span>
+            </div>
+            <div>Expire On: 2025-03-26</div>
+            <div>WAS: <span class='was-price'>$3.19</span></div>
+            <div class='now-price'>NOW: $2.99</div>
+            <div class='discount-badge'>6.3% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21592370/b3/en/front/21592370_front_a06_@2.png' alt='Plant-based Cheese Feta Style' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/plant-based-cheese-feta-style/p/21592370_EA' target='_top'>SHOP →</a>
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#13</span>
+              <span class='item-number'>#27</span>
               <span class='first-word'>Plant-based</span>
               <span class='product-name-text'>Cheese Feta Style</span>
             </div>
@@ -514,7 +754,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#14</span>
+              <span class='item-number'>#28</span>
               <span class='first-word'>Soy</span>
               <span class='product-name-text'>For Coffee, Original Coffee Creamer</span>
             </div>
@@ -532,7 +772,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#15</span>
+              <span class='item-number'>#29</span>
               <span class='first-word'>Half</span>
               <span class='product-name-text'>& Half Dairy-Free Coffee Creamer, Oat & Coconut,</span>
             </div>
@@ -550,7 +790,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#16</span>
+              <span class='item-number'>#30</span>
               <span class='first-word'>Oat</span>
               <span class='product-name-text'>For Coffee, Vanilla, Plant Based, Dairy Free Coffee Creamer</span>
             </div>
