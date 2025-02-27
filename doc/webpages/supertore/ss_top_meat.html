@@ -70,33 +70,36 @@ animation: fadeIn 0.8s forwards ease-in;
 background-color: #2c5f3d;
 }
 position: fixed;
-top: -60px;
-left: 0;
-width: 100%;
+top: 20px;
+left: 50%;
+transform: translateX(-50%);
+width: 300px;
 background-color: #fff;
-border-bottom: 1px solid #ccc;
+border: 1px solid #ccc;
+border-radius: 20px;
 padding: 10px;
 box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 text-align: center;
-transition: top 0.5s ease, opacity 0.5s ease;
+transition: opacity 0.5s ease;
 opacity: 0;
-z-index: 1000;
+display: none;
+z-index: 1001;
 }
-top: 0;
+display: block;
 opacity: 1;
 }
-padding: 8px;
-width: 80%;
-border: 1px solid #ccc;
-border-radius: 4px;
-font-size: 16px;
+padding: 6px;
+width: calc(100% - 40px);
+border: none;
+outline: none;
+font-size: 14px;
 }
 background: none;
 border: none;
-font-size: 24px;
+font-size: 18px;
 cursor: pointer;
 color: #3e7d53;
-margin-left: 10px;
+margin-left: 5px;
 }
 .header-spacer { height: 70px; }
 body {
@@ -206,29 +209,14 @@ secondElems[i].dataset.original = secondElems[i].innerHTML;
 });
 
 function showSearchBar() {
-document.getElementById('searchBarContainer').classList.add('active');
+document.querySelector('.header-container').style.display = 'none';
+var searchBar = document.getElementById('searchBarContainer');
+searchBar.classList.add('active');
 document.getElementById('searchInput').focus();
 }
 
 function hideSearchBar() {
-document.getElementById('searchBarContainer').classList.remove('active');
-clearHighlights();
-document.getElementById('searchInput').value = '';
-var items = document.getElementsByClassName('item-container');
-for (var i = 0; i < items.length; i++) {
-items[i].style.display = '';
-}
-}
-
-function clearHighlights() {
-var firstElems = document.getElementsByClassName('first-word');
-for (var i = 0; i < firstElems.length; i++) {
-firstElems[i].innerHTML = firstElems[i].dataset.original;
-}
-var secondElems = document.getElementsByClassName('product-name-text');
-for (var i = 0; i < secondElems.length; i++) {
-secondElems[i].innerHTML = secondElems[i].dataset.original;
-}
+window.location.reload();
 }
 
 function inPageSearch() {
@@ -264,7 +252,7 @@ FIND ➜
 </button>
 <div class='page-title'>Meat</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 19:52:52</div>
+<div class='creation-time'>Created on: 2025-02-26 20:07:15</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
@@ -275,12 +263,138 @@ FIND ➜
 
         <div class='item-container'>
           <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20416522/b3/en/front/20416522_front_a06_@2.png' alt='Classic Wieners, Family Pack' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/classic-wieners-family-pack/p/20416522_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#1</span>
+              <span class='first-word'>Classic</span>
+              <span class='product-name-text'>Wieners, Family Pack</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$10.99</span></div>
+            <div class='now-price'>NOW: $6.00</div>
+            <div class='discount-badge'>45.4% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20415978/b3/en/front/20415978_front_a06_@2.png' alt='Barbecue Style Wieners' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/barbecue-style-wieners/p/20415978_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#2</span>
+              <span class='first-word'>Barbecue</span>
+              <span class='product-name-text'>Style Wieners</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$10.99</span></div>
+            <div class='now-price'>NOW: $6.00</div>
+            <div class='discount-badge'>45.4% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21352008/b3/en/angle/21352008_angle_a06_@2.png' alt='Free From Australian Lean Ground Lamb' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-australian-lean-ground-lamb/p/21352008_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#3</span>
+              <span class='first-word'>Free</span>
+              <span class='product-name-text'>From Australian Lean Ground Lamb</span>
+            </div>
+            <div>Expire On: 2025-03-26</div>
+            <div>WAS: <span class='was-price'>$15.99</span></div>
+            <div class='now-price'>NOW: $11.00</div>
+            <div class='discount-badge'>31.2% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21290136/b3/en/front/21290136_front_a06_@2.png' alt='Frozen Twisters Jumbo Sausage' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/frozen-twisters-jumbo-sausage/p/21290136_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#4</span>
+              <span class='first-word'>Frozen</span>
+              <span class='product-name-text'>Twisters Jumbo Sausage</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$9.99</span></div>
+            <div class='now-price'>NOW: $7.00</div>
+            <div class='discount-badge'>29.9% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21289868/b3/en/front/21289868_front_a06_@2.png' alt='Hot Italian Jumbo Sausage' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/hot-italian-jumbo-sausage/p/21289868_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#5</span>
+              <span class='first-word'>Hot</span>
+              <span class='product-name-text'>Italian Jumbo Sausage</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$9.99</span></div>
+            <div class='now-price'>NOW: $7.00</div>
+            <div class='discount-badge'>29.9% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21289731/b3/en/front/21289731_front_a06_@2.png' alt='Sweet Italian Jumbo Sausage' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/sweet-italian-jumbo-sausage/p/21289731_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#6</span>
+              <span class='first-word'>Sweet</span>
+              <span class='product-name-text'>Italian Jumbo Sausage</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$9.99</span></div>
+            <div class='now-price'>NOW: $7.00</div>
+            <div class='discount-badge'>29.9% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21366170/b3/en/front/21366170_front_a06_@2.png' alt='Marc Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/marc-angelo-pork-sausages-with-rapini-and-parmigia/p/21366170_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#7</span>
+              <span class='first-word'>Marc</span>
+              <span class='product-name-text'>Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$9.29</span></div>
+            <div class='now-price'>NOW: $7.00</div>
+            <div class='discount-badge'>24.7% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20321514/b3/en/angle/20321514_angle_a06_@2.png' alt='Calabrese Spicy Salami (Thin Sliced)' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/calabrese-spicy-salami-thin-sliced/p/20321514_KG' target='_top'>SHOP →</a>
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#1</span>
+              <span class='item-number'>#8</span>
               <span class='first-word'>Calabrese</span>
               <span class='product-name-text'>Spicy Salami (Thin Sliced)</span>
             </div>
@@ -298,7 +412,7 @@ FIND ➜
           </div>
           <div class='item-details'>
             <div class='item-name'>
-              <span class='item-number'>#2</span>
+              <span class='item-number'>#9</span>
               <span class='first-word'>Soppressata</span>
               <span class='product-name-text'>(Thin Sliced)</span>
             </div>
@@ -306,6 +420,132 @@ FIND ➜
             <div>WAS: <span class='was-price'>$4.59</span></div>
             <div class='now-price'>NOW: $3.49</div>
             <div class='discount-badge'>24.0% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20174909/b3/en/front/20174909_front_a06_@2.png' alt='Bacon, Mild Sugar Cured with Reduced Salt, Uncooked' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/bacon-mild-sugar-cured-with-reduced-salt-uncooked/p/20174909_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#10</span>
+              <span class='first-word'>Bacon,</span>
+              <span class='product-name-text'>Mild Sugar Cured with Reduced Salt, Uncooked</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$7.00</span></div>
+            <div class='now-price'>NOW: $6.00</div>
+            <div class='discount-badge'>14.3% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20156771/b3/en/front/20156771_front_a06_@2.png' alt='Mild Sugar-Cured Bacon' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mild-sugar-cured-bacon/p/20156771_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#11</span>
+              <span class='first-word'>Mild</span>
+              <span class='product-name-text'>Sugar-Cured Bacon</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$7.00</span></div>
+            <div class='now-price'>NOW: $6.00</div>
+            <div class='discount-badge'>14.3% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/21076606/b3/en/front/21076606_front_a06_@2.png' alt='Free From Oven-Roasted Chicken Breast' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-oven-roasted-chicken-breast/p/21076606_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#12</span>
+              <span class='first-word'>Free</span>
+              <span class='product-name-text'>From Oven-Roasted Chicken Breast</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$15.99</span></div>
+            <div class='now-price'>NOW: $15.00</div>
+            <div class='discount-badge'>6.2% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20923814/b3/en/front/20923814_front_a06_@2.png' alt='Free From Oven Roasted Turkey, Club Pack' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-oven-roasted-turkey-club-pack/p/20923814_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#13</span>
+              <span class='first-word'>Free</span>
+              <span class='product-name-text'>From Oven Roasted Turkey, Club Pack</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$15.99</span></div>
+            <div class='now-price'>NOW: $15.00</div>
+            <div class='discount-badge'>6.2% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20903492/b3/en/front/20903492_front_a06_@2.png' alt='Free From Black Forrest Ham, Club Pack' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-black-forrest-ham-club-pack/p/20903492_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#14</span>
+              <span class='first-word'>Free</span>
+              <span class='product-name-text'>From Black Forrest Ham, Club Pack</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$15.99</span></div>
+            <div class='now-price'>NOW: $15.00</div>
+            <div class='discount-badge'>6.2% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20903241/b3/en/front/20903241_front_a06_@2.png' alt='Free From Honey Ham, Club Pack' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-honey-ham-club-pack/p/20903241_EA' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#15</span>
+              <span class='first-word'>Free</span>
+              <span class='product-name-text'>From Honey Ham, Club Pack</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$15.99</span></div>
+            <div class='now-price'>NOW: $15.00</div>
+            <div class='discount-badge'>6.2% OFF</div>
+          </div>
+        </div>
+        
+        <div class='item-container'>
+          <div class='item-image'>
+            <img src='https://assets.shop.loblaws.ca/products/20798252/b3/en/angle/20798252_angle_a06_@2.png' alt='Extra Lean Ground Beef, Club Pack' />
+            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-beef-club-pack/p/20798252_KG' target='_top'>SHOP →</a>
+          </div>
+          <div class='item-details'>
+            <div class='item-name'>
+              <span class='item-number'>#16</span>
+              <span class='first-word'>Extra</span>
+              <span class='product-name-text'>Lean Ground Beef, Club Pack</span>
+            </div>
+            <div>Expire On: 2025-03-05</div>
+            <div>WAS: <span class='was-price'>$14.38</span></div>
+            <div class='now-price'>NOW: $13.55</div>
+            <div class='discount-badge'>5.8% OFF</div>
           </div>
         </div>
         
