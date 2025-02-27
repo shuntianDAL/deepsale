@@ -102,6 +102,11 @@ function inPageSearch() {
 }
 </script>
 <style>
+/* Always reserve space for the scrollbar to avoid layout shifts */
+html {
+    overflow-y: scroll;
+}
+
 @keyframes fadeIn {
     0% { opacity: 0; transform: translateY(10px); }
     100% { opacity: 1; transform: translateY(0); }
@@ -302,7 +307,7 @@ body {
     </button>
     <div class='page-title'>Meat</div>
   </div>
-  <div class='creation-time'>Created on: 2025-02-27 00:44:52</div>
+  <div class='creation-time'>Created on: 2025-02-27 00:48:26</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
