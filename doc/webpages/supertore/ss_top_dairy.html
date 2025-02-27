@@ -1,263 +1,267 @@
-<!DOCTYPE html>\n\
-<html>\n\
-<head>\n\
-<meta charset='UTF-8'>\n\
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n\
-<meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate'>\n\
-<meta http-equiv='Pragma' content='no-cache'>\n\
-<meta http-equiv='Expires' content='0'>\n\
-<title>Top 20 Most Discounted Items - Dairy</title>\n\
-<link rel='preconnect' href='https://fonts.googleapis.com'>\n\
-<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>\n\
-<link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>\n\
-<script>\n\
-window.addEventListener('pageshow', function(event) {\n\
-if (event.persisted) { window.location.reload(); }\n\
-});\n\
-</script>\n\
-<style>\n\
-@keyframes fadeIn {\n\
-0% { opacity: 0; transform: translateY(10px); }\n\
-100% { opacity: 1; transform: translateY(0); }\n\
-}\n\
-.header-container {\n\
-position: fixed;\n\
-top: 0;\n\
-left: 0;\n\
-right: 0;\n\
-background: #fff;\n\
-padding: 10px 20px;\n\
-display: flex;\n\
-flex-direction: column;\n\
-align-items: center;\n\
-box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n\
-z-index: 1000;\n\
-}\n\
-.header-row {\n\
-display: flex;\n\
-align-items: center;\n\
-gap: 20px;\n\
-}\n\
-.page-title {\n\
-font-size: 22px;\n\
-font-weight: 600;\n\
-font-family: 'Montserrat', Arial, sans-serif;\n\
-}\n\
-.divider {\n\
-border: 0;\n\
-height: 1px;\n\
-background: #ccc;\n\
-margin: 0 20px 20px;\n\
-}\n\
-.search-button {\n\
-background-color: #3e7d53;\n\
-border: none;\n\
-color: #fff;\n\
-padding: 6px 12px;\n\
-border-radius: 9999px;\n\
-cursor: pointer;\n\
-font-size: 12px;\n\
-font-weight: 600;\n\
-text-transform: uppercase;\n\
-letter-spacing: 0.5px;\n\
-display: inline-flex;\n\
-align-items: center;\n\
-gap: 5px;\n\
-box-shadow: 0 2px 4px rgba(0,0,0,0.2);\n\
-animation: fadeIn 0.8s forwards ease-in;\n\
-}\n\
-.search-button:hover {\n\
-background-color: #2c5f3d;\n\
-}\n\
-/* Centered search bar */\n\
-position: fixed;\n\
-top: 20px;\n\
-left: 50%;\n\
-transform: translateX(-50%);\n\
-width: 300px;\n\
-background-color: #fff;\n\
-border: 1px solid #ccc;\n\
-border-radius: 20px;\n\
-padding: 10px;\n\
-box-shadow: 0 2px 6px rgba(0,0,0,0.2);\n\
-text-align: center;\n\
-transition: opacity 0.5s ease;\n\
-opacity: 0;\n\
-display: none;\n\
-z-index: 1001;\n\
-}\n\
-display: block;\n\
-opacity: 1;\n\
-}\n\
-padding: 6px;\n\
-width: calc(100% - 40px);\n\
-border: none;\n\
-outline: none;\n\
-font-size: 14px;\n\
-}\n\
-background: none;\n\
-border: none;\n\
-font-size: 18px;\n\
-cursor: pointer;\n\
-color: #3e7d53;\n\
-margin-left: 5px;\n\
-}\n\
-.header-spacer { height: 70px; }\n\
-body {\n\
-font-family: 'Montserrat', Arial, sans-serif;\n\
-margin: 0;\n\
-padding: 0;\n\
-background-color: #fff;\n\
-overflow-x: hidden;\n\
-}\n\
-.creation-time {\n\
-text-align: center;\n\
-font-size: 12px;\n\
-color: gray;\n\
-margin-top: 10px;\n\
-}\n\
-.item-number {\n\
-color: red;\n\
-font-weight: 600;\n\
-border: 2px solid red;\n\
-border-radius: 50%;\n\
-display: inline-block;\n\
-width: 22px;\n\
-height: 22px;\n\
-text-align: center;\n\
-line-height: 20px;\n\
-margin-right: 8px;\n\
-font-size: 12px;\n\
-}\n\
-.item-container {\n\
-width: 90%;\n\
-max-width: 600px;\n\
-margin: 20px auto;\n\
-border-bottom: 1px solid #ccc;\n\
-padding-bottom: 15px;\n\
-display: flex;\n\
-align-items: flex-start;\n\
-gap: 15px;\n\
-}\n\
-.item-image {\n\
-display: flex;\n\
-flex-direction: column;\n\
-align-items: center;\n\
-}\n\
-.item-image img {\n\
-width: 60px;\n\
-height: auto;\n\
-}\n\
-.view-button {\n\
-margin-top: 6px;\n\
-padding: 8px 16px;\n\
-background-color: #3e7d53;\n\
-color: #fff;\n\
-text-decoration: none;\n\
-border-radius: 9999px;\n\
-font-size: 12px;\n\
-font-weight: 600;\n\
-text-transform: uppercase;\n\
-letter-spacing: 0.5px;\n\
-display: inline-block;\n\
-border: none;\n\
-cursor: pointer;\n\
-outline: none;\n\
-animation: fadeIn 0.8s forwards ease-in;\n\
-}\n\
-.view-button:hover {\n\
-background-color: #2c5f3d;\n\
-}\n\
-.item-details {\n\
-flex: 1;\n\
-text-align: left;\n\
-font-size: 13px;\n\
-}\n\
-.item-name {\n\
-font-size: 14px;\n\
-margin-bottom: 6px;\n\
-font-weight: 600;\n\
-color: black;\n\
-}\n\
-.now-price {\n\
-color: red;\n\
-font-weight: 600;\n\
-font-size: 12px;\n\
-margin: 6px 0;\n\
-}\n\
-.discount-badge {\n\
-background-color: yellow;\n\
-display: inline-block;\n\
-font-weight: 600;\n\
-padding: 2px 5px;\n\
-margin: 6px 0;\n\
-font-size: 16px;\n\
-}\n\
-.was-price {\n\
-text-decoration: line-through;\n\
-}\n\
-</style>\n\
-<script>\n\
-document.addEventListener('DOMContentLoaded', function() {\n\
-var firstElems = document.getElementsByClassName('first-word');\n\
-for (var i = 0; i < firstElems.length; i++) {\n\
-firstElems[i].dataset.original = firstElems[i].innerHTML;\n\
-}\n\
-var secondElems = document.getElementsByClassName('product-name-text');\n\
-for (var i = 0; i < secondElems.length; i++) {\n\
-secondElems[i].dataset.original = secondElems[i].innerHTML;\n\
-}\n\
-});\n\
-function showSearchBar() {\n\
-document.querySelector('.header-container').style.display = 'none';\n\
-var searchBar = document.getElementById('searchBarContainer');\n\
-searchBar.classList.add('active');\n\
-document.getElementById('searchInput').focus();\n\
-}\n\
-function hideSearchBar() {\n\
-window.location.reload();\n\
-}\n\
-function inPageSearch() {\n\
-var input = document.getElementById('searchInput').value.trim();\n\
-var term = input.toLowerCase();\n\
-var items = document.getElementsByClassName('item-container');\n\
-for (var i = 0; i < items.length; i++) {\n\
-var firstElem = items[i].querySelector('.first-word');\n\
-var secondElem = items[i].querySelector('.product-name-text');\n\
-var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();\n\
-if (term === '' || fullName.indexOf(term) > -1) {\n\
-items[i].style.display = '';\n\
-if (term !== '') {\n\
-firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');\n\
-secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');\n\
-} else {\n\
-firstElem.innerHTML = firstElem.dataset.original;\n\
-secondElem.innerHTML = secondElem.dataset.original;\n\
-}\n\
-} else {\n\
-items[i].style.display = 'none';\n\
-}\n\
-}\n\
-}\n\
-</script>\n\
-</head>\n\
-<body>\n\
-<div class='header-container'>\n\
-<div class='header-row'>\n\
-<button class='search-button' onclick='showSearchBar()'>\n\
-<span class='search-icon'>🔍</span>\n\
-FIND ➜\n\
-</button>\n\
-<div class='page-title'>Dairy</div>\n\
-</div>\n\
-<div class='creation-time'>Created on: 2025-02-26 22:46:30</div>\n\
-</div>\n\
-<hr class='divider'>\n\
-<div class='header-spacer'></div>\n\
-<div id='searchBarContainer'>\n\
-<input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>\n\
-<button id='closeSearchButton' onclick='hideSearchBar()'>×</button>\n\
-</div>\n\
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate'>
+<meta http-equiv='Pragma' content='no-cache'>
+<meta http-equiv='Expires' content='0'>
+<title>Top 20 Most Discounted Items - Dairy</title>
+<link rel='preconnect' href='https://fonts.googleapis.com'>
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+<link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
+<script>
+window.addEventListener('pageshow', function(event) {
+if (event.persisted) { window.location.reload(); }
+});
+</script>
+<style>
+@keyframes fadeIn {
+0% { opacity: 0; transform: translateY(10px); }
+100% { opacity: 1; transform: translateY(0); }
+}
+.header-container {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+background: #fff;
+padding: 10px 20px;
+display: flex;
+flex-direction: column;
+align-items: center;
+box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+z-index: 1000;
+}
+.header-row {
+display: flex;
+align-items: center;
+gap: 20px;
+}
+.page-title {
+font-size: 22px;
+font-weight: 600;
+font-family: 'Montserrat', Arial, sans-serif;
+}
+.divider {
+border: 0;
+height: 1px;
+background: #ccc;
+margin: 0 20px 20px;
+}
+.search-button {
+background-color: #3e7d53;
+border: none;
+color: #fff;
+padding: 6px 12px;
+border-radius: 9999px;
+cursor: pointer;
+font-size: 12px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+display: inline-flex;
+align-items: center;
+gap: 5px;
+box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+animation: fadeIn 0.8s forwards ease-in;
+}
+.search-button:hover {
+background-color: #2c5f3d;
+}
+/* Centered search bar using left/right and auto margins */
+position: fixed;
+top: 20px;
+left: 0;
+right: 0;
+margin: 0 auto;
+width: 300px;
+background-color: #fff;
+border: 1px solid #ccc;
+border-radius: 20px;
+padding: 10px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+text-align: center;
+transition: opacity 0.5s ease;
+opacity: 0;
+display: none;
+z-index: 1001;
+}
+display: block;
+opacity: 1;
+}
+padding: 6px;
+width: calc(100% - 40px);
+border: none;
+outline: none;
+font-size: 14px;
+}
+background: none;
+border: none;
+font-size: 18px;
+cursor: pointer;
+color: #3e7d53;
+margin-left: 5px;
+}
+.header-spacer { height: 70px; }
+body {
+font-family: 'Montserrat', Arial, sans-serif;
+margin: 0;
+padding: 0;
+background-color: #fff;
+overflow-x: hidden;
+}
+.creation-time {
+text-align: center;
+font-size: 12px;
+color: gray;
+margin-top: 10px;
+}
+.item-number {
+color: red;
+font-weight: 600;
+border: 2px solid red;
+border-radius: 50%;
+display: inline-block;
+width: 22px;
+height: 22px;
+text-align: center;
+line-height: 20px;
+margin-right: 8px;
+font-size: 12px;
+}
+.item-container {
+width: 90%;
+max-width: 600px;
+margin: 20px auto;
+border-bottom: 1px solid #ccc;
+padding-bottom: 15px;
+display: flex;
+align-items: flex-start;
+gap: 15px;
+}
+.item-image {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+.item-image img {
+width: 60px;
+height: auto;
+}
+.view-button {
+margin-top: 6px;
+padding: 8px 16px;
+background-color: #3e7d53;
+color: #fff;
+text-decoration: none;
+border-radius: 9999px;
+font-size: 12px;
+font-weight: 600;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+display: inline-block;
+border: none;
+cursor: pointer;
+outline: none;
+animation: fadeIn 0.8s forwards ease-in;
+}
+.view-button:hover {
+background-color: #2c5f3d;
+}
+.item-details {
+flex: 1;
+text-align: left;
+font-size: 13px;
+}
+.item-name {
+font-size: 14px;
+margin-bottom: 6px;
+font-weight: 600;
+color: black;
+}
+.now-price {
+color: red;
+font-weight: 600;
+font-size: 12px;
+margin: 6px 0;
+}
+.discount-badge {
+background-color: yellow;
+display: inline-block;
+font-weight: 600;
+padding: 2px 5px;
+margin: 6px 0;
+font-size: 16px;
+}
+.was-price {
+text-decoration: line-through;
+}
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+var firstElems = document.getElementsByClassName('first-word');
+for (var i = 0; i < firstElems.length; i++) {
+firstElems[i].dataset.original = firstElems[i].innerHTML;
+}
+var secondElems = document.getElementsByClassName('product-name-text');
+for (var i = 0; i < secondElems.length; i++) {
+secondElems[i].dataset.original = secondElems[i].innerHTML;
+}
+});
+
+function showSearchBar() {
+document.querySelector('.header-container').style.display = 'none';
+var searchBar = document.getElementById('searchBarContainer');
+searchBar.classList.add('active');
+document.getElementById('searchInput').focus();
+}
+
+function hideSearchBar() {
+window.location.reload();
+}
+
+function inPageSearch() {
+var input = document.getElementById('searchInput').value.trim();
+var term = input.toLowerCase();
+var items = document.getElementsByClassName('item-container');
+for (var i = 0; i < items.length; i++) {
+var firstElem = items[i].querySelector('.first-word');
+var secondElem = items[i].querySelector('.product-name-text');
+var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+if (term === '' || fullName.indexOf(term) > -1) {
+items[i].style.display = '';
+if (term !== '') {
+firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+} else {
+firstElem.innerHTML = firstElem.dataset.original;
+secondElem.innerHTML = secondElem.dataset.original;
+}
+} else {
+items[i].style.display = 'none';
+}
+}
+}
+</script>
+</head>
+<body>
+<div class='header-container'>
+<div class='header-row'>
+<button class='search-button' onclick='showSearchBar()'>
+<span class='search-icon'>🔍</span>
+FIND ➜
+</button>
+<div class='page-title'>Dairy</div>
+</div>
+<div class='creation-time'>Created on: 2025-02-26 22:48:33</div>
+</div>
+<hr class='divider'>
+<div class='header-spacer'></div>
+<div id='searchBarContainer'>
+<input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
+<button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
+</div>
 
         <div class='item-container'>
           <div class='item-image'>
@@ -978,6 +982,6 @@ FIND ➜\n\
             <div class='discount-badge'>7.7% OFF</div>
           </div>
         </div>
-        \n\
-</body>\n\
+        
+</body>
 </html>
