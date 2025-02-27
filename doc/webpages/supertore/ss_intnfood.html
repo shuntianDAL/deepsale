@@ -11,236 +11,240 @@
 <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
 <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
 <script>
-window.addEventListener('pageshow', function(event) {{
-if (event.persisted) {{ window.location.reload(); }}
-}});
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) { window.location.reload(); }
+});
 </script>
 <style>
-@keyframes fadeIn {{
-0% {{ opacity: 0; transform: translateY(10px); }}
-100% {{ opacity: 1; transform: translateY(0); }}
-}}
-.header-container {{
-position: fixed;
-top: 0;
-left: 0;
-right: 0;
-background: #fff;
-padding: 10px 20px;
-display: flex;
-flex-direction: column;
-align-items: center;
-box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-z-index: 1000;
-}}
-.header-row {{
-display: flex;
-align-items: center;
-gap: 20px;
-}}
-.page-title {{
-font-size: 22px;
-font-weight: 600;
-font-family: 'Montserrat', Arial, sans-serif;
-}}
-.divider {{
-border: 0;
-height: 1px;
-background: #ccc;
-margin: 0 20px 20px;
-}}
-.search-button {{
-background-color: #3e7d53;
-border: none;
-color: #fff;
-padding: 6px 12px;
-border-radius: 9999px;
-cursor: pointer;
-font-size: 12px;
-font-weight: 600;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-display: inline-flex;
-align-items: center;
-gap: 5px;
-box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-animation: fadeIn 0.8s forwards ease-in;
-}}
-.search-button:hover {{
-background-color: #2c5f3d;
-}}
-position: fixed;
-top: 20px;
-left: 50%;
-transform: translateX(-50%);
-width: 300px;
-background-color: #fff;
-border: 1px solid #ccc;
-border-radius: 20px;
-padding: 10px;
-box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-text-align: center;
-transition: opacity 0.5s ease;
-opacity: 0;
-display: none;
-z-index: 1001;
-}}
-display: block;
-opacity: 1;
-}}
-padding: 6px;
-width: calc(100% - 40px);
-border: none;
-outline: none;
-font-size: 14px;
-}}
-background: none;
-border: none;
-font-size: 18px;
-cursor: pointer;
-color: #3e7d53;
-margin-left: 5px;
-}}
-.header-spacer {{ height: 70px; }}
-body {{
-font-family: 'Montserrat', Arial, sans-serif;
-margin: 0;
-padding: 0;
-background-color: #fff;
-overflow-x: hidden;
-}}
-.creation-time {{
-text-align: center;
-font-size: 12px;
-color: gray;
-margin-top: 10px;
-}}
-.item-number {{
-color: red;
-font-weight: 600;
-border: 2px solid red;
-border-radius: 50%;
-display: inline-block;
-width: 22px;
-height: 22px;
-text-align: center;
-line-height: 20px;
-margin-right: 8px;
-font-size: 12px;
-}}
-.item-container {{
-width: 90%;
-max-width: 600px;
-margin: 20px auto;
-border-bottom: 1px solid #ccc;
-padding-bottom: 15px;
-display: flex;
-align-items: flex-start;
-gap: 15px;
-}}
-.item-image {{
-display: flex;
-flex-direction: column;
-align-items: center;
-}}
-.item-image img {{
-width: 60px;
-height: auto;
-}}
-.view-button {{
-margin-top: 6px;
-padding: 8px 16px;
-background-color: #3e7d53;
-color: #fff;
-text-decoration: none;
-border-radius: 9999px;
-font-size: 12px;
-font-weight: 600;
-text-transform: uppercase;
-letter-spacing: 0.5px;
-display: inline-block;
-border: none;
-cursor: pointer;
-outline: none;
-animation: fadeIn 0.8s forwards ease-in;
-}}
-.view-button:hover {{
-background-color: #2c5f3d;
-}}
-.item-details {{
-flex: 1;
-text-align: left;
-font-size: 13px;
-}}
-.item-name {{
-font-size: 14px;
-margin-bottom: 6px;
-font-weight: 600;
-color: black;
-}}
-.now-price {{
-color: red;
-font-weight: 600;
-font-size: 12px;
-margin: 6px 0;
-}}
-.discount-badge {{
-background-color: yellow;
-display: inline-block;
-font-weight: 600;
-padding: 2px 5px;
-margin: 6px 0;
-font-size: 16px;
-}}
-.was-price {{
-text-decoration: line-through;
-}}
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+.header-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+.header-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.page-title {
+    font-size: 22px;
+    font-weight: 600;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+.divider {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 0 20px 20px;
+}
+.search-button {
+    background-color: #3e7d53;
+    border: none;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    animation: fadeIn 0.8s forwards ease-in;
+}
+.search-button:hover {
+    background-color: #2c5f3d;
+}
+#searchBarContainer {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    text-align: center;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+    display: none;
+    z-index: 1001;
+}
+#searchBarContainer.active {
+    display: block;
+    opacity: 1;
+}
+#searchInput {
+    padding: 6px;
+    width: calc(100% - 40px);
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+#closeSearchButton {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #3e7d53;
+    margin-left: 5px;
+}
+.header-spacer { height: 70px; }
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff;
+    overflow-x: hidden;
+}
+.creation-time {
+    text-align: center;
+    font-size: 12px;
+    color: gray;
+    margin-top: 10px;
+}
+.item-number {
+    color: red;
+    font-weight: 600;
+    border: 2px solid red;
+    border-radius: 50%;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    line-height: 20px;
+    margin-right: 8px;
+    font-size: 12px;
+}
+.item-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+}
+.item-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.item-image img {
+    width: 60px;
+    height: auto;
+}
+.view-button {
+    margin-top: 6px;
+    padding: 8px 16px;
+    background-color: #3e7d53;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    animation: fadeIn 0.8s forwards ease-in;
+}
+.view-button:hover {
+    background-color: #2c5f3d;
+}
+.item-details {
+    flex: 1;
+    text-align: left;
+    font-size: 13px;
+}
+.item-name {
+    font-size: 14px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: black;
+}
+.now-price {
+    color: red;
+    font-weight: 600;
+    font-size: 12px;
+    margin: 6px 0;
+}
+.discount-badge {
+    background-color: yellow;
+    display: inline-block;
+    font-weight: 600;
+    padding: 2px 5px;
+    margin: 6px 0;
+    font-size: 16px;
+}
+.was-price {
+    text-decoration: line-through;
+}
 </style>
 <script>
-document.addEventListener('DOMContentLoaded', function() {{
-var firstElems = document.getElementsByClassName('first-word');
-for (var i = 0; i < firstElems.length; i++) {{
-firstElems[i].dataset.original = firstElems[i].innerHTML;
-}}
-var secondElems = document.getElementsByClassName('product-name-text');
-for (var i = 0; i < secondElems.length; i++) {{
-secondElems[i].dataset.original = secondElems[i].innerHTML;
-}}
-}});
+document.addEventListener('DOMContentLoaded', function() {
+    var firstElems = document.getElementsByClassName('first-word');
+    for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].dataset.original = firstElems[i].innerHTML;
+    }
+    var secondElems = document.getElementsByClassName('product-name-text');
+    for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].dataset.original = secondElems[i].innerHTML;
+    }
+});
 
-function showSearchBar() {{
-document.querySelector('.header-container').style.display = 'none';
-var searchBar = document.getElementById('searchBarContainer');
-searchBar.classList.add('active');
-document.getElementById('searchInput').focus();
-}}
+function showSearchBar() {
+    document.querySelector('.header-container').style.display = 'none';
+    var searchBar = document.getElementById('searchBarContainer');
+    searchBar.classList.add('active');
+    document.getElementById('searchInput').focus();
+}
 
-function hideSearchBar() {{
-window.location.reload();
-}}
+function hideSearchBar() {
+    window.location.reload();
+}
 
-function inPageSearch() {{
-var input = document.getElementById('searchInput').value.trim();
-var term = input.toLowerCase();
-var items = document.getElementsByClassName('item-container');
-for (var i = 0; i < items.length; i++) {{
-var firstElem = items[i].querySelector('.first-word');
-var secondElem = items[i].querySelector('.product-name-text');
-var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-if (term === '' || fullName.indexOf(term) > -1) {{
-items[i].style.display = '';
-if (term !== '') {{
-firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-}} else {{
-firstElem.innerHTML = firstElem.dataset.original;
-secondElem.innerHTML = secondElem.dataset.original;
-}}
-}} else {{
-items[i].style.display = 'none';
-}}
-}}
-}}
+function inPageSearch() {
+    var input = document.getElementById('searchInput').value.trim();
+    var term = input.toLowerCase();
+    var items = document.getElementsByClassName('item-container');
+    for (var i = 0; i < items.length; i++) {
+        var firstElem = items[i].querySelector('.first-word');
+        var secondElem = items[i].querySelector('.product-name-text');
+        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+        if (term === '' || fullName.indexOf(term) > -1) {
+            items[i].style.display = '';
+            if (term !== '') {
+                firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            } else {
+                firstElem.innerHTML = firstElem.dataset.original;
+                secondElem.innerHTML = secondElem.dataset.original;
+            }
+        } else {
+            items[i].style.display = 'none';
+        }
+    }
+}
 </script>
 </head>
 <body>
@@ -252,7 +256,7 @@ FIND ➜
 </button>
 <div class='page-title'>International</div>
 </div>
-<div class='creation-time'>Created on: 2025-02-26 23:38:55</div>
+<div class='creation-time'>Created on: 2025-02-26 23:46:41</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
