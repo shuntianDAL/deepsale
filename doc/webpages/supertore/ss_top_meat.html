@@ -11,6 +11,9 @@
 <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
 <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
 
+<!-- Load Chart.js from a CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.min.js"></script>
+
 <style>
 html {
     overflow-y: scroll;
@@ -22,11 +25,9 @@ body {
     background-color: #fff;
     overflow-x: hidden;
 }
-/* We'll add a 'page-loaded' class to <body> to trigger fade in animations after DOMContentLoaded */
 body {
     transition: opacity 0.5s ease;
 }
-/* Fade in effect for the detail button */
 .fade-on-load {
     opacity: 0;
     transition: opacity 0.8s ease;
@@ -65,7 +66,7 @@ body.page-loaded .fade-on-load {
     margin: 0 20px 10px;
 }
 .header-spacer {
-    height: 70px; /* offset fixed header */
+    height: 70px;
 }
 .search-button {
     background-color: #3e7d53;
@@ -237,13 +238,14 @@ body.page-loaded .fade-on-load {
     gap: 5px;
     opacity: 1;
     z-index: 2;
+    padding: 5px;
 }
 .chart-view {
-    width: 100%;
-    height: 100%;
-    background-color: #f9f9f9;
     opacity: 0;
     z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .item-name {
     font-size: 14px;
@@ -290,6 +292,9 @@ document.addEventListener('DOMContentLoaded', function() {
     window.priceHistoryData = {"20822350_KG": {"1mon": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}], "1yr": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}]}, "20822150_KG": {"1mon": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}], "1yr": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}]}, "20836762_KG": {"1mon": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}], "1yr": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}]}, "21618256_KG": {"1mon": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}], "1yr": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}]}, "20822343_KG": {"1mon": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}], "1yr": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}]}, "20835855_KG": {"1mon": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}], "1yr": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}]}, "20822906_KG": {"1mon": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}], "1yr": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}]}, "20822347_KG": {"1mon": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}], "1yr": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}]}, "20822459_KG": {"1mon": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}], "1yr": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}]}, "20822322_KG": {"1mon": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}], "1yr": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}]}, "20875645_KG": {"1mon": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}], "1yr": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}]}, "20827782_KG": {"1mon": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}], "1yr": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}]}, "20827787_KG": {"1mon": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}], "1yr": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}]}, "20836766_KG": {"1mon": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}], "1yr": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}]}, "20822452_KG": {"1mon": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}], "1yr": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}]}, "20823075_KG": {"1mon": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}], "1yr": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}]}, "20825554_KG": {"1mon": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}]}, "20827788_KG": {"1mon": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}], "1yr": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}]}, "20823076_KG": {"1mon": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}], "1yr": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}]}, "20827783_KG": {"1mon": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}], "1yr": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}]}, "20826506_KG": {"1mon": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}], "1yr": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}]}, "20822907_KG": {"1mon": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}], "1yr": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}]}, "20827785_KG": {"1mon": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}], "1yr": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}]}, "20823073_KG": {"1mon": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}], "1yr": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}]}, "20416522_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20415978_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20593099_KG": {"1mon": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}], "1yr": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}]}, "20826455_KG": {"1mon": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}], "1yr": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}]}, "20794618_KG": {"1mon": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}], "1yr": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}]}, "20826460_KG": {"1mon": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}], "1yr": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}]}, "20162170_KG": {"1mon": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}], "1yr": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}]}, "21601003_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21600979_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 0.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 0.0, "now_price": 6.0}]}, "21352008_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}]}, "21588066_EA": {"1mon": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}], "1yr": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}]}, "21290136_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289868_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289731_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "20794616_KG": {"1mon": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}], "1yr": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}]}, "20315210_KG": {"1mon": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}], "1yr": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}]}, "21201106_KG": {"1mon": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21061099_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21061096_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21059807_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21366170_EA": {"1mon": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}]}, "20321514_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20319035_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20794617_KG": {"1mon": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}], "1yr": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}]}, "20794619_KG": {"1mon": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}], "1yr": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}]}, "21646160_EA": {"1mon": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}]}, "21201094_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21201089_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21570722_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570684_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570639_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570617_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566593_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566049_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21539305_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21538773_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178761_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178745_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178744_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20174909_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20156771_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20152629_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20117351_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20057892_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21546108_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20766562_KG": {"1mon": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}], "1yr": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}]}, "20320534_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20313480_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20298289_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "21399630_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "21193815_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20794831_KG": {"1mon": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}], "1yr": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}]}, "20766602_KG": {"1mon": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}], "1yr": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}]}, "20794620_KG": {"1mon": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}], "1yr": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}]}, "21300113_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21300103_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21220674_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "20507161_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507160_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507159_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "21076606_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20923814_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903492_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903241_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20798252_KG": {"1mon": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}], "1yr": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}]}};
 });
 
+// We will store active Chart.js instances here so we can destroy them when switching
+var chartInstances = {};
+
 /**
  * "Detail" button => show detail, hide chart, revert toggle => disabled style with label "1 Yr"
  */
@@ -306,22 +311,24 @@ function switchToDetail(btn) {
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
-    var rightSide = container.querySelector('.right-side');
-    var viewContainer = rightSide.querySelector('.view-container');
-    var detailView = viewContainer.querySelector('.detail-view');
-    var chartView = viewContainer.querySelector('.chart-view');
+    // Hide chart view, show detail
+    var detailView = container.querySelector('.detail-view');
+    var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '1';
     chartView.style.opacity = '0';
-    setTimeout(function() {
-        chartView.innerHTML = '';
-    }, 400);
+
+    // Destroy any existing chart for this product
+    var productId = container.getAttribute('data-product-id');
+    if (chartInstances[productId]) {
+        chartInstances[productId].destroy();
+        delete chartInstances[productId];
+    }
 }
 
 /**
  * Toggle => if .disabled => remove => chart is active
  * If checked => 1 Yr => line chart
  * else => 1 Mon => bar chart
- * skipping zero data rows
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
@@ -333,10 +340,8 @@ function toggleMonYr(checkbox) {
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
-    var rightSide = container.querySelector('.right-side');
-    var viewContainer = rightSide.querySelector('.view-container');
-    var detailView = viewContainer.querySelector('.detail-view');
-    var chartView = viewContainer.querySelector('.chart-view');
+    var detailView = container.querySelector('.detail-view');
+    var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '0';
     chartView.style.opacity = '1';
 
@@ -345,344 +350,135 @@ function toggleMonYr(checkbox) {
     var data1mon = window.priceHistoryData[productId]["1mon"] || [];
     var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
 
+    // Destroy existing chart if any
+    if (chartInstances[productId]) {
+        chartInstances[productId].destroy();
+        delete chartInstances[productId];
+    }
+
     if (checkbox.checked) {
         toggleLabel.textContent = "1 Yr";
         var filtered = data1yr.filter(d => d.was_price > 0 && d.now_price > 0);
-        renderLineChart(chartView, filtered);
+        createLineChart(productId, filtered);
     } else {
         toggleLabel.textContent = "1 Mon";
         var filtered = data1mon.filter(d => d.was_price > 0 && d.now_price > 0);
-        renderStackedChart(chartView, filtered);
+        createStackedBarChart(productId, filtered);
     }
 }
 
 /**
- * Renders bar chart for 1 Mon data
+ * Creates a stacked bar chart using Chart.js
+ * (1 Mon data => was_price & now_price)
  */
-function renderStackedChart(chartView, data) {
-    chartView.innerHTML = '';
+function createStackedBarChart(productId, data) {
     if (!data || data.length === 0) {
-        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No 1 Mon data</p>';
+        // Show a quick message if no data
+        var ctx = document.getElementById('canvas-'+productId).getContext('2d');
+        ctx.font = "14px Arial";
+        ctx.fillText("No 1 Mon data", 10, 50);
         return;
     }
-    var maxWas = 0;
-    data.forEach(function(d) {
-        if (d.was_price > maxWas) maxWas = d.was_price;
-    });
-    // Add overhead
-    maxWas *= 1.05;
 
-    var width = chartView.clientWidth;
-    var height = chartView.clientHeight;
-    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute('width', width);
-    svg.setAttribute('height', height);
-    svg.style.backgroundColor = '#f9f9f9';
-
-    var leftPad = 40;
-    var bottomPad = 20;
-    var topPad = 10;
-    var chartH = height - bottomPad - topPad;
-    var chartW = width - leftPad - 10;
-
-    // y-axis
-    var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    axisLine.setAttribute('x1', leftPad);
-    axisLine.setAttribute('y1', height - bottomPad);
-    axisLine.setAttribute('x2', leftPad);
-    axisLine.setAttribute('y2', topPad);
-    axisLine.setAttribute('stroke', '#000');
-    svg.appendChild(axisLine);
-
-    var linePoints = [];
-    data.forEach(function(d, i) {
-        var total = d.was_price;
-        var bottomVal = d.now_price;
-        if (bottomVal > total) {
-            bottomVal = total;
-        }
-        var topVal = total - bottomVal;
-
-        var totalH = (total / maxWas) * chartH;
-        var bottomH = (bottomVal / total) * totalH;
-        var topH = totalH - bottomH;
-
-        var barSpacing = chartW / data.length;
-        var barX = leftPad + i * barSpacing + barSpacing*0.2;
-        var barWidth = barSpacing * 0.6;
-
-        var barBottomY = (height - bottomPad) - bottomH;
-        var barTopY = barBottomY - topH;
-
-        // green bottom
-        var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        rectNow.setAttribute('x', barX);
-        rectNow.setAttribute('y', barBottomY);
-        rectNow.setAttribute('width', barWidth);
-        rectNow.setAttribute('height', bottomH);
-        rectNow.setAttribute('fill', '#009900');
-        rectNow.setAttribute('stroke', '#333');
-        svg.appendChild(rectNow);
-
-        // orange top
-        var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        rectWas.setAttribute('x', barX);
-        rectWas.setAttribute('y', barTopY);
-        rectWas.setAttribute('width', barWidth);
-        rectWas.setAttribute('height', topH);
-        rectWas.setAttribute('fill', '#FF9900');
-        rectWas.setAttribute('stroke', '#333');
-        svg.appendChild(rectWas);
-
-        // label now_price => numeric
-        var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtNow.setAttribute('x', barX + barWidth/2);
-        txtNow.setAttribute('y', barBottomY - 2);
-        txtNow.setAttribute('text-anchor', 'middle');
-        txtNow.setAttribute('font-size', '10');
-        txtNow.setAttribute('fill', '#000');
-        txtNow.textContent = d.now_price.toFixed(2);
-        svg.appendChild(txtNow);
-
-        // label was_price => numeric
-        var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtWas.setAttribute('x', barX + barWidth/2);
-        txtWas.setAttribute('y', barTopY - 2);
-        txtWas.setAttribute('text-anchor', 'middle');
-        txtWas.setAttribute('font-size', '10');
-        txtWas.setAttribute('fill', '#000');
-        txtWas.textContent = d.was_price.toFixed(2);
-        svg.appendChild(txtWas);
-
-        var midBarX = barX + barWidth/2;
-        var bottomTopY = barBottomY;
-        linePoints.push([midBarX, bottomTopY]);
-
-        // date label
-        var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
-        txtDate.setAttribute('y', height - 5);
-        txtDate.setAttribute('text-anchor', 'middle');
-        txtDate.setAttribute('font-size', '10');
-        txtDate.setAttribute('fill', '#000');
-        txtDate.textContent = d.date;
-        svg.appendChild(txtDate);
-    });
-
-    // line connecting top of green portion
-    if (linePoints.length > 1) {
-        var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
-        for (var i=1; i<linePoints.length; i++) {
-            pathD += " L " + linePoints[i][0] + " " + linePoints[i][1];
-        }
-        var linePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        linePath.setAttribute('d', pathD);
-        linePath.setAttribute('fill', 'none');
-        linePath.setAttribute('stroke', '#0077cc');
-        linePath.setAttribute('stroke-width', '2');
-        svg.appendChild(linePath);
-    }
-
-    // Y-axis => "$ "
-    var labelVals = [0, maxWas/2, maxWas];
-    labelVals.forEach(function(val) {
-        var y = (height - bottomPad) - (val / maxWas)*chartH;
-        var gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        gridLine.setAttribute('x1', leftPad);
-        gridLine.setAttribute('y1', y);
-        gridLine.setAttribute('x2', width - 10);
-        gridLine.setAttribute('y2', y);
-        gridLine.setAttribute('stroke', '#ccc');
-        gridLine.setAttribute('stroke-dasharray', '2,2');
-        svg.appendChild(gridLine);
-
-        var txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtLabel.setAttribute('x', 5);
-        txtLabel.setAttribute('y', y+3);
-        txtLabel.setAttribute('font-size', '10');
-        txtLabel.setAttribute('fill', '#000');
-        txtLabel.textContent = "$ " + val.toFixed(2);
-        svg.appendChild(txtLabel);
-    });
-
-    chartView.appendChild(svg);
-}
-
-/**
- * Renders a two-line chart for 1-year data:
- * skip zero data, label only highest,lowest,last points,
- * label each date on x-axis,
- * add overhead so top isn't cut off.
- */
-function renderLineChart(chartView, data) {
-    chartView.innerHTML = '';
-    if (!data || data.length === 0) {
-        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No 1 Yr data</p>';
-        return;
-    }
-    // find max among was_price, now_price
-    var maxVal = 0;
-    data.forEach(d => {
-        if (d.was_price > maxVal) maxVal = d.was_price;
-        if (d.now_price > maxVal) maxVal = d.now_price;
-    });
-    maxVal *= 1.05; // overhead
-
-    var width = chartView.clientWidth;
-    var height = chartView.clientHeight;
-    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute('width', width);
-    svg.setAttribute('height', height);
-    svg.style.backgroundColor = '#f9f9f9';
-
-    var leftPad = 40;
-    var bottomPad = 20;
-    var topPad = 10;
-    var chartH = height - bottomPad - topPad;
-    var chartW = width - leftPad - 10;
-
-    // y-axis
-    var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    axisLine.setAttribute('x1', leftPad);
-    axisLine.setAttribute('y1', height - bottomPad);
-    axisLine.setAttribute('x2', leftPad);
-    axisLine.setAttribute('y2', topPad);
-    axisLine.setAttribute('stroke', '#000');
-    svg.appendChild(axisLine);
-
-    var wasArr = data.map(d => d.was_price);
-    var nowArr = data.map(d => d.now_price);
-
-    function getX(i) {
-        let n = data.length;
-        if (n < 2) return leftPad;
-        let spacing = chartW / (n-1);
-        return leftPad + i*spacing;
-    }
-    function scaleY(val) {
-        return (height - bottomPad) - (val / maxVal)*chartH;
-    }
-    function getKeyIndices(arr) {
-        if (!arr.length) return [];
-        let minVal = arr[0], maxVal = arr[0];
-        let minIdx = 0, maxIdx = 0;
-        for (let i=1; i<arr.length; i++) {
-            if (arr[i] < minVal) { minVal = arr[i]; minIdx = i; }
-            if (arr[i] > maxVal) { maxVal = arr[i]; maxIdx = i; }
-        }
-        let lastIdx = arr.length - 1;
-        let setOfIdx = new Set([minIdx, maxIdx, lastIdx]);
-        return Array.from(setOfIdx);
-    }
-    let wasKeyIdx = getKeyIndices(wasArr);
-    let nowKeyIdx = getKeyIndices(nowArr);
-
-    function drawLine(arr, color) {
-        if (arr.length < 2) return;
-        let pathD = "";
-        for (let i=0; i<arr.length; i++) {
-            let x = getX(i);
-            let y = scaleY(arr[i]);
-            if (i===0) {
-                pathD = "M "+ x +" "+ y;
-            } else {
-                pathD += " L "+ x +" "+ y;
+    var ctx = document.getElementById('canvas-'+productId).getContext('2d');
+    chartInstances[productId] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data.map(d => d.date),
+            datasets: [
+                {
+                    label: 'Now Price',
+                    data: data.map(d => d.now_price),
+                    backgroundColor: '#009900',
+                    stack: 'Stack 0'
+                },
+                {
+                    label: 'Was Price',
+                    data: data.map(d => d.was_price - d.now_price),
+                    backgroundColor: '#FF9900',
+                    stack: 'Stack 0'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'Price'
+                    },
+                    beginAtZero: true
+                }
             }
         }
-        let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute('d', pathD);
-        path.setAttribute('fill', 'none');
-        path.setAttribute('stroke', color);
-        path.setAttribute('stroke-width', '2');
-        svg.appendChild(path);
-    }
-    function drawDots(arr) {
-        for (let i=0; i<arr.length; i++) {
-            let x = getX(i);
-            let y = scaleY(arr[i]);
-            let circ = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            circ.setAttribute('cx', x);
-            circ.setAttribute('cy', y);
-            circ.setAttribute('r', 3);
-            circ.setAttribute('fill', '#000');
-            svg.appendChild(circ);
-        }
-    }
-    function labelKeyPoints(arr, color, keyIndices) {
-        keyIndices.forEach(idx => {
-            let x = getX(idx);
-            let y = scaleY(arr[idx]);
-            let val = arr[idx].toFixed(2);
-            let txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            txt.setAttribute('x', x);
-            txt.setAttribute('y', y - 5);
-            txt.setAttribute('text-anchor', 'middle');
-            txt.setAttribute('font-size', '10');
-            txt.setAttribute('fill', color);
-            txt.textContent = val;
-            svg.appendChild(txt);
-        });
-    }
-
-    // was line => blue
-    drawLine(wasArr, "#0077cc");
-    drawDots(wasArr);
-    labelKeyPoints(wasArr, "#0077cc", wasKeyIdx);
-
-    // now line => green
-    drawLine(nowArr, "#009900");
-    drawDots(nowArr);
-    labelKeyPoints(nowArr, "#009900", nowKeyIdx);
-
-    // x-axis line
-    let xAxisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    xAxisLine.setAttribute('x1', leftPad);
-    xAxisLine.setAttribute('y1', height - bottomPad);
-    xAxisLine.setAttribute('x2', leftPad + chartW);
-    xAxisLine.setAttribute('y2', height - bottomPad);
-    xAxisLine.setAttribute('stroke', '#000');
-    svg.appendChild(xAxisLine);
-
-    // label each date along x-axis
-    for (let i=0; i<data.length; i++) {
-        let x = getX(i);
-        let y = height - 5;
-        let txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtDate.setAttribute('x', x);
-        txtDate.setAttribute('y', y);
-        txtDate.setAttribute('text-anchor', 'middle');
-        txtDate.setAttribute('font-size', '10');
-        txtDate.setAttribute('fill', '#000');
-        txtDate.textContent = data[i].date;
-        svg.appendChild(txtDate);
-    }
-
-    // y-axis ticks => "$ "
-    let labelVals = [0, maxVal/2, maxVal];
-    labelVals.forEach(function(val) {
-        let y = (height - bottomPad) - (val / maxVal)*chartH;
-        let gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        gridLine.setAttribute('x1', leftPad);
-        gridLine.setAttribute('y1', y);
-        gridLine.setAttribute('x2', width - 10);
-        gridLine.setAttribute('y2', y);
-        gridLine.setAttribute('stroke', '#ccc');
-        gridLine.setAttribute('stroke-dasharray', '2,2');
-        svg.appendChild(gridLine);
-
-        let txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtLabel.setAttribute('x', 5);
-        txtLabel.setAttribute('y', y+3);
-        txtLabel.setAttribute('font-size', '10');
-        txtLabel.setAttribute('fill', '#000');
-        txtLabel.textContent = "$ " + val.toFixed(2);
-        svg.appendChild(txtLabel);
     });
+}
 
-    chartView.appendChild(svg);
+/**
+ * Creates a two-line chart for 1 Yr data
+ */
+function createLineChart(productId, data) {
+    if (!data || data.length === 0) {
+        var ctx = document.getElementById('canvas-'+productId).getContext('2d');
+        ctx.font = "14px Arial";
+        ctx.fillText("No 1 Yr data", 10, 50);
+        return;
+    }
+
+    var ctx = document.getElementById('canvas-'+productId).getContext('2d');
+    chartInstances[productId] = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: data.map(d => d.date),
+            datasets: [
+                {
+                    label: 'Was Price',
+                    data: data.map(d => d.was_price),
+                    borderColor: '#0077cc',
+                    backgroundColor: '#0077cc',
+                    fill: false,
+                    tension: 0.1
+                },
+                {
+                    label: 'Now Price',
+                    data: data.map(d => d.now_price),
+                    borderColor: '#009900',
+                    backgroundColor: '#009900',
+                    fill: false,
+                    tension: 0.1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Price'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
 }
 </script>
-
 </head>
 <body>
 <div class="header-container">
@@ -692,7 +488,7 @@ function renderLineChart(chartView, data) {
     </button>
     <div class="page-title">ss_meat</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 19:05:55</div>
+  <div class="creation-time">Created on: 2025-02-28 19:08:01</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -739,7 +535,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">59.7% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20822350_KG"></div>
+      <div class="chart-view" id="chart-20822350_KG">
+        <canvas id="canvas-20822350_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -780,7 +578,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">59.7% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20822150_KG"></div>
+      <div class="chart-view" id="chart-20822150_KG">
+        <canvas id="canvas-20822150_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -821,7 +621,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">58.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20836762_KG"></div>
+      <div class="chart-view" id="chart-20836762_KG">
+        <canvas id="canvas-20836762_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -862,7 +664,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">56.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21618256_KG"></div>
+      <div class="chart-view" id="chart-21618256_KG">
+        <canvas id="canvas-21618256_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -903,7 +707,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">56.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20822343_KG"></div>
+      <div class="chart-view" id="chart-20822343_KG">
+        <canvas id="canvas-20822343_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -944,7 +750,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">55.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20835855_KG"></div>
+      <div class="chart-view" id="chart-20835855_KG">
+        <canvas id="canvas-20835855_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -985,7 +793,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">55.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20822906_KG"></div>
+      <div class="chart-view" id="chart-20822906_KG">
+        <canvas id="canvas-20822906_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1026,7 +836,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">54.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20822347_KG"></div>
+      <div class="chart-view" id="chart-20822347_KG">
+        <canvas id="canvas-20822347_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1067,7 +879,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">51.7% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20822459_KG"></div>
+      <div class="chart-view" id="chart-20822459_KG">
+        <canvas id="canvas-20822459_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1108,7 +922,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">51.6% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20822322_KG"></div>
+      <div class="chart-view" id="chart-20822322_KG">
+        <canvas id="canvas-20822322_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1149,7 +965,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">51.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20875645_KG"></div>
+      <div class="chart-view" id="chart-20875645_KG">
+        <canvas id="canvas-20875645_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1190,7 +1008,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">51.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20827782_KG"></div>
+      <div class="chart-view" id="chart-20827782_KG">
+        <canvas id="canvas-20827782_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1231,7 +1051,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">51.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20827787_KG"></div>
+      <div class="chart-view" id="chart-20827787_KG">
+        <canvas id="canvas-20827787_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1272,7 +1094,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">51.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20836766_KG"></div>
+      <div class="chart-view" id="chart-20836766_KG">
+        <canvas id="canvas-20836766_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1313,7 +1137,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">51.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20822452_KG"></div>
+      <div class="chart-view" id="chart-20822452_KG">
+        <canvas id="canvas-20822452_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1354,7 +1180,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">51.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20823075_KG"></div>
+      <div class="chart-view" id="chart-20823075_KG">
+        <canvas id="canvas-20823075_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1395,7 +1223,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">51.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20825554_KG"></div>
+      <div class="chart-view" id="chart-20825554_KG">
+        <canvas id="canvas-20825554_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1436,7 +1266,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">48.4% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20827788_KG"></div>
+      <div class="chart-view" id="chart-20827788_KG">
+        <canvas id="canvas-20827788_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1477,7 +1309,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">48.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20823076_KG"></div>
+      <div class="chart-view" id="chart-20823076_KG">
+        <canvas id="canvas-20823076_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1518,7 +1352,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">48.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20827783_KG"></div>
+      <div class="chart-view" id="chart-20827783_KG">
+        <canvas id="canvas-20827783_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1559,7 +1395,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">48.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20826506_KG"></div>
+      <div class="chart-view" id="chart-20826506_KG">
+        <canvas id="canvas-20826506_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1600,7 +1438,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">48.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20822907_KG"></div>
+      <div class="chart-view" id="chart-20822907_KG">
+        <canvas id="canvas-20822907_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1641,7 +1481,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">48.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20827785_KG"></div>
+      <div class="chart-view" id="chart-20827785_KG">
+        <canvas id="canvas-20827785_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1682,7 +1524,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">45.7% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20823073_KG"></div>
+      <div class="chart-view" id="chart-20823073_KG">
+        <canvas id="canvas-20823073_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1723,7 +1567,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">45.4% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20416522_EA"></div>
+      <div class="chart-view" id="chart-20416522_EA">
+        <canvas id="canvas-20416522_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1764,7 +1610,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">45.4% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20415978_EA"></div>
+      <div class="chart-view" id="chart-20415978_EA">
+        <canvas id="canvas-20415978_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1805,7 +1653,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">44.4% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20593099_KG"></div>
+      <div class="chart-view" id="chart-20593099_KG">
+        <canvas id="canvas-20593099_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1846,7 +1696,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">43.4% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20826455_KG"></div>
+      <div class="chart-view" id="chart-20826455_KG">
+        <canvas id="canvas-20826455_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1887,7 +1739,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">42.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20794618_KG"></div>
+      <div class="chart-view" id="chart-20794618_KG">
+        <canvas id="canvas-20794618_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1928,7 +1782,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">40.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20826460_KG"></div>
+      <div class="chart-view" id="chart-20826460_KG">
+        <canvas id="canvas-20826460_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -1969,7 +1825,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">39.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20162170_KG"></div>
+      <div class="chart-view" id="chart-20162170_KG">
+        <canvas id="canvas-20162170_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2010,7 +1868,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">33.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21601003_EA"></div>
+      <div class="chart-view" id="chart-21601003_EA">
+        <canvas id="canvas-21601003_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2051,7 +1911,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">33.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21600979_EA"></div>
+      <div class="chart-view" id="chart-21600979_EA">
+        <canvas id="canvas-21600979_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2092,7 +1954,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">31.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21352008_EA"></div>
+      <div class="chart-view" id="chart-21352008_EA">
+        <canvas id="canvas-21352008_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2133,7 +1997,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">30.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21588066_EA"></div>
+      <div class="chart-view" id="chart-21588066_EA">
+        <canvas id="canvas-21588066_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2174,7 +2040,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">29.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21290136_EA"></div>
+      <div class="chart-view" id="chart-21290136_EA">
+        <canvas id="canvas-21290136_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2215,7 +2083,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">29.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21289868_EA"></div>
+      <div class="chart-view" id="chart-21289868_EA">
+        <canvas id="canvas-21289868_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2256,7 +2126,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">29.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21289731_EA"></div>
+      <div class="chart-view" id="chart-21289731_EA">
+        <canvas id="canvas-21289731_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2297,7 +2169,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">27.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20794616_KG"></div>
+      <div class="chart-view" id="chart-20794616_KG">
+        <canvas id="canvas-20794616_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2338,7 +2212,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20315210_KG"></div>
+      <div class="chart-view" id="chart-20315210_KG">
+        <canvas id="canvas-20315210_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2379,7 +2255,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21201106_KG"></div>
+      <div class="chart-view" id="chart-21201106_KG">
+        <canvas id="canvas-21201106_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2420,7 +2298,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">24.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21061099_EA"></div>
+      <div class="chart-view" id="chart-21061099_EA">
+        <canvas id="canvas-21061099_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2461,7 +2341,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">24.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21061096_EA"></div>
+      <div class="chart-view" id="chart-21061096_EA">
+        <canvas id="canvas-21061096_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2502,7 +2384,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">24.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21059807_EA"></div>
+      <div class="chart-view" id="chart-21059807_EA">
+        <canvas id="canvas-21059807_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2543,7 +2427,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">24.7% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21366170_EA"></div>
+      <div class="chart-view" id="chart-21366170_EA">
+        <canvas id="canvas-21366170_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2584,7 +2470,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">24.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20321514_KG"></div>
+      <div class="chart-view" id="chart-20321514_KG">
+        <canvas id="canvas-20321514_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2625,7 +2513,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">24.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20319035_KG"></div>
+      <div class="chart-view" id="chart-20319035_KG">
+        <canvas id="canvas-20319035_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2666,7 +2556,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">21.8% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20794617_KG"></div>
+      <div class="chart-view" id="chart-20794617_KG">
+        <canvas id="canvas-20794617_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2707,7 +2599,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">20.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20794619_KG"></div>
+      <div class="chart-view" id="chart-20794619_KG">
+        <canvas id="canvas-20794619_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2748,7 +2642,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">20.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21646160_EA"></div>
+      <div class="chart-view" id="chart-21646160_EA">
+        <canvas id="canvas-21646160_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2789,7 +2685,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">19.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21201094_KG"></div>
+      <div class="chart-view" id="chart-21201094_KG">
+        <canvas id="canvas-21201094_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2830,7 +2728,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">19.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21201089_KG"></div>
+      <div class="chart-view" id="chart-21201089_KG">
+        <canvas id="canvas-21201089_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2871,7 +2771,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21570722_EA"></div>
+      <div class="chart-view" id="chart-21570722_EA">
+        <canvas id="canvas-21570722_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2912,7 +2814,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21570684_EA"></div>
+      <div class="chart-view" id="chart-21570684_EA">
+        <canvas id="canvas-21570684_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2953,7 +2857,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21570639_EA"></div>
+      <div class="chart-view" id="chart-21570639_EA">
+        <canvas id="canvas-21570639_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -2994,7 +2900,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21570617_EA"></div>
+      <div class="chart-view" id="chart-21570617_EA">
+        <canvas id="canvas-21570617_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3035,7 +2943,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21566593_EA"></div>
+      <div class="chart-view" id="chart-21566593_EA">
+        <canvas id="canvas-21566593_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3076,7 +2986,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21566049_EA"></div>
+      <div class="chart-view" id="chart-21566049_EA">
+        <canvas id="canvas-21566049_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3117,7 +3029,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21539305_EA"></div>
+      <div class="chart-view" id="chart-21539305_EA">
+        <canvas id="canvas-21539305_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3158,7 +3072,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21538773_EA"></div>
+      <div class="chart-view" id="chart-21538773_EA">
+        <canvas id="canvas-21538773_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3199,7 +3115,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21178761_EA"></div>
+      <div class="chart-view" id="chart-21178761_EA">
+        <canvas id="canvas-21178761_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3240,7 +3158,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21178745_EA"></div>
+      <div class="chart-view" id="chart-21178745_EA">
+        <canvas id="canvas-21178745_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3281,7 +3201,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21178744_EA"></div>
+      <div class="chart-view" id="chart-21178744_EA">
+        <canvas id="canvas-21178744_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3322,7 +3244,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20174909_EA"></div>
+      <div class="chart-view" id="chart-20174909_EA">
+        <canvas id="canvas-20174909_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3363,7 +3287,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20156771_EA"></div>
+      <div class="chart-view" id="chart-20156771_EA">
+        <canvas id="canvas-20156771_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3404,7 +3330,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20152629_EA"></div>
+      <div class="chart-view" id="chart-20152629_EA">
+        <canvas id="canvas-20152629_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3445,7 +3373,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20117351_EA"></div>
+      <div class="chart-view" id="chart-20117351_EA">
+        <canvas id="canvas-20117351_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3486,7 +3416,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20057892_EA"></div>
+      <div class="chart-view" id="chart-20057892_EA">
+        <canvas id="canvas-20057892_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3527,7 +3459,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21546108_EA"></div>
+      <div class="chart-view" id="chart-21546108_EA">
+        <canvas id="canvas-21546108_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3568,7 +3502,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">14.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20766562_KG"></div>
+      <div class="chart-view" id="chart-20766562_KG">
+        <canvas id="canvas-20766562_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3609,7 +3545,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">13.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20320534_KG"></div>
+      <div class="chart-view" id="chart-20320534_KG">
+        <canvas id="canvas-20320534_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3650,7 +3588,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">13.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20313480_KG"></div>
+      <div class="chart-view" id="chart-20313480_KG">
+        <canvas id="canvas-20313480_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3691,7 +3631,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">13.5% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20298289_KG"></div>
+      <div class="chart-view" id="chart-20298289_KG">
+        <canvas id="canvas-20298289_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3732,7 +3674,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">12.4% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21399630_EA"></div>
+      <div class="chart-view" id="chart-21399630_EA">
+        <canvas id="canvas-21399630_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3773,7 +3717,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">12.4% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21193815_EA"></div>
+      <div class="chart-view" id="chart-21193815_EA">
+        <canvas id="canvas-21193815_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3814,7 +3760,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">12.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20794831_KG"></div>
+      <div class="chart-view" id="chart-20794831_KG">
+        <canvas id="canvas-20794831_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3855,7 +3803,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">12.0% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20766602_KG"></div>
+      <div class="chart-view" id="chart-20766602_KG">
+        <canvas id="canvas-20766602_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3896,7 +3846,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">11.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20794620_KG"></div>
+      <div class="chart-view" id="chart-20794620_KG">
+        <canvas id="canvas-20794620_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3937,7 +3889,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">9.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21300113_EA"></div>
+      <div class="chart-view" id="chart-21300113_EA">
+        <canvas id="canvas-21300113_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -3978,7 +3932,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">9.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21300103_EA"></div>
+      <div class="chart-view" id="chart-21300103_EA">
+        <canvas id="canvas-21300103_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -4019,7 +3975,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">9.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21220674_EA"></div>
+      <div class="chart-view" id="chart-21220674_EA">
+        <canvas id="canvas-21220674_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -4060,7 +4018,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">7.6% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20507161_EA"></div>
+      <div class="chart-view" id="chart-20507161_EA">
+        <canvas id="canvas-20507161_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -4101,7 +4061,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">7.6% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20507160_EA"></div>
+      <div class="chart-view" id="chart-20507160_EA">
+        <canvas id="canvas-20507160_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -4142,7 +4104,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">7.6% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20507159_EA"></div>
+      <div class="chart-view" id="chart-20507159_EA">
+        <canvas id="canvas-20507159_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -4183,7 +4147,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">6.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21076606_EA"></div>
+      <div class="chart-view" id="chart-21076606_EA">
+        <canvas id="canvas-21076606_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -4224,7 +4190,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">6.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20923814_EA"></div>
+      <div class="chart-view" id="chart-20923814_EA">
+        <canvas id="canvas-20923814_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -4265,7 +4233,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">6.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20903492_EA"></div>
+      <div class="chart-view" id="chart-20903492_EA">
+        <canvas id="canvas-20903492_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -4306,7 +4276,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">6.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20903241_EA"></div>
+      <div class="chart-view" id="chart-20903241_EA">
+        <canvas id="canvas-20903241_EA" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
@@ -4347,7 +4319,9 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">5.8% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20798252_KG"></div>
+      <div class="chart-view" id="chart-20798252_KG">
+        <canvas id="canvas-20798252_KG" width="400" height="200"></canvas>
+      </div>
     </div>
   </div>
         
