@@ -14,15 +14,16 @@
 html {
     overflow-y: scroll;
 }
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: #fff;
+    overflow-x: hidden;
 }
 .header-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     background: #fff;
     padding: 10px 20px;
     display: flex;
@@ -39,102 +40,30 @@ html {
 .page-title {
     font-size: 22px;
     font-weight: 600;
-    font-family: 'Montserrat', Arial, sans-serif;
-}
-.divider {
-    border: 0;
-    height: 1px;
-    background: #ccc;
-    margin: 0 20px 20px;
-}
-.search-button {
-    background-color: #3e7d53;
-    border: none;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 9999px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    animation: fadeIn 0.8s forwards;
-}
-.search-button:hover {
-    background-color: #2c5f3d;
-}
-#searchBarContainer {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 240px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    text-align: center;
-    transition: opacity 0.5s ease;
-    opacity: 0;
-    display: none;
-    align-items: center;
-    z-index: 1001;
-}
-#searchInput {
-    padding: 4px;
-    width: calc(100% - 60px);
-    border: none;
-    outline: none;
-    font-size: 12px;
-    flex-grow: 1;
-}
-#searchCount {
-    font-size: 12px;
-    color: #3e7d53;
-    margin-left: 8px;
-    white-space: nowrap;
-}
-#closeSearchButton {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: #3e7d53;
-    margin-left: 8px;
-    line-height: 1;
-    padding: 0;
-}
-.header-spacer { height: 70px; }
-body {
-    font-family: 'Montserrat', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #fff;
-    overflow-x: hidden;
 }
 .creation-time {
     text-align: center;
     font-size: 12px;
     color: gray;
-    margin-top: 10px;
+    margin-top: 5px;
 }
-.item-number {
-    color: red;
-    font-weight: 600;
-    border: 2px solid red;
-    border-radius: 50%;
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    text-align: center;
-    line-height: 20px;
-    margin-right: 8px;
-    font-size: 12px;
+.divider {
+    border: 0; height: 1px; background: #ccc;
+    margin: 0 20px 20px;
+}
+.header-spacer {
+    height: 70px; /* to offset fixed header */
+}
+.search-button {
+    background-color: #3e7d53;
+    border: none; color: #fff;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    cursor: pointer; font-size: 12px;
+    font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex; align-items: center;
+    gap: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .item-container {
     width: 90%;
@@ -153,33 +82,49 @@ body {
     align-items: center;
 }
 .item-image img {
-    width: 60px;
-    height: auto;
+    width: 60px; height: auto;
 }
 .view-button {
     margin-top: 6px;
     padding: 8px 16px;
     background-color: #3e7d53;
-    color: #fff;
-    text-decoration: none;
+    color: #fff; text-decoration: none;
     border-radius: 9999px;
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    display: inline-block; border: none; cursor: pointer;
+    outline: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.toggle-chart {
+    margin-top: 8px;
+    padding: 4px 8px;
     font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-block;
-    border: none;
     cursor: pointer;
-    outline: none;
-    animation: fadeIn 0.8s forwards;
 }
-.view-button:hover {
-    background-color: #2c5f3d;
+.chart-and-detail {
+    position: relative;
+    width: 100%;
+    height: 200px; /* fixed height so mobile won't resize */
+    overflow: hidden; /* keep same block size */
 }
-.item-details {
-    flex: 1;
-    text-align: left;
-    font-size: 13px;
+.detail-view, .chart-view {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    padding: 5px;
+    transition: opacity 0.4s ease;
+}
+.detail-view {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    opacity: 1; /* default visible */
+    z-index: 2; /* on top */
+}
+.chart-view {
+    background-color: #f9f9f9;
+    opacity: 0; /* default hidden */
+    z-index: 1; /* behind detail */
 }
 .item-name {
     font-size: 14px;
@@ -187,318 +132,214 @@ body {
     font-weight: 600;
     color: black;
 }
+.item-number {
+    color: red; font-weight: 600;
+    border: 2px solid red; border-radius: 50%;
+    display: inline-block; width: 22px; height: 22px;
+    text-align: center; line-height: 20px;
+    margin-right: 8px; font-size: 12px;
+}
 .now-price {
-    color: red;
-    font-weight: 600;
-    font-size: 12px;
-    margin: 6px 0;
+    color: red; font-weight: 600; font-size: 12px;
+    margin: 4px 0;
 }
 .discount-badge {
     background-color: yellow;
-    display: inline-block;
-    font-weight: 600;
-    padding: 2px 5px;
-    margin: 6px 0;
-    font-size: 16px;
+    display: inline-block; font-weight: 600;
+    padding: 2px 5px; font-size: 16px;
 }
 .was-price {
     text-decoration: line-through;
 }
-.toggle-chart {
-    margin-top: 10px;
-    padding: 4px 8px;
-    font-size: 12px;
-    cursor: pointer;
-}
-.price-history-chart {
-    width: 100%;
-    height: 160px; /* smaller so it won't push other content too far */
-    border: 1px solid #ccc;
-    margin-top: 10px;
-    position: relative;
-    display: none;
-    background-color: #f9f9f9;
-    opacity: 0; /* Start hidden for fade-in */
-    transition: opacity 0.4s ease; /* fade in */
-}
-.price-history-chart.fade-in {
-    opacity: 1;
-}
-.bar-container {
-    position: absolute;
-    bottom: 20px; /* space for x-axis */
-    width: 16px; /* narrower bars */
-    border: 1px solid #aaa; /* debug outline */
-    z-index: 10;
-}
-.bar-now, .bar-was {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    border: 1px solid #333;
-}
-.bar-now {
-    background-color: #0000FF; /* bright blue */
-}
-.bar-was {
-    background-color: #FF0000; /* bright red */
-    opacity: 0.8;
-}
-.price-label {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    font-weight: bold;
-    color: #000;
-    background: #fff;
-    border: 1px solid #999;
-    padding: 0 2px;
-}
-.x-axis, .y-axis {
-    position: absolute;
-    font-size: 10px;
-    color: #666;
-    z-index: 5;
-}
-.x-axis {
-    bottom: 0;
-    left: 40px;
-    right: 10px;
-}
-.y-axis {
-    left: 0;
-    bottom: 20px;
-    top: 10px;
-}
+/* The actual chart (bars + line) will be drawn in an <svg> we create via JS. */
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Global price history data from server
-    window.priceHistoryData = {"20822350_KG": [{"date": "2025-02-26", "was_price": 13.29, "now_price": 5.35}, {"date": "2025-03-02", "was_price": 13.29, "now_price": 5.35}, {"date": "9999-12-31", "was_price": null, "now_price": 15.02}], "20822150_KG": [{"date": "2025-02-05", "was_price": 18.48, "now_price": 8.93}, {"date": "2025-02-26", "was_price": 18.48, "now_price": 7.44}, {"date": "2025-03-02", "was_price": 18.48, "now_price": 7.44}, {"date": "9999-12-31", "was_price": null, "now_price": 20.89}], "20836762_KG": [{"date": "2025-03-05", "was_price": 15.6, "now_price": 6.48}], "21618256_KG": [{"date": "2025-02-26", "was_price": 24.54, "now_price": 10.74}, {"date": "2025-03-02", "was_price": 24.54, "now_price": 10.74}, {"date": "9999-12-31", "was_price": null, "now_price": 28.02}], "20822343_KG": [{"date": "2025-02-26", "was_price": 17.41, "now_price": 7.62}, {"date": "2025-03-02", "was_price": 17.41, "now_price": 7.62}, {"date": "9999-12-31", "was_price": null, "now_price": 19.88}], "20835855_KG": [{"date": "2025-03-05", "was_price": 15.09, "now_price": 6.75}], "20822906_KG": [{"date": "2025-02-26", "was_price": 7.24, "now_price": 3.24}, {"date": "2025-03-02", "was_price": 7.24, "now_price": 3.24}, {"date": "9999-12-31", "was_price": null, "now_price": 8.11}], "20822347_KG": [{"date": "2025-02-26", "was_price": 10.9, "now_price": 5.01}, {"date": "2025-03-02", "was_price": 10.9, "now_price": 5.01}, {"date": "9999-12-31", "was_price": null, "now_price": 11.91}], "20822459_KG": [{"date": "2025-02-26", "was_price": 17.28, "now_price": 8.35}, {"date": "2025-03-02", "was_price": 17.28, "now_price": 8.35}, {"date": "9999-12-31", "was_price": null, "now_price": 19.54}], "20822322_KG": [{"date": "2025-02-26", "was_price": 9.18, "now_price": 4.44}, {"date": "2025-03-02", "was_price": 9.18, "now_price": 4.44}, {"date": "9999-12-31", "was_price": null, "now_price": 10.38}], "20875645_KG": [{"date": "2025-03-05", "was_price": 7.18, "now_price": 3.48}], "20827782_KG": [{"date": "2025-02-05", "was_price": 12.54, "now_price": 5.21}, {"date": "2025-03-05", "was_price": 12.54, "now_price": 6.08}], "20827787_KG": [{"date": "2025-02-05", "was_price": 14.76, "now_price": 6.14}, {"date": "2025-03-05", "was_price": 14.76, "now_price": 7.16}], "20836766_KG": [{"date": "2025-03-05", "was_price": 6.04, "now_price": 2.93}], "20822452_KG": [{"date": "2025-02-26", "was_price": 19.29, "now_price": 9.36}, {"date": "2025-03-02", "was_price": 19.29, "now_price": 9.36}, {"date": "9999-12-31", "was_price": null, "now_price": 21.46}], "20823075_KG": [{"date": "2025-02-26", "was_price": 15.66, "now_price": 7.6}, {"date": "2025-03-02", "was_price": 15.66, "now_price": 7.6}, {"date": "9999-12-31", "was_price": null, "now_price": 17.42}], "20825554_KG": [{"date": "2025-02-05", "was_price": 11.68, "now_price": 5.69}, {"date": "2025-03-05", "was_price": 11.68, "now_price": 5.69}], "20827788_KG": [{"date": "2025-02-05", "was_price": 8.66, "now_price": 4.47}, {"date": "2025-03-05", "was_price": 8.66, "now_price": 4.47}], "20823076_KG": [{"date": "2025-02-26", "was_price": 12.52, "now_price": 6.47}, {"date": "2025-03-02", "was_price": 12.52, "now_price": 6.47}, {"date": "9999-12-31", "was_price": null, "now_price": 13.69}], "20827783_KG": [{"date": "2025-02-05", "was_price": 7.46, "now_price": 3.87}, {"date": "2025-03-05", "was_price": 7.46, "now_price": 3.87}], "20826506_KG": [{"date": "2025-02-05", "was_price": 14.63, "now_price": 6.64}, {"date": "2025-03-05", "was_price": 14.63, "now_price": 7.59}], "20822907_KG": [{"date": "2025-02-26", "was_price": 8.48, "now_price": 4.4}, {"date": "2025-03-02", "was_price": 8.48, "now_price": 4.4}, {"date": "9999-12-31", "was_price": null, "now_price": 9.37}], "20827785_KG": [{"date": "2025-02-05", "was_price": 20.27, "now_price": 9.2}, {"date": "2025-03-05", "was_price": 20.27, "now_price": 10.52}], "20823073_KG": [{"date": "2025-02-26", "was_price": 9.38, "now_price": 5.09}, {"date": "2025-03-02", "was_price": 9.38, "now_price": 5.09}, {"date": "9999-12-31", "was_price": null, "now_price": 8.44}], "20416522_EA": [{"date": "2025-02-05", "was_price": 10.99, "now_price": 6.0}, {"date": "2025-02-26", "was_price": 10.99, "now_price": 10.0}, {"date": "2025-03-05", "was_price": 10.99, "now_price": 6.0}], "20415978_EA": [{"date": "2025-02-05", "was_price": 10.99, "now_price": 6.0}, {"date": "2025-02-26", "was_price": 10.99, "now_price": 10.0}, {"date": "2025-03-05", "was_price": 10.99, "now_price": 6.0}], "20593099_KG": [{"date": "2025-02-05", "was_price": 23.09, "now_price": 12.83}, {"date": "2025-03-05", "was_price": 23.09, "now_price": 12.83}], "20826455_KG": [{"date": "2025-02-05", "was_price": 7.45, "now_price": 4.22}, {"date": "2025-03-05", "was_price": 7.45, "now_price": 4.22}], "20794618_KG": [{"date": "2025-03-05", "was_price": 20.79, "now_price": 13.85}, {"date": "2025-03-05", "was_price": 20.79, "now_price": 11.88}], "20826460_KG": [{"date": "2025-02-05", "was_price": 8.83, "now_price": 5.28}, {"date": "2025-03-05", "was_price": 8.83, "now_price": 5.28}], "20162170_KG": [{"date": "2025-02-05", "was_price": 23.78, "now_price": 14.39}, {"date": "2025-03-05", "was_price": 23.78, "now_price": 14.39}], "21601003_EA": [{"date": "2025-03-05", "was_price": 6.0, "now_price": 4.0}], "21600979_EA": [{"date": "2025-03-05", "was_price": 6.0, "now_price": 4.0}], "21352008_EA": [{"date": "2025-02-26", "was_price": 15.99, "now_price": 11.0}, {"date": "2025-03-26", "was_price": 15.99, "now_price": 11.0}], "21588066_EA": [{"date": "2025-03-05", "was_price": 10.0, "now_price": 7.0}], "21290136_EA": [{"date": "2025-02-12", "was_price": 9.99, "now_price": 8.0}, {"date": "2025-02-26", "was_price": 9.99, "now_price": 8.0}, {"date": "2025-03-05", "was_price": 9.99, "now_price": 7.0}], "21289868_EA": [{"date": "2025-02-12", "was_price": 9.99, "now_price": 8.0}, {"date": "2025-02-26", "was_price": 9.99, "now_price": 8.0}, {"date": "2025-03-05", "was_price": 9.99, "now_price": 7.0}], "21289731_EA": [{"date": "2025-02-12", "was_price": 9.99, "now_price": 8.0}, {"date": "2025-02-26", "was_price": 9.99, "now_price": 8.0}, {"date": "2025-03-05", "was_price": 9.99, "now_price": 7.0}], "20794616_KG": [{"date": "2025-03-05", "was_price": 17.15, "now_price": 12.47}], "20315210_KG": [{"date": "2025-03-05", "was_price": 3.19, "now_price": 2.39}], "21201106_KG": [{"date": "2025-03-05", "was_price": 3.99, "now_price": 2.99}], "21061099_EA": [{"date": "2025-03-05", "was_price": 7.99, "now_price": 6.0}], "21061096_EA": [{"date": "2025-03-05", "was_price": 7.99, "now_price": 6.0}], "21059807_EA": [{"date": "2025-03-05", "was_price": 7.99, "now_price": 6.0}], "21366170_EA": [{"date": "2025-02-12", "was_price": 9.29, "now_price": 8.0}, {"date": "2025-02-26", "was_price": 9.29, "now_price": 8.0}, {"date": "2025-03-05", "was_price": 9.29, "now_price": 7.0}], "20321514_KG": [{"date": "2025-03-19", "was_price": 4.59, "now_price": 3.49}], "20319035_KG": [{"date": "2025-03-19", "was_price": 4.59, "now_price": 3.49}], "20794617_KG": [{"date": "2025-03-05", "was_price": 8.26, "now_price": 6.46}], "20794619_KG": [{"date": "2025-03-05", "was_price": 5.87, "now_price": 4.69}], "21646160_EA": [{"date": "2025-03-05", "was_price": 5.0, "now_price": 4.0}], "21201094_KG": [{"date": "2025-03-05", "was_price": 3.69, "now_price": 2.99}], "21201089_KG": [{"date": "2025-03-05", "was_price": 3.69, "now_price": 2.99}], "21570722_EA": [{"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21570684_EA": [{"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21570639_EA": [{"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21570617_EA": [{"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21566593_EA": [{"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21566049_EA": [{"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21539305_EA": [{"date": "2025-02-05", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21538773_EA": [{"date": "2025-02-05", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21178761_EA": [{"date": "2025-02-05", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21178745_EA": [{"date": "2025-02-05", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21178744_EA": [{"date": "2025-02-05", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "20174909_EA": [{"date": "2025-02-12", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-02-26", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "20156771_EA": [{"date": "2025-02-12", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-02-26", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "20152629_EA": [{"date": "2025-02-05", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "20117351_EA": [{"date": "2025-02-05", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "20057892_EA": [{"date": "2025-02-05", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "21546108_EA": [{"date": "2025-02-05", "was_price": 6.99, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 6.99, "now_price": 6.0}], "20766562_KG": [{"date": "2025-03-05", "was_price": 15.12, "now_price": 13.0}], "20320534_KG": [{"date": "2025-03-05", "was_price": 2.89, "now_price": 2.5}], "20313480_KG": [{"date": "2025-03-05", "was_price": 2.89, "now_price": 2.5}], "20298289_KG": [{"date": "2025-03-05", "was_price": 2.89, "now_price": 2.5}], "21399630_EA": [{"date": "2025-02-19", "was_price": 7.99, "now_price": 7.0}, {"date": "2025-03-05", "was_price": 7.99, "now_price": 7.0}], "21193815_EA": [{"date": "2025-02-19", "was_price": 7.99, "now_price": 7.0}, {"date": "2025-03-05", "was_price": 7.99, "now_price": 7.0}], "20794831_KG": [{"date": "2025-03-05", "was_price": 16.22, "now_price": 14.27}], "20766602_KG": [{"date": "2025-03-05", "was_price": 12.5, "now_price": 11.0}], "20794620_KG": [{"date": "2025-03-05", "was_price": 10.17, "now_price": 9.04}], "21300113_EA": [{"date": "2025-02-19", "was_price": 9.99, "now_price": 9.0}, {"date": "2025-03-05", "was_price": 9.99, "now_price": 9.0}], "21300103_EA": [{"date": "2025-02-19", "was_price": 9.99, "now_price": 9.0}, {"date": "2025-03-05", "was_price": 9.99, "now_price": 9.0}], "21220674_EA": [{"date": "2025-02-19", "was_price": 9.99, "now_price": 9.0}, {"date": "2025-03-05", "was_price": 9.99, "now_price": 9.0}], "20507161_EA": [{"date": "2025-03-05", "was_price": 6.49, "now_price": 6.0}], "20507160_EA": [{"date": "2025-03-05", "was_price": 6.49, "now_price": 6.0}], "20507159_EA": [{"date": "2025-03-05", "was_price": 6.49, "now_price": 6.0}], "21076606_EA": [{"date": "2025-02-26", "was_price": 15.99, "now_price": 14.99}, {"date": "2025-03-05", "was_price": 15.99, "now_price": 15.0}], "20923814_EA": [{"date": "2025-02-26", "was_price": 15.99, "now_price": 14.99}, {"date": "2025-03-05", "was_price": 15.99, "now_price": 15.0}], "20903492_EA": [{"date": "2025-02-26", "was_price": 15.99, "now_price": 14.99}, {"date": "2025-03-05", "was_price": 15.99, "now_price": 15.0}], "20903241_EA": [{"date": "2025-02-26", "was_price": 15.99, "now_price": 14.99}, {"date": "2025-03-05", "was_price": 15.99, "now_price": 15.0}], "20798252_KG": [{"date": "2025-02-05", "was_price": 14.38, "now_price": 13.52}, {"date": "2025-02-19", "was_price": 14.38, "now_price": 13.55}, {"date": "2025-02-26", "was_price": 14.38, "now_price": 13.52}, {"date": "2025-03-05", "was_price": 14.38, "now_price": 13.55}]};
+    // Make the price history data globally available
+    window.priceHistoryData = {"20822350_KG": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}], "20822150_KG": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}], "20836762_KG": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}], "21618256_KG": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}], "20822343_KG": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}], "20835855_KG": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}], "20822906_KG": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}], "20822347_KG": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}], "20822459_KG": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}], "20822322_KG": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}], "20875645_KG": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}], "20827782_KG": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}], "20827787_KG": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}], "20836766_KG": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}], "20822452_KG": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}], "20823075_KG": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}], "20825554_KG": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}], "20827788_KG": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}], "20823076_KG": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}], "20827783_KG": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}], "20826506_KG": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}], "20822907_KG": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}], "20827785_KG": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}], "20823073_KG": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}], "20416522_EA": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "20415978_EA": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "20593099_KG": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}], "20826455_KG": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}], "20794618_KG": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}], "20826460_KG": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}], "20162170_KG": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}], "21601003_EA": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "21600979_EA": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "21352008_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}], "21588066_EA": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}], "21290136_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "21289868_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "21289731_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "20794616_KG": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}], "20315210_KG": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}], "21201106_KG": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "21061099_EA": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "21061096_EA": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "21059807_EA": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "21366170_EA": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}], "20321514_KG": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "20319035_KG": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "20794617_KG": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}], "20794619_KG": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}], "21646160_EA": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}], "21201094_KG": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "21201089_KG": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "21570722_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21570684_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21570639_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21570617_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21566593_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21566049_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21539305_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21538773_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21178761_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21178745_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21178744_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20174909_EA": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20156771_EA": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20152629_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20117351_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20057892_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21546108_EA": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "20766562_KG": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}], "20320534_KG": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "20313480_KG": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "20298289_KG": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "21399630_EA": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "21193815_EA": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "20794831_KG": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}], "20766602_KG": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}], "20794620_KG": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}], "21300113_EA": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "21300103_EA": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "21220674_EA": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "20507161_EA": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "20507160_EA": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "20507159_EA": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "21076606_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "20923814_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "20903492_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "20903241_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "20798252_KG": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}]};
 });
 
+/**
+ * When toggling, fade out detail-view and fade in chart-view, or vice versa.
+ * We do NOT resize the container. Both views are absolutely positioned in the same area.
+ */
 function toggleChart(btn) {
     var container = btn.closest('.item-container');
-    var details = container.querySelector('.item-details');
-    var chart = container.querySelector('.price-history-chart');
-    if (chart.style.display === 'none' || chart.style.display === '') {
-        // Show chart area
-        details.style.display = 'none';
-        chart.style.display = 'block';
-        // Trigger fade-in
+    var chartDetailWrapper = container.querySelector('.chart-and-detail');
+    var detailView = chartDetailWrapper.querySelector('.detail-view');
+    var chartView = chartDetailWrapper.querySelector('.chart-view');
+    var productId = container.getAttribute('data-product-id');
+    var data = window.priceHistoryData[productId] || [];
+
+    // If chart is currently hidden => show chart, hide detail
+    if (chartView.style.opacity === '' || chartView.style.opacity === '0') {
+        // fade out detail
+        detailView.style.opacity = '0';
+        // fade in chart
+        chartView.style.opacity = '1';
+
+        // Actually load & draw the chart
         setTimeout(function() {
-            chart.classList.add('fade-in');
-        }, 10);
+            renderStackedChart(chartView, data);
+        }, 50);
 
         btn.textContent = 'Show Details';
-        // Render the chart
-        var productId = container.getAttribute('data-product-id');
-        var data = window.priceHistoryData[productId];
-        renderChart(productId, data);
     } else {
-        // Hide chart
-        chart.classList.remove('fade-in');
+        // fade out chart
+        chartView.style.opacity = '0';
+        // fade in detail
+        detailView.style.opacity = '1';
+        // clear the chart after fade out (optional)
         setTimeout(function() {
-            chart.style.display = 'none';
-        }, 400); // match transition
-        details.style.display = 'block';
+            chartView.innerHTML = '';
+        }, 400);
         btn.textContent = 'Show History';
     }
 }
 
-function renderChart(productId, data) {
-    var chartContainer = document.getElementById('chart-' + productId);
-    // Clear previous content
-    chartContainer.innerHTML = '';
+function renderStackedChart(chartView, data) {
+    chartView.innerHTML = '';
     if (!data || data.length === 0) {
-        chartContainer.innerHTML = '<p style="text-align:center;">No history available</p>';
+        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No history available</p>';
         return;
     }
-    // Determine max price for scaling
-    var maxPrice = 0;
-    data.forEach(function(item) {
-        maxPrice = Math.max(maxPrice, item.was_price || 0, item.now_price || 0);
+    // We'll treat was_price as total. bottom portion = now_price, top portion = was_price - now_price
+    // Also draw a line that connects the top of the bottom portion (the "now" portion).
+
+    // figure out max was_price so all bars scale equally
+    var maxWas = 0;
+    data.forEach(function(d) {
+        if (d.was_price > maxWas) {
+            maxWas = d.was_price;
+        }
     });
 
-    // We'll use 100px as the max bar height
-    var barMaxHeight = 100;
+    // Create an <svg> that fills the chartView
+    var width = chartView.clientWidth;
+    var height = chartView.clientHeight;
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
+    svg.style.backgroundColor = '#f9f9f9';
 
-    // Create x-axis labels container
-    var xAxis = document.createElement('div');
-    xAxis.className = 'x-axis';
-    chartContainer.appendChild(xAxis);
+    // We'll leave some padding for y-axis
+    var leftPad = 40;
+    var bottomPad = 20;
+    var topPad = 10;
+    var chartH = height - bottomPad - topPad;
+    var chartW = width - leftPad - 10;
 
-    // Create y-axis labels container
-    var yAxis = document.createElement('div');
-    yAxis.className = 'y-axis';
-    chartContainer.appendChild(yAxis);
+    // We'll store x,y positions for the line connecting the "now" portion
+    var linePoints = [];
 
-    data.forEach(function(item, index) {
-        var totalBars = data.length;
-        var chartWidth = chartContainer.getBoundingClientRect().width - 50; // y-axis space
-        var spacing = chartWidth / totalBars;
-
-        // Convert prices to pixel heights
-        var wasH = (item.was_price / maxPrice) * barMaxHeight;
-        var nowH = (item.now_price / maxPrice) * barMaxHeight;
-
-        // Create a bar container
-        var barContainer = document.createElement('div');
-        barContainer.className = 'bar-container';
-        barContainer.style.left = (40 + index * spacing) + 'px';
-
-        var barHeight = Math.max(wasH, nowH);
-        barContainer.style.height = barHeight + 'px';
-
-        // Create barNow
-        var barNow = document.createElement('div');
-        barNow.className = 'bar-now';
-        barNow.style.bottom = '0px';
-        barNow.style.height = nowH + 'px';
-
-        // Create barWas
-        var barWas = document.createElement('div');
-        barWas.className = 'bar-was';
-        barWas.style.height = wasH + 'px';
-        barWas.style.bottom = '0px';
-
-        // If now >= was, stack was above now
-        if (item.now_price >= item.was_price) {
-            if (wasH < nowH) {
-                barWas.style.bottom = nowH - wasH + 'px';
-            }
-        } else {
-            // was bigger
-            if (wasH > nowH) {
-                barWas.style.bottom = nowH + 'px';
-            }
+    data.forEach(function(d, i) {
+        // total is d.was_price
+        // bottom portion is d.now_price
+        // top portion is (d.was_price - d.now_price)
+        var total = d.was_price;
+        var bottomVal = d.now_price;
+        if (bottomVal > total) {
+            bottomVal = total; // edge case
         }
+        var topVal = total - bottomVal;
+        // scale to chartH
+        var totalH = (total / maxWas) * chartH;
+        var bottomH = (bottomVal / total) * totalH; // portion
+        var topH = totalH - bottomH;
 
-        barContainer.appendChild(barNow);
-        barContainer.appendChild(barWas);
+        // x position
+        var barSpacing = chartW / data.length;
+        var barX = leftPad + i * barSpacing + barSpacing*0.2; // a bit of offset
+        var barWidth = barSpacing * 0.6; // narrower bars
 
-        // Now label
-        var nowLabel = document.createElement('div');
-        nowLabel.className = 'price-label';
-        nowLabel.textContent = item.now_price.toFixed(2);
-        nowLabel.style.bottom = (nowH - 12) + 'px'; // place label near top of now portion
-        barContainer.appendChild(nowLabel);
+        var barBottomY = (height - bottomPad) - bottomH; // from top
+        var barTopY = barBottomY - topH;
 
-        // Was label
-        var wasLabel = document.createElement('div');
-        wasLabel.className = 'price-label';
-        wasLabel.textContent = item.was_price.toFixed(2);
-        if (item.was_price >= item.now_price) {
-            // was portion on top
-            wasLabel.style.bottom = (nowH + wasH - 12) + 'px';
-        } else {
-            wasLabel.style.bottom = (wasH - 12) + 'px';
-        }
-        barContainer.appendChild(wasLabel);
+        // Draw bottom portion (green)
+        var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rectNow.setAttribute('x', barX);
+        rectNow.setAttribute('y', barBottomY);
+        rectNow.setAttribute('width', barWidth);
+        rectNow.setAttribute('height', bottomH);
+        rectNow.setAttribute('fill', '#009900'); // green
+        rectNow.setAttribute('stroke', '#333');
+        svg.appendChild(rectNow);
 
-        chartContainer.appendChild(barContainer);
+        // Draw top portion (orange)
+        var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rectWas.setAttribute('x', barX);
+        rectWas.setAttribute('y', barTopY);
+        rectWas.setAttribute('width', barWidth);
+        rectWas.setAttribute('height', topH);
+        rectWas.setAttribute('fill', '#FF9900'); // orange
+        rectWas.setAttribute('stroke', '#333');
+        svg.appendChild(rectWas);
 
-        // x-axis label
-        var dateLabel = document.createElement('div');
-        dateLabel.style.position = 'absolute';
-        dateLabel.style.bottom = '-15px';
-        dateLabel.style.left = (index * spacing) + 'px';
-        dateLabel.style.width = spacing + 'px';
-        dateLabel.style.textAlign = 'center';
-        dateLabel.textContent = item.date;
-        xAxis.appendChild(dateLabel);
+        // Label for bottom portion
+        var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtNow.setAttribute('x', barX + barWidth/2);
+        txtNow.setAttribute('y', barBottomY - 2);
+        txtNow.setAttribute('text-anchor', 'middle');
+        txtNow.setAttribute('font-size', '10');
+        txtNow.setAttribute('fill', '#000');
+        txtNow.textContent = d.now_price.toFixed(2);
+        svg.appendChild(txtNow);
+
+        // Label for top portion
+        var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtWas.setAttribute('x', barX + barWidth/2);
+        txtWas.setAttribute('y', barTopY + 10);
+        txtWas.setAttribute('text-anchor', 'middle');
+        txtWas.setAttribute('font-size', '10');
+        txtWas.setAttribute('fill', '#000');
+        txtWas.textContent = d.was_price.toFixed(2);
+        svg.appendChild(txtWas);
+
+        // track the top of the bottom portion for the line
+        var midBarX = barX + barWidth/2;
+        var bottomTopY = barBottomY; // the top edge of the green portion
+        linePoints.push([midBarX, bottomTopY]);
+
+        // X-axis label (the short date)
+        var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
+        txtDate.setAttribute('y', height - 5);
+        txtDate.setAttribute('text-anchor', 'middle');
+        txtDate.setAttribute('font-size', '10');
+        txtDate.setAttribute('fill', '#000');
+        txtDate.textContent = d.date; // already "MM.DD"
+        svg.appendChild(txtDate);
     });
 
-    // y-axis labels (0, mid, max)
-    var yLabels = [0, maxPrice / 2, maxPrice];
-    yLabels.forEach(function(val) {
-        var label = document.createElement('div');
-        label.style.position = 'absolute';
-        label.style.left = '0';
-        // scale label
-        label.style.bottom = ((val / maxPrice) * 100) + 20 + 'px';
-        label.textContent = val.toFixed(2);
-        yAxis.appendChild(label);
-    });
-}
-</script>
-<script>
-window.addEventListener('pageshow', function(event) {
-    if (event.persisted) { window.location.reload(); }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    var firstElems = document.getElementsByClassName('first-word');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].dataset.original = firstElems[i].innerHTML;
-    }
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].dataset.original = secondElems[i].innerHTML;
-    }
-});
-
-function showSearchBar() {
-    var header = document.querySelector('.header-container');
-    header.style.display = 'none';
-    var searchBar = document.getElementById('searchBarContainer');
-    searchBar.style.display = 'flex';
-    setTimeout(function() {
-        searchBar.style.opacity = "1";
-    }, 10);
-    document.getElementById('searchInput').focus();
-}
-
-function hideSearchBar() {
-    var searchInput = document.getElementById('searchInput');
-    searchInput.value = '';
-    var firstElems = document.getElementsByClassName('first-word');
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].innerHTML = firstElems[i].dataset.original;
-    }
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].innerHTML = secondElems[i].dataset.original;
-    }
-    var items = document.getElementsByClassName('item-container');
-    for (var i = 0; i < items.length; i++) {
-        items[i].style.display = "";
-    }
-    document.getElementById('searchCount').innerText = "";
-    var searchBar = document.getElementById('searchBarContainer');
-    var header = document.querySelector('.header-container');
-    searchBar.style.opacity = "0";
-    setTimeout(function() {
-         searchBar.style.display = 'none';
-         header.style.display = 'flex';
-    }, 500);
-}
-
-function inPageSearch() {
-    var input = document.getElementById('searchInput').value.trim();
-    var term = input.toLowerCase();
-    var items = document.getElementsByClassName('item-container');
-    var visibleCount = 0;
-    for (var i = 0; i < items.length; i++) {
-        var firstElem = items[i].querySelector('.first-word');
-        var secondElem = items[i].querySelector('.product-name-text');
-        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-        if (term === '' || fullName.indexOf(term) > -1) {
-            items[i].style.display = '';
-            visibleCount++;
-            if (term !== '') {
-                firstElem.innerHTML = firstElems[i].dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-                secondElem.innerHTML = secondElems[i].dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-            } else {
-                firstElem.innerHTML = firstElems[i].dataset.original;
-                secondElem.innerHTML = secondElems[i].dataset.original;
-            }
-        } else {
-            items[i].style.display = 'none';
+    // Now draw the line connecting the bottom portion across bars
+    // We'll create a path from linePoints
+    if (linePoints.length > 1) {
+        var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
+        for (var i=1; i<linePoints.length; i++) {
+            pathD += " L " + linePoints[i][0] + " " + linePoints[i][1];
         }
+        var linePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        linePath.setAttribute('d', pathD);
+        linePath.setAttribute('fill', 'none');
+        linePath.setAttribute('stroke', '#0077cc'); // some color
+        linePath.setAttribute('stroke-width', '2');
+        svg.appendChild(linePath);
     }
-    document.getElementById('searchCount').innerText = visibleCount + " found";
+
+    // Y-axis labels (0, mid, max)
+    var labelVals = [0, maxWas/2, maxWas];
+    labelVals.forEach(function(val) {
+        var y = (height - bottomPad) - (val / maxWas)*chartH;
+        var txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtLabel.setAttribute('x', 5);
+        txtLabel.setAttribute('y', y+3);
+        txtLabel.setAttribute('font-size', '10');
+        txtLabel.setAttribute('fill', '#000');
+        txtLabel.textContent = val.toFixed(2);
+        svg.appendChild(txtLabel);
+    });
+
+    chartView.appendChild(svg);
 }
 </script>
 </head>
@@ -506,20 +347,15 @@ function inPageSearch() {
 <div class='header-container'>
   <div class='header-row'>
     <button class='search-button' onclick='showSearchBar()'>
-      <span class='search-icon'>🔍</span>
-      FIND ➜
+      🔍 FIND ➜
     </button>
     <div class='page-title'>Meat</div>
   </div>
-  <div class='creation-time'>Created on: 2025-02-28 08:28:24</div>
+  <div class='creation-time'>Created on: 2025-02-28 09:45:15</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
-<div id='searchBarContainer'>
-  <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
-  <span id='searchCount'></span>
-  <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
-</div>
+
 
         <div class='item-container' data-product-id='20822350_KG'>
           <div class='item-image'>
@@ -527,18 +363,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-end-club-pack/p/20822350_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#1</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Chop Rib End, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$13.29</span></div>
-            <div class='now-price'>NOW: $5.35</div>
-            <div class='discount-badge'>59.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20822350_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#1</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Chop Rib End, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$13.29</span></div>
+    <div class='now-price'>NOW: $5.35</div>
+    <div class='discount-badge'>59.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20822350_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20822150_KG'>
@@ -547,18 +385,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-roast/p/20822150_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#2</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Sirloin Roast</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$18.48</span></div>
-            <div class='now-price'>NOW: $7.44</div>
-            <div class='discount-badge'>59.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20822150_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#2</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Sirloin Roast</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$18.48</span></div>
+    <div class='now-price'>NOW: $7.44</div>
+    <div class='discount-badge'>59.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20822150_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20836762_KG'>
@@ -567,18 +407,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/boneless-pork-sirloin-roast/p/20836762_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#3</span>
-              <span class='first-word'>Boneless</span>
-              <span class='product-name-text'>Pork Sirloin Roast</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$15.60</span></div>
-            <div class='now-price'>NOW: $6.48</div>
-            <div class='discount-badge'>58.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20836762_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#3</span>
+      <span class='first-word'>Boneless</span>
+      <span class='product-name-text'>Pork Sirloin Roast</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$15.60</span></div>
+    <div class='now-price'>NOW: $6.48</div>
+    <div class='discount-badge'>58.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20836762_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21618256_KG'>
@@ -587,18 +429,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-combination-chops-sirloin-and-rib/p/21618256_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#4</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Combination Chops, Sirloin and Rib</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$24.54</span></div>
-            <div class='now-price'>NOW: $10.74</div>
-            <div class='discount-badge'>56.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21618256_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#4</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Combination Chops, Sirloin and Rib</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$24.54</span></div>
+    <div class='now-price'>NOW: $10.74</div>
+    <div class='discount-badge'>56.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21618256_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20822343_KG'>
@@ -607,18 +451,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-loin-sirloin-combination-chop/p/20822343_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#5</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Rib Loin & Sirloin Combination Chop</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$17.41</span></div>
-            <div class='now-price'>NOW: $7.62</div>
-            <div class='discount-badge'>56.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20822343_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#5</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Rib Loin & Sirloin Combination Chop</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$17.41</span></div>
+    <div class='now-price'>NOW: $7.62</div>
+    <div class='discount-badge'>56.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20822343_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20835855_KG'>
@@ -627,18 +473,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chops-boneless-club-pack/p/20835855_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#6</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Sirloin Chops Boneless, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$15.09</span></div>
-            <div class='now-price'>NOW: $6.75</div>
-            <div class='discount-badge'>55.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20835855_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#6</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Sirloin Chops Boneless, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$15.09</span></div>
+    <div class='now-price'>NOW: $6.75</div>
+    <div class='discount-badge'>55.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20835855_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20822906_KG'>
@@ -647,18 +495,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-end-chop/p/20822906_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#7</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Rib End Chop</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$7.24</span></div>
-            <div class='now-price'>NOW: $3.24</div>
-            <div class='discount-badge'>55.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20822906_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#7</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Rib End Chop</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$7.24</span></div>
+    <div class='now-price'>NOW: $3.24</div>
+    <div class='discount-badge'>55.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20822906_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20822347_KG'>
@@ -667,18 +517,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-fast-fry/p/20822347_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#8</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Chop Rib, Fast Fry</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$10.90</span></div>
-            <div class='now-price'>NOW: $5.01</div>
-            <div class='discount-badge'>54.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20822347_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#8</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Chop Rib, Fast Fry</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$10.90</span></div>
+    <div class='now-price'>NOW: $5.01</div>
+    <div class='discount-badge'>54.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20822347_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20822459_KG'>
@@ -687,18 +539,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-roast-portion/p/20822459_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#9</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Rib Roast Portion</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$17.28</span></div>
-            <div class='now-price'>NOW: $8.35</div>
-            <div class='discount-badge'>51.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20822459_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#9</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Rib Roast Portion</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$17.28</span></div>
+    <div class='now-price'>NOW: $8.35</div>
+    <div class='discount-badge'>51.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20822459_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20822322_KG'>
@@ -707,18 +561,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chop-end-portion/p/20822322_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#10</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Sirloin Chop, End Portion</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$9.18</span></div>
-            <div class='now-price'>NOW: $4.44</div>
-            <div class='discount-badge'>51.6% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20822322_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#10</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Sirloin Chop, End Portion</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$9.18</span></div>
+    <div class='now-price'>NOW: $4.44</div>
+    <div class='discount-badge'>51.6% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20822322_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20875645_KG'>
@@ -727,18 +583,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/boneless-pork-for-stew/p/20875645_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#11</span>
-              <span class='first-word'>Boneless</span>
-              <span class='product-name-text'>Pork For Stew</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.18</span></div>
-            <div class='now-price'>NOW: $3.48</div>
-            <div class='discount-badge'>51.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20875645_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#11</span>
+      <span class='first-word'>Boneless</span>
+      <span class='product-name-text'>Pork For Stew</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.18</span></div>
+    <div class='now-price'>NOW: $3.48</div>
+    <div class='discount-badge'>51.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20875645_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20827782_KG'>
@@ -747,18 +605,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/boneless-pork-loin-rib-chops-club-pack/p/20827782_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#12</span>
-              <span class='first-word'>Boneless</span>
-              <span class='product-name-text'>Pork Loin Rib Chops, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$12.54</span></div>
-            <div class='now-price'>NOW: $6.08</div>
-            <div class='discount-badge'>51.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20827782_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#12</span>
+      <span class='first-word'>Boneless</span>
+      <span class='product-name-text'>Pork Loin Rib Chops, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$12.54</span></div>
+    <div class='now-price'>NOW: $6.08</div>
+    <div class='discount-badge'>51.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20827782_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20827787_KG'>
@@ -767,18 +627,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-roast-boneless/p/20827787_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#13</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Rib Roast, Boneless</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$14.76</span></div>
-            <div class='now-price'>NOW: $7.16</div>
-            <div class='discount-badge'>51.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20827787_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#13</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Rib Roast, Boneless</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$14.76</span></div>
+    <div class='now-price'>NOW: $7.16</div>
+    <div class='discount-badge'>51.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20827787_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20836766_KG'>
@@ -787,18 +649,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chops-boneless/p/20836766_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#14</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Sirloin Chops Boneless</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$6.04</span></div>
-            <div class='now-price'>NOW: $2.93</div>
-            <div class='discount-badge'>51.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20836766_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#14</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Sirloin Chops Boneless</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$6.04</span></div>
+    <div class='now-price'>NOW: $2.93</div>
+    <div class='discount-badge'>51.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20836766_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20822452_KG'>
@@ -807,18 +671,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-roast-center-cut-with-bone/p/20822452_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#15</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Roast, Center Cut with Bone</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$19.29</span></div>
-            <div class='now-price'>NOW: $9.36</div>
-            <div class='discount-badge'>51.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20822452_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#15</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Roast, Center Cut with Bone</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$19.29</span></div>
+    <div class='now-price'>NOW: $9.36</div>
+    <div class='discount-badge'>51.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20822452_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20823075_KG'>
@@ -827,18 +693,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-chop-club-pack/p/20823075_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#16</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Chop Center Chop, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$15.66</span></div>
-            <div class='now-price'>NOW: $7.60</div>
-            <div class='discount-badge'>51.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20823075_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#16</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Chop Center Chop, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$15.66</span></div>
+    <div class='now-price'>NOW: $7.60</div>
+    <div class='discount-badge'>51.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20823075_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20825554_KG'>
@@ -847,18 +715,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-butterfly-center-cut-boneless-club-pack/p/20825554_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#17</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Butterfly Center Cut Boneless, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$11.68</span></div>
-            <div class='now-price'>NOW: $5.69</div>
-            <div class='discount-badge'>51.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20825554_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#17</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Butterfly Center Cut Boneless, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$11.68</span></div>
+    <div class='now-price'>NOW: $5.69</div>
+    <div class='discount-badge'>51.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20825554_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20827788_KG'>
@@ -867,18 +737,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/centre-cut-pork-loin-chop-boneless/p/20827788_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#18</span>
-              <span class='first-word'>Centre</span>
-              <span class='product-name-text'>Cut Pork Loin Chop Boneless</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$8.66</span></div>
-            <div class='now-price'>NOW: $4.47</div>
-            <div class='discount-badge'>48.4% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20827788_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#18</span>
+      <span class='first-word'>Centre</span>
+      <span class='product-name-text'>Cut Pork Loin Chop Boneless</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$8.66</span></div>
+    <div class='now-price'>NOW: $4.47</div>
+    <div class='discount-badge'>48.4% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20827788_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20823076_KG'>
@@ -887,18 +759,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chopfast-fry-bone-in-club-pack/p/20823076_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#19</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Chopfast Fry  Bone In, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$12.52</span></div>
-            <div class='now-price'>NOW: $6.47</div>
-            <div class='discount-badge'>48.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20823076_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#19</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Chopfast Fry  Bone In, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$12.52</span></div>
+    <div class='now-price'>NOW: $6.47</div>
+    <div class='discount-badge'>48.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20823076_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20827783_KG'>
@@ -907,18 +781,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-chops-boneless/p/20827783_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#20</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Rib Chops Boneless</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.46</span></div>
-            <div class='now-price'>NOW: $3.87</div>
-            <div class='discount-badge'>48.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20827783_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#20</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Rib Chops Boneless</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.46</span></div>
+    <div class='now-price'>NOW: $3.87</div>
+    <div class='discount-badge'>48.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20827783_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20826506_KG'>
@@ -927,18 +803,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-boneless-club-pack/p/20826506_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#21</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Chop Boneless Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$14.63</span></div>
-            <div class='now-price'>NOW: $7.59</div>
-            <div class='discount-badge'>48.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20826506_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#21</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Chop Boneless Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$14.63</span></div>
+    <div class='now-price'>NOW: $7.59</div>
+    <div class='discount-badge'>48.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20826506_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20822907_KG'>
@@ -947,18 +825,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-bone-in-center-cut/p/20822907_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#22</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Chop, Bone In Center Cut</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$8.48</span></div>
-            <div class='now-price'>NOW: $4.40</div>
-            <div class='discount-badge'>48.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20822907_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#22</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Chop, Bone In Center Cut</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$8.48</span></div>
+    <div class='now-price'>NOW: $4.40</div>
+    <div class='discount-badge'>48.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20822907_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20827785_KG'>
@@ -967,18 +847,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/centre-cut-pork-loin-roast-boneless/p/20827785_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#23</span>
-              <span class='first-word'>Centre</span>
-              <span class='product-name-text'>Cut Pork Loin Roast Boneless</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$20.27</span></div>
-            <div class='now-price'>NOW: $10.52</div>
-            <div class='discount-badge'>48.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20827785_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#23</span>
+      <span class='first-word'>Centre</span>
+      <span class='product-name-text'>Cut Pork Loin Roast Boneless</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$20.27</span></div>
+    <div class='now-price'>NOW: $10.52</div>
+    <div class='discount-badge'>48.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20827785_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20823073_KG'>
@@ -987,18 +869,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-cut-fast-fry/p/20823073_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#24</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Chop Center Cut Fast Fry</span>
-            </div>
-            <div>Expire On: 2025-03-02</div>
-            <div>WAS: <span class='was-price'>$9.38</span></div>
-            <div class='now-price'>NOW: $5.09</div>
-            <div class='discount-badge'>45.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20823073_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#24</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Chop Center Cut Fast Fry</span>
+    </div>
+    <div>Expire On: 2025-03-02</div>
+    <div>WAS: <span class='was-price'>$9.38</span></div>
+    <div class='now-price'>NOW: $5.09</div>
+    <div class='discount-badge'>45.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20823073_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20416522_EA'>
@@ -1007,18 +891,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/classic-wieners-family-pack/p/20416522_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#25</span>
-              <span class='first-word'>Classic</span>
-              <span class='product-name-text'>Wieners, Family Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$10.99</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>45.4% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20416522_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#25</span>
+      <span class='first-word'>Classic</span>
+      <span class='product-name-text'>Wieners, Family Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$10.99</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>45.4% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20416522_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20415978_EA'>
@@ -1027,18 +913,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/barbecue-style-wieners/p/20415978_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#26</span>
-              <span class='first-word'>Barbecue</span>
-              <span class='product-name-text'>Style Wieners</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$10.99</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>45.4% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20415978_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#26</span>
+      <span class='first-word'>Barbecue</span>
+      <span class='product-name-text'>Style Wieners</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$10.99</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>45.4% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20415978_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20593099_KG'>
@@ -1047,18 +935,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-breast-club-pack-boneless-skinless/p/20593099_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#27</span>
-              <span class='first-word'>Chicken</span>
-              <span class='product-name-text'>Breast, Club Pack Boneless Skinless</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$23.09</span></div>
-            <div class='now-price'>NOW: $12.83</div>
-            <div class='discount-badge'>44.4% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20593099_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#27</span>
+      <span class='first-word'>Chicken</span>
+      <span class='product-name-text'>Breast, Club Pack Boneless Skinless</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$23.09</span></div>
+    <div class='now-price'>NOW: $12.83</div>
+    <div class='discount-badge'>44.4% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20593099_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20826455_KG'>
@@ -1067,18 +957,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-center-cut-boneless-cutlet/p/20826455_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#28</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Center Cut Boneless Cutlet</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.45</span></div>
-            <div class='now-price'>NOW: $4.22</div>
-            <div class='discount-badge'>43.4% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20826455_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#28</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Center Cut Boneless Cutlet</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.45</span></div>
+    <div class='now-price'>NOW: $4.22</div>
+    <div class='discount-badge'>43.4% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20826455_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20794618_KG'>
@@ -1087,18 +979,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beef-cross-rib-roast-boneless/p/20794618_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#29</span>
-              <span class='first-word'>Beef</span>
-              <span class='product-name-text'>Cross Rib Roast, Boneless</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$20.79</span></div>
-            <div class='now-price'>NOW: $11.88</div>
-            <div class='discount-badge'>42.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20794618_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#29</span>
+      <span class='first-word'>Beef</span>
+      <span class='product-name-text'>Cross Rib Roast, Boneless</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$20.79</span></div>
+    <div class='now-price'>NOW: $11.88</div>
+    <div class='discount-badge'>42.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20794618_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20826460_KG'>
@@ -1107,18 +1001,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-boneless-butterfly-cut/p/20826460_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#30</span>
-              <span class='first-word'>Pork</span>
-              <span class='product-name-text'>Loin Chop, Boneless Butterfly Cut</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$8.83</span></div>
-            <div class='now-price'>NOW: $5.28</div>
-            <div class='discount-badge'>40.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20826460_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#30</span>
+      <span class='first-word'>Pork</span>
+      <span class='product-name-text'>Loin Chop, Boneless Butterfly Cut</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$8.83</span></div>
+    <div class='now-price'>NOW: $5.28</div>
+    <div class='discount-badge'>40.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20826460_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20162170_KG'>
@@ -1127,18 +1023,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-thigh-boneless-skinless-club-pack/p/20162170_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#31</span>
-              <span class='first-word'>Chicken</span>
-              <span class='product-name-text'>Thigh  Boneless Skinless Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$23.78</span></div>
-            <div class='now-price'>NOW: $14.39</div>
-            <div class='discount-badge'>39.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20162170_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#31</span>
+      <span class='first-word'>Chicken</span>
+      <span class='product-name-text'>Thigh  Boneless Skinless Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$23.78</span></div>
+    <div class='now-price'>NOW: $14.39</div>
+    <div class='discount-badge'>39.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20162170_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21601003_EA'>
@@ -1147,18 +1045,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-chicken/p/21601003_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#32</span>
-              <span class='first-word'>Extra</span>
-              <span class='product-name-text'>Lean Ground Chicken</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$6.00</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>33.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21601003_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#32</span>
+      <span class='first-word'>Extra</span>
+      <span class='product-name-text'>Lean Ground Chicken</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$6.00</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>33.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21601003_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21600979_EA'>
@@ -1167,18 +1067,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-turkey/p/21600979_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#33</span>
-              <span class='first-word'>Extra</span>
-              <span class='product-name-text'>Lean Ground Turkey</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$6.00</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>33.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21600979_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#33</span>
+      <span class='first-word'>Extra</span>
+      <span class='product-name-text'>Lean Ground Turkey</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$6.00</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>33.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21600979_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21352008_EA'>
@@ -1187,18 +1089,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-australian-lean-ground-lamb/p/21352008_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#34</span>
-              <span class='first-word'>Free</span>
-              <span class='product-name-text'>From Australian Lean Ground Lamb</span>
-            </div>
-            <div>Expire On: 2025-03-26</div>
-            <div>WAS: <span class='was-price'>$15.99</span></div>
-            <div class='now-price'>NOW: $11.00</div>
-            <div class='discount-badge'>31.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21352008_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#34</span>
+      <span class='first-word'>Free</span>
+      <span class='product-name-text'>From Australian Lean Ground Lamb</span>
+    </div>
+    <div>Expire On: 2025-03-26</div>
+    <div>WAS: <span class='was-price'>$15.99</span></div>
+    <div class='now-price'>NOW: $11.00</div>
+    <div class='discount-badge'>31.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21352008_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21588066_EA'>
@@ -1207,18 +1111,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-breast-schnitzel/p/21588066_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#35</span>
-              <span class='first-word'>Chicken</span>
-              <span class='product-name-text'>Breast Schnitzel</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$10.00</span></div>
-            <div class='now-price'>NOW: $7.00</div>
-            <div class='discount-badge'>30.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21588066_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#35</span>
+      <span class='first-word'>Chicken</span>
+      <span class='product-name-text'>Breast Schnitzel</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$10.00</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>30.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21588066_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21290136_EA'>
@@ -1227,18 +1133,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/frozen-twisters-jumbo-sausage/p/21290136_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#36</span>
-              <span class='first-word'>Frozen</span>
-              <span class='product-name-text'>Twisters Jumbo Sausage</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$9.99</span></div>
-            <div class='now-price'>NOW: $7.00</div>
-            <div class='discount-badge'>29.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21290136_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#36</span>
+      <span class='first-word'>Frozen</span>
+      <span class='product-name-text'>Twisters Jumbo Sausage</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$9.99</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>29.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21290136_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21289868_EA'>
@@ -1247,18 +1155,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/hot-italian-jumbo-sausage/p/21289868_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#37</span>
-              <span class='first-word'>Hot</span>
-              <span class='product-name-text'>Italian Jumbo Sausage</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$9.99</span></div>
-            <div class='now-price'>NOW: $7.00</div>
-            <div class='discount-badge'>29.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21289868_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#37</span>
+      <span class='first-word'>Hot</span>
+      <span class='product-name-text'>Italian Jumbo Sausage</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$9.99</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>29.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21289868_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21289731_EA'>
@@ -1267,18 +1177,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/sweet-italian-jumbo-sausage/p/21289731_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#38</span>
-              <span class='first-word'>Sweet</span>
-              <span class='product-name-text'>Italian Jumbo Sausage</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$9.99</span></div>
-            <div class='now-price'>NOW: $7.00</div>
-            <div class='discount-badge'>29.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21289731_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#38</span>
+      <span class='first-word'>Sweet</span>
+      <span class='product-name-text'>Italian Jumbo Sausage</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$9.99</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>29.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21289731_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20794616_KG'>
@@ -1287,18 +1199,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beef-cross-rib-steak-boneless-club-pack/p/20794616_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#39</span>
-              <span class='first-word'>Beef</span>
-              <span class='product-name-text'>Cross Rib Steak Boneless, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$17.15</span></div>
-            <div class='now-price'>NOW: $12.47</div>
-            <div class='discount-badge'>27.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20794616_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#39</span>
+      <span class='first-word'>Beef</span>
+      <span class='product-name-text'>Cross Rib Steak Boneless, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$17.15</span></div>
+    <div class='now-price'>NOW: $12.47</div>
+    <div class='discount-badge'>27.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20794616_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20315210_KG'>
@@ -1307,18 +1221,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/big-stick-large-wax-bologna/p/20315210_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#40</span>
-              <span class='first-word'>Big</span>
-              <span class='product-name-text'>Stick Large Wax Bologna</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$3.19</span></div>
-            <div class='now-price'>NOW: $2.39</div>
-            <div class='discount-badge'>25.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20315210_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#40</span>
+      <span class='first-word'>Big</span>
+      <span class='product-name-text'>Stick Large Wax Bologna</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.19</span></div>
+    <div class='now-price'>NOW: $2.39</div>
+    <div class='discount-badge'>25.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20315210_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21201106_KG'>
@@ -1327,18 +1243,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/small-batch-oven-roasted-ham/p/21201106_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#41</span>
-              <span class='first-word'>Small</span>
-              <span class='product-name-text'>Batch Oven Roasted Ham</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$3.99</span></div>
-            <div class='now-price'>NOW: $2.99</div>
-            <div class='discount-badge'>25.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21201106_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#41</span>
+      <span class='first-word'>Small</span>
+      <span class='product-name-text'>Batch Oven Roasted Ham</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.99</span></div>
+    <div class='now-price'>NOW: $2.99</div>
+    <div class='discount-badge'>25.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21201106_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21061099_EA'>
@@ -1347,18 +1265,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/genoa-salami/p/21061099_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#42</span>
-              <span class='first-word'>Genoa</span>
-              <span class='product-name-text'>Salami    </span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.99</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>24.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21061099_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#42</span>
+      <span class='first-word'>Genoa</span>
+      <span class='product-name-text'>Salami    </span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.99</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>24.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21061099_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21061096_EA'>
@@ -1367,18 +1287,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/genoa-hot-salami/p/21061096_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#43</span>
-              <span class='first-word'>Genoa</span>
-              <span class='product-name-text'>Hot Salami</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.99</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>24.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21061096_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#43</span>
+      <span class='first-word'>Genoa</span>
+      <span class='product-name-text'>Hot Salami</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.99</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>24.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21061096_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21059807_EA'>
@@ -1387,18 +1309,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/calabrese-salami-hot/p/21059807_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#44</span>
-              <span class='first-word'>Calabrese</span>
-              <span class='product-name-text'>Salami, Hot</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.99</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>24.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21059807_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#44</span>
+      <span class='first-word'>Calabrese</span>
+      <span class='product-name-text'>Salami, Hot</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.99</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>24.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21059807_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21366170_EA'>
@@ -1407,18 +1331,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/marc-angelo-pork-sausages-with-rapini-and-parmigia/p/21366170_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#45</span>
-              <span class='first-word'>Marc</span>
-              <span class='product-name-text'>Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$9.29</span></div>
-            <div class='now-price'>NOW: $7.00</div>
-            <div class='discount-badge'>24.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21366170_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#45</span>
+      <span class='first-word'>Marc</span>
+      <span class='product-name-text'>Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$9.29</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>24.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21366170_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20321514_KG'>
@@ -1427,18 +1353,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/calabrese-spicy-salami-thin-sliced/p/20321514_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#46</span>
-              <span class='first-word'>Calabrese</span>
-              <span class='product-name-text'>Spicy Salami (Thin Sliced)</span>
-            </div>
-            <div>Expire On: 2025-03-19</div>
-            <div>WAS: <span class='was-price'>$4.59</span></div>
-            <div class='now-price'>NOW: $3.49</div>
-            <div class='discount-badge'>24.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20321514_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#46</span>
+      <span class='first-word'>Calabrese</span>
+      <span class='product-name-text'>Spicy Salami (Thin Sliced)</span>
+    </div>
+    <div>Expire On: 2025-03-19</div>
+    <div>WAS: <span class='was-price'>$4.59</span></div>
+    <div class='now-price'>NOW: $3.49</div>
+    <div class='discount-badge'>24.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20321514_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20319035_KG'>
@@ -1447,18 +1375,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/soppressata-thin-sliced/p/20319035_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#47</span>
-              <span class='first-word'>Soppressata</span>
-              <span class='product-name-text'>(Thin Sliced)</span>
-            </div>
-            <div>Expire On: 2025-03-19</div>
-            <div>WAS: <span class='was-price'>$4.59</span></div>
-            <div class='now-price'>NOW: $3.49</div>
-            <div class='discount-badge'>24.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20319035_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#47</span>
+      <span class='first-word'>Soppressata</span>
+      <span class='product-name-text'>(Thin Sliced)</span>
+    </div>
+    <div>Expire On: 2025-03-19</div>
+    <div>WAS: <span class='was-price'>$4.59</span></div>
+    <div class='now-price'>NOW: $3.49</div>
+    <div class='discount-badge'>24.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20319035_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20794617_KG'>
@@ -1467,18 +1397,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beef-cross-rib-steak-boneless/p/20794617_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#48</span>
-              <span class='first-word'>Beef</span>
-              <span class='product-name-text'>Cross Rib Steak, Boneless</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$8.26</span></div>
-            <div class='now-price'>NOW: $6.46</div>
-            <div class='discount-badge'>21.8% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20794617_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#48</span>
+      <span class='first-word'>Beef</span>
+      <span class='product-name-text'>Cross Rib Steak, Boneless</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$8.26</span></div>
+    <div class='now-price'>NOW: $6.46</div>
+    <div class='discount-badge'>21.8% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20794617_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20794619_KG'>
@@ -1487,18 +1419,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/cross-rib-steak-fast-fry/p/20794619_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#49</span>
-              <span class='first-word'>Cross</span>
-              <span class='product-name-text'>Rib Steak Fast Fry</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$5.87</span></div>
-            <div class='now-price'>NOW: $4.69</div>
-            <div class='discount-badge'>20.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20794619_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#49</span>
+      <span class='first-word'>Cross</span>
+      <span class='product-name-text'>Rib Steak Fast Fry</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$5.87</span></div>
+    <div class='now-price'>NOW: $4.69</div>
+    <div class='discount-badge'>20.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20794619_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21646160_EA'>
@@ -1507,18 +1441,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/lean-ground-pork/p/21646160_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#50</span>
-              <span class='first-word'>Lean</span>
-              <span class='product-name-text'>Ground Pork</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$5.00</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>20.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21646160_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#50</span>
+      <span class='first-word'>Lean</span>
+      <span class='product-name-text'>Ground Pork</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$5.00</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>20.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21646160_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21201094_KG'>
@@ -1527,18 +1463,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/small-batch-smoked-turkey-breast/p/21201094_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#51</span>
-              <span class='first-word'>Small</span>
-              <span class='product-name-text'>Batch Smoked Turkey Breast</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$3.69</span></div>
-            <div class='now-price'>NOW: $2.99</div>
-            <div class='discount-badge'>19.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21201094_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#51</span>
+      <span class='first-word'>Small</span>
+      <span class='product-name-text'>Batch Smoked Turkey Breast</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.69</span></div>
+    <div class='now-price'>NOW: $2.99</div>
+    <div class='discount-badge'>19.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21201094_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21201089_KG'>
@@ -1547,18 +1485,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/small-batch-cajun-turkey-breast/p/21201089_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#52</span>
-              <span class='first-word'>Small</span>
-              <span class='product-name-text'>Batch Cajun Turkey Breast</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$3.69</span></div>
-            <div class='now-price'>NOW: $2.99</div>
-            <div class='discount-badge'>19.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21201089_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#52</span>
+      <span class='first-word'>Small</span>
+      <span class='product-name-text'>Batch Cajun Turkey Breast</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.69</span></div>
+    <div class='now-price'>NOW: $2.99</div>
+    <div class='discount-badge'>19.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21201089_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21570722_EA'>
@@ -1567,18 +1507,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pastrami-mild/p/21570722_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#53</span>
-              <span class='first-word'>Pastrami</span>
-              <span class='product-name-text'>Mild</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21570722_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#53</span>
+      <span class='first-word'>Pastrami</span>
+      <span class='product-name-text'>Mild</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21570722_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21570684_EA'>
@@ -1587,18 +1529,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/cajun-turkey-breast-mild/p/21570684_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#54</span>
-              <span class='first-word'>Cajun</span>
-              <span class='product-name-text'>Turkey Breast Mild</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21570684_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#54</span>
+      <span class='first-word'>Cajun</span>
+      <span class='product-name-text'>Turkey Breast Mild</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21570684_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21570639_EA'>
@@ -1607,18 +1551,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/roast-beef-mild/p/21570639_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#55</span>
-              <span class='first-word'>Roast</span>
-              <span class='product-name-text'>Beef Mild</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21570639_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#55</span>
+      <span class='first-word'>Roast</span>
+      <span class='product-name-text'>Beef Mild</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21570639_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21570617_EA'>
@@ -1627,18 +1573,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/smoked-turkey-breast-mild/p/21570617_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#56</span>
-              <span class='first-word'>Smoked</span>
-              <span class='product-name-text'>Turkey Breast Mild</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21570617_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#56</span>
+      <span class='first-word'>Smoked</span>
+      <span class='product-name-text'>Turkey Breast Mild</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21570617_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21566593_EA'>
@@ -1647,18 +1595,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pepperoni-toppings-mild/p/21566593_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#57</span>
-              <span class='first-word'>Pepperoni</span>
-              <span class='product-name-text'>Toppings Mild</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21566593_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#57</span>
+      <span class='first-word'>Pepperoni</span>
+      <span class='product-name-text'>Toppings Mild</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21566593_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21566049_EA'>
@@ -1667,18 +1617,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/salami-spicy/p/21566049_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#58</span>
-              <span class='first-word'>Salami</span>
-              <span class='product-name-text'>Spicy</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21566049_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#58</span>
+      <span class='first-word'>Salami</span>
+      <span class='product-name-text'>Spicy</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21566049_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21539305_EA'>
@@ -1687,18 +1639,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/smoky-bonfire-double-smoked-bacon/p/21539305_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#59</span>
-              <span class='first-word'>Smoky</span>
-              <span class='product-name-text'>Bonfire Double-Smoked Bacon</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21539305_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#59</span>
+      <span class='first-word'>Smoky</span>
+      <span class='product-name-text'>Bonfire Double-Smoked Bacon</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21539305_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21538773_EA'>
@@ -1707,18 +1661,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/applewood-smoked-bacon/p/21538773_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#60</span>
-              <span class='first-word'>Applewood</span>
-              <span class='product-name-text'>Smoked Bacon</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21538773_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#60</span>
+      <span class='first-word'>Applewood</span>
+      <span class='product-name-text'>Smoked Bacon</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21538773_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21178761_EA'>
@@ -1727,18 +1683,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-breaded-chicken-burgers/p/21178761_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#61</span>
-              <span class='first-word'>Fully</span>
-              <span class='product-name-text'>Cooked, Breaded Chicken Burgers</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21178761_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#61</span>
+      <span class='first-word'>Fully</span>
+      <span class='product-name-text'>Cooked, Breaded Chicken Burgers</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21178761_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21178745_EA'>
@@ -1747,18 +1705,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-breaded-chicken-nuggets-cutlettes/p/21178745_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#62</span>
-              <span class='first-word'>Fully</span>
-              <span class='product-name-text'>Cooked, Breaded Chicken Nuggets Cutlettes</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21178745_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#62</span>
+      <span class='first-word'>Fully</span>
+      <span class='product-name-text'>Cooked, Breaded Chicken Nuggets Cutlettes</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21178745_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21178744_EA'>
@@ -1767,18 +1727,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/breaded-chicken-cutlettes-chicken-strips/p/21178744_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#63</span>
-              <span class='first-word'>Breaded</span>
-              <span class='product-name-text'>Chicken Cutlettes Chicken Strips</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21178744_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#63</span>
+      <span class='first-word'>Breaded</span>
+      <span class='product-name-text'>Chicken Cutlettes Chicken Strips</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21178744_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20174909_EA'>
@@ -1787,18 +1749,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/bacon-mild-sugar-cured-with-reduced-salt-uncooked/p/20174909_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#64</span>
-              <span class='first-word'>Bacon,</span>
-              <span class='product-name-text'>Mild Sugar Cured with Reduced Salt, Uncooked</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20174909_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#64</span>
+      <span class='first-word'>Bacon,</span>
+      <span class='product-name-text'>Mild Sugar Cured with Reduced Salt, Uncooked</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20174909_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20156771_EA'>
@@ -1807,18 +1771,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mild-sugar-cured-bacon/p/20156771_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#65</span>
-              <span class='first-word'>Mild</span>
-              <span class='product-name-text'>Sugar-Cured Bacon</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20156771_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#65</span>
+      <span class='first-word'>Mild</span>
+      <span class='product-name-text'>Sugar-Cured Bacon</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20156771_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20152629_EA'>
@@ -1827,18 +1793,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/bacon/p/20152629_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#66</span>
-              <span class='first-word'>Bacon</span>
-              <span class='product-name-text'></span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20152629_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#66</span>
+      <span class='first-word'>Bacon</span>
+      <span class='product-name-text'></span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20152629_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20117351_EA'>
@@ -1847,18 +1815,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/maple-flavoured-naturally-smoked-bacon/p/20117351_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#67</span>
-              <span class='first-word'>Maple</span>
-              <span class='product-name-text'>Flavoured Naturally Smoked Bacon</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20117351_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#67</span>
+      <span class='first-word'>Maple</span>
+      <span class='product-name-text'>Flavoured Naturally Smoked Bacon</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20117351_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20057892_EA'>
@@ -1867,18 +1837,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/reduced-salt-bacon/p/20057892_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#68</span>
-              <span class='first-word'>Reduced</span>
-              <span class='product-name-text'>Salt Bacon  </span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.00</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20057892_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#68</span>
+      <span class='first-word'>Reduced</span>
+      <span class='product-name-text'>Salt Bacon  </span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.00</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20057892_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21546108_EA'>
@@ -1887,18 +1859,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/wiltshire-bacon-rashers/p/21546108_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#69</span>
-              <span class='first-word'>Wiltshire</span>
-              <span class='product-name-text'>Bacon Rashers</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$6.99</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>14.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21546108_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#69</span>
+      <span class='first-word'>Wiltshire</span>
+      <span class='product-name-text'>Bacon Rashers</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$6.99</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>14.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21546108_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20766562_KG'>
@@ -1907,18 +1881,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/stewing-beef-cubes-club-pack/p/20766562_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#70</span>
-              <span class='first-word'>Stewing</span>
-              <span class='product-name-text'>Beef Cubes, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$15.12</span></div>
-            <div class='now-price'>NOW: $13.00</div>
-            <div class='discount-badge'>14.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20766562_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#70</span>
+      <span class='first-word'>Stewing</span>
+      <span class='product-name-text'>Beef Cubes, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$15.12</span></div>
+    <div class='now-price'>NOW: $13.00</div>
+    <div class='discount-badge'>14.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20766562_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20320534_KG'>
@@ -1927,18 +1903,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/black-forest-ham-traditional/p/20320534_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#71</span>
-              <span class='first-word'>Black</span>
-              <span class='product-name-text'>Forest Ham, Traditional</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$2.89</span></div>
-            <div class='now-price'>NOW: $2.50</div>
-            <div class='discount-badge'>13.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20320534_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#71</span>
+      <span class='first-word'>Black</span>
+      <span class='product-name-text'>Forest Ham, Traditional</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$2.89</span></div>
+    <div class='now-price'>NOW: $2.50</div>
+    <div class='discount-badge'>13.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20320534_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20313480_KG'>
@@ -1947,18 +1925,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-cooked-ham/p/20313480_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#72</span>
-              <span class='first-word'>Extra</span>
-              <span class='product-name-text'>Lean Cooked Ham</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$2.89</span></div>
-            <div class='now-price'>NOW: $2.50</div>
-            <div class='discount-badge'>13.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20313480_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#72</span>
+      <span class='first-word'>Extra</span>
+      <span class='product-name-text'>Lean Cooked Ham</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$2.89</span></div>
+    <div class='now-price'>NOW: $2.50</div>
+    <div class='discount-badge'>13.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20313480_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20298289_KG'>
@@ -1967,18 +1947,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/honey-maple-ham-thin-sliced/p/20298289_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#73</span>
-              <span class='first-word'>Honey</span>
-              <span class='product-name-text'>Maple Ham (Thin Sliced)</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$2.89</span></div>
-            <div class='now-price'>NOW: $2.50</div>
-            <div class='discount-badge'>13.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20298289_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#73</span>
+      <span class='first-word'>Honey</span>
+      <span class='product-name-text'>Maple Ham (Thin Sliced)</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$2.89</span></div>
+    <div class='now-price'>NOW: $2.50</div>
+    <div class='discount-badge'>13.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20298289_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21399630_EA'>
@@ -1987,18 +1969,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/breakfast-sausage/p/21399630_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#74</span>
-              <span class='first-word'>Breakfast</span>
-              <span class='product-name-text'>Sausage</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.99</span></div>
-            <div class='now-price'>NOW: $7.00</div>
-            <div class='discount-badge'>12.4% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21399630_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#74</span>
+      <span class='first-word'>Breakfast</span>
+      <span class='product-name-text'>Sausage</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.99</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>12.4% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21399630_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21193815_EA'>
@@ -2007,18 +1991,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beyond-burger-plant-based/p/21193815_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#75</span>
-              <span class='first-word'>Beyond</span>
-              <span class='product-name-text'>Burger Plant-Based</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.99</span></div>
-            <div class='now-price'>NOW: $7.00</div>
-            <div class='discount-badge'>12.4% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21193815_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#75</span>
+      <span class='first-word'>Beyond</span>
+      <span class='product-name-text'>Burger Plant-Based</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.99</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>12.4% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21193815_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20794831_KG'>
@@ -2027,18 +2013,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/deluxe-stewing-beef-cubes-club-pack/p/20794831_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#76</span>
-              <span class='first-word'>Deluxe</span>
-              <span class='product-name-text'>Stewing Beef Cubes, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$16.22</span></div>
-            <div class='now-price'>NOW: $14.27</div>
-            <div class='discount-badge'>12.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20794831_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#76</span>
+      <span class='first-word'>Deluxe</span>
+      <span class='product-name-text'>Stewing Beef Cubes, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$16.22</span></div>
+    <div class='now-price'>NOW: $14.27</div>
+    <div class='discount-badge'>12.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20794831_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20766602_KG'>
@@ -2047,18 +2035,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/stewing-beef-cubes/p/20766602_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#77</span>
-              <span class='first-word'>Stewing</span>
-              <span class='product-name-text'>Beef Cubes</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$12.50</span></div>
-            <div class='now-price'>NOW: $11.00</div>
-            <div class='discount-badge'>12.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20766602_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#77</span>
+      <span class='first-word'>Stewing</span>
+      <span class='product-name-text'>Beef Cubes</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$12.50</span></div>
+    <div class='now-price'>NOW: $11.00</div>
+    <div class='discount-badge'>12.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20766602_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20794620_KG'>
@@ -2067,18 +2057,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/deluxe-stewing-beef-cubes/p/20794620_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#78</span>
-              <span class='first-word'>Deluxe</span>
-              <span class='product-name-text'>Stewing Beef Cubes</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$10.17</span></div>
-            <div class='now-price'>NOW: $9.04</div>
-            <div class='discount-badge'>11.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20794620_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#78</span>
+      <span class='first-word'>Deluxe</span>
+      <span class='product-name-text'>Stewing Beef Cubes</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$10.17</span></div>
+    <div class='now-price'>NOW: $9.04</div>
+    <div class='discount-badge'>11.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20794620_KG'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21300113_EA'>
@@ -2087,18 +2079,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/sausage-mild-italian/p/21300113_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#79</span>
-              <span class='first-word'>Sausage</span>
-              <span class='product-name-text'>Mild Italian</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$9.99</span></div>
-            <div class='now-price'>NOW: $9.00</div>
-            <div class='discount-badge'>9.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21300113_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#79</span>
+      <span class='first-word'>Sausage</span>
+      <span class='product-name-text'>Mild Italian</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$9.99</span></div>
+    <div class='now-price'>NOW: $9.00</div>
+    <div class='discount-badge'>9.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21300113_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21300103_EA'>
@@ -2107,18 +2101,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beyond-sausage-hot-italian/p/21300103_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#80</span>
-              <span class='first-word'>Beyond</span>
-              <span class='product-name-text'>Sausage Hot Italian</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$9.99</span></div>
-            <div class='now-price'>NOW: $9.00</div>
-            <div class='discount-badge'>9.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21300103_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#80</span>
+      <span class='first-word'>Beyond</span>
+      <span class='product-name-text'>Sausage Hot Italian</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$9.99</span></div>
+    <div class='now-price'>NOW: $9.00</div>
+    <div class='discount-badge'>9.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21300103_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21220674_EA'>
@@ -2127,18 +2123,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beyond-beef-grounds/p/21220674_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#81</span>
-              <span class='first-word'>Beyond</span>
-              <span class='product-name-text'>Beef Grounds</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$9.99</span></div>
-            <div class='now-price'>NOW: $9.00</div>
-            <div class='discount-badge'>9.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21220674_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#81</span>
+      <span class='first-word'>Beyond</span>
+      <span class='product-name-text'>Beef Grounds</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$9.99</span></div>
+    <div class='now-price'>NOW: $9.00</div>
+    <div class='discount-badge'>9.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21220674_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20507161_EA'>
@@ -2147,18 +2145,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/veggie-ground-round-mexican/p/20507161_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#82</span>
-              <span class='first-word'>Veggie</span>
-              <span class='product-name-text'>Ground Round, Mexican</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$6.49</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>7.6% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20507161_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#82</span>
+      <span class='first-word'>Veggie</span>
+      <span class='product-name-text'>Ground Round, Mexican</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$6.49</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>7.6% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20507161_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20507160_EA'>
@@ -2167,18 +2167,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/veggie-ground-round-italian/p/20507160_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#83</span>
-              <span class='first-word'>Veggie</span>
-              <span class='product-name-text'>Ground Round, Italian</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$6.49</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>7.6% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20507160_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#83</span>
+      <span class='first-word'>Veggie</span>
+      <span class='product-name-text'>Ground Round, Italian</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$6.49</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>7.6% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20507160_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20507159_EA'>
@@ -2187,18 +2189,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/veggie-ground-round-original/p/20507159_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#84</span>
-              <span class='first-word'>Veggie</span>
-              <span class='product-name-text'>Ground Round, Original</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$6.49</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>7.6% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20507159_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#84</span>
+      <span class='first-word'>Veggie</span>
+      <span class='product-name-text'>Ground Round, Original</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$6.49</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>7.6% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20507159_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21076606_EA'>
@@ -2207,18 +2211,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-oven-roasted-chicken-breast/p/21076606_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#85</span>
-              <span class='first-word'>Free</span>
-              <span class='product-name-text'>From Oven-Roasted Chicken Breast</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$15.99</span></div>
-            <div class='now-price'>NOW: $15.00</div>
-            <div class='discount-badge'>6.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21076606_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#85</span>
+      <span class='first-word'>Free</span>
+      <span class='product-name-text'>From Oven-Roasted Chicken Breast</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$15.99</span></div>
+    <div class='now-price'>NOW: $15.00</div>
+    <div class='discount-badge'>6.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21076606_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20923814_EA'>
@@ -2227,18 +2233,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-oven-roasted-turkey-club-pack/p/20923814_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#86</span>
-              <span class='first-word'>Free</span>
-              <span class='product-name-text'>From Oven Roasted Turkey, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$15.99</span></div>
-            <div class='now-price'>NOW: $15.00</div>
-            <div class='discount-badge'>6.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20923814_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#86</span>
+      <span class='first-word'>Free</span>
+      <span class='product-name-text'>From Oven Roasted Turkey, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$15.99</span></div>
+    <div class='now-price'>NOW: $15.00</div>
+    <div class='discount-badge'>6.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20923814_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20903492_EA'>
@@ -2247,18 +2255,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-black-forrest-ham-club-pack/p/20903492_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#87</span>
-              <span class='first-word'>Free</span>
-              <span class='product-name-text'>From Black Forrest Ham, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$15.99</span></div>
-            <div class='now-price'>NOW: $15.00</div>
-            <div class='discount-badge'>6.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20903492_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#87</span>
+      <span class='first-word'>Free</span>
+      <span class='product-name-text'>From Black Forrest Ham, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$15.99</span></div>
+    <div class='now-price'>NOW: $15.00</div>
+    <div class='discount-badge'>6.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20903492_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20903241_EA'>
@@ -2267,18 +2277,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-honey-ham-club-pack/p/20903241_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#88</span>
-              <span class='first-word'>Free</span>
-              <span class='product-name-text'>From Honey Ham, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$15.99</span></div>
-            <div class='now-price'>NOW: $15.00</div>
-            <div class='discount-badge'>6.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20903241_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#88</span>
+      <span class='first-word'>Free</span>
+      <span class='product-name-text'>From Honey Ham, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$15.99</span></div>
+    <div class='now-price'>NOW: $15.00</div>
+    <div class='discount-badge'>6.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20903241_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20798252_KG'>
@@ -2287,19 +2299,31 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-beef-club-pack/p/20798252_KG' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#89</span>
-              <span class='first-word'>Extra</span>
-              <span class='product-name-text'>Lean Ground Beef, Club Pack</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$14.38</span></div>
-            <div class='now-price'>NOW: $13.55</div>
-            <div class='discount-badge'>5.8% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20798252_KG' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#89</span>
+      <span class='first-word'>Extra</span>
+      <span class='product-name-text'>Lean Ground Beef, Club Pack</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$14.38</span></div>
+    <div class='now-price'>NOW: $13.55</div>
+    <div class='discount-badge'>5.8% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20798252_KG'></div>
+</div>
         </div>
         
+
+<script>
+function showSearchBar() {
+    // example for search, if needed
+}
+function hideSearchBar() {
+    // example for search, if needed
+}
+</script>
+
 </body>
 </html>
