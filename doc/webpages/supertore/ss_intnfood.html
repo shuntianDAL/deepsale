@@ -170,7 +170,7 @@
       position: relative;
       pointer-events: all;
     }
-    /* When disabled, we only dim the toggle but still allow pointer events */
+    /* When disabled, we dim the toggle but still allow pointer events */
     .toggle-switch.disabled {
       opacity: 0.5;
       pointer-events: all;
@@ -291,24 +291,23 @@
   </style>
 
   <script>
+    // When a label is clicked, toggle its checkbox explicitly.
+    function toggleByClick(event, label) {
+      event.preventDefault();  // prevent default label behavior
+      var checkboxId = label.getAttribute('for');
+      var checkbox = document.getElementById(checkboxId);
+      if (checkbox) {
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change'));
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       document.body.classList.add('page-loaded');
       window.priceHistoryData = {"21054846_EA": {"1mon": [{"date": "02.26", "was_price": 4.79, "now_price": 2.99}, {"date": "03.12", "was_price": 4.79, "now_price": 2.0}], "1yr": [{"date": "02.26", "was_price": 4.79, "now_price": 2.99}, {"date": "03.12", "was_price": 4.79, "now_price": 2.0}]}, "21054779_EA": {"1mon": [{"date": "02.26", "was_price": 4.79, "now_price": 2.99}, {"date": "03.12", "was_price": 4.79, "now_price": 2.0}], "1yr": [{"date": "02.26", "was_price": 4.79, "now_price": 2.99}, {"date": "03.12", "was_price": 4.79, "now_price": 2.0}]}, "20143381001_KG": {"1mon": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}], "1yr": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}]}, "21447368_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.19", "was_price": 2.49, "now_price": 2.0}, {"date": "03.19", "was_price": 2.49, "now_price": 1.49}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.19", "was_price": 2.49, "now_price": 2.0}, {"date": "03.19", "was_price": 2.49, "now_price": 1.49}]}, "20975662_EA": {"1mon": [{"date": "03.26", "was_price": 12.99, "now_price": 7.99}], "1yr": [{"date": "03.26", "was_price": 12.99, "now_price": 7.99}]}, "20026612_EA": {"1mon": [{"date": "02.26", "was_price": 5.49, "now_price": 4.99}, {"date": "03.26", "was_price": 5.49, "now_price": 3.49}], "1yr": [{"date": "02.26", "was_price": 5.49, "now_price": 4.99}, {"date": "03.26", "was_price": 5.49, "now_price": 3.49}]}, "21295389_EA": {"1mon": [{"date": "03.19", "was_price": 2.29, "now_price": 1.49}], "1yr": [{"date": "03.19", "was_price": 2.29, "now_price": 1.49}]}, "21100328_EA": {"1mon": [{"date": "02.05", "was_price": 2.29, "now_price": 1.49}, {"date": "02.19", "was_price": 2.29, "now_price": 1.49}, {"date": "03.19", "was_price": 2.29, "now_price": 1.49}], "1yr": [{"date": "02.05", "was_price": 2.29, "now_price": 1.49}, {"date": "02.19", "was_price": 2.29, "now_price": 1.49}, {"date": "03.19", "was_price": 2.29, "now_price": 1.49}]}, "20594714_EA": {"1mon": [{"date": "03.19", "was_price": 2.29, "now_price": 1.49}], "1yr": [{"date": "03.19", "was_price": 2.29, "now_price": 1.49}]}, "20378063002_EA": {"1mon": [{"date": "03.05", "was_price": 1.49, "now_price": 0.99}], "1yr": [{"date": "03.05", "was_price": 1.49, "now_price": 0.99}]}, "20378063001_EA": {"1mon": [{"date": "03.05", "was_price": 1.49, "now_price": 0.99}], "1yr": [{"date": "03.05", "was_price": 1.49, "now_price": 0.99}]}, "21499017_EA": {"1mon": [{"date": "03.19", "was_price": 5.99, "now_price": 3.99}], "1yr": [{"date": "03.19", "was_price": 5.99, "now_price": 3.99}]}, "21352008_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}]}, "20710715_EA": {"1mon": [{"date": "02.26", "was_price": 6.99, "now_price": 6.29}, {"date": "03.26", "was_price": 6.99, "now_price": 4.99}], "1yr": [{"date": "02.26", "was_price": 6.99, "now_price": 6.29}, {"date": "03.26", "was_price": 6.99, "now_price": 4.99}]}, "21449248_EA": {"1mon": [{"date": "02.26", "was_price": 2.49, "now_price": 1.79}, {"date": "03.26", "was_price": 2.49, "now_price": 1.79}], "1yr": [{"date": "02.26", "was_price": 2.49, "now_price": 1.79}, {"date": "03.26", "was_price": 2.49, "now_price": 1.79}]}, "21451088_EA": {"1mon": [{"date": "03.19", "was_price": 5.49, "now_price": 3.99}], "1yr": [{"date": "03.19", "was_price": 5.49, "now_price": 3.99}]}, "20118969_EA": {"1mon": [{"date": "02.19", "was_price": 2.29, "now_price": 1.99}, {"date": "03.19", "was_price": 2.29, "now_price": 1.69}], "1yr": [{"date": "02.19", "was_price": 2.29, "now_price": 1.99}, {"date": "03.19", "was_price": 2.29, "now_price": 1.69}]}, "20020863001_KG": {"1mon": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}], "1yr": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}]}, "21238066_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}]}, "21214570_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}]}, "21214481_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}]}, "21214480_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}]}, "21214477_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}]}, "21214470_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}]}, "21214469_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.49}, {"date": "03.26", "was_price": 1.99, "now_price": 1.49}]}, "21089449_EA": {"1mon": [{"date": "03.19", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "03.19", "was_price": 3.99, "now_price": 2.99}]}, "20689357002_EA": {"1mon": [{"date": "02.19", "was_price": 3.99, "now_price": 3.0}, {"date": "03.19", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.19", "was_price": 3.99, "now_price": 3.0}, {"date": "03.19", "was_price": 3.99, "now_price": 2.99}]}, "20689357001_EA": {"1mon": [{"date": "03.19", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "03.19", "was_price": 3.99, "now_price": 2.99}]}, "20162500001_KG": {"1mon": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}], "1yr": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}]}, "20693092_EA": {"1mon": [{"date": "03.19", "was_price": 8.99, "now_price": 6.89}], "1yr": [{"date": "03.19", "was_price": 8.99, "now_price": 6.89}]}, "21377793_EA": {"1mon": [{"date": "03.19", "was_price": 1.29, "now_price": 0.99}], "1yr": [{"date": "03.19", "was_price": 1.29, "now_price": 0.99}]}, "20703060_EA": {"1mon": [{"date": "03.19", "was_price": 3.79, "now_price": 3.0}], "1yr": [{"date": "03.19", "was_price": 3.79, "now_price": 3.0}]}, "20823424_EA": {"1mon": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.19", "was_price": 2.49, "now_price": 1.99}], "1yr": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.19", "was_price": 2.49, "now_price": 1.99}]}, "21416495_EA": {"1mon": [{"date": "03.26", "was_price": 4.99, "now_price": 3.99}], "1yr": [{"date": "03.26", "was_price": 4.99, "now_price": 3.99}]}, "20119760001_EA": {"1mon": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}], "1yr": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}]}, "20971707_EA": {"1mon": [{"date": "03.26", "was_price": 9.99, "now_price": 7.99}], "1yr": [{"date": "03.26", "was_price": 9.99, "now_price": 7.99}]}, "20348550002_EA": {"1mon": [{"date": "03.19", "was_price": 2.49, "now_price": 2.0}], "1yr": [{"date": "03.19", "was_price": 2.49, "now_price": 2.0}]}, "20945705_EA": {"1mon": [{"date": "02.19", "was_price": 4.79, "now_price": 4.29}, {"date": "03.19", "was_price": 4.79, "now_price": 3.89}], "1yr": [{"date": "02.19", "was_price": 4.79, "now_price": 4.29}, {"date": "03.19", "was_price": 4.79, "now_price": 3.89}]}, "20945695_EA": {"1mon": [{"date": "02.19", "was_price": 4.79, "now_price": 4.29}, {"date": "03.19", "was_price": 4.79, "now_price": 3.89}], "1yr": [{"date": "02.19", "was_price": 4.79, "now_price": 4.29}, {"date": "03.19", "was_price": 4.79, "now_price": 3.89}]}, "20896606_EA": {"1mon": [{"date": "03.26", "was_price": 16.99, "now_price": 13.99}], "1yr": [{"date": "03.26", "was_price": 16.99, "now_price": 13.99}]}, "20040825_EA": {"1mon": [{"date": "03.19", "was_price": 2.29, "now_price": 1.89}], "1yr": [{"date": "03.19", "was_price": 2.29, "now_price": 1.89}]}, "20159689001_EA": {"1mon": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}], "1yr": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}]}, "20854556002_EA": {"1mon": [{"date": "03.19", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "03.19", "was_price": 2.99, "now_price": 2.49}]}, "20661711_EA": {"1mon": [{"date": "02.12", "was_price": 2.99, "now_price": 2.49}, {"date": "03.19", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "02.12", "was_price": 2.99, "now_price": 2.49}, {"date": "03.19", "was_price": 2.99, "now_price": 2.49}]}, "20275924_EA": {"1mon": [{"date": "02.12", "was_price": 2.99, "now_price": 2.49}, {"date": "03.19", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "02.12", "was_price": 2.99, "now_price": 2.49}, {"date": "03.19", "was_price": 2.99, "now_price": 2.49}]}, "20214568_EA": {"1mon": [{"date": "03.05", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "03.05", "was_price": 2.99, "now_price": 2.49}]}, "21450739_EA": {"1mon": [{"date": "02.05", "was_price": 5.99, "now_price": 3.99}, {"date": "03.19", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "02.05", "was_price": 5.99, "now_price": 3.99}, {"date": "03.19", "was_price": 5.99, "now_price": 4.99}]}, "20811362001_EA": {"1mon": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}], "1yr": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}]}, "20696626001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "21365951_EA": {"1mon": [{"date": "03.19", "was_price": 12.99, "now_price": 11.0}], "1yr": [{"date": "03.19", "was_price": 12.99, "now_price": 11.0}]}, "20367557_EA": {"1mon": [{"date": "03.26", "was_price": 6.99, "now_price": 5.99}], "1yr": [{"date": "03.26", "was_price": 6.99, "now_price": 5.99}]}, "21570722_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570684_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570639_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570617_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21531421_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 4.99}, {"date": "03.19", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 4.99}, {"date": "03.19", "was_price": 6.99, "now_price": 6.0}]}, "21531411_EA": {"1mon": [{"date": "03.19", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "03.19", "was_price": 6.99, "now_price": 6.0}]}, "20006325002_EA": {"1mon": [{"date": "03.19", "was_price": 4.99, "now_price": 4.29}], "1yr": [{"date": "03.19", "was_price": 4.99, "now_price": 4.29}]}, "20582962_EA": {"1mon": [{"date": "03.19", "was_price": 1.49, "now_price": 1.29}], "1yr": [{"date": "03.19", "was_price": 1.49, "now_price": 1.29}]}, "20322953002_EA": {"1mon": [{"date": "03.05", "was_price": 5.49, "now_price": 4.79}], "1yr": [{"date": "03.05", "was_price": 5.49, "now_price": 4.79}]}, "20322953001_EA": {"1mon": [{"date": "02.19", "was_price": 5.49, "now_price": 4.79}, {"date": "03.05", "was_price": 5.49, "now_price": 4.79}], "1yr": [{"date": "02.19", "was_price": 5.49, "now_price": 4.79}, {"date": "03.05", "was_price": 5.49, "now_price": 4.79}]}, "20045048_EA": {"1mon": [{"date": "03.19", "was_price": 3.99, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 3.99, "now_price": 3.49}]}, "21357761_EA": {"1mon": [{"date": "03.26", "was_price": 7.99, "now_price": 6.99}], "1yr": [{"date": "03.26", "was_price": 7.99, "now_price": 6.99}]}, "20168395001_EA": {"1mon": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}], "1yr": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}]}, "20121509001_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}]}, "20877966_EA": {"1mon": [{"date": "03.19", "was_price": 2.49, "now_price": 2.19}], "1yr": [{"date": "03.19", "was_price": 2.49, "now_price": 2.19}]}, "20165080_EA": {"1mon": [{"date": "03.19", "was_price": 8.49, "now_price": 7.49}], "1yr": [{"date": "03.19", "was_price": 8.49, "now_price": 7.49}]}, "20807760_EA": {"1mon": [{"date": "03.19", "was_price": 16.99, "now_price": 15.0}], "1yr": [{"date": "03.19", "was_price": 16.99, "now_price": 15.0}]}, "20167418_EA": {"1mon": [{"date": "03.19", "was_price": 6.79, "now_price": 6.0}], "1yr": [{"date": "03.19", "was_price": 6.79, "now_price": 6.0}]}, "20122943_EA": {"1mon": [{"date": "03.19", "was_price": 5.49, "now_price": 4.89}], "1yr": [{"date": "03.19", "was_price": 5.49, "now_price": 4.89}]}, "21570068_EA": {"1mon": [{"date": "03.19", "was_price": 4.99, "now_price": 4.49}], "1yr": [{"date": "03.19", "was_price": 4.99, "now_price": 4.49}]}, "20157487001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}]}, "20649591001_KG": {"1mon": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}], "1yr": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}]}, "21182437_EA": {"1mon": [{"date": "03.19", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "03.19", "was_price": 9.99, "now_price": 9.0}]}, "21456471_EA": {"1mon": [{"date": "03.19", "was_price": 6.49, "now_price": 5.89}], "1yr": [{"date": "03.19", "was_price": 6.49, "now_price": 5.89}]}, "20286980001_EA": {"1mon": [{"date": "02.26", "was_price": 10.99, "now_price": 9.49}, {"date": "03.19", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.26", "was_price": 10.99, "now_price": 9.49}, {"date": "03.19", "was_price": 10.99, "now_price": 9.99}]}, "21001564_EA": {"1mon": [{"date": "03.19", "was_price": 10.99, "now_price": 10.0}], "1yr": [{"date": "03.19", "was_price": 10.99, "now_price": 10.0}]}, "20802664_EA": {"1mon": [{"date": "04.02", "was_price": 0.49, "now_price": 0.45}], "1yr": [{"date": "04.02", "was_price": 0.49, "now_price": 0.45}]}, "21447860_EA": {"1mon": [{"date": "03.19", "was_price": 2.49, "now_price": 2.29}], "1yr": [{"date": "03.19", "was_price": 2.49, "now_price": 2.29}]}, "21100563_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.29}, {"date": "03.19", "was_price": 2.49, "now_price": 2.29}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.29}, {"date": "03.19", "was_price": 2.49, "now_price": 2.29}]}, "20936031_EA": {"1mon": [{"date": "03.19", "was_price": 2.49, "now_price": 2.29}], "1yr": [{"date": "03.19", "was_price": 2.49, "now_price": 2.29}]}, "20935963_EA": {"1mon": [{"date": "03.19", "was_price": 2.49, "now_price": 2.29}], "1yr": [{"date": "03.19", "was_price": 2.49, "now_price": 2.29}]}, "20935924_EA": {"1mon": [{"date": "03.19", "was_price": 2.49, "now_price": 2.29}], "1yr": [{"date": "03.19", "was_price": 2.49, "now_price": 2.29}]}, "20659463_EA": {"1mon": [{"date": "03.12", "was_price": 2.49, "now_price": 2.29}], "1yr": [{"date": "03.12", "was_price": 2.49, "now_price": 2.29}]}, "20795464_EA": {"1mon": [{"date": "03.12", "was_price": 18.99, "now_price": 17.49}], "1yr": [{"date": "03.12", "was_price": 18.99, "now_price": 17.49}]}, "20844097_EA": {"1mon": [{"date": "03.19", "was_price": 1.29, "now_price": 1.19}], "1yr": [{"date": "03.19", "was_price": 1.29, "now_price": 1.19}]}, "20603048002_EA": {"1mon": [{"date": "03.19", "was_price": 1.29, "now_price": 1.19}], "1yr": [{"date": "03.19", "was_price": 1.29, "now_price": 1.19}]}, "21342684_EA": {"1mon": [{"date": "02.19", "was_price": 6.49, "now_price": 6.0}, {"date": "03.19", "was_price": 6.49, "now_price": 5.99}], "1yr": [{"date": "02.19", "was_price": 6.49, "now_price": 6.0}, {"date": "03.19", "was_price": 6.49, "now_price": 5.99}]}, "21290266_EA": {"1mon": [{"date": "02.05", "was_price": 12.99, "now_price": 12.0}, {"date": "02.19", "was_price": 12.99, "now_price": 11.0}, {"date": "03.19", "was_price": 12.99, "now_price": 11.99}], "1yr": [{"date": "02.05", "was_price": 12.99, "now_price": 12.0}, {"date": "02.19", "was_price": 12.99, "now_price": 11.0}, {"date": "03.19", "was_price": 12.99, "now_price": 11.99}]}, "20874066_EA": {"1mon": [{"date": "02.05", "was_price": 3.79, "now_price": 3.49}, {"date": "03.19", "was_price": 3.79, "now_price": 3.5}], "1yr": [{"date": "02.05", "was_price": 3.79, "now_price": 3.49}, {"date": "03.19", "was_price": 3.79, "now_price": 3.5}]}, "21367021_EA": {"1mon": [{"date": "03.19", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.19", "was_price": 6.49, "now_price": 6.0}]}, "21533720_EA": {"1mon": [{"date": "03.19", "was_price": 6.99, "now_price": 6.49}], "1yr": [{"date": "03.19", "was_price": 6.99, "now_price": 6.49}]}, "21455280_EA": {"1mon": [{"date": "03.19", "was_price": 6.99, "now_price": 6.49}], "1yr": [{"date": "03.19", "was_price": 6.99, "now_price": 6.49}]}, "20176654_EA": {"1mon": [{"date": "03.05", "was_price": 6.99, "now_price": 6.49}], "1yr": [{"date": "03.05", "was_price": 6.99, "now_price": 6.49}]}, "20105016_EA": {"1mon": [{"date": "02.19", "was_price": 13.99, "now_price": 12.99}, {"date": "02.26", "was_price": 13.99, "now_price": 9.99}, {"date": "04.16", "was_price": 13.99, "now_price": 12.99}], "1yr": [{"date": "02.19", "was_price": 13.99, "now_price": 12.99}, {"date": "02.26", "was_price": 13.99, "now_price": 9.99}, {"date": "04.16", "was_price": 13.99, "now_price": 12.99}]}, "20087448_EA": {"1mon": [{"date": "02.26", "was_price": 13.99, "now_price": 9.99}, {"date": "04.16", "was_price": 13.99, "now_price": 12.99}], "1yr": [{"date": "02.26", "was_price": 13.99, "now_price": 9.99}, {"date": "04.16", "was_price": 13.99, "now_price": 12.99}]}, "20603025_EA": {"1mon": [{"date": "03.19", "was_price": 1.49, "now_price": 1.39}], "1yr": [{"date": "03.19", "was_price": 1.49, "now_price": 1.39}]}, "20602609002_EA": {"1mon": [{"date": "03.19", "was_price": 1.49, "now_price": 1.39}], "1yr": [{"date": "03.19", "was_price": 1.49, "now_price": 1.39}]}, "20544362001_EA": {"1mon": [{"date": "02.26", "was_price": 3.19, "now_price": 2.99}, {"date": "03.26", "was_price": 3.19, "now_price": 2.99}], "1yr": [{"date": "02.26", "was_price": 3.19, "now_price": 2.99}, {"date": "03.26", "was_price": 3.19, "now_price": 2.99}]}, "20343515_EA": {"1mon": [{"date": "02.26", "was_price": 3.19, "now_price": 2.99}, {"date": "03.26", "was_price": 3.19, "now_price": 2.99}], "1yr": [{"date": "02.26", "was_price": 3.19, "now_price": 2.99}, {"date": "03.26", "was_price": 3.19, "now_price": 2.99}]}, "20795451_EA": {"1mon": [{"date": "03.19", "was_price": 16.99, "now_price": 15.99}], "1yr": [{"date": "03.19", "was_price": 16.99, "now_price": 15.99}]}, "20602261_EA": {"1mon": [{"date": "03.19", "was_price": 3.49, "now_price": 3.29}], "1yr": [{"date": "03.19", "was_price": 3.49, "now_price": 3.29}]}, "21407916_EA": {"1mon": [{"date": "03.19", "was_price": 1.99, "now_price": 1.89}], "1yr": [{"date": "03.19", "was_price": 1.99, "now_price": 1.89}]}, "20601749_EA": {"1mon": [{"date": "03.19", "was_price": 1.99, "now_price": 1.89}], "1yr": [{"date": "03.19", "was_price": 1.99, "now_price": 1.89}]}, "20007741_EA": {"1mon": [{"date": "03.19", "was_price": 1.99, "now_price": 1.89}], "1yr": [{"date": "03.19", "was_price": 1.99, "now_price": 1.89}]}, "20139600_EA": {"1mon": [{"date": "03.19", "was_price": 3.99, "now_price": 3.79}], "1yr": [{"date": "03.19", "was_price": 3.99, "now_price": 3.79}]}, "21176798_EA": {"1mon": [{"date": "03.19", "was_price": 7.29, "now_price": 6.99}], "1yr": [{"date": "03.19", "was_price": 7.29, "now_price": 6.99}]}, "21365899_EA": {"1mon": [{"date": "03.19", "was_price": 4.99, "now_price": 4.79}], "1yr": [{"date": "03.19", "was_price": 4.99, "now_price": 4.79}]}, "20318656001_EA": {"1mon": [{"date": "02.19", "was_price": 4.99, "now_price": 4.79}, {"date": "03.05", "was_price": 4.99, "now_price": 4.79}], "1yr": [{"date": "02.19", "was_price": 4.99, "now_price": 4.79}, {"date": "03.05", "was_price": 4.99, "now_price": 4.79}]}};
-
-      // Add touch support for mobile: when a toggle label is touched,
-      // manually toggle the associated checkbox and dispatch its change event.
-      var toggleLabels = document.querySelectorAll('.toggle-label');
-      toggleLabels.forEach(function(label) {
-        label.addEventListener('touchstart', function(e) {
-          e.preventDefault();
-          var checkbox = label.previousElementSibling;
-          checkbox.checked = !checkbox.checked;
-          checkbox.dispatchEvent(new Event('change'));
-        });
-      });
     });
 
-    // Store Chart.js instances to destroy when switching charts.
+    // Store Chart.js instances so we can destroy them when switching charts.
     var chartInstances = {};
 
     function switchToDetail(btn) {
@@ -480,7 +479,7 @@
       </button>
       <div class="page-title">ss_intnfood</div>
     </div>
-    <div class="creation-time">Created on: 2025-02-28 17:40:40</div>
+    <div class="creation-time">Created on: 2025-02-28 17:44:21</div>
   </div>
   <hr class="divider">
   <div class="header-spacer"></div>
@@ -501,10 +500,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21054846_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21054846_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21054846_EA">
+      <label class="toggle-label" for="toggle-21054846_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -544,10 +544,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21054779_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21054779_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21054779_EA">
+      <label class="toggle-label" for="toggle-21054779_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -587,10 +588,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20143381001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20143381001_KG" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20143381001_KG">
+      <label class="toggle-label" for="toggle-20143381001_KG" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -630,10 +632,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21447368_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21447368_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21447368_EA">
+      <label class="toggle-label" for="toggle-21447368_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -673,10 +676,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20975662_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20975662_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20975662_EA">
+      <label class="toggle-label" for="toggle-20975662_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -716,10 +720,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20026612_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20026612_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20026612_EA">
+      <label class="toggle-label" for="toggle-20026612_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -759,10 +764,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21295389_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21295389_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21295389_EA">
+      <label class="toggle-label" for="toggle-21295389_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -802,10 +808,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21100328_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21100328_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21100328_EA">
+      <label class="toggle-label" for="toggle-21100328_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -845,10 +852,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20594714_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20594714_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20594714_EA">
+      <label class="toggle-label" for="toggle-20594714_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -888,10 +896,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20378063002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20378063002_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20378063002_EA">
+      <label class="toggle-label" for="toggle-20378063002_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -931,10 +940,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20378063001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20378063001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20378063001_EA">
+      <label class="toggle-label" for="toggle-20378063001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -974,10 +984,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21499017_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21499017_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21499017_EA">
+      <label class="toggle-label" for="toggle-21499017_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1017,10 +1028,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21352008_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21352008_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21352008_EA">
+      <label class="toggle-label" for="toggle-21352008_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1060,10 +1072,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20710715_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20710715_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20710715_EA">
+      <label class="toggle-label" for="toggle-20710715_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1103,10 +1116,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21449248_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21449248_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21449248_EA">
+      <label class="toggle-label" for="toggle-21449248_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1146,10 +1160,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21451088_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21451088_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21451088_EA">
+      <label class="toggle-label" for="toggle-21451088_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1189,10 +1204,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20118969_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20118969_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20118969_EA">
+      <label class="toggle-label" for="toggle-20118969_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1232,10 +1248,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20020863001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20020863001_KG" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20020863001_KG">
+      <label class="toggle-label" for="toggle-20020863001_KG" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1275,10 +1292,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21238066_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21238066_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21238066_EA">
+      <label class="toggle-label" for="toggle-21238066_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1318,10 +1336,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21214570_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214570_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21214570_EA">
+      <label class="toggle-label" for="toggle-21214570_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1361,10 +1380,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21214481_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214481_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21214481_EA">
+      <label class="toggle-label" for="toggle-21214481_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1404,10 +1424,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21214480_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214480_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21214480_EA">
+      <label class="toggle-label" for="toggle-21214480_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1447,10 +1468,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21214477_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214477_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21214477_EA">
+      <label class="toggle-label" for="toggle-21214477_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1490,10 +1512,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21214470_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214470_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21214470_EA">
+      <label class="toggle-label" for="toggle-21214470_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1533,10 +1556,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21214469_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214469_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21214469_EA">
+      <label class="toggle-label" for="toggle-21214469_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1576,10 +1600,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21089449_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21089449_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21089449_EA">
+      <label class="toggle-label" for="toggle-21089449_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1619,10 +1644,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20689357002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20689357002_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20689357002_EA">
+      <label class="toggle-label" for="toggle-20689357002_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1662,10 +1688,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20689357001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20689357001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20689357001_EA">
+      <label class="toggle-label" for="toggle-20689357001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1705,10 +1732,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20162500001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20162500001_KG" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20162500001_KG">
+      <label class="toggle-label" for="toggle-20162500001_KG" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1748,10 +1776,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20693092_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20693092_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20693092_EA">
+      <label class="toggle-label" for="toggle-20693092_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1791,10 +1820,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21377793_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21377793_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21377793_EA">
+      <label class="toggle-label" for="toggle-21377793_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1834,10 +1864,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20703060_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20703060_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20703060_EA">
+      <label class="toggle-label" for="toggle-20703060_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1877,10 +1908,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20823424_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20823424_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20823424_EA">
+      <label class="toggle-label" for="toggle-20823424_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1920,10 +1952,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21416495_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21416495_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21416495_EA">
+      <label class="toggle-label" for="toggle-21416495_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -1963,10 +1996,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20119760001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119760001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20119760001_EA">
+      <label class="toggle-label" for="toggle-20119760001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2006,10 +2040,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20971707_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20971707_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20971707_EA">
+      <label class="toggle-label" for="toggle-20971707_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2049,10 +2084,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20348550002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20348550002_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20348550002_EA">
+      <label class="toggle-label" for="toggle-20348550002_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2092,10 +2128,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20945705_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20945705_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20945705_EA">
+      <label class="toggle-label" for="toggle-20945705_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2135,10 +2172,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20945695_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20945695_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20945695_EA">
+      <label class="toggle-label" for="toggle-20945695_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2178,10 +2216,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20896606_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20896606_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20896606_EA">
+      <label class="toggle-label" for="toggle-20896606_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2221,10 +2260,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20040825_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20040825_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20040825_EA">
+      <label class="toggle-label" for="toggle-20040825_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2264,10 +2304,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20159689001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20159689001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20159689001_EA">
+      <label class="toggle-label" for="toggle-20159689001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2307,10 +2348,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20854556002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20854556002_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20854556002_EA">
+      <label class="toggle-label" for="toggle-20854556002_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2350,10 +2392,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20661711_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20661711_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20661711_EA">
+      <label class="toggle-label" for="toggle-20661711_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2393,10 +2436,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20275924_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20275924_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20275924_EA">
+      <label class="toggle-label" for="toggle-20275924_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2436,10 +2480,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20214568_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20214568_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20214568_EA">
+      <label class="toggle-label" for="toggle-20214568_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2479,10 +2524,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21450739_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21450739_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21450739_EA">
+      <label class="toggle-label" for="toggle-21450739_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2522,10 +2568,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20811362001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811362001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20811362001_EA">
+      <label class="toggle-label" for="toggle-20811362001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2565,10 +2612,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20696626001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20696626001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20696626001_EA">
+      <label class="toggle-label" for="toggle-20696626001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2608,10 +2656,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21365951_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21365951_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21365951_EA">
+      <label class="toggle-label" for="toggle-21365951_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2651,10 +2700,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20367557_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20367557_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20367557_EA">
+      <label class="toggle-label" for="toggle-20367557_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2694,10 +2744,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21570722_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570722_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21570722_EA">
+      <label class="toggle-label" for="toggle-21570722_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2737,10 +2788,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21570684_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570684_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21570684_EA">
+      <label class="toggle-label" for="toggle-21570684_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2780,10 +2832,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21570639_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570639_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21570639_EA">
+      <label class="toggle-label" for="toggle-21570639_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2823,10 +2876,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21570617_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570617_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21570617_EA">
+      <label class="toggle-label" for="toggle-21570617_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2866,10 +2920,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21531421_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21531421_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21531421_EA">
+      <label class="toggle-label" for="toggle-21531421_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2909,10 +2964,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21531411_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21531411_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21531411_EA">
+      <label class="toggle-label" for="toggle-21531411_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2952,10 +3008,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20006325002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20006325002_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20006325002_EA">
+      <label class="toggle-label" for="toggle-20006325002_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -2995,10 +3052,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20582962_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20582962_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20582962_EA">
+      <label class="toggle-label" for="toggle-20582962_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3038,10 +3096,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20322953002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20322953002_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20322953002_EA">
+      <label class="toggle-label" for="toggle-20322953002_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3081,10 +3140,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20322953001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20322953001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20322953001_EA">
+      <label class="toggle-label" for="toggle-20322953001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3124,10 +3184,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20045048_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20045048_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20045048_EA">
+      <label class="toggle-label" for="toggle-20045048_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3167,10 +3228,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21357761_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21357761_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21357761_EA">
+      <label class="toggle-label" for="toggle-21357761_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3210,10 +3272,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20168395001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20168395001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20168395001_EA">
+      <label class="toggle-label" for="toggle-20168395001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3253,10 +3316,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20121509001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20121509001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20121509001_EA">
+      <label class="toggle-label" for="toggle-20121509001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3296,10 +3360,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20877966_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20877966_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20877966_EA">
+      <label class="toggle-label" for="toggle-20877966_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3339,10 +3404,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20165080_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20165080_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20165080_EA">
+      <label class="toggle-label" for="toggle-20165080_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3382,10 +3448,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20807760_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20807760_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20807760_EA">
+      <label class="toggle-label" for="toggle-20807760_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3425,10 +3492,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20167418_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20167418_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20167418_EA">
+      <label class="toggle-label" for="toggle-20167418_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3468,10 +3536,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20122943_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20122943_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20122943_EA">
+      <label class="toggle-label" for="toggle-20122943_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3511,10 +3580,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21570068_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570068_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21570068_EA">
+      <label class="toggle-label" for="toggle-21570068_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3554,10 +3624,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20157487001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20157487001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20157487001_EA">
+      <label class="toggle-label" for="toggle-20157487001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3597,10 +3668,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20649591001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20649591001_KG" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20649591001_KG">
+      <label class="toggle-label" for="toggle-20649591001_KG" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3640,10 +3712,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21182437_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21182437_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21182437_EA">
+      <label class="toggle-label" for="toggle-21182437_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3683,10 +3756,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21456471_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21456471_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21456471_EA">
+      <label class="toggle-label" for="toggle-21456471_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3726,10 +3800,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20286980001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20286980001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20286980001_EA">
+      <label class="toggle-label" for="toggle-20286980001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3769,10 +3844,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21001564_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21001564_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21001564_EA">
+      <label class="toggle-label" for="toggle-21001564_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3812,10 +3888,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20802664_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20802664_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20802664_EA">
+      <label class="toggle-label" for="toggle-20802664_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3855,10 +3932,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21447860_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21447860_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21447860_EA">
+      <label class="toggle-label" for="toggle-21447860_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3898,10 +3976,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21100563_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21100563_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21100563_EA">
+      <label class="toggle-label" for="toggle-21100563_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3941,10 +4020,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20936031_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20936031_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20936031_EA">
+      <label class="toggle-label" for="toggle-20936031_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -3984,10 +4064,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20935963_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20935963_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20935963_EA">
+      <label class="toggle-label" for="toggle-20935963_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4027,10 +4108,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20935924_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20935924_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20935924_EA">
+      <label class="toggle-label" for="toggle-20935924_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4070,10 +4152,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20659463_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20659463_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20659463_EA">
+      <label class="toggle-label" for="toggle-20659463_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4113,10 +4196,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20795464_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20795464_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20795464_EA">
+      <label class="toggle-label" for="toggle-20795464_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4156,10 +4240,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20844097_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20844097_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20844097_EA">
+      <label class="toggle-label" for="toggle-20844097_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4199,10 +4284,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20603048002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20603048002_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20603048002_EA">
+      <label class="toggle-label" for="toggle-20603048002_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4242,10 +4328,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21342684_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21342684_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21342684_EA">
+      <label class="toggle-label" for="toggle-21342684_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4285,10 +4372,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21290266_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21290266_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21290266_EA">
+      <label class="toggle-label" for="toggle-21290266_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4328,10 +4416,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20874066_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20874066_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20874066_EA">
+      <label class="toggle-label" for="toggle-20874066_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4371,10 +4460,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21367021_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21367021_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21367021_EA">
+      <label class="toggle-label" for="toggle-21367021_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4414,10 +4504,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21533720_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21533720_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21533720_EA">
+      <label class="toggle-label" for="toggle-21533720_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4457,10 +4548,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21455280_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21455280_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21455280_EA">
+      <label class="toggle-label" for="toggle-21455280_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4500,10 +4592,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20176654_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20176654_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20176654_EA">
+      <label class="toggle-label" for="toggle-20176654_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4543,10 +4636,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20105016_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20105016_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20105016_EA">
+      <label class="toggle-label" for="toggle-20105016_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4586,10 +4680,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20087448_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20087448_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20087448_EA">
+      <label class="toggle-label" for="toggle-20087448_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4629,10 +4724,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20603025_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20603025_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20603025_EA">
+      <label class="toggle-label" for="toggle-20603025_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4672,10 +4768,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20602609002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20602609002_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20602609002_EA">
+      <label class="toggle-label" for="toggle-20602609002_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4715,10 +4812,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20544362001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20544362001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20544362001_EA">
+      <label class="toggle-label" for="toggle-20544362001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4758,10 +4856,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20343515_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20343515_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20343515_EA">
+      <label class="toggle-label" for="toggle-20343515_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4801,10 +4900,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20795451_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20795451_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20795451_EA">
+      <label class="toggle-label" for="toggle-20795451_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4844,10 +4944,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20602261_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20602261_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20602261_EA">
+      <label class="toggle-label" for="toggle-20602261_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4887,10 +4988,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21407916_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21407916_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21407916_EA">
+      <label class="toggle-label" for="toggle-21407916_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4930,10 +5032,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20601749_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20601749_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20601749_EA">
+      <label class="toggle-label" for="toggle-20601749_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -4973,10 +5076,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20007741_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20007741_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20007741_EA">
+      <label class="toggle-label" for="toggle-20007741_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -5016,10 +5120,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20139600_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20139600_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20139600_EA">
+      <label class="toggle-label" for="toggle-20139600_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -5059,10 +5164,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21176798_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21176798_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21176798_EA">
+      <label class="toggle-label" for="toggle-21176798_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -5102,10 +5208,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="21365899_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21365899_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21365899_EA">
+      <label class="toggle-label" for="toggle-21365899_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
@@ -5145,10 +5252,11 @@
     <!-- "Detail" button: green (selected) by default -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch: initially styled disabled, label shows "1 Yr" -->
+    <!-- Toggle switch: initially styled disabled, label shows "1 Yr".
+         The label includes an explicit onclick="toggleByClick(event, this)" -->
     <div class="toggle-switch disabled" data-product-id="20318656001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20318656001_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20318656001_EA">
+      <label class="toggle-label" for="toggle-20318656001_EA" onclick="toggleByClick(event, this)">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
       </label>
