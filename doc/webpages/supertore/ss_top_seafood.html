@@ -158,13 +158,14 @@ body {
     width: 80px;
     height: 28px;
     position: relative;
+    /* We'll style it as 'disabled' with a class so the user can still click it to remove the disabled style */
 }
 .toggle-switch.disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 .toggle-input {
-    /* DO NOT use 'disabled' attribute, so 'onchange' can fire. We only style it as disabled. */
+    /* Not physically disabled => so 'onchange' can still fire. We'll rely on the .disabled class for styling. */
     display: none;
 }
 .toggle-label {
@@ -211,7 +212,7 @@ body {
 }
 .view-container {
     width: 100%;
-    height: 200px;
+    height: 200px; /* short chart area */
     position: relative;
     background-color: #f9f9f9;
 }
@@ -274,16 +275,16 @@ body {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Provide chart data as a global dictionary: priceHistoryData[product_id] = { "1mon": [...], "1yr": [...] }
+    // Provide chart data as a global dictionary => priceHistoryData[product_id] = { "1mon": [...], "1yr": [...] }
     window.priceHistoryData = {"20720065_KG": {"1mon": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "1yr": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}]}, "20852143_KG": {"1mon": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "1yr": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}]}, "21043887_EA": {"1mon": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}]}, "21211819_EA": {"1mon": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}]}, "20750012_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749901_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749798_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20699832_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21108887_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]}};
 });
 
 /**
- * When "Detail" button is clicked => show detail view, disable toggle (gray).
+ * "Detail" button => re-show detail, hide chart, revert toggle to "disabled" style with label "1 Y"
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
-    // Make this button selected, others not
+    // Mark this button selected
     var allButtons = container.querySelectorAll('.vertical-switch-button');
     allButtons.forEach(function(b) { b.classList.remove('selected'); });
     btn.classList.add('selected');
@@ -291,11 +292,10 @@ function switchToDetail(btn) {
     // Reapply 'disabled' styling to the toggle
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
-    var toggleInput = container.querySelector('.toggle-input');
-    // Force the toggle to be unchecked
-    toggleInput.checked = false;
 
-    // Force label text to "1 Y"
+    // Force checkbox to false, label => "1 Y"
+    var toggleInput = container.querySelector('.toggle-input');
+    toggleInput.checked = false;
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Y";
 
@@ -306,27 +306,26 @@ function switchToDetail(btn) {
     var chartView = viewContainer.querySelector('.chart-view');
     detailView.style.opacity = '1';
     chartView.style.opacity = '0';
-
-    // Clear chart after fade
     setTimeout(function() {
         chartView.innerHTML = '';
     }, 400);
 }
 
 /**
- * When the toggle switch is changed => if 'disabled' class is present => remove it so it becomes active
- * Then show chart, hide detail, load either 1-month or 1-year data
+ * Toggle => if .disabled => remove that style => chart is active
+ * If checked => 1 Yr => line chart with 2 lines
+ * If unchecked => 1 Mon => bar chart
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
     var toggleSwitch = container.querySelector('.toggle-switch');
 
-    // If it's styled as disabled => remove that style
+    // If disabled => remove class so it becomes active
     if (toggleSwitch.classList.contains('disabled')) {
         toggleSwitch.classList.remove('disabled');
     }
 
-    // Deselect the Detail button
+    // Deselect "Detail" button
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
@@ -340,32 +339,28 @@ function toggleMonYr(checkbox) {
 
     var productId = container.getAttribute('data-product-id');
     var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
-
-    // If checked => load 1yr data, label "1 Y"; else => load 1mon data, label "1 M"
     var dataSet;
     if (checkbox.checked) {
+        // 1 Year => line chart
         dataSet = window.priceHistoryData[productId]["1yr"];
         toggleLabel.textContent = "1 Y";
+        renderLineChart(chartView, dataSet);
     } else {
+        // 1 Month => bar chart
         dataSet = window.priceHistoryData[productId]["1mon"];
         toggleLabel.textContent = "1 M";
-    }
-
-    // Render the chart
-    setTimeout(function() {
         renderStackedChart(chartView, dataSet);
-    }, 50);
+    }
 }
 
 /**
- * Renders the bar chart in an <svg>.
- * - Bar labels: numeric only
- * - Y-axis labels: "$ " prefix
+ * Renders a bar chart for 1-month data
+ * (unchanged from your previous version).
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
     if (!data || data.length === 0) {
-        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No history available</p>';
+        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No data for 1 Mon</p>';
         return;
     }
     var maxWas = 0;
@@ -374,7 +369,6 @@ function renderStackedChart(chartView, data) {
             maxWas = d.was_price;
         }
     });
-
     var width = chartView.clientWidth;
     var height = chartView.clientHeight;
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -398,7 +392,6 @@ function renderStackedChart(chartView, data) {
     svg.appendChild(axisLine);
 
     var linePoints = [];
-
     data.forEach(function(d, i) {
         var total = d.was_price;
         var bottomVal = d.now_price;
@@ -418,7 +411,7 @@ function renderStackedChart(chartView, data) {
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
 
-        // bottom portion (green)
+        // bottom portion => green
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
@@ -428,7 +421,7 @@ function renderStackedChart(chartView, data) {
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
 
-        // top portion (orange)
+        // top portion => orange
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
@@ -438,7 +431,7 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
 
-        // Label for now_price => numeric only
+        // label for now_price => numeric only
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -448,7 +441,7 @@ function renderStackedChart(chartView, data) {
         txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
 
-        // Label for was_price => numeric only, placed above
+        // label for was_price => above bar => numeric only
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -462,7 +455,7 @@ function renderStackedChart(chartView, data) {
         var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
 
-        // X-axis date
+        // date label
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
@@ -473,7 +466,7 @@ function renderStackedChart(chartView, data) {
         svg.appendChild(txtDate);
     });
 
-    // line connecting top of green portion
+    // line connecting top of the green portion
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
         for (var i=1; i<linePoints.length; i++) {
@@ -487,7 +480,7 @@ function renderStackedChart(chartView, data) {
         svg.appendChild(linePath);
     }
 
-    // Y-axis ticks => "$ " prefix
+    // Y-axis labels => "$ " prefix
     var labelVals = [0, maxWas/2, maxWas];
     labelVals.forEach(function(val) {
         var y = (height - bottomPad) - (val / maxWas)*chartH;
@@ -511,6 +504,175 @@ function renderStackedChart(chartView, data) {
 
     chartView.appendChild(svg);
 }
+
+/**
+ * Renders a two-line chart for 1-year data:
+ * - We have was_price and now_price
+ * - Plot black dots for each data point
+ * - Connect them with lines of different colors
+ * - Label only highest, lowest, and last data points for each line
+ */
+function renderLineChart(chartView, data) {
+    chartView.innerHTML = '';
+    if (!data || data.length === 0) {
+        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No data for 1 Yr</p>';
+        return;
+    }
+
+    // We find a single maxVal among both was_price and now_price
+    var maxVal = 0;
+    data.forEach(function(d) {
+        if (d.was_price > maxVal) maxVal = d.was_price;
+        if (d.now_price > maxVal) maxVal = d.now_price;
+    });
+
+    var width = chartView.clientWidth;
+    var height = chartView.clientHeight;
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
+    svg.style.backgroundColor = '#f9f9f9';
+
+    var leftPad = 40;
+    var bottomPad = 20;
+    var topPad = 10;
+    var chartH = height - bottomPad - topPad;
+    var chartW = width - leftPad - 10;
+
+    // Draw y-axis line
+    var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    axisLine.setAttribute('x1', leftPad);
+    axisLine.setAttribute('y1', height - bottomPad);
+    axisLine.setAttribute('x2', leftPad);
+    axisLine.setAttribute('y2', topPad);
+    axisLine.setAttribute('stroke', '#000');
+    svg.appendChild(axisLine);
+
+    // We'll create arrays for was and now
+    var wasArr = data.map(d => d.was_price);
+    var nowArr = data.map(d => d.now_price);
+
+    // We'll define a function to get the min, max, last index for an array
+    function getKeyIndices(arr) {
+        if (!arr.length) return [];
+        let minVal = arr[0], maxVal = arr[0];
+        let minIdx = 0, maxIdx = 0;
+        for (let i=1; i<arr.length; i++) {
+            if (arr[i] < minVal) { minVal = arr[i]; minIdx = i; }
+            if (arr[i] > maxVal) { maxVal = arr[i]; maxIdx = i; }
+        }
+        let lastIdx = arr.length - 1;
+        // Return unique indices
+        let setOfIdx = new Set([minIdx, maxIdx, lastIdx]);
+        return Array.from(setOfIdx);
+    }
+
+    let wasKeyIdx = getKeyIndices(wasArr);
+    let nowKeyIdx = getKeyIndices(nowArr);
+
+    // We'll define a function to scale a price => y coordinate
+    function scalePrice(price) {
+        return (height - bottomPad) - (price / maxVal) * chartH;
+    }
+
+    // We'll define a function to get the x coordinate for an index
+    function getX(i, n) {
+        // n is data.length
+        let barSpacing = chartW / n;
+        return leftPad + i*barSpacing + barSpacing*0.5; 
+    }
+
+    // We'll draw the lines for was_price and now_price
+    function drawLine(arr, color) {
+        if (arr.length < 2) return;
+        let pathD = "";
+        for (let i=0; i<arr.length; i++) {
+            let x = getX(i, arr.length);
+            let y = scalePrice(arr[i]);
+            if (i===0) {
+                pathD = "M "+ x +" "+ y;
+            } else {
+                pathD += " L "+ x +" "+ y;
+            }
+        }
+        let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute('d', pathD);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', color);
+        path.setAttribute('stroke-width', '2');
+        svg.appendChild(path);
+    }
+
+    // We'll draw black dots for each data point
+    function drawDots(arr) {
+        for (let i=0; i<arr.length; i++) {
+            let x = getX(i, arr.length);
+            let y = scalePrice(arr[i]);
+            let circ = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            circ.setAttribute('cx', x);
+            circ.setAttribute('cy', y);
+            circ.setAttribute('r', 3);
+            circ.setAttribute('fill', '#000');
+            svg.appendChild(circ);
+        }
+    }
+
+    // We'll label only the key indices (min, max, last) for each line
+    function labelKeyPoints(arr, dataArr, color, keyIndices) {
+        keyIndices.forEach(idx => {
+            let x = getX(idx, arr.length);
+            let y = scalePrice(arr[idx]);
+            let val = arr[idx].toFixed(2);
+            let txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            txt.setAttribute('x', x);
+            txt.setAttribute('y', y - 5);
+            txt.setAttribute('text-anchor', 'middle');
+            txt.setAttribute('font-size', '10');
+            txt.setAttribute('fill', color);
+            txt.textContent = val;
+            svg.appendChild(txt);
+        });
+    }
+
+    // 1) Draw was_price line in e.g. #0077cc
+    drawLine(wasArr, "#0077cc");
+    drawDots(wasArr);
+    labelKeyPoints(wasArr, data, "#0077cc", wasKeyIdx);
+
+    // 2) Draw now_price line in e.g. #009900
+    drawLine(nowArr, "#009900");
+    drawDots(nowArr);
+    labelKeyPoints(nowArr, data, "#009900", nowKeyIdx);
+
+    // We'll do minimal x-axis labeling (e.g. first and last date).
+    // Or none. We'll just do none for simplicity. 
+    // If you want some labeling, you can do so. 
+
+    // Y-axis ticks => "$ " prefix
+    let labelVals = [0, maxVal/2, maxVal];
+    labelVals.forEach(function(val) {
+        let y = (height - bottomPad) - (val / maxVal)*chartH;
+        let gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        gridLine.setAttribute('x1', leftPad);
+        gridLine.setAttribute('y1', y);
+        gridLine.setAttribute('x2', width - 10);
+        gridLine.setAttribute('y2', y);
+        gridLine.setAttribute('stroke', '#ccc');
+        gridLine.setAttribute('stroke-dasharray', '2,2');
+        svg.appendChild(gridLine);
+
+        let txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtLabel.setAttribute('x', 5);
+        txtLabel.setAttribute('y', y+3);
+        txtLabel.setAttribute('font-size', '10');
+        txtLabel.setAttribute('fill', '#000');
+        txtLabel.textContent = "$ " + val.toFixed(2);
+        svg.appendChild(txtLabel);
+    });
+
+    chartView.appendChild(svg);
+}
+
 </script>
 
 </head>
@@ -522,7 +684,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">ss_seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 13:39:51</div>
+  <div class="creation-time">Created on: 2025-02-28 13:58:31</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -540,9 +702,11 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
     </div>
+    <!-- "Detail" button is green by default -->
     <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+
+    <!-- Toggle switch is styled disabled (gray), label "1 Y" by default -->
     <div class="toggle-switch disabled" data-product-id="20720065_KG">
-      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20720065_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20720065_KG">
         <span class="toggle-circle"></span>
@@ -579,9 +743,11 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
     </div>
+    <!-- "Detail" button is green by default -->
     <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+
+    <!-- Toggle switch is styled disabled (gray), label "1 Y" by default -->
     <div class="toggle-switch disabled" data-product-id="20852143_KG">
-      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20852143_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20852143_KG">
         <span class="toggle-circle"></span>
@@ -618,9 +784,11 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
     </div>
+    <!-- "Detail" button is green by default -->
     <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+
+    <!-- Toggle switch is styled disabled (gray), label "1 Y" by default -->
     <div class="toggle-switch disabled" data-product-id="21043887_EA">
-      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-21043887_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21043887_EA">
         <span class="toggle-circle"></span>
@@ -657,9 +825,11 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
     </div>
+    <!-- "Detail" button is green by default -->
     <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+
+    <!-- Toggle switch is styled disabled (gray), label "1 Y" by default -->
     <div class="toggle-switch disabled" data-product-id="21211819_EA">
-      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-21211819_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21211819_EA">
         <span class="toggle-circle"></span>
@@ -696,9 +866,11 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
     </div>
+    <!-- "Detail" button is green by default -->
     <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+
+    <!-- Toggle switch is styled disabled (gray), label "1 Y" by default -->
     <div class="toggle-switch disabled" data-product-id="20750012_EA">
-      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20750012_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20750012_EA">
         <span class="toggle-circle"></span>
@@ -735,9 +907,11 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
     </div>
+    <!-- "Detail" button is green by default -->
     <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+
+    <!-- Toggle switch is styled disabled (gray), label "1 Y" by default -->
     <div class="toggle-switch disabled" data-product-id="20749901_EA">
-      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20749901_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20749901_EA">
         <span class="toggle-circle"></span>
@@ -774,9 +948,11 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
+    <!-- "Detail" button is green by default -->
     <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+
+    <!-- Toggle switch is styled disabled (gray), label "1 Y" by default -->
     <div class="toggle-switch disabled" data-product-id="20749798_EA">
-      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20749798_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20749798_EA">
         <span class="toggle-circle"></span>
@@ -813,9 +989,11 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
+    <!-- "Detail" button is green by default -->
     <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+
+    <!-- Toggle switch is styled disabled (gray), label "1 Y" by default -->
     <div class="toggle-switch disabled" data-product-id="20699832_EA">
-      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20699832_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20699832_EA">
         <span class="toggle-circle"></span>
@@ -852,9 +1030,11 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
     </div>
+    <!-- "Detail" button is green by default -->
     <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+
+    <!-- Toggle switch is styled disabled (gray), label "1 Y" by default -->
     <div class="toggle-switch disabled" data-product-id="21108887_EA">
-      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-21108887_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21108887_EA">
         <span class="toggle-circle"></span>
@@ -940,7 +1120,7 @@ function inPageSearch() {
                 secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent).replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
             } else {
                 firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
-                secondElem.innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
+                secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
             }
         } else {
             items[i].style.display = 'none';
