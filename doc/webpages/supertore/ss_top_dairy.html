@@ -53,7 +53,7 @@ body {
     margin: 0 20px 20px;
 }
 .header-spacer {
-    height: 70px; /* offset for fixed header */
+    height: 70px;
 }
 .search-button {
     background-color: #3e7d53;
@@ -129,41 +129,42 @@ body {
     align-items: center;
 }
 .item-image img {
-    width: 60px; height: auto;
+    width: 60px;
+    height: auto;
 }
-.view-button {
-    margin-top: 6px;
-    padding: 8px 16px;
+.content-view {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 80px;
+}
+.switch-button {
+    padding: 5px;
+    font-size: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ddd;
+    cursor: pointer;
+}
+.switch-button.selected {
     background-color: #3e7d53;
     color: #fff;
-    text-decoration: none;
-    border-radius: 9999px;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-block;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-.toggle-chart {
-    margin-top: 8px;
-    padding: 8px 16px;
-    font-size: 12px;
-    cursor: pointer;
-}
-.chart-and-detail {
+.view-container {
+    flex: 1;
     position: relative;
-    width: 100%;
-    height: 200px; /* fixed so container doesn't resize on mobile */
-    overflow: hidden;
 }
 .detail-view, .chart-view {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    padding: 5px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     transition: opacity 0.4s ease;
 }
 .detail-view {
@@ -171,13 +172,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    opacity: 1; /* default visible */
-    z-index: 2; /* on top */
+    opacity: 1;
+    z-index: 2;
 }
 .chart-view {
     background-color: #f9f9f9;
-    opacity: 0; /* default hidden */
-    z-index: 1; /* behind detail */
+    opacity: 0;
+    z-index: 1;
 }
 .item-name {
     font-size: 14px;
@@ -218,46 +219,56 @@ body {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    window.priceHistoryData = {"21040974_EA": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "21040956_EA": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "21040942_EA": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "21040932_EA": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "20666187_EA": [{"date": "03.26", "was_price": 4.49, "now_price": 2.49}], "21547597_EA": [{"date": "02.12", "was_price": 0.0, "now_price": 5.49}, {"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}], "21547587_EA": [{"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}], "20943890_EA": [{"date": "02.12", "was_price": 5.49, "now_price": 4.0}, {"date": "03.05", "was_price": 5.49, "now_price": 3.49}], "20431607002_EA": [{"date": "02.12", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 3.49}], "20279976_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}], "20056004_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}], "20638003003_EA": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "02.19", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}], "20316485005_EA": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}], "21161998_EA": [{"date": "03.12", "was_price": 7.49, "now_price": 5.99}], "21433695_EA": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}], "21353874_EA": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}], "21588326_EA": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}], "21041543002_EA": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}], "21547995_EA": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "21312346_EA": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "21109025_EA": [{"date": "02.05", "was_price": 2.99, "now_price": 2.49}, {"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "21561135_EA": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "21560949_EA": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "21560899_EA": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "20316485002_EA": [{"date": "02.12", "was_price": 5.99, "now_price": 4.99}, {"date": "02.19", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}], "21619809_EA": [{"date": "03.19", "was_price": 3.29, "now_price": 2.79}], "21592483_EA": [{"date": "03.19", "was_price": 9.29, "now_price": 7.99}], "21588150_EA": [{"date": "02.05", "was_price": 4.29, "now_price": 4.0}, {"date": "02.19", "was_price": 4.29, "now_price": 4.0}, {"date": "03.05", "was_price": 4.29, "now_price": 3.69}], "20821364001_EA": [{"date": "03.05", "was_price": 8.99, "now_price": 8.0}], "21619591_EA": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "21588667_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "21547567_EA": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "21547564_EA": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "21473714_EA": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "21429094_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "21107643_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "21043151001_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "20788062002_EA": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "20325132007_EA": [{"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "20325132003_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]};
+    window.priceHistoryData = {"21040974_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}]}, "21040956_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}]}, "21040942_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}]}, "21040932_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}]}, "20666187_EA": {"1mon": [{"date": "03.26", "was_price": 4.49, "now_price": 2.49}], "1yr": [{"date": "03.26", "was_price": 4.49, "now_price": 2.49}]}, "21547597_EA": {"1mon": [{"date": "02.12", "was_price": 0.0, "now_price": 5.49}, {"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}], "1yr": [{"date": "02.12", "was_price": 0.0, "now_price": 5.49}, {"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}]}, "21547587_EA": {"1mon": [{"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}], "1yr": [{"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}]}, "20943890_EA": {"1mon": [{"date": "02.12", "was_price": 5.49, "now_price": 4.0}, {"date": "03.05", "was_price": 5.49, "now_price": 3.49}], "1yr": [{"date": "02.12", "was_price": 5.49, "now_price": 4.0}, {"date": "03.05", "was_price": 5.49, "now_price": 3.49}]}, "20431607002_EA": {"1mon": [{"date": "02.12", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 3.49}], "1yr": [{"date": "02.12", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 3.49}]}, "20279976_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}]}, "20056004_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}]}, "20638003003_EA": {"1mon": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "02.19", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "02.19", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}]}, "20316485005_EA": {"1mon": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}]}, "21161998_EA": {"1mon": [{"date": "03.12", "was_price": 7.49, "now_price": 5.99}], "1yr": [{"date": "03.12", "was_price": 7.49, "now_price": 5.99}]}, "21433695_EA": {"1mon": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}], "1yr": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}]}, "21353874_EA": {"1mon": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}], "1yr": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}]}, "21588326_EA": {"1mon": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}], "1yr": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}]}, "21041543002_EA": {"1mon": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}], "1yr": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}]}, "21547995_EA": {"1mon": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}]}, "21312346_EA": {"1mon": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}]}, "21109025_EA": {"1mon": [{"date": "02.05", "was_price": 2.99, "now_price": 2.49}, {"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "02.05", "was_price": 2.99, "now_price": 2.49}, {"date": "03.26", "was_price": 2.99, "now_price": 2.49}]}, "21561135_EA": {"1mon": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}]}, "21560949_EA": {"1mon": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}]}, "21560899_EA": {"1mon": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}]}, "20316485002_EA": {"1mon": [{"date": "02.12", "was_price": 5.99, "now_price": 4.99}, {"date": "02.19", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 5.99, "now_price": 4.99}, {"date": "02.19", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}]}, "21619809_EA": {"1mon": [{"date": "03.19", "was_price": 3.29, "now_price": 2.79}], "1yr": [{"date": "03.19", "was_price": 3.29, "now_price": 2.79}]}, "21592483_EA": {"1mon": [{"date": "03.19", "was_price": 9.29, "now_price": 7.99}], "1yr": [{"date": "03.19", "was_price": 9.29, "now_price": 7.99}]}, "21588150_EA": {"1mon": [{"date": "02.05", "was_price": 4.29, "now_price": 4.0}, {"date": "02.19", "was_price": 4.29, "now_price": 4.0}, {"date": "03.05", "was_price": 4.29, "now_price": 3.69}], "1yr": [{"date": "02.05", "was_price": 4.29, "now_price": 4.0}, {"date": "02.19", "was_price": 4.29, "now_price": 4.0}, {"date": "03.05", "was_price": 4.29, "now_price": 3.69}]}, "20821364001_EA": {"1mon": [{"date": "03.05", "was_price": 8.99, "now_price": 8.0}], "1yr": [{"date": "03.05", "was_price": 8.99, "now_price": 8.0}]}, "21619591_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "21588667_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "21547567_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "21547564_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "21473714_EA": {"1mon": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "21429094_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "21107643_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "21043151001_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "20788062002_EA": {"1mon": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "20325132007_EA": {"1mon": [{"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "20325132003_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}};
 });
 
 /**
- * Toggle between detail-view and chart-view with fade transitions.
- * When detail is visible, the toggle button shows "1 Year"; when chart is visible, it shows "Detail".
+ * Switch view based on the clicked button in the vertical button group.
+ * The button's data-type attribute indicates which view:
+ * - "detail": show detail view.
+ * - "1mon": show chart based on 1 Month data.
+ * - "1yr": show chart based on 1 Year data.
+ * This function updates button styles and toggles the view.
  */
-function toggleChart(btn) {
+function switchView(btn) {
     var container = btn.closest('.item-container');
-    var chartDetailWrapper = container.querySelector('.chart-and-detail');
-    var detailView = chartDetailWrapper.querySelector('.detail-view');
-    var chartView = chartDetailWrapper.querySelector('.chart-view');
+    var contentView = container.querySelector('.content-view');
+    var viewContainer = contentView.querySelector('.view-container');
+    var detailView = viewContainer.querySelector('.detail-view');
+    var chartView = viewContainer.querySelector('.chart-view');
     var productId = container.getAttribute('data-product-id');
-    var data = window.priceHistoryData[productId] || [];
-    if (chartView.style.opacity === '' || chartView.style.opacity === '0') {
-        detailView.style.opacity = '0';
-        chartView.style.opacity = '1';
-        setTimeout(function() {
-            renderStackedChart(chartView, data);
-        }, 50);
-        btn.textContent = 'Detail';
-    } else {
-        chartView.style.opacity = '0';
+    var allButtons = container.querySelectorAll('.switch-button');
+    allButtons.forEach(function(b) {
+        b.classList.remove('selected');
+    });
+    btn.classList.add('selected');
+    var viewType = btn.getAttribute('data-type');
+    if (viewType === "detail") {
         detailView.style.opacity = '1';
+        chartView.style.opacity = '0';
         setTimeout(function() {
             chartView.innerHTML = '';
         }, 400);
-        btn.textContent = '1 Year';
+    } else {
+        detailView.style.opacity = '0';
+        chartView.style.opacity = '1';
+        var dataSet = window.priceHistoryData[productId][viewType];
+        setTimeout(function() {
+            renderStackedChart(chartView, dataSet);
+        }, 50);
     }
 }
 
 /**
- * Renders a stacked bar chart in an <svg>.
- * - was_price => total bar height
- * - now_price => bottom (green)
- * - difference => top (orange)
- * - Places '$' near the top of the Y-axis (no rotation)
- * - Adds horizontal grid lines at 0, mid, max
- * - Draws a line connecting the "now_price" portion across bars
- * - Positions the was_price label above (outside) the top bar
+ * Renders a stacked bar chart in an <svg> using the provided dataset.
+ * - Each bar's total height corresponds to was_price.
+ * - The bottom portion (green) represents now_price.
+ * - The top portion (orange) represents the difference.
+ * - All numeric labels are prefixed with "$ " and spaced appropriately.
+ * - Y-axis numeric labels also include "$ ".
+ * - A vertical axis line and horizontal grid lines are drawn.
+ * - A line connects the top of the now_price portion across bars.
+ * - The was_price label is positioned above (outside) the bar.
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
@@ -289,7 +300,7 @@ function renderStackedChart(chartView, data) {
     axisLine.setAttribute('y2', topPad);
     axisLine.setAttribute('stroke', '#000');
     svg.appendChild(axisLine);
-    // Place '$' label near the top (moved above the numbers)
+    // Place '$' label at the top, with "$ " before numeric labels.
     var axisLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     axisLabel.setAttribute('x', leftPad - 5);
     axisLabel.setAttribute('y', topPad + 5);
@@ -336,16 +347,16 @@ function renderStackedChart(chartView, data) {
         txtNow.setAttribute('text-anchor', 'middle');
         txtNow.setAttribute('font-size', '10');
         txtNow.setAttribute('fill', '#000');
-        txtNow.textContent = d.now_price.toFixed(2);
+        txtNow.textContent = "$ " + d.now_price.toFixed(2);
         svg.appendChild(txtNow);
-        // Move was_price label above the bar (outside)
+        // was_price label above the bar (outside)
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth / 2);
         txtWas.setAttribute('y', barTopY - 2);
         txtWas.setAttribute('text-anchor', 'middle');
         txtWas.setAttribute('font-size', '10');
         txtWas.setAttribute('fill', '#000');
-        txtWas.textContent = d.was_price.toFixed(2);
+        txtWas.textContent = "$ " + d.was_price.toFixed(2);
         svg.appendChild(txtWas);
         var midBarX = barX + barWidth / 2;
         var bottomTopY = barBottomY;
@@ -387,7 +398,7 @@ function renderStackedChart(chartView, data) {
         txtLabel.setAttribute('y', y + 3);
         txtLabel.setAttribute('font-size', '10');
         txtLabel.setAttribute('fill', '#000');
-        txtLabel.textContent = val.toFixed(2);
+        txtLabel.textContent = "$ " + val.toFixed(2);
         svg.appendChild(txtLabel);
     });
     chartView.appendChild(svg);
@@ -403,7 +414,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">Dairy</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 11:07:42</div>
+  <div class="creation-time">Created on: 2025-02-28 11:43:50</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -418,963 +429,1403 @@ function renderStackedChart(chartView, data) {
 <div class="item-container" data-product-id="21040974_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21040974/b3/en/beauty/21040974_beauty_a06_@2.png' alt='Original Chocolate Milkshake' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/original-chocolate-milkshake/p/21040974_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#1</span>
-      <span class="first-word">Original</span>
-      <span class="product-name-text">Chocolate Milkshake</span>
-    </div>
-    <div>Expire On: 2025-03-12</div>
-    <div>WAS: <span class="was-price">$2.49</span></div>
-    <div class="now-price">NOW: $1.00</div>
-    <div class="discount-badge">59.8% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21040974_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#1</span>
+            <span class="first-word">Original</span>
+            <span class="product-name-text">Chocolate Milkshake</span>
+          </div>
+          <div>Expire On: 2025-03-12</div>
+          <div>WAS: <span class="was-price">$ 2.49</span></div>
+          <div class="now-price">NOW: $ 1.00</div>
+          <div class="discount-badge">59.8% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21040974_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21040956_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21040956/b3/en/beauty/21040956_beauty_a06_@2.png' alt='Chocolate Milkshake' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/chocolate-milkshake/p/21040956_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#2</span>
-      <span class="first-word">Chocolate</span>
-      <span class="product-name-text">Milkshake</span>
-    </div>
-    <div>Expire On: 2025-03-12</div>
-    <div>WAS: <span class="was-price">$2.49</span></div>
-    <div class="now-price">NOW: $1.00</div>
-    <div class="discount-badge">59.8% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21040956_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#2</span>
+            <span class="first-word">Chocolate</span>
+            <span class="product-name-text">Milkshake</span>
+          </div>
+          <div>Expire On: 2025-03-12</div>
+          <div>WAS: <span class="was-price">$ 2.49</span></div>
+          <div class="now-price">NOW: $ 1.00</div>
+          <div class="discount-badge">59.8% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21040956_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21040942_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21040942/b3/en/beauty/21040942_beauty_a06_@2.png' alt='Caramel Chocolate Milkshake' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/caramel-chocolate-milkshake/p/21040942_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#3</span>
-      <span class="first-word">Caramel</span>
-      <span class="product-name-text">Chocolate Milkshake</span>
-    </div>
-    <div>Expire On: 2025-03-12</div>
-    <div>WAS: <span class="was-price">$2.49</span></div>
-    <div class="now-price">NOW: $1.00</div>
-    <div class="discount-badge">59.8% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21040942_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#3</span>
+            <span class="first-word">Caramel</span>
+            <span class="product-name-text">Chocolate Milkshake</span>
+          </div>
+          <div>Expire On: 2025-03-12</div>
+          <div>WAS: <span class="was-price">$ 2.49</span></div>
+          <div class="now-price">NOW: $ 1.00</div>
+          <div class="discount-badge">59.8% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21040942_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21040932_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21040932/b3/en/beauty/21040932_beauty_a06_@2.png' alt='French Vanilla Milkshake' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/french-vanilla-milkshake/p/21040932_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#4</span>
-      <span class="first-word">French</span>
-      <span class="product-name-text">Vanilla Milkshake</span>
-    </div>
-    <div>Expire On: 2025-03-12</div>
-    <div>WAS: <span class="was-price">$2.49</span></div>
-    <div class="now-price">NOW: $1.00</div>
-    <div class="discount-badge">59.8% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21040932_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#4</span>
+            <span class="first-word">French</span>
+            <span class="product-name-text">Vanilla Milkshake</span>
+          </div>
+          <div>Expire On: 2025-03-12</div>
+          <div>WAS: <span class="was-price">$ 2.49</span></div>
+          <div class="now-price">NOW: $ 1.00</div>
+          <div class="discount-badge">59.8% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21040932_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20666187_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20666187/b3/en/angle/20666187_angle_a06_@2.png' alt='Soy Barista' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/soy-barista/p/20666187_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#5</span>
-      <span class="first-word">Soy</span>
-      <span class="product-name-text">Barista</span>
-    </div>
-    <div>Expire On: 2025-03-26</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $2.49</div>
-    <div class="discount-badge">44.5% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20666187_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#5</span>
+            <span class="first-word">Soy</span>
+            <span class="product-name-text">Barista</span>
+          </div>
+          <div>Expire On: 2025-03-26</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 2.49</div>
+          <div class="discount-badge">44.5% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20666187_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21547597_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21547597/b3/en/angle/21547597_angle_a06_@2.png' alt='Tubes Yogurt Raspberry Flavour 1% M.F.' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/tubes-yogurt-raspberry-flavour-1-m-f/p/21547597_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#6</span>
-      <span class="first-word">Tubes</span>
-      <span class="product-name-text">Yogurt Raspberry Flavour 1% M.F.</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$3.99</span></div>
-    <div class="now-price">NOW: $2.50</div>
-    <div class="discount-badge">37.3% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21547597_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#6</span>
+            <span class="first-word">Tubes</span>
+            <span class="product-name-text">Yogurt Raspberry Flavour 1% M.F.</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 3.99</span></div>
+          <div class="now-price">NOW: $ 2.50</div>
+          <div class="discount-badge">37.3% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21547597_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21547587_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21547587/b3/en/angle/21547587_angle_a06_@2.png' alt='Tubes Yogurt Mixed Berry Flavour 1% M.F.' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/tubes-yogurt-mixed-berry-flavour-1-m-f/p/21547587_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#7</span>
-      <span class="first-word">Tubes</span>
-      <span class="product-name-text">Yogurt Mixed Berry Flavour 1% M.F.</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$3.99</span></div>
-    <div class="now-price">NOW: $2.50</div>
-    <div class="discount-badge">37.3% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21547587_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#7</span>
+            <span class="first-word">Tubes</span>
+            <span class="product-name-text">Yogurt Mixed Berry Flavour 1% M.F.</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 3.99</span></div>
+          <div class="now-price">NOW: $ 2.50</div>
+          <div class="discount-badge">37.3% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21547587_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20943890_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20943890/b3/en/angle/20943890_angle_a06_@2.png' alt='Original Yogurt Banana, Balkan Style 3.25%' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/original-yogurt-banana-balkan-style-3-25/p/20943890_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#8</span>
-      <span class="first-word">Original</span>
-      <span class="product-name-text">Yogurt Banana, Balkan Style 3.25%</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$5.49</span></div>
-    <div class="now-price">NOW: $3.49</div>
-    <div class="discount-badge">36.4% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20943890_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#8</span>
+            <span class="first-word">Original</span>
+            <span class="product-name-text">Yogurt Banana, Balkan Style 3.25%</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 5.49</span></div>
+          <div class="now-price">NOW: $ 3.49</div>
+          <div class="discount-badge">36.4% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20943890_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20431607002_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20431607002/b3/en/angle/20431607002_angle_a06_@2.png' alt='Original Yogurt Cappuccino, Balkan Style 6%' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/original-yogurt-cappuccino-balkan-style-6/p/20431607002_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#9</span>
-      <span class="first-word">Original</span>
-      <span class="product-name-text">Yogurt Cappuccino, Balkan Style 6%</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.99</span></div>
-    <div class="now-price">NOW: $3.49</div>
-    <div class="discount-badge">30.1% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20431607002_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#9</span>
+            <span class="first-word">Original</span>
+            <span class="product-name-text">Yogurt Cappuccino, Balkan Style 6%</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.99</span></div>
+          <div class="now-price">NOW: $ 3.49</div>
+          <div class="discount-badge">30.1% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20431607002_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20279976_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20279976/b3/en/front/20279976_front_a06_@2.png' alt='Vegetable Oil Margarine' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/vegetable-oil-margarine/p/20279976_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#10</span>
-      <span class="first-word">Vegetable</span>
-      <span class="product-name-text">Oil Margarine</span>
-    </div>
-    <div>Expire On: 2025-03-12</div>
-    <div>WAS: <span class="was-price">$9.99</span></div>
-    <div class="now-price">NOW: $7.00</div>
-    <div class="discount-badge">29.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20279976_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#10</span>
+            <span class="first-word">Vegetable</span>
+            <span class="product-name-text">Oil Margarine</span>
+          </div>
+          <div>Expire On: 2025-03-12</div>
+          <div>WAS: <span class="was-price">$ 9.99</span></div>
+          <div class="now-price">NOW: $ 7.00</div>
+          <div class="discount-badge">29.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20279976_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20056004_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20056004/b3/en/back/20056004_back_a06_@2.png' alt='Original Margarine Square Spread, 12 units' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/original-margarine-square-spread-12-units/p/20056004_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#11</span>
-      <span class="first-word">Original</span>
-      <span class="product-name-text">Margarine Square Spread, 12 units</span>
-    </div>
-    <div>Expire On: 2025-03-12</div>
-    <div>WAS: <span class="was-price">$9.99</span></div>
-    <div class="now-price">NOW: $7.00</div>
-    <div class="discount-badge">29.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20056004_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#11</span>
+            <span class="first-word">Original</span>
+            <span class="product-name-text">Margarine Square Spread, 12 units</span>
+          </div>
+          <div>Expire On: 2025-03-12</div>
+          <div>WAS: <span class="was-price">$ 9.99</span></div>
+          <div class="now-price">NOW: $ 7.00</div>
+          <div class="discount-badge">29.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20056004_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20638003003_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20638003003/b3/en/angle/20638003003_angle_a06_@2.png' alt='Organic Yogurt Mango 3%' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/organic-yogurt-mango-3/p/20638003003_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#12</span>
-      <span class="first-word">Organic</span>
-      <span class="product-name-text">Yogurt Mango 3%</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$6.49</span></div>
-    <div class="now-price">NOW: $4.99</div>
-    <div class="discount-badge">23.1% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20638003003_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#12</span>
+            <span class="first-word">Organic</span>
+            <span class="product-name-text">Yogurt Mango 3%</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 6.49</span></div>
+          <div class="now-price">NOW: $ 4.99</div>
+          <div class="discount-badge">23.1% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20638003003_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20316485005_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20316485005/b3/en/angle/20316485005_angle_a06_@2.png' alt='Organic Plain Yogurt 3.5%' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/organic-plain-yogurt-3-5/p/20316485005_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#13</span>
-      <span class="first-word">Organic</span>
-      <span class="product-name-text">Plain Yogurt 3.5%</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$6.49</span></div>
-    <div class="now-price">NOW: $4.99</div>
-    <div class="discount-badge">23.1% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20316485005_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#13</span>
+            <span class="first-word">Organic</span>
+            <span class="product-name-text">Plain Yogurt 3.5%</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 6.49</span></div>
+          <div class="now-price">NOW: $ 4.99</div>
+          <div class="discount-badge">23.1% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20316485005_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21161998_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21161998/b3/en/angle/21161998_angle_a06_@2.png' alt='Barista Blend' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/barista-blend/p/21161998_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#14</span>
-      <span class="first-word">Barista</span>
-      <span class="product-name-text">Blend</span>
-    </div>
-    <div>Expire On: 2025-03-12</div>
-    <div>WAS: <span class="was-price">$7.49</span></div>
-    <div class="now-price">NOW: $5.99</div>
-    <div class="discount-badge">20.0% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21161998_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#14</span>
+            <span class="first-word">Barista</span>
+            <span class="product-name-text">Blend</span>
+          </div>
+          <div>Expire On: 2025-03-12</div>
+          <div>WAS: <span class="was-price">$ 7.49</span></div>
+          <div class="now-price">NOW: $ 5.99</div>
+          <div class="discount-badge">20.0% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21161998_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21433695_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21433695/b3/en/angle/21433695_angle_a06_@2.png' alt='Skyr Yogurt Strawberry 2%' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/skyr-yogurt-strawberry-2/p/21433695_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#15</span>
-      <span class="first-word">Skyr</span>
-      <span class="product-name-text">Yogurt Strawberry 2%</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$7.49</span></div>
-    <div class="now-price">NOW: $6.00</div>
-    <div class="discount-badge">19.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21433695_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#15</span>
+            <span class="first-word">Skyr</span>
+            <span class="product-name-text">Yogurt Strawberry 2%</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 7.49</span></div>
+          <div class="now-price">NOW: $ 6.00</div>
+          <div class="discount-badge">19.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21433695_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21353874_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21353874/b3/en/angle/21353874_angle_a06_@2.png' alt='Skyr Yogurt Vanilla 0% High Protein' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/skyr-yogurt-vanilla-0-high-protein/p/21353874_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#16</span>
-      <span class="first-word">Skyr</span>
-      <span class="product-name-text">Yogurt Vanilla 0% High Protein</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$7.49</span></div>
-    <div class="now-price">NOW: $6.00</div>
-    <div class="discount-badge">19.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21353874_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#16</span>
+            <span class="first-word">Skyr</span>
+            <span class="product-name-text">Yogurt Vanilla 0% High Protein</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 7.49</span></div>
+          <div class="now-price">NOW: $ 6.00</div>
+          <div class="discount-badge">19.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21353874_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21588326_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21588326/b3/en/angle/21588326_angle_a06_@2.png' alt='Greek Yogourt Crunch Café Latte Flavour 2 % M.F.' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/greek-yogourt-crunch-caf-latte-flavour-2-m-f/p/21588326_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#17</span>
-      <span class="first-word">Greek</span>
-      <span class="product-name-text">Yogourt Crunch Café Latte Flavour 2 % M.F.</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$5.49</span></div>
-    <div class="now-price">NOW: $4.49</div>
-    <div class="discount-badge">18.2% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21588326_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#17</span>
+            <span class="first-word">Greek</span>
+            <span class="product-name-text">Yogourt Crunch Café Latte Flavour 2 % M.F.</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 5.49</span></div>
+          <div class="now-price">NOW: $ 4.49</div>
+          <div class="discount-badge">18.2% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21588326_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21041543002_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21041543002/b3/en/angle/21041543002_angle_a06_@2.png' alt='Greek 2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/greek-2-vanilla-bean-yogurt-crunch-cups-with-dark/p/21041543002_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#18</span>
-      <span class="first-word">Greek</span>
-      <span class="product-name-text">2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$5.49</span></div>
-    <div class="now-price">NOW: $4.49</div>
-    <div class="discount-badge">18.2% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21041543002_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#18</span>
+            <span class="first-word">Greek</span>
+            <span class="product-name-text">2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 5.49</span></div>
+          <div class="now-price">NOW: $ 4.49</div>
+          <div class="discount-badge">18.2% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21041543002_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21547995_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21547995/b3/en/angle/21547995_angle_a06_@2.png' alt='Oat Zero Sugar Beverage Vanilla' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/oat-zero-sugar-beverage-vanilla/p/21547995_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#19</span>
-      <span class="first-word">Oat</span>
-      <span class="product-name-text">Zero Sugar Beverage Vanilla</span>
-    </div>
-    <div>Expire On: 2025-03-26</div>
-    <div>WAS: <span class="was-price">$2.99</span></div>
-    <div class="now-price">NOW: $2.49</div>
-    <div class="discount-badge">16.7% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21547995_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#19</span>
+            <span class="first-word">Oat</span>
+            <span class="product-name-text">Zero Sugar Beverage Vanilla</span>
+          </div>
+          <div>Expire On: 2025-03-26</div>
+          <div>WAS: <span class="was-price">$ 2.99</span></div>
+          <div class="now-price">NOW: $ 2.49</div>
+          <div class="discount-badge">16.7% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21547995_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21312346_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21312346/b3/en/angle/21312346_angle_a06_@2.png' alt='Oat Beverage, Chocolate' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/oat-beverage-chocolate/p/21312346_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#20</span>
-      <span class="first-word">Oat</span>
-      <span class="product-name-text">Beverage, Chocolate</span>
-    </div>
-    <div>Expire On: 2025-03-26</div>
-    <div>WAS: <span class="was-price">$2.99</span></div>
-    <div class="now-price">NOW: $2.49</div>
-    <div class="discount-badge">16.7% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21312346_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#20</span>
+            <span class="first-word">Oat</span>
+            <span class="product-name-text">Beverage, Chocolate</span>
+          </div>
+          <div>Expire On: 2025-03-26</div>
+          <div>WAS: <span class="was-price">$ 2.99</span></div>
+          <div class="now-price">NOW: $ 2.49</div>
+          <div class="discount-badge">16.7% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21312346_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21109025_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21109025/b3/en/angle/21109025_angle_a06_@2.png' alt='Oat Beverage, Original' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/oat-beverage-original/p/21109025_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#21</span>
-      <span class="first-word">Oat</span>
-      <span class="product-name-text">Beverage, Original</span>
-    </div>
-    <div>Expire On: 2025-03-26</div>
-    <div>WAS: <span class="was-price">$2.99</span></div>
-    <div class="now-price">NOW: $2.49</div>
-    <div class="discount-badge">16.7% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21109025_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#21</span>
+            <span class="first-word">Oat</span>
+            <span class="product-name-text">Beverage, Original</span>
+          </div>
+          <div>Expire On: 2025-03-26</div>
+          <div>WAS: <span class="was-price">$ 2.99</span></div>
+          <div class="now-price">NOW: $ 2.49</div>
+          <div class="discount-badge">16.7% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21109025_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21561135_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21561135/b3/en/angle/21561135_angle_a06_@2.png' alt='Oat Drink, Extra Creamy' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/oat-drink-extra-creamy/p/21561135_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#22</span>
-      <span class="first-word">Oat</span>
-      <span class="product-name-text">Drink, Extra Creamy</span>
-    </div>
-    <div>Expire On: 2025-03-26</div>
-    <div>WAS: <span class="was-price">$5.99</span></div>
-    <div class="now-price">NOW: $4.99</div>
-    <div class="discount-badge">16.7% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21561135_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#22</span>
+            <span class="first-word">Oat</span>
+            <span class="product-name-text">Drink, Extra Creamy</span>
+          </div>
+          <div>Expire On: 2025-03-26</div>
+          <div>WAS: <span class="was-price">$ 5.99</span></div>
+          <div class="now-price">NOW: $ 4.99</div>
+          <div class="discount-badge">16.7% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21561135_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21560949_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21560949/b3/en/angle/21560949_angle_a06_@2.png' alt='Oat Drink' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/oat-drink/p/21560949_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#23</span>
-      <span class="first-word">Oat</span>
-      <span class="product-name-text">Drink</span>
-    </div>
-    <div>Expire On: 2025-03-26</div>
-    <div>WAS: <span class="was-price">$5.99</span></div>
-    <div class="now-price">NOW: $4.99</div>
-    <div class="discount-badge">16.7% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21560949_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#23</span>
+            <span class="first-word">Oat</span>
+            <span class="product-name-text">Drink</span>
+          </div>
+          <div>Expire On: 2025-03-26</div>
+          <div>WAS: <span class="was-price">$ 5.99</span></div>
+          <div class="now-price">NOW: $ 4.99</div>
+          <div class="discount-badge">16.7% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21560949_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21560899_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21560899/b3/en/front/21560899_front_a06_@2.png' alt='Oat Drink, Chocolate' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/oat-drink-chocolate/p/21560899_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#24</span>
-      <span class="first-word">Oat</span>
-      <span class="product-name-text">Drink, Chocolate</span>
-    </div>
-    <div>Expire On: 2025-03-26</div>
-    <div>WAS: <span class="was-price">$5.99</span></div>
-    <div class="now-price">NOW: $4.99</div>
-    <div class="discount-badge">16.7% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21560899_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#24</span>
+            <span class="first-word">Oat</span>
+            <span class="product-name-text">Drink, Chocolate</span>
+          </div>
+          <div>Expire On: 2025-03-26</div>
+          <div>WAS: <span class="was-price">$ 5.99</span></div>
+          <div class="now-price">NOW: $ 4.99</div>
+          <div class="discount-badge">16.7% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21560899_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20316485002_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20316485002/b3/en/angle/20316485002_angle_a06_@2.png' alt='Organic Yogurt Plain 0%' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/organic-yogurt-plain-0/p/20316485002_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#25</span>
-      <span class="first-word">Organic</span>
-      <span class="product-name-text">Yogurt Plain 0%</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$5.99</span></div>
-    <div class="now-price">NOW: $4.99</div>
-    <div class="discount-badge">16.7% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20316485002_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#25</span>
+            <span class="first-word">Organic</span>
+            <span class="product-name-text">Yogurt Plain 0%</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 5.99</span></div>
+          <div class="now-price">NOW: $ 4.99</div>
+          <div class="discount-badge">16.7% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20316485002_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21619809_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21619809/b3/en/angle/21619809_angle_a06_@2.png' alt='Coffee Enhancer Maple Brown Sugar Oat Dairy-Free Creamer' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/coffee-enhancer-maple-brown-sugar-oat-dairy-free-c/p/21619809_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#26</span>
-      <span class="first-word">Coffee</span>
-      <span class="product-name-text">Enhancer Maple Brown Sugar Oat Dairy-Free Creamer</span>
-    </div>
-    <div>Expire On: 2025-03-19</div>
-    <div>WAS: <span class="was-price">$3.29</span></div>
-    <div class="now-price">NOW: $2.79</div>
-    <div class="discount-badge">15.2% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21619809_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#26</span>
+            <span class="first-word">Coffee</span>
+            <span class="product-name-text">Enhancer Maple Brown Sugar Oat Dairy-Free Creamer</span>
+          </div>
+          <div>Expire On: 2025-03-19</div>
+          <div>WAS: <span class="was-price">$ 3.29</span></div>
+          <div class="now-price">NOW: $ 2.79</div>
+          <div class="discount-badge">15.2% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21619809_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21592483_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21592483/b3/en/front/21592483_front_a06_@2.png' alt='Dairy-free Cheese, Crumbled Parmesan Style' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/dairy-free-cheese-crumbled-parmesan-style/p/21592483_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#27</span>
-      <span class="first-word">Dairy-free</span>
-      <span class="product-name-text">Cheese, Crumbled Parmesan Style</span>
-    </div>
-    <div>Expire On: 2025-03-19</div>
-    <div>WAS: <span class="was-price">$9.29</span></div>
-    <div class="now-price">NOW: $7.99</div>
-    <div class="discount-badge">14.0% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21592483_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#27</span>
+            <span class="first-word">Dairy-free</span>
+            <span class="product-name-text">Cheese, Crumbled Parmesan Style</span>
+          </div>
+          <div>Expire On: 2025-03-19</div>
+          <div>WAS: <span class="was-price">$ 9.29</span></div>
+          <div class="now-price">NOW: $ 7.99</div>
+          <div class="discount-badge">14.0% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21592483_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21588150_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21588150/b3/en/angle/21588150_angle_a06_@2.png' alt='Source 0% Smooth Traditional Yogurt Pack, Vanilla, High Protein,' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/source-0-smooth-traditional-yogurt-pack-vanilla-hi/p/21588150_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#28</span>
-      <span class="first-word">Source</span>
-      <span class="product-name-text">0% Smooth Traditional Yogurt Pack, Vanilla, High Protein,</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.29</span></div>
-    <div class="now-price">NOW: $3.69</div>
-    <div class="discount-badge">14.0% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21588150_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#28</span>
+            <span class="first-word">Source</span>
+            <span class="product-name-text">0% Smooth Traditional Yogurt Pack, Vanilla, High Protein,</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.29</span></div>
+          <div class="now-price">NOW: $ 3.69</div>
+          <div class="discount-badge">14.0% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21588150_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20821364001_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20821364001/b3/en/angle/20821364001_angle_a06_@2.png' alt='Egg Whites' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/egg-whites/p/20821364001_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#29</span>
-      <span class="first-word">Egg</span>
-      <span class="product-name-text">Whites</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$8.99</span></div>
-    <div class="now-price">NOW: $8.00</div>
-    <div class="discount-badge">11.0% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20821364001_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#29</span>
+            <span class="first-word">Egg</span>
+            <span class="product-name-text">Whites</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 8.99</span></div>
+          <div class="now-price">NOW: $ 8.00</div>
+          <div class="discount-badge">11.0% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20821364001_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21619591_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21619591/b3/en/angle/21619591_angle_a06_@2.png' alt='Méditerranée 9% Yogurt Special Edition' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/m-diterran-e-9-yogurt-special-edition/p/21619591_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#30</span>
-      <span class="first-word">Méditerranée</span>
-      <span class="product-name-text">9% Yogurt Special Edition</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21619591_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#30</span>
+            <span class="first-word">Méditerranée</span>
+            <span class="product-name-text">9% Yogurt Special Edition</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21619591_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21588667_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21588667/b3/en/front/21588667_front_a06_@2.png' alt='Probiotics Yogurt Fiber Plain' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/probiotics-yogurt-fiber-plain/p/21588667_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#31</span>
-      <span class="first-word">Probiotics</span>
-      <span class="product-name-text">Yogurt Fiber Plain</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21588667_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#31</span>
+            <span class="first-word">Probiotics</span>
+            <span class="product-name-text">Yogurt Fiber Plain</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21588667_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21547567_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21547567/b3/en/angle/21547567_angle_a06_@2.png' alt='Méditerranée Yogourt Mango 9 % M.F.' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/m-diterran-e-yogourt-mango-9-m-f/p/21547567_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#32</span>
-      <span class="first-word">Méditerranée</span>
-      <span class="product-name-text">Yogourt Mango 9 % M.F.</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21547567_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#32</span>
+            <span class="first-word">Méditerranée</span>
+            <span class="product-name-text">Yogourt Mango 9 % M.F.</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21547567_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21547564_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21547564/b3/en/angle/21547564_angle_a06_@2.png' alt='Méditerranée Yogourt Key Lime Pie 9 % M.F.' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/m-diterran-e-yogourt-key-lime-pie-9-m-f/p/21547564_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#33</span>
-      <span class="first-word">Méditerranée</span>
-      <span class="product-name-text">Yogourt Key Lime Pie 9 % M.F.</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21547564_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#33</span>
+            <span class="first-word">Méditerranée</span>
+            <span class="product-name-text">Yogourt Key Lime Pie 9 % M.F.</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21547564_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21473714_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21473714/b3/en/angle/21473714_angle_a06_@2.png' alt='Méditerranée 9% Yogurt, Raspberry Cheesecake' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/m-diterran-e-9-yogurt-raspberry-cheesecake/p/21473714_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#34</span>
-      <span class="first-word">Méditerranée</span>
-      <span class="product-name-text">9% Yogurt, Raspberry Cheesecake</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21473714_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#34</span>
+            <span class="first-word">Méditerranée</span>
+            <span class="product-name-text">9% Yogurt, Raspberry Cheesecake</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21473714_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21429094_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21429094/b3/en/back/21429094_back_a06_@2.png' alt='Yogurt with Probiotics, Mango Flavour Tub' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-mango-flavour-tub/p/21429094_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#35</span>
-      <span class="first-word">Yogurt</span>
-      <span class="product-name-text">with Probiotics, Mango Flavour Tub</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21429094_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#35</span>
+            <span class="first-word">Yogurt</span>
+            <span class="product-name-text">with Probiotics, Mango Flavour Tub</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21429094_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21107643_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21107643/b3/en/angle/21107643_angle_a06_@2.png' alt='Yogurt with Probiotics, Peach Flavour, Value Tub' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-peach-flavour-value-tub/p/21107643_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#36</span>
-      <span class="first-word">Yogurt</span>
-      <span class="product-name-text">with Probiotics, Peach Flavour, Value Tub</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21107643_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#36</span>
+            <span class="first-word">Yogurt</span>
+            <span class="product-name-text">with Probiotics, Peach Flavour, Value Tub</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21107643_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="21043151001_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/21043151001/b3/en/angle/21043151001_angle_a06_@2.png' alt='Yogurt with Probiotics, Plain 3.2% M/F.' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-plain-3-2-m-f/p/21043151001_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#37</span>
-      <span class="first-word">Yogurt</span>
-      <span class="product-name-text">with Probiotics, Plain 3.2% M/F.</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-21043151001_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#37</span>
+            <span class="first-word">Yogurt</span>
+            <span class="product-name-text">with Probiotics, Plain 3.2% M/F.</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-21043151001_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20788062002_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20788062002/b3/en/angle/20788062002_angle_a06_@2.png' alt='Méditerranée 9% Yogurt, Coconut' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/m-diterran-e-9-yogurt-coconut/p/20788062002_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#38</span>
-      <span class="first-word">Méditerranée</span>
-      <span class="product-name-text">9% Yogurt, Coconut</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20788062002_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#38</span>
+            <span class="first-word">Méditerranée</span>
+            <span class="product-name-text">9% Yogurt, Coconut</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20788062002_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20325132007_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20325132007/b3/en/angle/20325132007_angle_a06_@2.png' alt='Yogurt with Probiotics, Coconut Flavour' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-coconut-flavour/p/20325132007_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#39</span>
-      <span class="first-word">Yogurt</span>
-      <span class="product-name-text">with Probiotics, Coconut Flavour</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20325132007_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#39</span>
+            <span class="first-word">Yogurt</span>
+            <span class="product-name-text">with Probiotics, Coconut Flavour</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20325132007_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 <div class="item-container" data-product-id="20325132003_EA">
   <div class="item-image">
     <img src='https://assets.shop.loblaws.ca/products/20325132003/b3/en/angle/20325132003_angle_a06_@2.png' alt='Yogurt with Probiotics, Vanilla Flavour' />
-    <a class="view-button" href="https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-vanilla-flavour/p/20325132003_EA" target="_top">SHOP</a>
-    <button class="view-button toggle-chart" onclick="toggleChart(this)">1 Yr</button>
   </div>
   
-<div class="chart-and-detail">
-  <div class="detail-view">
-    <div class="item-name">
-      <span class="item-number">#40</span>
-      <span class="first-word">Yogurt</span>
-      <span class="product-name-text">with Probiotics, Vanilla Flavour</span>
-    </div>
-    <div>Expire On: 2025-03-05</div>
-    <div>WAS: <span class="was-price">$4.49</span></div>
-    <div class="now-price">NOW: $4.00</div>
-    <div class="discount-badge">10.9% OFF</div>
-  </div>
-  <div class="chart-view" id="chart-20325132003_EA"></div>
+          <div class="content-view">
+            
+          <div class="button-group">
+            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          </div>
+        
+            
+          <div class="view-container">
+            <div class="detail-view">
+              
+          <div class="item-name">
+            <span class="item-number">#40</span>
+            <span class="first-word">Yogurt</span>
+            <span class="product-name-text">with Probiotics, Vanilla Flavour</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 4.49</span></div>
+          <div class="now-price">NOW: $ 4.00</div>
+          <div class="discount-badge">10.9% OFF</div>
+        
+            </div>
+            <div class="chart-view" id="chart-20325132003_EA"></div>
+          </div>
+        
+          </div>
+        
 </div>
-
-</div>
-
+        
 
 <script>
 function showSearchBar() {
