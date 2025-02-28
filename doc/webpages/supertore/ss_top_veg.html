@@ -279,7 +279,6 @@ body.page-loaded .fade-on-load {
 }
 .was-price {
     text-decoration: line-through;
-    font-size: 12px;
 }
 </style>
 
@@ -292,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * "Detail" button => show detail, hide chart, revert toggle => disabled style with label "Expire On"
+ * "Detail" button => show detail, hide chart, revert toggle => disabled style with label "1 Yr"
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
@@ -305,7 +304,7 @@ function switchToDetail(btn) {
     var toggleInput = container.querySelector('.toggle-input');
     toggleInput.checked = false;
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
-    toggleLabel.textContent = "Expire On";
+    toggleLabel.textContent = "1 Yr";
 
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
@@ -320,7 +319,9 @@ function switchToDetail(btn) {
 
 /**
  * Toggle => if .disabled => remove => chart is active
- * The label remains "Expire On" regardless of the toggle state.
+ * If checked => 1 Yr => line chart
+ * else => 1 Mon => bar chart
+ * skipping zero data rows
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
@@ -341,16 +342,15 @@ function toggleMonYr(checkbox) {
 
     var productId = container.getAttribute('data-product-id');
     var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
-    // Always show "Expire On" as the label
-    toggleLabel.textContent = "Expire On";
-
     var data1mon = window.priceHistoryData[productId]["1mon"] || [];
     var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
 
     if (checkbox.checked) {
+        toggleLabel.textContent = "1 Yr";
         var filtered = data1yr.filter(d => d.was_price > 0 && d.now_price > 0);
         renderLineChart(chartView, filtered);
     } else {
+        toggleLabel.textContent = "1 Mon";
         var filtered = data1mon.filter(d => d.was_price > 0 && d.now_price > 0);
         renderStackedChart(chartView, filtered);
     }
@@ -510,7 +510,7 @@ function renderStackedChart(chartView, data) {
 
 /**
  * Renders a two-line chart for 1-year data:
- * skip zero data, label only highest, lowest, and last points,
+ * skip zero data, label only highest,lowest,last points,
  * label each date on x-axis,
  * add overhead so top isn't cut off.
  */
@@ -692,7 +692,7 @@ function renderLineChart(chartView, data) {
     </button>
     <div class="page-title">ss_veg</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 15:59:11</div>
+  <div class="creation-time">Created on: 2025-02-28 16:02:03</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -713,12 +713,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20143381001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20143381001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20143381001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -754,12 +754,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20811994001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811994001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20811994001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -795,12 +795,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21626132_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21626132_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21626132_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -836,12 +836,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20186654_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20186654_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20186654_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -877,12 +877,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21022511001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21022511001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21022511001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -918,12 +918,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21023094001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21023094001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21023094001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -959,12 +959,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20070132001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20070132001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20070132001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1000,12 +1000,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20020863001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20020863001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20020863001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1041,12 +1041,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20162500001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20162500001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20162500001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1082,12 +1082,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20119813001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119813001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20119813001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1123,12 +1123,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20005774001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20005774001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20005774001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1164,12 +1164,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20119760001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119760001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20119760001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1205,12 +1205,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20167017001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20167017001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20167017001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1246,12 +1246,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20039812_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20039812_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20039812_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1287,12 +1287,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21121560001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21121560001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21121560001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1328,12 +1328,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20159689001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20159689001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20159689001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1369,12 +1369,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20795315001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20795315001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20795315001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1410,12 +1410,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20811362001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811362001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20811362001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1451,12 +1451,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20696626001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20696626001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20696626001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1492,12 +1492,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20600927001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20600927001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20600927001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1533,12 +1533,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20104062_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20104062_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20104062_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1574,12 +1574,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20130242001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20130242001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20130242001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1615,12 +1615,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20047112001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20047112001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20047112001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1656,12 +1656,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20959290_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20959290_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20959290_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1697,12 +1697,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20920821001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20920821001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20920821001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1738,12 +1738,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20145379001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20145379001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20145379001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1779,12 +1779,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21406192_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21406192_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21406192_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1820,12 +1820,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21362564_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362564_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362564_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1861,12 +1861,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21362519_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362519_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362519_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1902,12 +1902,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21362499_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362499_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362499_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1943,12 +1943,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21362495_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362495_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362495_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1984,12 +1984,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20033488001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20033488001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20033488001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2025,12 +2025,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20868985001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20868985001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20868985001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2066,12 +2066,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20045276001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20045276001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20045276001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2107,12 +2107,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20168395001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20168395001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20168395001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2148,12 +2148,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21549854001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21549854001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21549854001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2189,12 +2189,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20121509001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20121509001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20121509001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2230,12 +2230,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20157487001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20157487001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20157487001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2271,12 +2271,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20067389001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20067389001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20067389001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2312,12 +2312,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20649591001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20649591001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20649591001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2353,12 +2353,12 @@ function renderLineChart(chartView, data) {
     <!-- "Detail" button => green by default (with fade in effect) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "Expire On" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20051015001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20051015001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20051015001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">Expire On</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
