@@ -52,18 +52,65 @@ body {
     margin: 0 20px 20px;
 }
 .header-spacer {
-    height: 70px; /* to offset fixed header */
+    height: 70px;
 }
 .search-button {
     background-color: #3e7d53;
-    border: none; color: #fff;
+    border: none;
+    color: #fff;
     padding: 6px 12px;
     border-radius: 9999px;
-    cursor: pointer; font-size: 12px;
-    font-weight: 600; text-transform: uppercase;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
     letter-spacing: 0.5px;
-    display: inline-flex; align-items: center;
-    gap: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+#searchBarContainer {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    text-align: center;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+    display: none;
+    align-items: center;
+    z-index: 1001;
+}
+#searchInput {
+    padding: 4px;
+    width: calc(100% - 60px);
+    border: none;
+    outline: none;
+    font-size: 12px;
+    flex-grow: 1;
+}
+#searchCount {
+    font-size: 12px;
+    color: #3e7d53;
+    margin-left: 8px;
+    white-space: nowrap;
+}
+#closeSearchButton {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #3e7d53;
+    margin-left: 8px;
+    line-height: 1;
+    padding: 0;
 }
 .item-container {
     width: 90%;
@@ -82,18 +129,25 @@ body {
     align-items: center;
 }
 .item-image img {
-    width: 60px; height: auto;
+    width: 60px;
+    height: auto;
 }
 .view-button {
     margin-top: 6px;
     padding: 8px 16px;
     background-color: #3e7d53;
-    color: #fff; text-decoration: none;
+    color: #fff;
+    text-decoration: none;
     border-radius: 9999px;
-    font-size: 12px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.5px;
-    display: inline-block; border: none; cursor: pointer;
-    outline: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .toggle-chart {
     margin-top: 8px;
@@ -104,12 +158,15 @@ body {
 .chart-and-detail {
     position: relative;
     width: 100%;
-    height: 200px; /* fixed height so mobile won't resize */
-    overflow: hidden; /* keep same block size */
+    height: 200px;
+    overflow: hidden;
 }
 .detail-view, .chart-view {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     padding: 5px;
     transition: opacity 0.4s ease;
 }
@@ -118,13 +175,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    opacity: 1; /* default visible */
-    z-index: 2; /* on top */
+    opacity: 1;
+    z-index: 2;
 }
 .chart-view {
     background-color: #f9f9f9;
-    opacity: 0; /* default hidden */
-    z-index: 1; /* behind detail */
+    opacity: 0;
+    z-index: 1;
 }
 .item-name {
     font-size: 14px;
@@ -133,35 +190,42 @@ body {
     color: black;
 }
 .item-number {
-    color: red; font-weight: 600;
-    border: 2px solid red; border-radius: 50%;
-    display: inline-block; width: 22px; height: 22px;
-    text-align: center; line-height: 20px;
-    margin-right: 8px; font-size: 12px;
+    color: red;
+    font-weight: 600;
+    border: 2px solid red;
+    border-radius: 50%;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    line-height: 20px;
+    margin-right: 8px;
+    font-size: 12px;
 }
 .now-price {
-    color: red; font-weight: 600; font-size: 12px;
+    color: red;
+    font-weight: 600;
+    font-size: 12px;
     margin: 4px 0;
 }
 .discount-badge {
     background-color: yellow;
-    display: inline-block; font-weight: 600;
-    padding: 2px 5px; font-size: 16px;
+    display: inline-block;
+    font-weight: 600;
+    padding: 2px 5px;
+    font-size: 16px;
 }
 .was-price {
     text-decoration: line-through;
 }
-/* The actual chart (bars + line) will be drawn in an <svg> we create via JS. */
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Make the price history data globally available
     window.priceHistoryData = {"20822350_KG": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}], "20822150_KG": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}], "20836762_KG": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}], "21618256_KG": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}], "20822343_KG": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}], "20835855_KG": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}], "20822906_KG": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}], "20822347_KG": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}], "20822459_KG": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}], "20822322_KG": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}], "20875645_KG": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}], "20827782_KG": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}], "20827787_KG": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}], "20836766_KG": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}], "20822452_KG": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}], "20823075_KG": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}], "20825554_KG": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}], "20827788_KG": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}], "20823076_KG": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}], "20827783_KG": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}], "20826506_KG": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}], "20822907_KG": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}], "20827785_KG": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}], "20823073_KG": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}], "20416522_EA": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "20415978_EA": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "20593099_KG": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}], "20826455_KG": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}], "20794618_KG": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}], "20826460_KG": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}], "20162170_KG": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}], "21601003_EA": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "21600979_EA": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "21352008_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}], "21588066_EA": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}], "21290136_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "21289868_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "21289731_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "20794616_KG": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}], "20315210_KG": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}], "21201106_KG": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "21061099_EA": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "21061096_EA": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "21059807_EA": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "21366170_EA": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}], "20321514_KG": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "20319035_KG": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "20794617_KG": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}], "20794619_KG": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}], "21646160_EA": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}], "21201094_KG": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "21201089_KG": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "21570722_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21570684_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21570639_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21570617_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21566593_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21566049_EA": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21539305_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21538773_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21178761_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21178745_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21178744_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20174909_EA": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20156771_EA": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20152629_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20117351_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "20057892_EA": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "21546108_EA": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "20766562_KG": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}], "20320534_KG": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "20313480_KG": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "20298289_KG": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "21399630_EA": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "21193815_EA": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "20794831_KG": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}], "20766602_KG": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}], "20794620_KG": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}], "21300113_EA": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "21300103_EA": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "21220674_EA": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "20507161_EA": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "20507160_EA": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "20507159_EA": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "21076606_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "20923814_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "20903492_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "20903241_EA": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "20798252_KG": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}]};
 });
 
 /**
- * When toggling, fade out detail-view and fade in chart-view, or vice versa.
- * We do NOT resize the container. Both views are absolutely positioned in the same area.
+ * Toggle between detail-view and chart-view with fade transitions.
  */
 function toggleChart(btn) {
     var container = btn.closest('.item-container');
@@ -170,26 +234,16 @@ function toggleChart(btn) {
     var chartView = chartDetailWrapper.querySelector('.chart-view');
     var productId = container.getAttribute('data-product-id');
     var data = window.priceHistoryData[productId] || [];
-
-    // If chart is currently hidden => show chart, hide detail
     if (chartView.style.opacity === '' || chartView.style.opacity === '0') {
-        // fade out detail
         detailView.style.opacity = '0';
-        // fade in chart
         chartView.style.opacity = '1';
-
-        // Actually load & draw the chart
         setTimeout(function() {
             renderStackedChart(chartView, data);
         }, 50);
-
         btn.textContent = 'Show Details';
     } else {
-        // fade out chart
         chartView.style.opacity = '0';
-        // fade in detail
         detailView.style.opacity = '1';
-        // clear the chart after fade out (optional)
         setTimeout(function() {
             chartView.innerHTML = '';
         }, 400);
@@ -203,79 +257,73 @@ function renderStackedChart(chartView, data) {
         chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No history available</p>';
         return;
     }
-    // We'll treat was_price as total. bottom portion = now_price, top portion = was_price - now_price
-    // Also draw a line that connects the top of the bottom portion (the "now" portion).
-
-    // figure out max was_price so all bars scale equally
     var maxWas = 0;
     data.forEach(function(d) {
         if (d.was_price > maxWas) {
             maxWas = d.was_price;
         }
     });
-
-    // Create an <svg> that fills the chartView
     var width = chartView.clientWidth;
     var height = chartView.clientHeight;
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
     svg.style.backgroundColor = '#f9f9f9';
-
-    // We'll leave some padding for y-axis
     var leftPad = 40;
     var bottomPad = 20;
     var topPad = 10;
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
-
-    // We'll store x,y positions for the line connecting the "now" portion
+    var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    axisLine.setAttribute('x1', leftPad);
+    axisLine.setAttribute('y1', height - bottomPad);
+    axisLine.setAttribute('x2', leftPad);
+    axisLine.setAttribute('y2', topPad);
+    axisLine.setAttribute('stroke', '#000');
+    svg.appendChild(axisLine);
+    var axisLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    var labelX = 10;
+    var labelY = height / 2;
+    axisLabel.setAttribute('x', labelX);
+    axisLabel.setAttribute('y', labelY);
+    axisLabel.setAttribute('transform', `rotate(-90, {labelX}, {labelY})`);
+    axisLabel.setAttribute('text-anchor', 'middle');
+    axisLabel.setAttribute('font-size', '12');
+    axisLabel.setAttribute('fill', '#000');
+    axisLabel.textContent = '$';
+    svg.appendChild(axisLabel);
     var linePoints = [];
-
     data.forEach(function(d, i) {
-        // total is d.was_price
-        // bottom portion is d.now_price
-        // top portion is (d.was_price - d.now_price)
         var total = d.was_price;
         var bottomVal = d.now_price;
         if (bottomVal > total) {
-            bottomVal = total; // edge case
+            bottomVal = total;
         }
         var topVal = total - bottomVal;
-        // scale to chartH
         var totalH = (total / maxWas) * chartH;
-        var bottomH = (bottomVal / total) * totalH; // portion
+        var bottomH = (bottomVal / total) * totalH;
         var topH = totalH - bottomH;
-
-        // x position
         var barSpacing = chartW / data.length;
-        var barX = leftPad + i * barSpacing + barSpacing*0.2; // a bit of offset
-        var barWidth = barSpacing * 0.6; // narrower bars
-
-        var barBottomY = (height - bottomPad) - bottomH; // from top
+        var barX = leftPad + i * barSpacing + barSpacing*0.2;
+        var barWidth = barSpacing * 0.6;
+        var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
-
-        // Draw bottom portion (green)
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
         rectNow.setAttribute('width', barWidth);
         rectNow.setAttribute('height', bottomH);
-        rectNow.setAttribute('fill', '#009900'); // green
+        rectNow.setAttribute('fill', '#009900');
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
-
-        // Draw top portion (orange)
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
         rectWas.setAttribute('width', barWidth);
         rectWas.setAttribute('height', topH);
-        rectWas.setAttribute('fill', '#FF9900'); // orange
+        rectWas.setAttribute('fill', '#FF9900');
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
-
-        // Label for bottom portion
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -284,8 +332,6 @@ function renderStackedChart(chartView, data) {
         txtNow.setAttribute('fill', '#000');
         txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
-
-        // Label for top portion
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY + 10);
@@ -294,25 +340,18 @@ function renderStackedChart(chartView, data) {
         txtWas.setAttribute('fill', '#000');
         txtWas.textContent = d.was_price.toFixed(2);
         svg.appendChild(txtWas);
-
-        // track the top of the bottom portion for the line
         var midBarX = barX + barWidth/2;
-        var bottomTopY = barBottomY; // the top edge of the green portion
+        var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
-
-        // X-axis label (the short date)
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
         txtDate.setAttribute('text-anchor', 'middle');
         txtDate.setAttribute('font-size', '10');
         txtDate.setAttribute('fill', '#000');
-        txtDate.textContent = d.date; // already "MM.DD"
+        txtDate.textContent = d.date;
         svg.appendChild(txtDate);
     });
-
-    // Now draw the line connecting the bottom portion across bars
-    // We'll create a path from linePoints
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
         for (var i=1; i<linePoints.length; i++) {
@@ -321,12 +360,10 @@ function renderStackedChart(chartView, data) {
         var linePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
         linePath.setAttribute('d', pathD);
         linePath.setAttribute('fill', 'none');
-        linePath.setAttribute('stroke', '#0077cc'); // some color
+        linePath.setAttribute('stroke', '#0077cc');
         linePath.setAttribute('stroke-width', '2');
         svg.appendChild(linePath);
     }
-
-    // Y-axis labels (0, mid, max)
     var labelVals = [0, maxWas/2, maxWas];
     labelVals.forEach(function(val) {
         var y = (height - bottomPad) - (val / maxWas)*chartH;
@@ -338,8 +375,67 @@ function renderStackedChart(chartView, data) {
         txtLabel.textContent = val.toFixed(2);
         svg.appendChild(txtLabel);
     });
-
     chartView.appendChild(svg);
+}
+
+function showSearchBar() {
+    var header = document.querySelector('.header-container');
+    header.style.display = 'none';
+    var searchBar = document.getElementById('searchBarContainer');
+    searchBar.style.display = 'flex';
+    setTimeout(function() {
+        searchBar.style.opacity = '1';
+    }, 10);
+    document.getElementById('searchInput').focus();
+}
+
+function hideSearchBar() {
+    var searchInput = document.getElementById('searchInput');
+    searchInput.value = '';
+    var firstElems = document.getElementsByClassName('first-word');
+    var secondElems = document.getElementsByClassName('product-name-text');
+    for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].innerHTML = firstElems[i].dataset.original || firstElems[i].innerHTML;
+    }
+    for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
+    }
+    var items = document.getElementsByClassName('item-container');
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "";
+    }
+    document.getElementById('searchCount').innerText = "";
+    searchBar.style.opacity = '0';
+    setTimeout(function() {
+        searchBar.style.display = 'none';
+        header.style.display = 'flex';
+    }, 500);
+}
+
+function inPageSearch() {
+    var input = document.getElementById('searchInput').value.trim();
+    var term = input.toLowerCase();
+    var items = document.getElementsByClassName('item-container');
+    var visibleCount = 0;
+    for (var i = 0; i < items.length; i++) {
+        var firstElem = items[i].querySelector('.first-word');
+        var secondElem = items[i].querySelector('.product-name-text');
+        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+        if (term === '' || fullName.indexOf(term) > -1) {
+            items[i].style.display = '';
+            visibleCount++;
+            if (term !== '') {
+                firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent).replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent).replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            } else {
+                firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
+                secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
+            }
+        } else {
+            items[i].style.display = 'none';
+        }
+    }
+    document.getElementById('searchCount').innerText = visibleCount + " found";
 }
 </script>
 </head>
@@ -347,23 +443,26 @@ function renderStackedChart(chartView, data) {
 <div class='header-container'>
   <div class='header-row'>
     <button class='search-button' onclick='showSearchBar()'>
-      🔍 FIND ➜
+      <span class='search-icon'>🔍</span> FIND ➜
     </button>
     <div class='page-title'>Meat</div>
   </div>
-  <div class='creation-time'>Created on: 2025-02-28 09:45:15</div>
+  <div class='creation-time'>Created on: 2025-02-28 10:25:02</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
-
-
-        <div class='item-container' data-product-id='20822350_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20822350/b3/en/front/20822350_front_a06_@2.png' alt='Pork Loin Chop Rib End, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-end-club-pack/p/20822350_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+<div id='searchBarContainer'>
+  <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
+  <span id='searchCount'></span>
+  <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
+</div>
+<div class='item-container' data-product-id='20822350_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20822350/b3/en/front/20822350_front_a06_@2.png' alt='Pork Loin Chop Rib End, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-end-club-pack/p/20822350_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#1</span>
@@ -377,15 +476,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20822350_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20822150_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20822150/b3/en/angle/20822150_angle_a06_@2.png' alt='Pork Sirloin Roast' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-roast/p/20822150_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20822150_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20822150/b3/en/angle/20822150_angle_a06_@2.png' alt='Pork Sirloin Roast' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-roast/p/20822150_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#2</span>
@@ -399,15 +497,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20822150_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20836762_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20836762/b3/en/front/20836762_front_a06_@2.png' alt='Boneless Pork Sirloin Roast' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/boneless-pork-sirloin-roast/p/20836762_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20836762_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20836762/b3/en/front/20836762_front_a06_@2.png' alt='Boneless Pork Sirloin Roast' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/boneless-pork-sirloin-roast/p/20836762_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#3</span>
@@ -421,15 +518,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20836762_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21618256_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21618256/b3/en/front/21618256_front_a06_@2.png' alt='Pork Loin Combination Chops, Sirloin and Rib' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-combination-chops-sirloin-and-rib/p/21618256_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21618256_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21618256/b3/en/front/21618256_front_a06_@2.png' alt='Pork Loin Combination Chops, Sirloin and Rib' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-combination-chops-sirloin-and-rib/p/21618256_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#4</span>
@@ -443,15 +539,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21618256_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20822343_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20822343/b3/en/angle/20822343_angle_a06_@2.png' alt='Pork Rib Loin & Sirloin Combination Chop' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-loin-sirloin-combination-chop/p/20822343_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20822343_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20822343/b3/en/angle/20822343_angle_a06_@2.png' alt='Pork Rib Loin & Sirloin Combination Chop' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-loin-sirloin-combination-chop/p/20822343_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#5</span>
@@ -465,15 +560,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20822343_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20835855_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20835855/b3/en/angle/20835855_angle_a06_@2.png' alt='Pork Sirloin Chops Boneless, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chops-boneless-club-pack/p/20835855_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20835855_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20835855/b3/en/angle/20835855_angle_a06_@2.png' alt='Pork Sirloin Chops Boneless, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chops-boneless-club-pack/p/20835855_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#6</span>
@@ -487,15 +581,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20835855_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20822906_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20822906/b3/en/front/20822906_front_a06_@2.png' alt='Pork Loin Rib End Chop' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-end-chop/p/20822906_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20822906_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20822906/b3/en/front/20822906_front_a06_@2.png' alt='Pork Loin Rib End Chop' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-end-chop/p/20822906_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#7</span>
@@ -509,15 +602,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20822906_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20822347_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20822347/b3/en/front/20822347_front_a06_@2.png' alt='Pork Loin Chop Rib, Fast Fry' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-fast-fry/p/20822347_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20822347_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20822347/b3/en/front/20822347_front_a06_@2.png' alt='Pork Loin Chop Rib, Fast Fry' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-rib-fast-fry/p/20822347_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#8</span>
@@ -531,15 +623,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20822347_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20822459_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20822459/b3/en/front/20822459_front_a06_@2.png' alt='Pork Loin Rib Roast Portion' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-roast-portion/p/20822459_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20822459_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20822459/b3/en/front/20822459_front_a06_@2.png' alt='Pork Loin Rib Roast Portion' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-rib-roast-portion/p/20822459_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#9</span>
@@ -553,15 +644,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20822459_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20822322_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20822322/b3/en/front/20822322_front_a06_@2.png' alt='Pork Sirloin Chop, End Portion' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chop-end-portion/p/20822322_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20822322_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20822322/b3/en/front/20822322_front_a06_@2.png' alt='Pork Sirloin Chop, End Portion' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chop-end-portion/p/20822322_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#10</span>
@@ -575,15 +665,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20822322_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20875645_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20875645/b3/en/front/20875645_front_a06_@2.png' alt='Boneless Pork For Stew' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/boneless-pork-for-stew/p/20875645_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20875645_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20875645/b3/en/front/20875645_front_a06_@2.png' alt='Boneless Pork For Stew' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/boneless-pork-for-stew/p/20875645_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#11</span>
@@ -597,15 +686,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20875645_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20827782_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20827782/b3/en/front/20827782_front_a06_@2.png' alt='Boneless Pork Loin Rib Chops, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/boneless-pork-loin-rib-chops-club-pack/p/20827782_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20827782_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20827782/b3/en/front/20827782_front_a06_@2.png' alt='Boneless Pork Loin Rib Chops, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/boneless-pork-loin-rib-chops-club-pack/p/20827782_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#12</span>
@@ -619,15 +707,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20827782_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20827787_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20827787/b3/en/front/20827787_front_a06_@2.png' alt='Pork Rib Roast, Boneless' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-roast-boneless/p/20827787_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20827787_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20827787/b3/en/front/20827787_front_a06_@2.png' alt='Pork Rib Roast, Boneless' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-roast-boneless/p/20827787_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#13</span>
@@ -641,15 +728,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20827787_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20836766_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20836766/b3/en/front/20836766_front_a06_@2.png' alt='Pork Sirloin Chops Boneless' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chops-boneless/p/20836766_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20836766_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20836766/b3/en/front/20836766_front_a06_@2.png' alt='Pork Sirloin Chops Boneless' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-sirloin-chops-boneless/p/20836766_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#14</span>
@@ -663,15 +749,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20836766_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20822452_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20822452/b3/en/front/20822452_front_a06_@2.png' alt='Pork Loin Roast, Center Cut with Bone' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-roast-center-cut-with-bone/p/20822452_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20822452_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20822452/b3/en/front/20822452_front_a06_@2.png' alt='Pork Loin Roast, Center Cut with Bone' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-roast-center-cut-with-bone/p/20822452_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#15</span>
@@ -685,15 +770,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20822452_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20823075_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20823075/b3/en/front/20823075_front_a06_@2.png' alt='Pork Loin Chop Center Chop, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-chop-club-pack/p/20823075_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20823075_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20823075/b3/en/front/20823075_front_a06_@2.png' alt='Pork Loin Chop Center Chop, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-chop-club-pack/p/20823075_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#16</span>
@@ -707,15 +791,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20823075_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20825554_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20825554/b3/en/front/20825554_front_a06_@2.png' alt='Pork Loin Butterfly Center Cut Boneless, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-butterfly-center-cut-boneless-club-pack/p/20825554_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20825554_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20825554/b3/en/front/20825554_front_a06_@2.png' alt='Pork Loin Butterfly Center Cut Boneless, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-butterfly-center-cut-boneless-club-pack/p/20825554_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#17</span>
@@ -729,15 +812,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20825554_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20827788_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20827788/b3/en/front/20827788_front_a06_@2.png' alt='Centre Cut Pork Loin Chop Boneless' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/centre-cut-pork-loin-chop-boneless/p/20827788_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20827788_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20827788/b3/en/front/20827788_front_a06_@2.png' alt='Centre Cut Pork Loin Chop Boneless' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/centre-cut-pork-loin-chop-boneless/p/20827788_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#18</span>
@@ -751,15 +833,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20827788_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20823076_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20823076/b3/en/front/20823076_front_a06_@2.png' alt='Pork Loin Chopfast Fry  Bone In, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chopfast-fry-bone-in-club-pack/p/20823076_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20823076_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20823076/b3/en/front/20823076_front_a06_@2.png' alt='Pork Loin Chopfast Fry  Bone In, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chopfast-fry-bone-in-club-pack/p/20823076_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#19</span>
@@ -773,15 +854,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20823076_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20827783_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20827783/b3/en/front/20827783_front_a06_@2.png' alt='Pork Rib Chops Boneless' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-chops-boneless/p/20827783_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20827783_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20827783/b3/en/front/20827783_front_a06_@2.png' alt='Pork Rib Chops Boneless' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-rib-chops-boneless/p/20827783_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#20</span>
@@ -795,15 +875,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20827783_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20826506_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20826506/b3/en/beauty/20826506_beauty_a06_@2.png' alt='Pork Loin Chop Boneless Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-boneless-club-pack/p/20826506_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20826506_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20826506/b3/en/beauty/20826506_beauty_a06_@2.png' alt='Pork Loin Chop Boneless Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-boneless-club-pack/p/20826506_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#21</span>
@@ -817,15 +896,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20826506_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20822907_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20822907/b3/en/angle/20822907_angle_a06_@2.png' alt='Pork Loin Chop, Bone In Center Cut' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-bone-in-center-cut/p/20822907_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20822907_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20822907/b3/en/angle/20822907_angle_a06_@2.png' alt='Pork Loin Chop, Bone In Center Cut' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-bone-in-center-cut/p/20822907_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#22</span>
@@ -839,15 +917,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20822907_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20827785_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20827785/b3/en/beauty/20827785_beauty_a06_@2.png' alt='Centre Cut Pork Loin Roast Boneless' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/centre-cut-pork-loin-roast-boneless/p/20827785_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20827785_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20827785/b3/en/beauty/20827785_beauty_a06_@2.png' alt='Centre Cut Pork Loin Roast Boneless' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/centre-cut-pork-loin-roast-boneless/p/20827785_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#23</span>
@@ -861,15 +938,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20827785_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20823073_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20823073/b3/en/front/20823073_front_a06_@2.png' alt='Pork Loin Chop Center Cut Fast Fry' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-cut-fast-fry/p/20823073_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20823073_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20823073/b3/en/front/20823073_front_a06_@2.png' alt='Pork Loin Chop Center Cut Fast Fry' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-center-cut-fast-fry/p/20823073_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#24</span>
@@ -883,15 +959,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20823073_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20416522_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20416522/b3/en/front/20416522_front_a06_@2.png' alt='Classic Wieners, Family Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/classic-wieners-family-pack/p/20416522_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20416522_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20416522/b3/en/front/20416522_front_a06_@2.png' alt='Classic Wieners, Family Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/classic-wieners-family-pack/p/20416522_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#25</span>
@@ -905,15 +980,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20416522_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20415978_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20415978/b3/en/front/20415978_front_a06_@2.png' alt='Barbecue Style Wieners' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/barbecue-style-wieners/p/20415978_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20415978_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20415978/b3/en/front/20415978_front_a06_@2.png' alt='Barbecue Style Wieners' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/barbecue-style-wieners/p/20415978_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#26</span>
@@ -927,15 +1001,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20415978_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20593099_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20593099/b3/en/beauty/20593099_beauty_a06_@2.png' alt='Chicken Breast, Club Pack Boneless Skinless' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-breast-club-pack-boneless-skinless/p/20593099_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20593099_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20593099/b3/en/beauty/20593099_beauty_a06_@2.png' alt='Chicken Breast, Club Pack Boneless Skinless' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-breast-club-pack-boneless-skinless/p/20593099_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#27</span>
@@ -949,15 +1022,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20593099_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20826455_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20826455/b3/en/front/20826455_front_a06_@2.png' alt='Pork Loin Center Cut Boneless Cutlet' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-center-cut-boneless-cutlet/p/20826455_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20826455_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20826455/b3/en/front/20826455_front_a06_@2.png' alt='Pork Loin Center Cut Boneless Cutlet' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-center-cut-boneless-cutlet/p/20826455_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#28</span>
@@ -971,15 +1043,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20826455_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20794618_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20794618/b3/en/angle/20794618_angle_a06_@2.png' alt='Beef Cross Rib Roast, Boneless' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beef-cross-rib-roast-boneless/p/20794618_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20794618_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20794618/b3/en/angle/20794618_angle_a06_@2.png' alt='Beef Cross Rib Roast, Boneless' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beef-cross-rib-roast-boneless/p/20794618_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#29</span>
@@ -993,15 +1064,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20794618_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20826460_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20826460/b3/en/front/20826460_front_a06_@2.png' alt='Pork Loin Chop, Boneless Butterfly Cut' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-boneless-butterfly-cut/p/20826460_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20826460_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20826460/b3/en/front/20826460_front_a06_@2.png' alt='Pork Loin Chop, Boneless Butterfly Cut' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pork-loin-chop-boneless-butterfly-cut/p/20826460_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#30</span>
@@ -1015,15 +1085,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20826460_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20162170_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20162170/b3/en/angle/20162170_angle_a06_@2.png' alt='Chicken Thigh  Boneless Skinless Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-thigh-boneless-skinless-club-pack/p/20162170_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20162170_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20162170/b3/en/angle/20162170_angle_a06_@2.png' alt='Chicken Thigh  Boneless Skinless Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-thigh-boneless-skinless-club-pack/p/20162170_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#31</span>
@@ -1037,15 +1106,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20162170_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21601003_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21601003/b3/en/front/21601003_front_a06_@2.png' alt='Extra Lean Ground Chicken' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-chicken/p/21601003_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21601003_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21601003/b3/en/front/21601003_front_a06_@2.png' alt='Extra Lean Ground Chicken' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-chicken/p/21601003_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#32</span>
@@ -1059,15 +1127,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21601003_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21600979_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21600979/b3/en/front/21600979_front_a06_@2.png' alt='Extra Lean Ground Turkey' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-turkey/p/21600979_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21600979_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21600979/b3/en/front/21600979_front_a06_@2.png' alt='Extra Lean Ground Turkey' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-turkey/p/21600979_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#33</span>
@@ -1081,15 +1148,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21600979_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21352008_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21352008/b3/en/angle/21352008_angle_a06_@2.png' alt='Free From Australian Lean Ground Lamb' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-australian-lean-ground-lamb/p/21352008_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21352008_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21352008/b3/en/angle/21352008_angle_a06_@2.png' alt='Free From Australian Lean Ground Lamb' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-australian-lean-ground-lamb/p/21352008_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#34</span>
@@ -1103,15 +1169,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21352008_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21588066_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21588066/b3/en/angle/21588066_angle_a06_@2.png' alt='Chicken Breast Schnitzel' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-breast-schnitzel/p/21588066_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21588066_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21588066/b3/en/angle/21588066_angle_a06_@2.png' alt='Chicken Breast Schnitzel' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chicken-breast-schnitzel/p/21588066_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#35</span>
@@ -1125,15 +1190,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21588066_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21290136_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21290136/b3/en/front/21290136_front_a06_@2.png' alt='Frozen Twisters Jumbo Sausage' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/frozen-twisters-jumbo-sausage/p/21290136_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21290136_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21290136/b3/en/front/21290136_front_a06_@2.png' alt='Frozen Twisters Jumbo Sausage' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/frozen-twisters-jumbo-sausage/p/21290136_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#36</span>
@@ -1147,15 +1211,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21290136_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21289868_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21289868/b3/en/front/21289868_front_a06_@2.png' alt='Hot Italian Jumbo Sausage' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/hot-italian-jumbo-sausage/p/21289868_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21289868_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21289868/b3/en/front/21289868_front_a06_@2.png' alt='Hot Italian Jumbo Sausage' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/hot-italian-jumbo-sausage/p/21289868_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#37</span>
@@ -1169,15 +1232,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21289868_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21289731_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21289731/b3/en/front/21289731_front_a06_@2.png' alt='Sweet Italian Jumbo Sausage' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/sweet-italian-jumbo-sausage/p/21289731_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21289731_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21289731/b3/en/front/21289731_front_a06_@2.png' alt='Sweet Italian Jumbo Sausage' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/sweet-italian-jumbo-sausage/p/21289731_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#38</span>
@@ -1191,15 +1253,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21289731_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20794616_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20794616/b3/en/angle/20794616_angle_a06_@2.png' alt='Beef Cross Rib Steak Boneless, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beef-cross-rib-steak-boneless-club-pack/p/20794616_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20794616_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20794616/b3/en/angle/20794616_angle_a06_@2.png' alt='Beef Cross Rib Steak Boneless, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beef-cross-rib-steak-boneless-club-pack/p/20794616_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#39</span>
@@ -1213,15 +1274,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20794616_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20315210_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20315210/b3/en/angle/20315210_angle_a06_@2.png' alt='Big Stick Large Wax Bologna' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/big-stick-large-wax-bologna/p/20315210_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20315210_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20315210/b3/en/angle/20315210_angle_a06_@2.png' alt='Big Stick Large Wax Bologna' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/big-stick-large-wax-bologna/p/20315210_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#40</span>
@@ -1235,15 +1295,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20315210_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21201106_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21201106/b3/en/angle/21201106_angle_a06_@2.png' alt='Small Batch Oven Roasted Ham' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/small-batch-oven-roasted-ham/p/21201106_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21201106_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21201106/b3/en/angle/21201106_angle_a06_@2.png' alt='Small Batch Oven Roasted Ham' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/small-batch-oven-roasted-ham/p/21201106_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#41</span>
@@ -1257,15 +1316,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21201106_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21061099_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21061099/b3/en/front/21061099_front_a06_@2.png' alt='Genoa Salami    ' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/genoa-salami/p/21061099_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21061099_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21061099/b3/en/front/21061099_front_a06_@2.png' alt='Genoa Salami    ' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/genoa-salami/p/21061099_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#42</span>
@@ -1279,15 +1337,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21061099_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21061096_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21061096/b3/en/front/21061096_front_a06_@2.png' alt='Genoa Hot Salami' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/genoa-hot-salami/p/21061096_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21061096_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21061096/b3/en/front/21061096_front_a06_@2.png' alt='Genoa Hot Salami' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/genoa-hot-salami/p/21061096_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#43</span>
@@ -1301,15 +1358,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21061096_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21059807_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21059807/b3/en/front/21059807_front_a06_@2.png' alt='Calabrese Salami, Hot' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/calabrese-salami-hot/p/21059807_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21059807_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21059807/b3/en/front/21059807_front_a06_@2.png' alt='Calabrese Salami, Hot' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/calabrese-salami-hot/p/21059807_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#44</span>
@@ -1323,15 +1379,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21059807_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21366170_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21366170/b3/en/front/21366170_front_a06_@2.png' alt='Marc Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/marc-angelo-pork-sausages-with-rapini-and-parmigia/p/21366170_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21366170_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21366170/b3/en/front/21366170_front_a06_@2.png' alt='Marc Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/marc-angelo-pork-sausages-with-rapini-and-parmigia/p/21366170_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#45</span>
@@ -1345,15 +1400,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21366170_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20321514_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20321514/b3/en/angle/20321514_angle_a06_@2.png' alt='Calabrese Spicy Salami (Thin Sliced)' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/calabrese-spicy-salami-thin-sliced/p/20321514_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20321514_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20321514/b3/en/angle/20321514_angle_a06_@2.png' alt='Calabrese Spicy Salami (Thin Sliced)' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/calabrese-spicy-salami-thin-sliced/p/20321514_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#46</span>
@@ -1367,15 +1421,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20321514_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20319035_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20319035/b3/en/angle/20319035_angle_a06_@2.png' alt='Soppressata (Thin Sliced)' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/soppressata-thin-sliced/p/20319035_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20319035_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20319035/b3/en/angle/20319035_angle_a06_@2.png' alt='Soppressata (Thin Sliced)' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/soppressata-thin-sliced/p/20319035_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#47</span>
@@ -1389,15 +1442,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20319035_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20794617_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20794617/b3/en/angle/20794617_angle_a06_@2.png' alt='Beef Cross Rib Steak, Boneless' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beef-cross-rib-steak-boneless/p/20794617_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20794617_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20794617/b3/en/angle/20794617_angle_a06_@2.png' alt='Beef Cross Rib Steak, Boneless' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beef-cross-rib-steak-boneless/p/20794617_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#48</span>
@@ -1411,15 +1463,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20794617_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20794619_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20794619/b3/en/front/20794619_front_a06_@2.png' alt='Cross Rib Steak Fast Fry' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/cross-rib-steak-fast-fry/p/20794619_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20794619_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20794619/b3/en/front/20794619_front_a06_@2.png' alt='Cross Rib Steak Fast Fry' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/cross-rib-steak-fast-fry/p/20794619_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#49</span>
@@ -1433,15 +1484,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20794619_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21646160_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21646160/b3/en/front/21646160_front_a06_@2.png' alt='Lean Ground Pork' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/lean-ground-pork/p/21646160_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21646160_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21646160/b3/en/front/21646160_front_a06_@2.png' alt='Lean Ground Pork' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/lean-ground-pork/p/21646160_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#50</span>
@@ -1455,15 +1505,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21646160_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21201094_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21201094/b3/en/angle/21201094_angle_a06_@2.png' alt='Small Batch Smoked Turkey Breast' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/small-batch-smoked-turkey-breast/p/21201094_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21201094_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21201094/b3/en/angle/21201094_angle_a06_@2.png' alt='Small Batch Smoked Turkey Breast' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/small-batch-smoked-turkey-breast/p/21201094_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#51</span>
@@ -1477,15 +1526,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21201094_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21201089_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21201089/b3/en/angle/21201089_angle_a06_@2.png' alt='Small Batch Cajun Turkey Breast' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/small-batch-cajun-turkey-breast/p/21201089_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21201089_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21201089/b3/en/angle/21201089_angle_a06_@2.png' alt='Small Batch Cajun Turkey Breast' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/small-batch-cajun-turkey-breast/p/21201089_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#52</span>
@@ -1499,15 +1547,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21201089_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21570722_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21570722/b3/en/front/21570722_front_a06_@2.png' alt='Pastrami Mild' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pastrami-mild/p/21570722_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21570722_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21570722/b3/en/front/21570722_front_a06_@2.png' alt='Pastrami Mild' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pastrami-mild/p/21570722_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#53</span>
@@ -1521,15 +1568,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21570722_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21570684_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21570684/b3/en/front/21570684_front_a06_@2.png' alt='Cajun Turkey Breast Mild' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/cajun-turkey-breast-mild/p/21570684_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21570684_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21570684/b3/en/front/21570684_front_a06_@2.png' alt='Cajun Turkey Breast Mild' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/cajun-turkey-breast-mild/p/21570684_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#54</span>
@@ -1543,15 +1589,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21570684_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21570639_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21570639/b3/en/front/21570639_front_a06_@2.png' alt='Roast Beef Mild' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/roast-beef-mild/p/21570639_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21570639_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21570639/b3/en/front/21570639_front_a06_@2.png' alt='Roast Beef Mild' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/roast-beef-mild/p/21570639_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#55</span>
@@ -1565,15 +1610,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21570639_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21570617_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21570617/b3/en/front/21570617_front_a06_@2.png' alt='Smoked Turkey Breast Mild' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/smoked-turkey-breast-mild/p/21570617_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21570617_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21570617/b3/en/front/21570617_front_a06_@2.png' alt='Smoked Turkey Breast Mild' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/smoked-turkey-breast-mild/p/21570617_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#56</span>
@@ -1587,15 +1631,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21570617_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21566593_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21566593/b3/en/front/21566593_front_a06_@2.png' alt='Pepperoni Toppings Mild' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pepperoni-toppings-mild/p/21566593_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21566593_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21566593/b3/en/front/21566593_front_a06_@2.png' alt='Pepperoni Toppings Mild' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pepperoni-toppings-mild/p/21566593_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#57</span>
@@ -1609,15 +1652,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21566593_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21566049_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21566049/b3/en/front/21566049_front_a06_@2.png' alt='Salami Spicy' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/salami-spicy/p/21566049_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21566049_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21566049/b3/en/front/21566049_front_a06_@2.png' alt='Salami Spicy' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/salami-spicy/p/21566049_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#58</span>
@@ -1631,15 +1673,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21566049_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21539305_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21539305/b3/en/angle/21539305_angle_a06_@2.png' alt='Smoky Bonfire Double-Smoked Bacon' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/smoky-bonfire-double-smoked-bacon/p/21539305_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21539305_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21539305/b3/en/angle/21539305_angle_a06_@2.png' alt='Smoky Bonfire Double-Smoked Bacon' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/smoky-bonfire-double-smoked-bacon/p/21539305_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#59</span>
@@ -1653,15 +1694,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21539305_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21538773_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21538773/b3/en/angle/21538773_angle_a06_@2.png' alt='Applewood Smoked Bacon' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/applewood-smoked-bacon/p/21538773_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21538773_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21538773/b3/en/angle/21538773_angle_a06_@2.png' alt='Applewood Smoked Bacon' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/applewood-smoked-bacon/p/21538773_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#60</span>
@@ -1675,15 +1715,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21538773_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21178761_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21178761/b3/en/angle/21178761_angle_a06_@2.png' alt='Fully Cooked, Breaded Chicken Burgers' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-breaded-chicken-burgers/p/21178761_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21178761_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21178761/b3/en/angle/21178761_angle_a06_@2.png' alt='Fully Cooked, Breaded Chicken Burgers' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-breaded-chicken-burgers/p/21178761_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#61</span>
@@ -1697,15 +1736,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21178761_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21178745_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21178745/b3/en/angle/21178745_angle_a06_@2.png' alt='Fully Cooked, Breaded Chicken Nuggets Cutlettes' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-breaded-chicken-nuggets-cutlettes/p/21178745_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21178745_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21178745/b3/en/angle/21178745_angle_a06_@2.png' alt='Fully Cooked, Breaded Chicken Nuggets Cutlettes' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fully-cooked-breaded-chicken-nuggets-cutlettes/p/21178745_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#62</span>
@@ -1719,15 +1757,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21178745_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21178744_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21178744/b3/en/angle/21178744_angle_a06_@2.png' alt='Breaded Chicken Cutlettes Chicken Strips' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/breaded-chicken-cutlettes-chicken-strips/p/21178744_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21178744_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21178744/b3/en/angle/21178744_angle_a06_@2.png' alt='Breaded Chicken Cutlettes Chicken Strips' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/breaded-chicken-cutlettes-chicken-strips/p/21178744_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#63</span>
@@ -1741,15 +1778,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21178744_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20174909_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20174909/b3/en/front/20174909_front_a06_@2.png' alt='Bacon, Mild Sugar Cured with Reduced Salt, Uncooked' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/bacon-mild-sugar-cured-with-reduced-salt-uncooked/p/20174909_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20174909_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20174909/b3/en/front/20174909_front_a06_@2.png' alt='Bacon, Mild Sugar Cured with Reduced Salt, Uncooked' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/bacon-mild-sugar-cured-with-reduced-salt-uncooked/p/20174909_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#64</span>
@@ -1763,15 +1799,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20174909_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20156771_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20156771/b3/en/angle/20156771_angle_a06_@2.png' alt='Mild Sugar-Cured Bacon' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mild-sugar-cured-bacon/p/20156771_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20156771_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20156771/b3/en/angle/20156771_angle_a06_@2.png' alt='Mild Sugar-Cured Bacon' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mild-sugar-cured-bacon/p/20156771_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#65</span>
@@ -1785,15 +1820,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20156771_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20152629_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20152629/b3/en/angle/20152629_angle_a06_@2.png' alt='Bacon' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/bacon/p/20152629_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20152629_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20152629/b3/en/angle/20152629_angle_a06_@2.png' alt='Bacon' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/bacon/p/20152629_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#66</span>
@@ -1807,15 +1841,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20152629_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20117351_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20117351/b3/en/front/20117351_front_a06_@2.png' alt='Maple Flavoured Naturally Smoked Bacon' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/maple-flavoured-naturally-smoked-bacon/p/20117351_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20117351_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20117351/b3/en/front/20117351_front_a06_@2.png' alt='Maple Flavoured Naturally Smoked Bacon' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/maple-flavoured-naturally-smoked-bacon/p/20117351_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#67</span>
@@ -1829,15 +1862,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20117351_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20057892_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20057892/b3/en/front/20057892_front_a06_@2.png' alt='Reduced Salt Bacon  ' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/reduced-salt-bacon/p/20057892_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20057892_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20057892/b3/en/front/20057892_front_a06_@2.png' alt='Reduced Salt Bacon  ' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/reduced-salt-bacon/p/20057892_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#68</span>
@@ -1851,15 +1883,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20057892_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21546108_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21546108/b3/en/angle/21546108_angle_a06_@2.png' alt='Wiltshire Bacon Rashers' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/wiltshire-bacon-rashers/p/21546108_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21546108_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21546108/b3/en/angle/21546108_angle_a06_@2.png' alt='Wiltshire Bacon Rashers' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/wiltshire-bacon-rashers/p/21546108_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#69</span>
@@ -1873,15 +1904,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21546108_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20766562_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20766562/b3/en/angle/20766562_angle_a06_@2.png' alt='Stewing Beef Cubes, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/stewing-beef-cubes-club-pack/p/20766562_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20766562_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20766562/b3/en/angle/20766562_angle_a06_@2.png' alt='Stewing Beef Cubes, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/stewing-beef-cubes-club-pack/p/20766562_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#70</span>
@@ -1895,15 +1925,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20766562_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20320534_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20320534/b3/en/angle/20320534_angle_a06_@2.png' alt='Black Forest Ham, Traditional' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/black-forest-ham-traditional/p/20320534_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20320534_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20320534/b3/en/angle/20320534_angle_a06_@2.png' alt='Black Forest Ham, Traditional' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/black-forest-ham-traditional/p/20320534_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#71</span>
@@ -1917,15 +1946,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20320534_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20313480_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20313480/b3/en/angle/20313480_angle_a06_@2.png' alt='Extra Lean Cooked Ham' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-cooked-ham/p/20313480_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20313480_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20313480/b3/en/angle/20313480_angle_a06_@2.png' alt='Extra Lean Cooked Ham' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-cooked-ham/p/20313480_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#72</span>
@@ -1939,15 +1967,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20313480_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20298289_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20298289/b3/en/angle/20298289_angle_a06_@2.png' alt='Honey Maple Ham (Thin Sliced)' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/honey-maple-ham-thin-sliced/p/20298289_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20298289_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20298289/b3/en/angle/20298289_angle_a06_@2.png' alt='Honey Maple Ham (Thin Sliced)' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/honey-maple-ham-thin-sliced/p/20298289_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#73</span>
@@ -1961,15 +1988,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20298289_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21399630_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21399630/b3/en/front/21399630_front_a06_@2.png' alt='Breakfast Sausage' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/breakfast-sausage/p/21399630_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21399630_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21399630/b3/en/front/21399630_front_a06_@2.png' alt='Breakfast Sausage' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/breakfast-sausage/p/21399630_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#74</span>
@@ -1983,15 +2009,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21399630_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21193815_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21193815/b3/en/angle/21193815_angle_a06_@2.png' alt='Beyond Burger Plant-Based' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beyond-burger-plant-based/p/21193815_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21193815_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21193815/b3/en/angle/21193815_angle_a06_@2.png' alt='Beyond Burger Plant-Based' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beyond-burger-plant-based/p/21193815_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#75</span>
@@ -2005,15 +2030,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21193815_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20794831_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20794831/b3/en/front/20794831_front_a06_@2.png' alt='Deluxe Stewing Beef Cubes, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/deluxe-stewing-beef-cubes-club-pack/p/20794831_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20794831_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20794831/b3/en/front/20794831_front_a06_@2.png' alt='Deluxe Stewing Beef Cubes, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/deluxe-stewing-beef-cubes-club-pack/p/20794831_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#76</span>
@@ -2027,15 +2051,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20794831_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20766602_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20766602/b3/en/angle/20766602_angle_a06_@2.png' alt='Stewing Beef Cubes' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/stewing-beef-cubes/p/20766602_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20766602_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20766602/b3/en/angle/20766602_angle_a06_@2.png' alt='Stewing Beef Cubes' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/stewing-beef-cubes/p/20766602_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#77</span>
@@ -2049,15 +2072,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20766602_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20794620_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20794620/b3/en/front/20794620_front_a06_@2.png' alt='Deluxe Stewing Beef Cubes' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/deluxe-stewing-beef-cubes/p/20794620_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20794620_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20794620/b3/en/front/20794620_front_a06_@2.png' alt='Deluxe Stewing Beef Cubes' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/deluxe-stewing-beef-cubes/p/20794620_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#78</span>
@@ -2071,15 +2093,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20794620_KG'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21300113_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21300113/b3/en/front/21300113_front_a06_@2.png' alt='Sausage Mild Italian' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/sausage-mild-italian/p/21300113_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21300113_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21300113/b3/en/front/21300113_front_a06_@2.png' alt='Sausage Mild Italian' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/sausage-mild-italian/p/21300113_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#79</span>
@@ -2093,15 +2114,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21300113_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21300103_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21300103/b3/en/front/21300103_front_a06_@2.png' alt='Beyond Sausage Hot Italian' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beyond-sausage-hot-italian/p/21300103_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21300103_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21300103/b3/en/front/21300103_front_a06_@2.png' alt='Beyond Sausage Hot Italian' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beyond-sausage-hot-italian/p/21300103_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#80</span>
@@ -2115,15 +2135,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21300103_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21220674_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21220674/b3/en/front/21220674_front_a06_@2.png' alt='Beyond Beef Grounds' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beyond-beef-grounds/p/21220674_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21220674_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21220674/b3/en/front/21220674_front_a06_@2.png' alt='Beyond Beef Grounds' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/beyond-beef-grounds/p/21220674_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#81</span>
@@ -2137,15 +2156,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21220674_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20507161_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20507161/b3/en/angle/20507161_angle_a06_@2.png' alt='Veggie Ground Round, Mexican' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/veggie-ground-round-mexican/p/20507161_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20507161_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20507161/b3/en/angle/20507161_angle_a06_@2.png' alt='Veggie Ground Round, Mexican' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/veggie-ground-round-mexican/p/20507161_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#82</span>
@@ -2159,15 +2177,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20507161_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20507160_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20507160/b3/en/angle/20507160_angle_a06_@2.png' alt='Veggie Ground Round, Italian' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/veggie-ground-round-italian/p/20507160_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20507160_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20507160/b3/en/angle/20507160_angle_a06_@2.png' alt='Veggie Ground Round, Italian' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/veggie-ground-round-italian/p/20507160_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#83</span>
@@ -2181,15 +2198,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20507160_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20507159_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20507159/b3/en/angle/20507159_angle_a06_@2.png' alt='Veggie Ground Round, Original' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/veggie-ground-round-original/p/20507159_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20507159_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20507159/b3/en/angle/20507159_angle_a06_@2.png' alt='Veggie Ground Round, Original' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/veggie-ground-round-original/p/20507159_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#84</span>
@@ -2203,15 +2219,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20507159_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='21076606_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/21076606/b3/en/front/21076606_front_a06_@2.png' alt='Free From Oven-Roasted Chicken Breast' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-oven-roasted-chicken-breast/p/21076606_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='21076606_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21076606/b3/en/front/21076606_front_a06_@2.png' alt='Free From Oven-Roasted Chicken Breast' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-oven-roasted-chicken-breast/p/21076606_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#85</span>
@@ -2225,15 +2240,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-21076606_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20923814_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20923814/b3/en/front/20923814_front_a06_@2.png' alt='Free From Oven Roasted Turkey, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-oven-roasted-turkey-club-pack/p/20923814_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20923814_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20923814/b3/en/front/20923814_front_a06_@2.png' alt='Free From Oven Roasted Turkey, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-oven-roasted-turkey-club-pack/p/20923814_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#86</span>
@@ -2247,15 +2261,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20923814_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20903492_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20903492/b3/en/front/20903492_front_a06_@2.png' alt='Free From Black Forrest Ham, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-black-forrest-ham-club-pack/p/20903492_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20903492_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20903492/b3/en/front/20903492_front_a06_@2.png' alt='Free From Black Forrest Ham, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-black-forrest-ham-club-pack/p/20903492_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#87</span>
@@ -2269,15 +2282,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20903492_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20903241_EA'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20903241/b3/en/front/20903241_front_a06_@2.png' alt='Free From Honey Ham, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-honey-ham-club-pack/p/20903241_EA' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20903241_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20903241/b3/en/front/20903241_front_a06_@2.png' alt='Free From Honey Ham, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/free-from-honey-ham-club-pack/p/20903241_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#88</span>
@@ -2291,15 +2303,14 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20903241_EA'></div>
 </div>
-        </div>
-        
-        <div class='item-container' data-product-id='20798252_KG'>
-          <div class='item-image'>
-            <img src='https://assets.shop.loblaws.ca/products/20798252/b3/en/angle/20798252_angle_a06_@2.png' alt='Extra Lean Ground Beef, Club Pack' />
-            <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-beef-club-pack/p/20798252_KG' target='_top'>SHOP →</a>
-            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
-          </div>
-          <div class='chart-and-detail'>
+</div>
+<div class='item-container' data-product-id='20798252_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20798252/b3/en/angle/20798252_angle_a06_@2.png' alt='Extra Lean Ground Beef, Club Pack' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/extra-lean-ground-beef-club-pack/p/20798252_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  <div class='chart-and-detail'>
   <div class='detail-view'>
     <div class='item-name'>
       <span class='item-number'>#89</span>
@@ -2313,17 +2324,15 @@ function renderStackedChart(chartView, data) {
   </div>
   <div class='chart-view' id='chart-20798252_KG'></div>
 </div>
-        </div>
-        
+</div>
 
 <script>
 function showSearchBar() {
-    // example for search, if needed
+    // Additional search logic if needed
 }
 function hideSearchBar() {
-    // example for search, if needed
+    // Additional search logic if needed
 }
 </script>
-
 </body>
 </html>
