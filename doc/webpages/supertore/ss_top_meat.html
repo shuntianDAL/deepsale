@@ -277,9 +277,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 /**
- * When "Detail" button is clicked, switch to detail view:
- * - Mark the Detail button as selected.
- * - Disable the toggle switch (gray it out and disable the checkbox).
+ * When "Detail" button is clicked, switch to detail view and disable the toggle.
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
@@ -290,10 +288,9 @@ function switchToDetail(btn) {
     toggleSwitch.classList.add('disabled');
     var toggleInput = container.querySelector('.toggle-input');
     toggleInput.disabled = true;
-    // Reset toggle label text to "1 Y"
+    toggleInput.checked = false;
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Y";
-    // Show detail view, hide chart view
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
@@ -306,33 +303,26 @@ function switchToDetail(btn) {
 }
 
 /**
- * When the toggle switch is clicked:
- * - If currently disabled, enable it.
- * - Then toggle the checkbox state.
- * - Deselect the Detail button.
- * - Show chart view and load the corresponding data:
- *     - If checkbox is checked, load 1yr data and label "1 Y".
- *     - If unchecked, load 1mon data and label "1 M".
+ * When the toggle switch changes state, enable it (if disabled) and toggle chart view.
+ * This deselects the "Detail" button.
+ * If the checkbox is checked, load 1yr data and label "1 Y"; if unchecked, load 1mon data and label "1 M".
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
     var toggleSwitch = container.querySelector('.toggle-switch');
-    // If disabled, enable the toggle switch
     if (toggleSwitch.classList.contains('disabled')) {
         toggleSwitch.classList.remove('disabled');
-        checkbox.disabled = false;
+        var toggleInput = container.querySelector('.toggle-input');
+        toggleInput.disabled = false;
     }
-    // Deselect the Detail button
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
-
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
     var chartView = viewContainer.querySelector('.chart-view');
     detailView.style.opacity = '0';
     chartView.style.opacity = '1';
-
     var productId = container.getAttribute('data-product-id');
     var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
     var dataSet;
@@ -350,8 +340,8 @@ function toggleMonYr(checkbox) {
 
 /**
  * Renders a stacked bar chart in an <svg>.
- * - Bar labels (was_price, now_price) show only numbers.
- * - Y-axis numeric labels include "$ " prefix.
+ * - Bar labels (for was_price and now_price) display only numbers (no "$").
+ * - Y-axis labels display "$ " before the number.
  * - The was_price label is placed above the bar.
  */
 function renderStackedChart(chartView, data) {
@@ -404,7 +394,7 @@ function renderStackedChart(chartView, data) {
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
 
-        // Draw bottom portion (green)
+        // Draw bottom (green)
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
@@ -414,7 +404,7 @@ function renderStackedChart(chartView, data) {
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
 
-        // Draw top portion (orange)
+        // Draw top (orange)
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
@@ -424,7 +414,7 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
 
-        // Label for now_price (no "$")
+        // Label for now_price (only number)
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -434,7 +424,7 @@ function renderStackedChart(chartView, data) {
         txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
 
-        // Label for was_price above bar (no "$")
+        // Label for was_price above bar (only number)
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -502,7 +492,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">ss_meat</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 13:20:03</div>
+  <div class="creation-time">Created on: 2025-02-28 13:28:07</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
