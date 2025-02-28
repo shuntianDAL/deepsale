@@ -222,6 +222,7 @@ body {
     margin-top: 10px;
     position: relative;
     display: none;
+    background-color: #f9f9f9;
 }
 .chart-bar {
     position: absolute;
@@ -230,6 +231,7 @@ body {
     background-color: #ccc;
     margin-right: 5px;
     animation: growUp 0.5s forwards;
+    z-index: 10;
 }
 .chart-bar.was {
     background-color: #ff9999;
@@ -242,6 +244,7 @@ body {
     position: absolute;
     font-size: 10px;
     color: #666;
+    z-index: 5;
 }
 .x-axis {
     bottom: 0;
@@ -305,13 +308,12 @@ function renderChart(productId, data) {
 
     // For each data point, create a bar group
     data.forEach(function(item, index) {
-        // Create container for the bar pair
+        var totalBars = data.length;
+        // Use the container's width from getBoundingClientRect
+        var chartWidth = chartContainer.getBoundingClientRect().width - 50; // accounting for y-axis space
+        var spacing = chartWidth / totalBars;
         var barGroup = document.createElement('div');
         barGroup.style.position = 'absolute';
-        // Calculate left position based on index and total width
-        var totalBars = data.length;
-        var chartWidth = chartContainer.clientWidth - 50; // accounting for y-axis space
-        var spacing = chartWidth / totalBars;
         barGroup.style.left = (40 + index * spacing) + 'px';
         barGroup.style.bottom = '20px';
 
@@ -446,7 +448,7 @@ function inPageSearch() {
     </button>
     <div class='page-title'>Meat</div>
   </div>
-  <div class='creation-time'>Created on: 2025-02-28 00:34:04</div>
+  <div class='creation-time'>Created on: 2025-02-28 00:37:58</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
