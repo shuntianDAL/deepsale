@@ -6,110 +6,22 @@
 <meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate'>
 <meta http-equiv='Pragma' content='no-cache'>
 <meta http-equiv='Expires' content='0'>
-<title>Top 20 Most Discounted Items - Seafood</title>
+<title>Top Discounted Items - Seafood</title>
 <link rel='preconnect' href='https://fonts.googleapis.com'>
 <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
 <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
-<script>
-window.addEventListener('pageshow', function(event) {
-    if (event.persisted) { window.location.reload(); }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    var firstElems = document.getElementsByClassName('first-word');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].dataset.original = firstElems[i].innerHTML;
-    }
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].dataset.original = secondElems[i].innerHTML;
-    }
-});
-
-function showSearchBar() {
-    // Hide the header
-    var header = document.querySelector('.header-container');
-    header.style.display = 'none';
-
-    // Display the search bar by setting display and forcing opacity to 1
-    var searchBar = document.getElementById('searchBarContainer');
-    searchBar.style.display = 'flex';
-    setTimeout(function() {
-        searchBar.style.opacity = "1";
-    }, 10);
-    document.getElementById('searchInput').focus();
-}
-
-function hideSearchBar() {
-    // Clear the search input
-    var searchInput = document.getElementById('searchInput');
-    searchInput.value = '';
-
-    // Restore original text in the items
-    var firstElems = document.getElementsByClassName('first-word');
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].innerHTML = firstElems[i].dataset.original;
-    }
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].innerHTML = secondElems[i].dataset.original;
-    }
-
-    // Restore display of all items (in case any were hidden by the search)
-    var items = document.getElementsByClassName('item-container');
-    for (var i = 0; i < items.length; i++) {
-        items[i].style.display = "";
-    }
-
-    // Clear the search count text
-    document.getElementById('searchCount').innerText = "";
-
-    // Fade out the search bar and restore the header
-    var searchBar = document.getElementById('searchBarContainer');
-    var header = document.querySelector('.header-container');
-    searchBar.style.opacity = "0";
-    setTimeout(function() {
-         searchBar.style.display = 'none';
-         header.style.display = 'flex';
-    }, 500);
-}
-
-function inPageSearch() {
-    var input = document.getElementById('searchInput').value.trim();
-    var term = input.toLowerCase();
-    var items = document.getElementsByClassName('item-container');
-    var visibleCount = 0;
-    for (var i = 0; i < items.length; i++) {
-        var firstElem = items[i].querySelector('.first-word');
-        var secondElem = items[i].querySelector('.product-name-text');
-        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-        if (term === '' || fullName.indexOf(term) > -1) {
-            items[i].style.display = '';
-            visibleCount++;
-            if (term !== '') {
-                firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-                secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-            } else {
-                firstElem.innerHTML = firstElem.dataset.original;
-                secondElem.innerHTML = secondElem.dataset.original;
-            }
-        } else {
-            items[i].style.display = 'none';
-        }
-    }
-    // Update the counter text next to the search input
-    document.getElementById('searchCount').innerText = visibleCount + " found";
-}
-</script>
 <style>
-/* Always reserve space for the scrollbar to avoid layout shifts */
+/* Existing styles */
 html {
     overflow-y: scroll;
 }
-
 @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes growUp {
+    from { height: 0; }
+    to { height: var(--target-height); }
 }
 .header-container {
     position: fixed;
@@ -155,7 +67,7 @@ html {
     align-items: center;
     gap: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    animation: fadeIn 0.8s forwards ease-in;
+    animation: fadeIn 0.8s forwards;
 }
 .search-button:hover {
     background-color: #2c5f3d;
@@ -238,6 +150,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 15px;
+    position: relative;
 }
 .item-image {
     display: flex;
@@ -263,7 +176,7 @@ body {
     border: none;
     cursor: pointer;
     outline: none;
-    animation: fadeIn 0.8s forwards ease-in;
+    animation: fadeIn 0.8s forwards;
 }
 .view-button:hover {
     background-color: #2c5f3d;
@@ -296,7 +209,233 @@ body {
 .was-price {
     text-decoration: line-through;
 }
+.toggle-chart {
+    margin-top: 10px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.price-history-chart {
+    width: 100%;
+    height: 200px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    position: relative;
+    display: none;
+}
+.chart-bar {
+    position: absolute;
+    bottom: 20px;
+    width: 20px;
+    background-color: #ccc;
+    margin-right: 5px;
+    animation: growUp 0.5s forwards;
+}
+.chart-bar.was {
+    background-color: #ff9999;
+}
+.chart-bar.now {
+    background-color: #99ccff;
+    opacity: 0.7;
+}
+.x-axis, .y-axis {
+    position: absolute;
+    font-size: 10px;
+    color: #666;
+}
+.x-axis {
+    bottom: 0;
+    left: 40px;
+    right: 10px;
+}
+.y-axis {
+    left: 0;
+    bottom: 20px;
+    top: 10px;
+}
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Global price history data from server
+    window.priceHistoryData = {"20720065_KG": [{"date": "2025-02-19", "was_price": 29.79, "now_price": 20.47}, {"date": "2025-03-05", "was_price": 29.79, "now_price": 20.47}], "20852143_KG": [{"date": "2025-02-19", "was_price": 11.95, "now_price": 8.79}, {"date": "2025-03-05", "was_price": 11.95, "now_price": 8.79}], "21043887_EA": [{"date": "2025-02-05", "was_price": 9.49, "now_price": 5.99}, {"date": "2025-03-12", "was_price": 9.49, "now_price": 7.0}], "21211819_EA": [{"date": "2025-02-05", "was_price": 13.49, "now_price": 9.99}, {"date": "2025-03-05", "was_price": 13.49, "now_price": 9.99}], "20750012_EA": [{"date": "2025-02-12", "was_price": 3.99, "now_price": 2.99}, {"date": "2025-03-05", "was_price": 3.99, "now_price": 2.99}], "20749901_EA": [{"date": "2025-02-12", "was_price": 3.99, "now_price": 2.99}, {"date": "2025-03-05", "was_price": 3.99, "now_price": 2.99}], "20749798_EA": [{"date": "2025-02-12", "was_price": 3.99, "now_price": 2.99}, {"date": "2025-03-05", "was_price": 3.99, "now_price": 2.99}], "20699832_EA": [{"date": "2025-02-12", "was_price": 3.99, "now_price": 2.99}, {"date": "2025-03-05", "was_price": 3.99, "now_price": 2.99}], "21108887_EA": [{"date": "2025-02-05", "was_price": 10.99, "now_price": 9.99}, {"date": "2025-03-05", "was_price": 10.99, "now_price": 9.99}]};
+});
+
+function toggleChart(btn) {
+    var container = btn.closest('.item-container');
+    var details = container.querySelector('.item-details');
+    var chart = container.querySelector('.price-history-chart');
+    if (chart.style.display === 'none' || chart.style.display === '') {
+        // Show chart, hide details
+        details.style.display = 'none';
+        chart.style.display = 'block';
+        btn.textContent = 'Show Details';
+        // Render the chart if not rendered
+        var productId = container.getAttribute('data-product-id');
+        var data = window.priceHistoryData[productId];
+        renderChart(productId, data);
+    } else {
+        // Hide chart, show details
+        chart.style.display = 'none';
+        details.style.display = 'block';
+        btn.textContent = 'Show History';
+    }
+}
+
+function renderChart(productId, data) {
+    var chartContainer = document.getElementById('chart-' + productId);
+    // Clear previous content
+    chartContainer.innerHTML = '';
+    if (!data || data.length === 0) {
+        chartContainer.innerHTML = '<p style="text-align:center;">No history available</p>';
+        return;
+    }
+    // Determine max price for scaling
+    var maxPrice = 0;
+    data.forEach(function(item) {
+        maxPrice = Math.max(maxPrice, item.was_price, item.now_price);
+    });
+    // Create x-axis labels container
+    var xAxis = document.createElement('div');
+    xAxis.className = 'x-axis';
+    chartContainer.appendChild(xAxis);
+    // Create y-axis labels container
+    var yAxis = document.createElement('div');
+    yAxis.className = 'y-axis';
+    chartContainer.appendChild(yAxis);
+
+    // For each data point, create a bar group
+    data.forEach(function(item, index) {
+        // Create container for the bar pair
+        var barGroup = document.createElement('div');
+        barGroup.style.position = 'absolute';
+        // Calculate left position based on index and total width
+        var totalBars = data.length;
+        var chartWidth = chartContainer.clientWidth - 50; // accounting for y-axis space
+        var spacing = chartWidth / totalBars;
+        barGroup.style.left = (40 + index * spacing) + 'px';
+        barGroup.style.bottom = '20px';
+
+        // Create was_price bar
+        var wasBar = document.createElement('div');
+        wasBar.className = 'chart-bar was';
+        var wasHeight = (item.was_price / maxPrice) * 150;
+        wasBar.style.height = wasHeight + 'px';
+        wasBar.style.width = '8px';
+        wasBar.style.display = 'inline-block';
+        wasBar.style.marginRight = '2px';
+        // Create now_price bar
+        var nowBar = document.createElement('div');
+        nowBar.className = 'chart-bar now';
+        var nowHeight = (item.now_price / maxPrice) * 150;
+        nowBar.style.height = nowHeight + 'px';
+        nowBar.style.width = '8px';
+        nowBar.style.display = 'inline-block';
+
+        barGroup.appendChild(wasBar);
+        barGroup.appendChild(nowBar);
+        chartContainer.appendChild(barGroup);
+
+        // Add x-axis label
+        var label = document.createElement('div');
+        label.style.position = 'absolute';
+        label.style.bottom = '-15px';
+        label.style.left = (index * spacing) + 'px';
+        label.style.width = spacing + 'px';
+        label.style.textAlign = 'center';
+        label.textContent = item.date;
+        xAxis.appendChild(label);
+    });
+
+    // Add y-axis labels (e.g., 0, maxPrice/2, maxPrice)
+    var yLabels = [0, maxPrice/2, maxPrice];
+    yLabels.forEach(function(val, idx) {
+        var label = document.createElement('div');
+        label.style.position = 'absolute';
+        label.style.left = '0';
+        label.style.bottom = ((val / maxPrice) * 150) + 20 + 'px';
+        label.textContent = val.toFixed(2);
+        yAxis.appendChild(label);
+    });
+}
+</script>
+<script>
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) { window.location.reload(); }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var firstElems = document.getElementsByClassName('first-word');
+    for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].dataset.original = firstElems[i].innerHTML;
+    }
+    var secondElems = document.getElementsByClassName('product-name-text');
+    for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].dataset.original = secondElems[i].innerHTML;
+    }
+});
+
+function showSearchBar() {
+    var header = document.querySelector('.header-container');
+    header.style.display = 'none';
+    var searchBar = document.getElementById('searchBarContainer');
+    searchBar.style.display = 'flex';
+    setTimeout(function() {
+        searchBar.style.opacity = "1";
+    }, 10);
+    document.getElementById('searchInput').focus();
+}
+
+function hideSearchBar() {
+    var searchInput = document.getElementById('searchInput');
+    searchInput.value = '';
+    var firstElems = document.getElementsByClassName('first-word');
+    var secondElems = document.getElementsByClassName('product-name-text');
+    for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].innerHTML = firstElems[i].dataset.original;
+    }
+    for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].innerHTML = secondElems[i].dataset.original;
+    }
+    var items = document.getElementsByClassName('item-container');
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "";
+    }
+    document.getElementById('searchCount').innerText = "";
+    var searchBar = document.getElementById('searchBarContainer');
+    var header = document.querySelector('.header-container');
+    searchBar.style.opacity = "0";
+    setTimeout(function() {
+         searchBar.style.display = 'none';
+         header.style.display = 'flex';
+    }, 500);
+}
+
+function inPageSearch() {
+    var input = document.getElementById('searchInput').value.trim();
+    var term = input.toLowerCase();
+    var items = document.getElementsByClassName('item-container');
+    var visibleCount = 0;
+    for (var i = 0; i < items.length; i++) {
+        var firstElem = items[i].querySelector('.first-word');
+        var secondElem = items[i].querySelector('.product-name-text');
+        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+        if (term === '' || fullName.indexOf(term) > -1) {
+            items[i].style.display = '';
+            visibleCount++;
+            if (term !== '') {
+                firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            } else {
+                firstElem.innerHTML = firstElem.dataset.original;
+                secondElem.innerHTML = secondElem.dataset.original;
+            }
+        } else {
+            items[i].style.display = 'none';
+        }
+    }
+    document.getElementById('searchCount').innerText = visibleCount + " found";
+}
+</script>
 </head>
 <body>
 <div class='header-container'>
@@ -307,7 +446,7 @@ body {
     </button>
     <div class='page-title'>Seafood</div>
   </div>
-  <div class='creation-time'>Created on: 2025-02-28 00:18:17</div>
+  <div class='creation-time'>Created on: 2025-02-28 00:34:11</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
@@ -317,10 +456,11 @@ body {
   <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
 </div>
 
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20720065_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fresh-atlantic-salmon-fillets-skin-on-packaged-clu/p/20720065_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -333,12 +473,14 @@ body {
             <div class='now-price'>NOW: $20.47</div>
             <div class='discount-badge'>31.3% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20720065_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20852143_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fresh-atlantic-salmon-fillets-skin-on-packaged/p/20852143_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -351,12 +493,14 @@ body {
             <div class='now-price'>NOW: $8.79</div>
             <div class='discount-badge'>26.4% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20852143_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21043887_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pacific-white-shrimp-raw-16-20-lb/p/21043887_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -369,12 +513,14 @@ body {
             <div class='now-price'>NOW: $7.00</div>
             <div class='discount-badge'>26.2% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21043887_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21211819_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/wild-yellowfin-tuna-skinless-boneless-steaks-susta/p/21211819_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -387,12 +533,14 @@ body {
             <div class='now-price'>NOW: $9.99</div>
             <div class='discount-badge'>25.9% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21211819_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20750012_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/crab-flavoured-wild-alaska-pollock-chunks/p/20750012_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -405,12 +553,14 @@ body {
             <div class='now-price'>NOW: $2.99</div>
             <div class='discount-badge'>25.1% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20750012_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20749901_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/lobster-flavoured-wild-alaska-pollock-chunks/p/20749901_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -423,12 +573,14 @@ body {
             <div class='now-price'>NOW: $2.99</div>
             <div class='discount-badge'>25.1% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20749901_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20749798_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/leg-style-crab-flavoured-wild-alaska-pollock-and-w/p/20749798_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -441,12 +593,14 @@ body {
             <div class='now-price'>NOW: $2.99</div>
             <div class='discount-badge'>25.1% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20749798_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20699832_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/flake-style-crab-flavoured-wild-alaska-pollock-and/p/20699832_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -459,12 +613,14 @@ body {
             <div class='now-price'>NOW: $2.99</div>
             <div class='discount-badge'>25.1% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20699832_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21108887_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/breaded-cod-bites-with-sauce/p/21108887_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -477,6 +633,7 @@ body {
             <div class='now-price'>NOW: $9.99</div>
             <div class='discount-badge'>9.1% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21108887_EA' style='display:none;'></div>
         </div>
         
 </body>
