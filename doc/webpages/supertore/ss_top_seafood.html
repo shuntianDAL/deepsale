@@ -14,20 +14,287 @@
 <!-- Load Chart.js from CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 
+<style>
+html {
+    overflow-y: scroll;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: #fff;
+    overflow-x: hidden;
+}
+body {
+    transition: opacity 0.5s ease;
+}
+.fade-on-load {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+body.page-loaded .fade-on-load {
+    opacity: 1;
+}
+.header-container {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #fff;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+.header-row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.page-title {
+    font-size: 22px;
+    font-weight: 600;
+}
+.creation-time {
+    text-align: center;
+    font-size: 12px;
+    color: gray;
+    margin-top: 5px;
+}
+.divider {
+    border: 0; height: 1px; background: #ccc;
+    margin: 0 20px 10px;
+}
+.header-spacer {
+    height: 70px;
+}
+.search-button {
+    background-color: #3e7d53;
+    border: none;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+#searchBarContainer {
+    position: fixed;
+    top: 20px; left: 50%;
+    transform: translateX(-50%);
+    width: 240px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    text-align: center;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+    display: none;
+    align-items: center;
+    z-index: 1001;
+}
+#searchInput {
+    padding: 4px;
+    width: calc(100% - 60px);
+    border: none;
+    outline: none;
+    font-size: 12px;
+    flex-grow: 1;
+}
+#searchCount {
+    font-size: 12px;
+    color: #3e7d53;
+    margin-left: 8px;
+    white-space: nowrap;
+}
+#closeSearchButton {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #3e7d53;
+    margin-left: 8px;
+    line-height: 1;
+    padding: 0;
+}
+.item-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    width: 90%;
+    max-width: 600px;
+    margin: 10px auto;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+.left-side {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.item-image img {
+    width: 80px;
+    height: auto;
+}
+.vertical-switch-button {
+    background-color: #3e7d53;
+    border: none;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.vertical-switch-button.selected {
+    background-color: #3e7d53;
+    color: #fff;
+}
+.vertical-switch-button:not(.selected) {
+    background-color: #ddd;
+    color: #000;
+}
+.toggle-switch {
+    width: 80px;
+    height: 28px;
+    position: relative;
+}
+.toggle-switch.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.toggle-input {
+    display: none;
+}
+.toggle-label {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-color: #ddd;
+    border-radius: 9999px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.toggle-switch:not(.disabled) .toggle-label {
+    background-color: #3e7d53;
+}
+.toggle-label .toggle-circle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+.toggle-input:checked + .toggle-label .toggle-circle {
+    transform: translateX(52px);
+}
+.toggle-label .toggle-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    line-height: 28px;
+    font-size: 12px;
+    color: #fff;
+    pointer-events: none;
+}
+.right-side {
+    flex: 1;
+    position: relative;
+}
+.view-container {
+    width: 100%;
+    height: 200px;
+    position: relative;
+    background-color: #f9f9f9;
+}
+.detail-view, .chart-view {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    transition: opacity 0.5s ease;
+}
+.detail-view {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    opacity: 1;
+    z-index: 2;
+}
+.chart-view {
+    width: 100%;
+    height: 100%;
+    background-color: #f9f9f9;
+    opacity: 0;
+    z-index: 1;
+}
+.item-name {
+    font-size: 14px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: black;
+}
+.item-number {
+    color: red;
+    font-weight: 600;
+    border: 2px solid red;
+    border-radius: 50%;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    line-height: 20px;
+    margin-right: 8px;
+    font-size: 12px;
+}
+.now-price {
+    color: red;
+    font-weight: 600;
+    font-size: 12px;
+    margin: 4px 0;
+}
+.discount-badge {
+    background-color: yellow;
+    display: inline-block;
+    font-weight: 600;
+    padding: 2px 5px;
+    font-size: 16px;
+}
+.was-price {
+    text-decoration: line-through;
+}
+</style>
+
 <script>
-// When DOM content is loaded, add class to body for fade-in effect
+// On DOMContentLoaded, add the page-loaded class and set initial view states.
 document.addEventListener('DOMContentLoaded', function() {
     document.body.classList.add('page-loaded');
-    // Make sure detail view is visible and chart view hidden by default
-    var detailViews = document.querySelectorAll('.detail-view');
-    var chartViews = document.querySelectorAll('.chart-view');
-    detailViews.forEach(function(v) {
-        v.style.opacity = '1';
+    // Ensure detail views are visible and chart views are hidden
+    document.querySelectorAll('.detail-view').forEach(function(el) {
+        el.style.opacity = '1';
     });
-    chartViews.forEach(function(v) {
-        v.style.opacity = '0';
+    document.querySelectorAll('.chart-view').forEach(function(el) {
+        el.style.opacity = '0';
     });
-    // Set global chart data
+    // Global chart data
     window.priceHistoryData = {"20720065_KG": {"1mon": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "1yr": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}]}, "20852143_KG": {"1mon": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "1yr": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}]}, "21043887_EA": {"1mon": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}]}, "21211819_EA": {"1mon": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}]}, "20750012_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749901_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749798_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20699832_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21108887_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]}};
 });
 
@@ -35,16 +302,17 @@ document.addEventListener('DOMContentLoaded', function() {
 var chartInstances = {};
 
 /**
- * Detail button: show detail view, hide chart view, and reset toggle.
+ * "Detail" button: show discount detail, hide chart view, and reset the toggle.
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
-    // Set button state
-    var buttons = container.querySelectorAll('.vertical-switch-button');
-    buttons.forEach(function(b) { b.classList.remove('selected'); });
+    // Reset button state
+    container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
+        b.classList.remove('selected');
+    });
     btn.classList.add('selected');
 
-    // Disable toggle switch and reset to unchecked
+    // Disable the toggle and set it to unchecked with label "1 Yr"
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
     var toggleInput = container.querySelector('.toggle-input');
@@ -52,13 +320,13 @@ function switchToDetail(btn) {
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
-    // Show detail view, hide chart view
+    // Show detail view, hide chart view (with fade-out/in)
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '1';
     chartView.style.opacity = '0';
 
-    // Destroy any existing chart
+    // Remove any previously rendered chart
     var productId = container.getAttribute('data-product-id');
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
@@ -68,8 +336,9 @@ function switchToDetail(btn) {
 
 /**
  * Toggle switch handler:
- * - If checked, hide discount details and show chart view (render 1 Yr line chart).
- * - If unchecked, show discount details and hide chart view (render 1 Mon bar chart).
+ * If checked, hide the discount detail and show chart view.
+ * If unchecked, show discount detail and hide chart view.
+ * Also, render the chart using Chart.js (1 Yr line chart if checked, 1 Mon stacked bar chart if unchecked).
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
@@ -78,50 +347,46 @@ function toggleMonYr(checkbox) {
         toggleSwitch.classList.remove('disabled');
     }
 
-    // Unselect the Detail button
+    // Unselect the "Detail" button
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
-    // Get the two views
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     var productId = container.getAttribute('data-product-id');
     var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
 
-    // Destroy any existing chart
+    // Remove any existing chart instance
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
         delete chartInstances[productId];
     }
 
     if (checkbox.checked) {
-        // Toggle checked: Show chart view, hide detail view.
+        // Checked: hide discount info, show chart view and render 1 Yr line chart.
         toggleLabel.textContent = "1 Yr";
         detailView.style.opacity = '0';
         chartView.style.opacity = '1';
-        var filtered = window.priceHistoryData[productId]["1yr"].filter(d => d.was_price > 0 && d.now_price > 0);
-        createLineChart(productId, filtered);
+        var filtered = window.priceHistoryData[productId]["1yr"].filter(function(d) {
+            return d.was_price > 0 && d.now_price > 0;
+        });
+        renderLineChart(productId, filtered);
     } else {
-        // Toggle unchecked: Show detail view, hide chart view.
+        // Unchecked: show discount info, hide chart view and render 1 Mon stacked bar chart.
         toggleLabel.textContent = "1 Mon";
         detailView.style.opacity = '1';
         chartView.style.opacity = '0';
-        var filtered = window.priceHistoryData[productId]["1mon"].filter(d => d.was_price > 0 && d.now_price > 0);
-        createStackedBarChart(productId, filtered);
+        var filtered = window.priceHistoryData[productId]["1mon"].filter(function(d) {
+            return d.was_price > 0 && d.now_price > 0;
+        });
+        renderStackedBarChart(productId, filtered);
     }
 }
 
 /**
- * Touch fallback for iOS Safari.
+ * Renders a stacked bar chart for 1 Mon data using Chart.js.
  */
-function toggleMonYrTouch(checkbox) {
-    toggleMonYr(checkbox);
-}
-
-/**
- * Creates a stacked bar chart using Chart.js for 1 Mon data.
- */
-function createStackedBarChart(productId, data) {
+function renderStackedBarChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
     if (!data || data.length === 0) {
         ctx.font = "14px Arial";
@@ -131,17 +396,17 @@ function createStackedBarChart(productId, data) {
     chartInstances[productId] = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: data.map(d => d.date),
+            labels: data.map(function(d) { return d.date; }),
             datasets: [
                 {
                     label: 'Now Price',
-                    data: data.map(d => d.now_price),
+                    data: data.map(function(d) { return d.now_price; }),
                     backgroundColor: '#009900',
                     stack: 'Stack 0'
                 },
                 {
                     label: 'Was Price',
-                    data: data.map(d => d.was_price - d.now_price),
+                    data: data.map(function(d) { return d.was_price - d.now_price; }),
                     backgroundColor: '#FF9900',
                     stack: 'Stack 0'
                 }
@@ -172,9 +437,9 @@ function createStackedBarChart(productId, data) {
 }
 
 /**
- * Creates a two-line chart using Chart.js for 1 Yr data.
+ * Renders a two-line chart for 1 Yr data using Chart.js.
  */
-function createLineChart(productId, data) {
+function renderLineChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
     if (!data || data.length === 0) {
         ctx.font = "14px Arial";
@@ -184,11 +449,11 @@ function createLineChart(productId, data) {
     chartInstances[productId] = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: data.map(d => d.date),
+            labels: data.map(function(d) { return d.date; }),
             datasets: [
                 {
                     label: 'Was Price',
-                    data: data.map(d => d.was_price),
+                    data: data.map(function(d) { return d.was_price; }),
                     borderColor: '#0077cc',
                     backgroundColor: '#0077cc',
                     fill: false,
@@ -196,7 +461,7 @@ function createLineChart(productId, data) {
                 },
                 {
                     label: 'Now Price',
-                    data: data.map(d => d.now_price),
+                    data: data.map(function(d) { return d.now_price; }),
                     borderColor: '#009900',
                     backgroundColor: '#009900',
                     fill: false,
@@ -225,409 +490,7 @@ function createLineChart(productId, data) {
         }
     });
 }
-</script>
 
-</head>
-<body>
-<div class="header-container">
-  <div class="header-row">
-    <button class="search-button" onclick="showSearchBar()">
-      <span class="search-icon">🔍</span> FIND ➜
-    </button>
-    <div class="page-title">ss_seafood</div>
-  </div>
-  <div class="creation-time">Created on: 2025-02-28 19:53:13</div>
-</div>
-<hr class="divider">
-<div class="header-spacer"></div>
-
-<div id="searchBarContainer">
-  <input type="text" id="searchInput" placeholder="Search in page..." onkeyup="inPageSearch()">
-  <span id="searchCount"></span>
-  <button id="closeSearchButton" onclick="hideSearchBar()">×</button>
-</div>
-
-
-<div class="item-container" data-product-id="20720065_KG">
-  
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
-    </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-    <!-- Toggle switch -->
-    <div class="toggle-switch disabled" data-product-id="20720065_KG">
-      <input type="checkbox" class="toggle-input" id="toggle-20720065_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYrTouch(this)">
-      <label class="toggle-label" for="toggle-20720065_KG">
-        <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Yr</span>
-      </label>
-    </div>
-  </div>
-        
-  
-  <div class="right-side">
-    <div class="view-container">
-      <div class="detail-view" id="detail-20720065_KG">
-        
-          <div class="item-name">
-            <span class="item-number">#1</span>
-            <span class="first-word">Fresh</span>
-            <span class="product-name-text">Atlantic Salmon Fillets, Skin On, Packaged, Club Size</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 29.79</span></div>
-          <div class="now-price">NOW: $ 20.47</div>
-          <div class="discount-badge">31.3% OFF</div>
-        
-      </div>
-      <div class="chart-view" id="chart-20720065_KG">
-        <canvas id="canvas-20720065_KG" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-        
-</div>
-
-<div class="item-container" data-product-id="20852143_KG">
-  
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
-    </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-    <!-- Toggle switch -->
-    <div class="toggle-switch disabled" data-product-id="20852143_KG">
-      <input type="checkbox" class="toggle-input" id="toggle-20852143_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYrTouch(this)">
-      <label class="toggle-label" for="toggle-20852143_KG">
-        <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Yr</span>
-      </label>
-    </div>
-  </div>
-        
-  
-  <div class="right-side">
-    <div class="view-container">
-      <div class="detail-view" id="detail-20852143_KG">
-        
-          <div class="item-name">
-            <span class="item-number">#2</span>
-            <span class="first-word">Fresh</span>
-            <span class="product-name-text">Atlantic Salmon Fillets, Skin On, Packaged</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 11.95</span></div>
-          <div class="now-price">NOW: $ 8.79</div>
-          <div class="discount-badge">26.4% OFF</div>
-        
-      </div>
-      <div class="chart-view" id="chart-20852143_KG">
-        <canvas id="canvas-20852143_KG" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-        
-</div>
-
-<div class="item-container" data-product-id="21043887_EA">
-  
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
-    </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-    <!-- Toggle switch -->
-    <div class="toggle-switch disabled" data-product-id="21043887_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21043887_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYrTouch(this)">
-      <label class="toggle-label" for="toggle-21043887_EA">
-        <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Yr</span>
-      </label>
-    </div>
-  </div>
-        
-  
-  <div class="right-side">
-    <div class="view-container">
-      <div class="detail-view" id="detail-21043887_EA">
-        
-          <div class="item-name">
-            <span class="item-number">#3</span>
-            <span class="first-word">Pacific</span>
-            <span class="product-name-text">White Shrimp Raw 16-20/LB</span>
-          </div>
-          <div>Expire On: 2025-03-12</div>
-          <div>WAS: <span class="was-price">$ 9.49</span></div>
-          <div class="now-price">NOW: $ 7.00</div>
-          <div class="discount-badge">26.2% OFF</div>
-        
-      </div>
-      <div class="chart-view" id="chart-21043887_EA">
-        <canvas id="canvas-21043887_EA" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-        
-</div>
-
-<div class="item-container" data-product-id="21211819_EA">
-  
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
-    </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-    <!-- Toggle switch -->
-    <div class="toggle-switch disabled" data-product-id="21211819_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21211819_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYrTouch(this)">
-      <label class="toggle-label" for="toggle-21211819_EA">
-        <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Yr</span>
-      </label>
-    </div>
-  </div>
-        
-  
-  <div class="right-side">
-    <div class="view-container">
-      <div class="detail-view" id="detail-21211819_EA">
-        
-          <div class="item-name">
-            <span class="item-number">#4</span>
-            <span class="first-word">Wild</span>
-            <span class="product-name-text">Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 13.49</span></div>
-          <div class="now-price">NOW: $ 9.99</div>
-          <div class="discount-badge">25.9% OFF</div>
-        
-      </div>
-      <div class="chart-view" id="chart-21211819_EA">
-        <canvas id="canvas-21211819_EA" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-        
-</div>
-
-<div class="item-container" data-product-id="20750012_EA">
-  
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
-    </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-    <!-- Toggle switch -->
-    <div class="toggle-switch disabled" data-product-id="20750012_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20750012_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYrTouch(this)">
-      <label class="toggle-label" for="toggle-20750012_EA">
-        <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Yr</span>
-      </label>
-    </div>
-  </div>
-        
-  
-  <div class="right-side">
-    <div class="view-container">
-      <div class="detail-view" id="detail-20750012_EA">
-        
-          <div class="item-name">
-            <span class="item-number">#5</span>
-            <span class="first-word">Crab</span>
-            <span class="product-name-text">Flavoured Wild Alaska Pollock Chunks</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 3.99</span></div>
-          <div class="now-price">NOW: $ 2.99</div>
-          <div class="discount-badge">25.1% OFF</div>
-        
-      </div>
-      <div class="chart-view" id="chart-20750012_EA">
-        <canvas id="canvas-20750012_EA" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-        
-</div>
-
-<div class="item-container" data-product-id="20749901_EA">
-  
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
-    </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-    <!-- Toggle switch -->
-    <div class="toggle-switch disabled" data-product-id="20749901_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20749901_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYrTouch(this)">
-      <label class="toggle-label" for="toggle-20749901_EA">
-        <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Yr</span>
-      </label>
-    </div>
-  </div>
-        
-  
-  <div class="right-side">
-    <div class="view-container">
-      <div class="detail-view" id="detail-20749901_EA">
-        
-          <div class="item-name">
-            <span class="item-number">#6</span>
-            <span class="first-word">Lobster</span>
-            <span class="product-name-text">Flavoured Wild Alaska Pollock Chunks</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 3.99</span></div>
-          <div class="now-price">NOW: $ 2.99</div>
-          <div class="discount-badge">25.1% OFF</div>
-        
-      </div>
-      <div class="chart-view" id="chart-20749901_EA">
-        <canvas id="canvas-20749901_EA" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-        
-</div>
-
-<div class="item-container" data-product-id="20749798_EA">
-  
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
-    </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-    <!-- Toggle switch -->
-    <div class="toggle-switch disabled" data-product-id="20749798_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20749798_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYrTouch(this)">
-      <label class="toggle-label" for="toggle-20749798_EA">
-        <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Yr</span>
-      </label>
-    </div>
-  </div>
-        
-  
-  <div class="right-side">
-    <div class="view-container">
-      <div class="detail-view" id="detail-20749798_EA">
-        
-          <div class="item-name">
-            <span class="item-number">#7</span>
-            <span class="first-word">Leg-Style</span>
-            <span class="product-name-text">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 3.99</span></div>
-          <div class="now-price">NOW: $ 2.99</div>
-          <div class="discount-badge">25.1% OFF</div>
-        
-      </div>
-      <div class="chart-view" id="chart-20749798_EA">
-        <canvas id="canvas-20749798_EA" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-        
-</div>
-
-<div class="item-container" data-product-id="20699832_EA">
-  
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
-    </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-    <!-- Toggle switch -->
-    <div class="toggle-switch disabled" data-product-id="20699832_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20699832_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYrTouch(this)">
-      <label class="toggle-label" for="toggle-20699832_EA">
-        <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Yr</span>
-      </label>
-    </div>
-  </div>
-        
-  
-  <div class="right-side">
-    <div class="view-container">
-      <div class="detail-view" id="detail-20699832_EA">
-        
-          <div class="item-name">
-            <span class="item-number">#8</span>
-            <span class="first-word">Flake-Style</span>
-            <span class="product-name-text">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 3.99</span></div>
-          <div class="now-price">NOW: $ 2.99</div>
-          <div class="discount-badge">25.1% OFF</div>
-        
-      </div>
-      <div class="chart-view" id="chart-20699832_EA">
-        <canvas id="canvas-20699832_EA" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-        
-</div>
-
-<div class="item-container" data-product-id="21108887_EA">
-  
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
-    </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-    <!-- Toggle switch -->
-    <div class="toggle-switch disabled" data-product-id="21108887_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21108887_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYrTouch(this)">
-      <label class="toggle-label" for="toggle-21108887_EA">
-        <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Yr</span>
-      </label>
-    </div>
-  </div>
-        
-  
-  <div class="right-side">
-    <div class="view-container">
-      <div class="detail-view" id="detail-21108887_EA">
-        
-          <div class="item-name">
-            <span class="item-number">#9</span>
-            <span class="first-word">Breaded</span>
-            <span class="product-name-text">Cod Bites With Sauce</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 10.99</span></div>
-          <div class="now-price">NOW: $ 9.99</div>
-          <div class="discount-badge">9.1% OFF</div>
-        
-      </div>
-      <div class="chart-view" id="chart-21108887_EA">
-        <canvas id="canvas-21108887_EA" width="400" height="200"></canvas>
-      </div>
-    </div>
-  </div>
-        
-</div>
-
-
-<script>
 function showSearchBar() {
     var header = document.querySelector('.header-container');
     header.style.display = 'none';
@@ -677,8 +540,10 @@ function inPageSearch() {
             items[i].style.display = '';
             visibleCount++;
             if (term !== '') {
-                firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent).replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-                secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent).replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent)
+                                      .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent)
+                                      .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
             } else {
                 firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
                 secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
@@ -690,6 +555,406 @@ function inPageSearch() {
     document.getElementById('searchCount').innerText = visibleCount + " found";
 }
 </script>
+
+</head>
+<body>
+<div class="header-container">
+  <div class="header-row">
+    <button class="search-button" onclick="showSearchBar()">
+      <span class="search-icon">🔍</span> FIND ➜
+    </button>
+    <div class="page-title">ss_seafood</div>
+  </div>
+  <div class="creation-time">Created on: 2025-02-28 19:57:52</div>
+</div>
+<hr class="divider">
+<div class="header-spacer"></div>
+
+<div id="searchBarContainer">
+  <input type="text" id="searchInput" placeholder="Search in page..." onkeyup="inPageSearch()">
+  <span id="searchCount"></span>
+  <button id="closeSearchButton" onclick="hideSearchBar()">×</button>
+</div>
+
+
+<div class="item-container" data-product-id="20720065_KG">
+  
+  <div class="left-side">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
+    </div>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- Toggle switch (disabled by default, label "1 Yr") -->
+    <div class="toggle-switch disabled" data-product-id="20720065_KG">
+      <input type="checkbox" class="toggle-input" id="toggle-20720065_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
+      <label class="toggle-label" for="toggle-20720065_KG">
+        <span class="toggle-circle"></span>
+        <span class="toggle-text">1 Yr</span>
+      </label>
+    </div>
+  </div>
+        
+  
+  <div class="right-side">
+    <div class="view-container">
+      <div class="detail-view" id="detail-20720065_KG">
+        
+          <div class="item-name">
+            <span class="item-number">#1</span>
+            <span class="first-word" data-original="Fresh">Fresh</span>
+            <span class="product-name-text" data-original="Atlantic Salmon Fillets, Skin On, Packaged, Club Size">Atlantic Salmon Fillets, Skin On, Packaged, Club Size</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 29.79</span></div>
+          <div class="now-price">NOW: $ 20.47</div>
+          <div class="discount-badge">31.3% OFF</div>
+        
+      </div>
+      <div class="chart-view" id="chart-20720065_KG">
+        <canvas id="canvas-20720065_KG" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+        
+</div>
+
+<div class="item-container" data-product-id="20852143_KG">
+  
+  <div class="left-side">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
+    </div>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- Toggle switch (disabled by default, label "1 Yr") -->
+    <div class="toggle-switch disabled" data-product-id="20852143_KG">
+      <input type="checkbox" class="toggle-input" id="toggle-20852143_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
+      <label class="toggle-label" for="toggle-20852143_KG">
+        <span class="toggle-circle"></span>
+        <span class="toggle-text">1 Yr</span>
+      </label>
+    </div>
+  </div>
+        
+  
+  <div class="right-side">
+    <div class="view-container">
+      <div class="detail-view" id="detail-20852143_KG">
+        
+          <div class="item-name">
+            <span class="item-number">#2</span>
+            <span class="first-word" data-original="Fresh">Fresh</span>
+            <span class="product-name-text" data-original="Atlantic Salmon Fillets, Skin On, Packaged">Atlantic Salmon Fillets, Skin On, Packaged</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 11.95</span></div>
+          <div class="now-price">NOW: $ 8.79</div>
+          <div class="discount-badge">26.4% OFF</div>
+        
+      </div>
+      <div class="chart-view" id="chart-20852143_KG">
+        <canvas id="canvas-20852143_KG" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+        
+</div>
+
+<div class="item-container" data-product-id="21043887_EA">
+  
+  <div class="left-side">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
+    </div>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- Toggle switch (disabled by default, label "1 Yr") -->
+    <div class="toggle-switch disabled" data-product-id="21043887_EA">
+      <input type="checkbox" class="toggle-input" id="toggle-21043887_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
+      <label class="toggle-label" for="toggle-21043887_EA">
+        <span class="toggle-circle"></span>
+        <span class="toggle-text">1 Yr</span>
+      </label>
+    </div>
+  </div>
+        
+  
+  <div class="right-side">
+    <div class="view-container">
+      <div class="detail-view" id="detail-21043887_EA">
+        
+          <div class="item-name">
+            <span class="item-number">#3</span>
+            <span class="first-word" data-original="Pacific">Pacific</span>
+            <span class="product-name-text" data-original="White Shrimp Raw 16-20/LB">White Shrimp Raw 16-20/LB</span>
+          </div>
+          <div>Expire On: 2025-03-12</div>
+          <div>WAS: <span class="was-price">$ 9.49</span></div>
+          <div class="now-price">NOW: $ 7.00</div>
+          <div class="discount-badge">26.2% OFF</div>
+        
+      </div>
+      <div class="chart-view" id="chart-21043887_EA">
+        <canvas id="canvas-21043887_EA" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+        
+</div>
+
+<div class="item-container" data-product-id="21211819_EA">
+  
+  <div class="left-side">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
+    </div>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- Toggle switch (disabled by default, label "1 Yr") -->
+    <div class="toggle-switch disabled" data-product-id="21211819_EA">
+      <input type="checkbox" class="toggle-input" id="toggle-21211819_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
+      <label class="toggle-label" for="toggle-21211819_EA">
+        <span class="toggle-circle"></span>
+        <span class="toggle-text">1 Yr</span>
+      </label>
+    </div>
+  </div>
+        
+  
+  <div class="right-side">
+    <div class="view-container">
+      <div class="detail-view" id="detail-21211819_EA">
+        
+          <div class="item-name">
+            <span class="item-number">#4</span>
+            <span class="first-word" data-original="Wild">Wild</span>
+            <span class="product-name-text" data-original="Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g">Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 13.49</span></div>
+          <div class="now-price">NOW: $ 9.99</div>
+          <div class="discount-badge">25.9% OFF</div>
+        
+      </div>
+      <div class="chart-view" id="chart-21211819_EA">
+        <canvas id="canvas-21211819_EA" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+        
+</div>
+
+<div class="item-container" data-product-id="20750012_EA">
+  
+  <div class="left-side">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
+    </div>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- Toggle switch (disabled by default, label "1 Yr") -->
+    <div class="toggle-switch disabled" data-product-id="20750012_EA">
+      <input type="checkbox" class="toggle-input" id="toggle-20750012_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
+      <label class="toggle-label" for="toggle-20750012_EA">
+        <span class="toggle-circle"></span>
+        <span class="toggle-text">1 Yr</span>
+      </label>
+    </div>
+  </div>
+        
+  
+  <div class="right-side">
+    <div class="view-container">
+      <div class="detail-view" id="detail-20750012_EA">
+        
+          <div class="item-name">
+            <span class="item-number">#5</span>
+            <span class="first-word" data-original="Crab">Crab</span>
+            <span class="product-name-text" data-original="Flavoured Wild Alaska Pollock Chunks">Flavoured Wild Alaska Pollock Chunks</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 3.99</span></div>
+          <div class="now-price">NOW: $ 2.99</div>
+          <div class="discount-badge">25.1% OFF</div>
+        
+      </div>
+      <div class="chart-view" id="chart-20750012_EA">
+        <canvas id="canvas-20750012_EA" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+        
+</div>
+
+<div class="item-container" data-product-id="20749901_EA">
+  
+  <div class="left-side">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
+    </div>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- Toggle switch (disabled by default, label "1 Yr") -->
+    <div class="toggle-switch disabled" data-product-id="20749901_EA">
+      <input type="checkbox" class="toggle-input" id="toggle-20749901_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
+      <label class="toggle-label" for="toggle-20749901_EA">
+        <span class="toggle-circle"></span>
+        <span class="toggle-text">1 Yr</span>
+      </label>
+    </div>
+  </div>
+        
+  
+  <div class="right-side">
+    <div class="view-container">
+      <div class="detail-view" id="detail-20749901_EA">
+        
+          <div class="item-name">
+            <span class="item-number">#6</span>
+            <span class="first-word" data-original="Lobster">Lobster</span>
+            <span class="product-name-text" data-original="Flavoured Wild Alaska Pollock Chunks">Flavoured Wild Alaska Pollock Chunks</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 3.99</span></div>
+          <div class="now-price">NOW: $ 2.99</div>
+          <div class="discount-badge">25.1% OFF</div>
+        
+      </div>
+      <div class="chart-view" id="chart-20749901_EA">
+        <canvas id="canvas-20749901_EA" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+        
+</div>
+
+<div class="item-container" data-product-id="20749798_EA">
+  
+  <div class="left-side">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
+    </div>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- Toggle switch (disabled by default, label "1 Yr") -->
+    <div class="toggle-switch disabled" data-product-id="20749798_EA">
+      <input type="checkbox" class="toggle-input" id="toggle-20749798_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
+      <label class="toggle-label" for="toggle-20749798_EA">
+        <span class="toggle-circle"></span>
+        <span class="toggle-text">1 Yr</span>
+      </label>
+    </div>
+  </div>
+        
+  
+  <div class="right-side">
+    <div class="view-container">
+      <div class="detail-view" id="detail-20749798_EA">
+        
+          <div class="item-name">
+            <span class="item-number">#7</span>
+            <span class="first-word" data-original="Leg-Style">Leg-Style</span>
+            <span class="product-name-text" data-original="Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 3.99</span></div>
+          <div class="now-price">NOW: $ 2.99</div>
+          <div class="discount-badge">25.1% OFF</div>
+        
+      </div>
+      <div class="chart-view" id="chart-20749798_EA">
+        <canvas id="canvas-20749798_EA" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+        
+</div>
+
+<div class="item-container" data-product-id="20699832_EA">
+  
+  <div class="left-side">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
+    </div>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- Toggle switch (disabled by default, label "1 Yr") -->
+    <div class="toggle-switch disabled" data-product-id="20699832_EA">
+      <input type="checkbox" class="toggle-input" id="toggle-20699832_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
+      <label class="toggle-label" for="toggle-20699832_EA">
+        <span class="toggle-circle"></span>
+        <span class="toggle-text">1 Yr</span>
+      </label>
+    </div>
+  </div>
+        
+  
+  <div class="right-side">
+    <div class="view-container">
+      <div class="detail-view" id="detail-20699832_EA">
+        
+          <div class="item-name">
+            <span class="item-number">#8</span>
+            <span class="first-word" data-original="Flake-Style">Flake-Style</span>
+            <span class="product-name-text" data-original="Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 3.99</span></div>
+          <div class="now-price">NOW: $ 2.99</div>
+          <div class="discount-badge">25.1% OFF</div>
+        
+      </div>
+      <div class="chart-view" id="chart-20699832_EA">
+        <canvas id="canvas-20699832_EA" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+        
+</div>
+
+<div class="item-container" data-product-id="21108887_EA">
+  
+  <div class="left-side">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
+    </div>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- Toggle switch (disabled by default, label "1 Yr") -->
+    <div class="toggle-switch disabled" data-product-id="21108887_EA">
+      <input type="checkbox" class="toggle-input" id="toggle-21108887_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
+      <label class="toggle-label" for="toggle-21108887_EA">
+        <span class="toggle-circle"></span>
+        <span class="toggle-text">1 Yr</span>
+      </label>
+    </div>
+  </div>
+        
+  
+  <div class="right-side">
+    <div class="view-container">
+      <div class="detail-view" id="detail-21108887_EA">
+        
+          <div class="item-name">
+            <span class="item-number">#9</span>
+            <span class="first-word" data-original="Breaded">Breaded</span>
+            <span class="product-name-text" data-original="Cod Bites With Sauce">Cod Bites With Sauce</span>
+          </div>
+          <div>Expire On: 2025-03-05</div>
+          <div>WAS: <span class="was-price">$ 10.99</span></div>
+          <div class="now-price">NOW: $ 9.99</div>
+          <div class="discount-badge">9.1% OFF</div>
+        
+      </div>
+      <div class="chart-view" id="chart-21108887_EA">
+        <canvas id="canvas-21108887_EA" width="400" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+        
+</div>
+
 
 </body>
 </html>
