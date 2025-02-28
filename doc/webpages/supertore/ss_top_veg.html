@@ -22,6 +22,18 @@ body {
     background-color: #fff;
     overflow-x: hidden;
 }
+/* We'll add a 'page-loaded' class to <body> to trigger fade in animations after DOMContentLoaded */
+body {
+    transition: opacity 0.5s ease;
+}
+/* Fade in effect for the detail button */
+.fade-on-load {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+body.page-loaded .fade-on-load {
+    opacity: 1;
+}
 .header-container {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -157,14 +169,12 @@ body {
     width: 80px;
     height: 28px;
     position: relative;
-    /* We'll style it as 'disabled' with a class so the user can still click it to remove the disabled style */
 }
 .toggle-switch.disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 .toggle-input {
-    /* Not physically disabled => so 'onchange' can still fire. We'll rely on the .disabled class for styling. */
     display: none;
 }
 .toggle-label {
@@ -211,14 +221,14 @@ body {
 }
 .view-container {
     width: 100%;
-    height: 200px; /* short chart area */
+    height: 200px;
     position: relative;
     background-color: #f9f9f9;
 }
 .detail-view, .chart-view {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.5s ease;
 }
 .detail-view {
     background-color: #fff;
@@ -274,63 +284,55 @@ body {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Provide chart data as a global dictionary => priceHistoryData[product_id] = { "1mon": [...], "1yr": [...] }
+    // Add a class to body so that fade-on-load elements become visible
+    document.body.classList.add('page-loaded');
+    // Provide chart data as a global dictionary
     window.priceHistoryData = {"20143381001_KG": {"1mon": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}], "1yr": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}]}, "20811994001_EA": {"1mon": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}], "1yr": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}]}, "21626132_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}]}, "20186654_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21022511001_KG": {"1mon": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}], "1yr": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}]}, "21023094001_KG": {"1mon": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}], "1yr": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}]}, "20070132001_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}]}, "20020863001_KG": {"1mon": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}], "1yr": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}]}, "20162500001_KG": {"1mon": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}], "1yr": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}]}, "20119813001_EA": {"1mon": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}], "1yr": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}]}, "20005774001_EA": {"1mon": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}], "1yr": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}]}, "20119760001_EA": {"1mon": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}], "1yr": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}]}, "20167017001_EA": {"1mon": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "20039812_EA": {"1mon": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "21121560001_EA": {"1mon": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}], "1yr": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}]}, "20159689001_EA": {"1mon": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}], "1yr": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}]}, "20795315001_EA": {"1mon": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}]}, "20811362001_EA": {"1mon": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}], "1yr": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}]}, "20696626001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20600927001_EA": {"1mon": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20104062_EA": {"1mon": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}], "1yr": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}]}, "20130242001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}]}, "20047112001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}]}, "20959290_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20920821001_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20145379001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "21406192_EA": {"1mon": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362564_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362519_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362499_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362495_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "20033488001_KG": {"1mon": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}], "1yr": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}]}, "20868985001_EA": {"1mon": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}]}, "20045276001_EA": {"1mon": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20168395001_EA": {"1mon": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}], "1yr": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}]}, "21549854001_KG": {"1mon": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}], "1yr": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}]}, "20121509001_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}]}, "20157487001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}]}, "20067389001_EA": {"1mon": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}], "1yr": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}]}, "20649591001_KG": {"1mon": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}], "1yr": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}]}, "20051015001_EA": {"1mon": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}], "1yr": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}]}};
 });
 
 /**
- * "Detail" button => re-show detail, hide chart, revert toggle to "disabled" style with label "1 Y"
+ * "Detail" button => show detail, hide chart, revert toggle => disabled style with label "1 Yr"
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
-    // Mark this button selected, others not
     var allButtons = container.querySelectorAll('.vertical-switch-button');
     allButtons.forEach(function(b) { b.classList.remove('selected'); });
     btn.classList.add('selected');
 
-    // Reapply 'disabled' styling to the toggle
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
-
-    // Force checkbox to false, label => "1 Y"
     var toggleInput = container.querySelector('.toggle-input');
     toggleInput.checked = false;
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
-    toggleLabel.textContent = "1 Y";
+    toggleLabel.textContent = "1 Yr";
 
-    // Show detail, hide chart
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
     var chartView = viewContainer.querySelector('.chart-view');
     detailView.style.opacity = '1';
     chartView.style.opacity = '0';
-
-    // Clear chart after fade
     setTimeout(function() {
         chartView.innerHTML = '';
     }, 400);
 }
 
 /**
- * Toggle => if .disabled => remove that style => chart is active
+ * Toggle => if .disabled => remove => chart is active
  * If checked => 1 Yr => line chart
- * If unchecked => 1 Mon => bar chart
+ * else => 1 Mon => bar chart
+ * skipping zero data rows
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
     var toggleSwitch = container.querySelector('.toggle-switch');
-
-    // If it's styled as disabled => remove that style so it becomes active
     if (toggleSwitch.classList.contains('disabled')) {
         toggleSwitch.classList.remove('disabled');
     }
 
-    // Deselect "Detail" button
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
-    // Show chart, hide detail
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
@@ -344,38 +346,31 @@ function toggleMonYr(checkbox) {
     var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
 
     if (checkbox.checked) {
-        // 1 Year => line chart
-        toggleLabel.textContent = "1 Y";
-        // skip zero price data
+        toggleLabel.textContent = "1 Yr";
         var filtered = data1yr.filter(d => d.was_price > 0 && d.now_price > 0);
         renderLineChart(chartView, filtered);
     } else {
-        // 1 Month => bar chart
-        toggleLabel.textContent = "1 M";
-        // skip zero price data
+        toggleLabel.textContent = "1 Mon";
         var filtered = data1mon.filter(d => d.was_price > 0 && d.now_price > 0);
         renderStackedChart(chartView, filtered);
     }
 }
 
 /**
- * Renders the bar chart for 1-month data (unchanged).
- * Skips zero price data if any. 
+ * Renders bar chart for 1 Mon data
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
     if (!data || data.length === 0) {
-        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No 1 Mon data available</p>';
+        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No 1 Mon data</p>';
         return;
     }
     var maxWas = 0;
     data.forEach(function(d) {
-        if (d.was_price > maxWas) {
-            maxWas = d.was_price;
-        }
+        if (d.was_price > maxWas) maxWas = d.was_price;
     });
-    // Add small overhead if desired:
-    maxWas = maxWas * 1.05; // 5% overhead to avoid cutoff
+    // Add overhead
+    maxWas *= 1.05;
 
     var width = chartView.clientWidth;
     var height = chartView.clientHeight;
@@ -390,7 +385,7 @@ function renderStackedChart(chartView, data) {
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
-    // y-axis line
+    // y-axis
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -419,7 +414,7 @@ function renderStackedChart(chartView, data) {
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
 
-        // bottom => green
+        // green bottom
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
@@ -429,7 +424,7 @@ function renderStackedChart(chartView, data) {
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
 
-        // top => orange
+        // orange top
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
@@ -439,7 +434,7 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
 
-        // label now_price => numeric only
+        // label now_price => numeric
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -449,7 +444,7 @@ function renderStackedChart(chartView, data) {
         txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
 
-        // label was_price => numeric only
+        // label was_price => numeric
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -459,12 +454,11 @@ function renderStackedChart(chartView, data) {
         txtWas.textContent = d.was_price.toFixed(2);
         svg.appendChild(txtWas);
 
-        // We'll also connect top of green portion
         var midBarX = barX + barWidth/2;
         var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
 
-        // x-axis date
+        // date label
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
@@ -475,6 +469,7 @@ function renderStackedChart(chartView, data) {
         svg.appendChild(txtDate);
     });
 
+    // line connecting top of green portion
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
         for (var i=1; i<linePoints.length; i++) {
@@ -488,7 +483,7 @@ function renderStackedChart(chartView, data) {
         svg.appendChild(linePath);
     }
 
-    // Y-axis => "$ " prefix
+    // Y-axis => "$ "
     var labelVals = [0, maxWas/2, maxWas];
     labelVals.forEach(function(val) {
         var y = (height - bottomPad) - (val / maxWas)*chartH;
@@ -515,30 +510,23 @@ function renderStackedChart(chartView, data) {
 
 /**
  * Renders a two-line chart for 1-year data:
- * - Skip rows with was_price==0 or now_price==0 (done prior to calling).
- * - Plot black dots for each data point (was_price line and now_price line).
- * - Connect them with lines of different colors.
- * - Label only highest,lowest,last points in each line.
- * - Label each date on the x-axis.
- * - Add ~5% overhead so top label won't be cut off.
+ * skip zero data, label only highest,lowest,last points,
+ * label each date on x-axis,
+ * add overhead so top isn't cut off.
  */
 function renderLineChart(chartView, data) {
     chartView.innerHTML = '';
-    // If data is empty => show message
     if (!data || data.length === 0) {
-        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No 1 Yr data available</p>';
+        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No 1 Yr data</p>';
         return;
     }
-
-    // We'll skip zero data rows outside => already done in toggleMonYr
-    // We'll find maxVal among was_price, now_price
+    // find max among was_price, now_price
     var maxVal = 0;
     data.forEach(d => {
         if (d.was_price > maxVal) maxVal = d.was_price;
         if (d.now_price > maxVal) maxVal = d.now_price;
     });
-    // Add overhead
-    maxVal = maxVal * 1.05;
+    maxVal *= 1.05; // overhead
 
     var width = chartView.clientWidth;
     var height = chartView.clientHeight;
@@ -553,7 +541,7 @@ function renderLineChart(chartView, data) {
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
-    // y-axis line
+    // y-axis
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -562,22 +550,18 @@ function renderLineChart(chartView, data) {
     axisLine.setAttribute('stroke', '#000');
     svg.appendChild(axisLine);
 
-    // We'll separate wasArr, nowArr
     var wasArr = data.map(d => d.was_price);
     var nowArr = data.map(d => d.now_price);
 
-    // We'll define x-axis labeling for each data point
     function getX(i) {
         let n = data.length;
-        if (n < 2) return leftPad; // fallback
+        if (n < 2) return leftPad;
         let spacing = chartW / (n-1);
         return leftPad + i*spacing;
     }
     function scaleY(val) {
         return (height - bottomPad) - (val / maxVal)*chartH;
     }
-
-    // We'll define a function to find min, max, last indices
     function getKeyIndices(arr) {
         if (!arr.length) return [];
         let minVal = arr[0], maxVal = arr[0];
@@ -590,11 +574,9 @@ function renderLineChart(chartView, data) {
         let setOfIdx = new Set([minIdx, maxIdx, lastIdx]);
         return Array.from(setOfIdx);
     }
-
     let wasKeyIdx = getKeyIndices(wasArr);
     let nowKeyIdx = getKeyIndices(nowArr);
 
-    // We'll draw lines for wasArr (blue) and nowArr (green)
     function drawLine(arr, color) {
         if (arr.length < 2) return;
         let pathD = "";
@@ -614,7 +596,6 @@ function renderLineChart(chartView, data) {
         path.setAttribute('stroke-width', '2');
         svg.appendChild(path);
     }
-
     function drawDots(arr) {
         for (let i=0; i<arr.length; i++) {
             let x = getX(i);
@@ -627,7 +608,6 @@ function renderLineChart(chartView, data) {
             svg.appendChild(circ);
         }
     }
-
     function labelKeyPoints(arr, color, keyIndices) {
         keyIndices.forEach(idx => {
             let x = getX(idx);
@@ -644,18 +624,17 @@ function renderLineChart(chartView, data) {
         });
     }
 
-    // was_price => blue
+    // was line => blue
     drawLine(wasArr, "#0077cc");
     drawDots(wasArr);
     labelKeyPoints(wasArr, "#0077cc", wasKeyIdx);
 
-    // now_price => green
+    // now line => green
     drawLine(nowArr, "#009900");
     drawDots(nowArr);
     labelKeyPoints(nowArr, "#009900", nowKeyIdx);
 
-    // X-axis date labels => label each data point's date
-    // We'll draw a horizontal axis line too
+    // x-axis line
     let xAxisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     xAxisLine.setAttribute('x1', leftPad);
     xAxisLine.setAttribute('y1', height - bottomPad);
@@ -664,6 +643,7 @@ function renderLineChart(chartView, data) {
     xAxisLine.setAttribute('stroke', '#000');
     svg.appendChild(xAxisLine);
 
+    // label each date along x-axis
     for (let i=0; i<data.length; i++) {
         let x = getX(i);
         let y = height - 5;
@@ -677,7 +657,7 @@ function renderLineChart(chartView, data) {
         svg.appendChild(txtDate);
     }
 
-    // Y-axis ticks => "$ " prefix
+    // y-axis ticks => "$ "
     let labelVals = [0, maxVal/2, maxVal];
     labelVals.forEach(function(val) {
         let y = (height - bottomPad) - (val / maxVal)*chartH;
@@ -712,7 +692,7 @@ function renderLineChart(chartView, data) {
     </button>
     <div class="page-title">ss_veg</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 14:19:20</div>
+  <div class="creation-time">Created on: 2025-02-28 14:36:47</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -730,15 +710,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20143381001/b3/en/front/20143381001_front_a06_@2.png' alt='Roma Tomatoes' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20143381001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20143381001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20143381001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -771,15 +751,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20811994001/b3/en/front/20811994001_front_a06_@2.png' alt='Yellow Onions, 3 lb Bag' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20811994001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811994001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20811994001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -812,15 +792,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21626132/b3/en/front/21626132_front_a06_@2.png' alt='Brusselslaw' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21626132_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21626132_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21626132_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -853,15 +833,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20186654/b3/en/front/20186654_front_a06_@2.png' alt='Vegetable Medley' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20186654_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20186654_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20186654_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -894,15 +874,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21022511001/b3/en/front/21022511001_front_a06_@2.png' alt='Canary Melon' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21022511001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21022511001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21022511001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -935,15 +915,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21023094001/b3/en/front/21023094001_front_a06_@2.png' alt='Santa Claus Melons' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21023094001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21023094001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21023094001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -976,15 +956,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20070132001/b3/en/front/20070132001_front_a06_@2.png' alt='English Cucumber' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20070132001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20070132001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20070132001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1017,15 +997,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20020863001/b3/en/front/20020863001_front_a06_@2.png' alt='Taiwanese Flat Cabbage' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20020863001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20020863001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20020863001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1058,15 +1038,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20162500001/b3/en/front/20162500001_front_a06_@2.png' alt='Guava' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20162500001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20162500001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20162500001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1099,15 +1079,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20119813001/b3/en/angle/20119813001_angle_a06_@2.png' alt='Pineapple' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20119813001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119813001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20119813001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1140,15 +1120,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20005774001/b3/en/front/20005774001_front_a06_@2.png' alt='Coconuts' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20005774001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20005774001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20005774001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1181,15 +1161,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20119760001/b3/en/front/20119760001_front_a06_@2.png' alt='Caribbean Avocado' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20119760001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119760001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20119760001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1222,15 +1202,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20167017001/b3/en/front/20167017001_front_a06_@2.png' alt='Cantaloupe' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20167017001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20167017001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20167017001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1263,15 +1243,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20039812/b3/en/front/20039812_front_a06_@2.png' alt='Broccoli Florets' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20039812_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20039812_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20039812_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1304,15 +1284,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21121560001/b3/en/front/21121560001_front_a06_@2.png' alt='Broccoli Crown' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21121560001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21121560001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21121560001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1345,15 +1325,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20159689001/b3/en/front/20159689001_front_a06_@2.png' alt='Fenugreek Bunch' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20159689001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20159689001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20159689001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1386,15 +1366,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20795315001/b3/en/front/20795315001_front_a06_@2.png' alt='Lemons, 2 lb Bag' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20795315001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20795315001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20795315001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1427,15 +1407,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20811362001/b3/en/front/20811362001_front_a06_@2.png' alt='Red Onions, 3 lb Bag' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20811362001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811362001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20811362001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1468,15 +1448,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20696626001/b3/en/front/20696626001_front_a06_@2.png' alt='Granadilla' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20696626001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20696626001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20696626001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1509,15 +1489,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20600927001/b3/en/front/20600927001_front_a06_@2.png' alt='Carrots, 3 lb Bag' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20600927001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20600927001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20600927001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1550,15 +1530,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20104062/b3/en/front/20104062_front_a06_@2.png' alt='Popeye Select Spinach' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20104062_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20104062_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20104062_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1591,15 +1571,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20130242001/b3/en/front/20130242001_front_a06_@2.png' alt='Kiwis' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20130242001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20130242001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20130242001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1632,15 +1612,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20047112001/b3/en/beauty/20047112001_beauty_a06_@2.png' alt='Quince' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20047112001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20047112001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20047112001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1673,15 +1653,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20959290/b3/en/front/20959290_front_a06_@2.png' alt='Organic Broccoli Florets' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20959290_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20959290_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20959290_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1714,15 +1694,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20920821001/b3/en/front/20920821001_front_a06_@2.png' alt='Mini Sweet Peppers' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20920821001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20920821001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20920821001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1755,15 +1735,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20145379001/b3/en/front/20145379001_front_a06_@2.png' alt='Mini Seedless Watermelon' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20145379001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20145379001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20145379001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1796,15 +1776,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21406192/b3/en/front/21406192_front_a06_@2.png' alt='Mango Turmeric' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21406192_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21406192_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21406192_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1837,15 +1817,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362564/b3/en/front/21362564_front_a06_@2.png' alt='Blueberry Organic Kombucha' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21362564_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362564_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362564_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1878,15 +1858,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362519/b3/en/front/21362519_front_a06_@2.png' alt='Organic Pink Grapefruit Smoothie' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21362519_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362519_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362519_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1919,15 +1899,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362499/b3/en/front/21362499_front_a06_@2.png' alt='Organic Raspberry Lemon Kombucha' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21362499_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362499_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362499_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -1960,15 +1940,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362495/b3/en/front/21362495_front_a06_@2.png' alt='Organic Lime Strawberry Kombucha' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21362495_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362495_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362495_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2001,15 +1981,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20033488001/b3/en/front/20033488001_front_a06_@2.png' alt='Mini Bananas, Bunch' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20033488001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20033488001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20033488001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2042,15 +2022,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20868985001/b3/en/front/20868985001_front_a06_@2.png' alt='Imperfect Apples, 6 lb bag' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20868985001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20868985001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20868985001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2083,15 +2063,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20045276001/b3/en/front/20045276001_front_a06_@2.png' alt='Honeydew Melon' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20045276001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20045276001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20045276001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2124,15 +2104,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20168395001/b3/en/angle/20168395001_angle_a06_@2.png' alt='Dragon Fruit' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20168395001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20168395001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20168395001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2165,15 +2145,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21549854001/b3/en/front/21549854001_front_a06_@2.png' alt='Jackfruit Slice' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21549854001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21549854001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21549854001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2206,15 +2186,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20121509001/b3/en/front/20121509001_front_a06_@2.png' alt='Ataulfo Mango' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20121509001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20121509001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20121509001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2247,15 +2227,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20157487001/b3/en/front/20157487001_front_a06_@2.png' alt='Fresh Coconut Young' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20157487001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20157487001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20157487001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2288,15 +2268,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20067389001/b3/en/front/20067389001_front_a06_@2.png' alt='Romaine Heart, 3 Pack' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20067389001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20067389001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20067389001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2329,15 +2309,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20649591001/b3/en/front/20649591001_front_a06_@2.png' alt='Manzano Bananas, Bunch' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20649591001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20649591001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20649591001_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
@@ -2370,15 +2350,15 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20051015001/b3/en/front/20051015001_front_a06_@2.png' alt='Blackberries Half Pint' />
     </div>
-    <!-- "Detail" button => green by default (class 'selected') -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default (with fade in effect) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled, label => "1 Y" -->
+    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20051015001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20051015001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20051015001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 Yr</span>
       </label>
     </div>
   </div>
