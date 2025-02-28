@@ -6,110 +6,22 @@
 <meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate'>
 <meta http-equiv='Pragma' content='no-cache'>
 <meta http-equiv='Expires' content='0'>
-<title>Top 20 Most Discounted Items - Veg.&Fruit</title>
+<title>Top Discounted Items - Veg.&Fruit</title>
 <link rel='preconnect' href='https://fonts.googleapis.com'>
 <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
 <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
-<script>
-window.addEventListener('pageshow', function(event) {
-    if (event.persisted) { window.location.reload(); }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    var firstElems = document.getElementsByClassName('first-word');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].dataset.original = firstElems[i].innerHTML;
-    }
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].dataset.original = secondElems[i].innerHTML;
-    }
-});
-
-function showSearchBar() {
-    // Hide the header
-    var header = document.querySelector('.header-container');
-    header.style.display = 'none';
-
-    // Display the search bar by setting display and forcing opacity to 1
-    var searchBar = document.getElementById('searchBarContainer');
-    searchBar.style.display = 'flex';
-    setTimeout(function() {
-        searchBar.style.opacity = "1";
-    }, 10);
-    document.getElementById('searchInput').focus();
-}
-
-function hideSearchBar() {
-    // Clear the search input
-    var searchInput = document.getElementById('searchInput');
-    searchInput.value = '';
-
-    // Restore original text in the items
-    var firstElems = document.getElementsByClassName('first-word');
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].innerHTML = firstElems[i].dataset.original;
-    }
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].innerHTML = secondElems[i].dataset.original;
-    }
-
-    // Restore display of all items (in case any were hidden by the search)
-    var items = document.getElementsByClassName('item-container');
-    for (var i = 0; i < items.length; i++) {
-        items[i].style.display = "";
-    }
-
-    // Clear the search count text
-    document.getElementById('searchCount').innerText = "";
-
-    // Fade out the search bar and restore the header
-    var searchBar = document.getElementById('searchBarContainer');
-    var header = document.querySelector('.header-container');
-    searchBar.style.opacity = "0";
-    setTimeout(function() {
-         searchBar.style.display = 'none';
-         header.style.display = 'flex';
-    }, 500);
-}
-
-function inPageSearch() {
-    var input = document.getElementById('searchInput').value.trim();
-    var term = input.toLowerCase();
-    var items = document.getElementsByClassName('item-container');
-    var visibleCount = 0;
-    for (var i = 0; i < items.length; i++) {
-        var firstElem = items[i].querySelector('.first-word');
-        var secondElem = items[i].querySelector('.product-name-text');
-        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-        if (term === '' || fullName.indexOf(term) > -1) {
-            items[i].style.display = '';
-            visibleCount++;
-            if (term !== '') {
-                firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-                secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-            } else {
-                firstElem.innerHTML = firstElem.dataset.original;
-                secondElem.innerHTML = secondElem.dataset.original;
-            }
-        } else {
-            items[i].style.display = 'none';
-        }
-    }
-    // Update the counter text next to the search input
-    document.getElementById('searchCount').innerText = visibleCount + " found";
-}
-</script>
 <style>
-/* Always reserve space for the scrollbar to avoid layout shifts */
+/* Existing styles */
 html {
     overflow-y: scroll;
 }
-
 @keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes growUp {
+    from { height: 0; }
+    to { height: var(--target-height); }
 }
 .header-container {
     position: fixed;
@@ -155,7 +67,7 @@ html {
     align-items: center;
     gap: 5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    animation: fadeIn 0.8s forwards ease-in;
+    animation: fadeIn 0.8s forwards;
 }
 .search-button:hover {
     background-color: #2c5f3d;
@@ -238,6 +150,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 15px;
+    position: relative;
 }
 .item-image {
     display: flex;
@@ -263,7 +176,7 @@ body {
     border: none;
     cursor: pointer;
     outline: none;
-    animation: fadeIn 0.8s forwards ease-in;
+    animation: fadeIn 0.8s forwards;
 }
 .view-button:hover {
     background-color: #2c5f3d;
@@ -296,7 +209,233 @@ body {
 .was-price {
     text-decoration: line-through;
 }
+.toggle-chart {
+    margin-top: 10px;
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+}
+.price-history-chart {
+    width: 100%;
+    height: 200px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    position: relative;
+    display: none;
+}
+.chart-bar {
+    position: absolute;
+    bottom: 20px;
+    width: 20px;
+    background-color: #ccc;
+    margin-right: 5px;
+    animation: growUp 0.5s forwards;
+}
+.chart-bar.was {
+    background-color: #ff9999;
+}
+.chart-bar.now {
+    background-color: #99ccff;
+    opacity: 0.7;
+}
+.x-axis, .y-axis {
+    position: absolute;
+    font-size: 10px;
+    color: #666;
+}
+.x-axis {
+    bottom: 0;
+    left: 40px;
+    right: 10px;
+}
+.y-axis {
+    left: 0;
+    bottom: 20px;
+    top: 10px;
+}
 </style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Global price history data from server
+    window.priceHistoryData = {"20143381001_KG": [{"date": "2025-02-19", "was_price": 0.79, "now_price": 0.53}, {"date": "2025-02-26", "was_price": 0.79, "now_price": 0.66}, {"date": "2025-03-05", "was_price": 0.79, "now_price": 0.47}], "20811994001_EA": [{"date": "2025-02-05", "was_price": 3.99, "now_price": 3.5}, {"date": "2025-02-26", "was_price": 3.99, "now_price": 3.5}, {"date": "2025-03-05", "was_price": 3.99, "now_price": 2.5}], "21626132_EA": [{"date": "2025-02-05", "was_price": 6.0, "now_price": 3.99}, {"date": "2025-02-12", "was_price": 6.0, "now_price": 3.99}, {"date": "2025-02-19", "was_price": 6.0, "now_price": 3.99}, {"date": "2025-02-26", "was_price": 6.0, "now_price": 3.99}, {"date": "2025-03-05", "was_price": 6.0, "now_price": 3.99}], "20186654_EA": [{"date": "2025-02-05", "was_price": 6.0, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 6.0, "now_price": 4.0}], "21022511001_KG": [{"date": "2025-02-26", "was_price": 5.87, "now_price": 3.82}, {"date": "2025-03-05", "was_price": 5.87, "now_price": 4.1}], "21023094001_KG": [{"date": "2025-02-26", "was_price": 10.44, "now_price": 7.87}, {"date": "2025-03-05", "was_price": 10.44, "now_price": 7.34}], "20070132001_EA": [{"date": "2025-02-05", "was_price": 2.49, "now_price": 2.0}, {"date": "2025-03-05", "was_price": 2.49, "now_price": 1.79}], "20020863001_KG": [{"date": "2025-02-05", "was_price": 4.96, "now_price": 3.19}, {"date": "2025-02-12", "was_price": 4.96, "now_price": 3.68}, {"date": "2025-02-26", "was_price": 4.96, "now_price": 2.49}, {"date": "2025-03-05", "was_price": 4.96, "now_price": 3.68}], "20162500001_KG": [{"date": "2025-02-05", "was_price": 8.81, "now_price": 7.72}, {"date": "2025-02-26", "was_price": 8.81, "now_price": 5.51}, {"date": "2025-03-05", "was_price": 8.81, "now_price": 6.62}], "20119813001_EA": [{"date": "2025-02-05", "was_price": 6.49, "now_price": 4.0}, {"date": "2025-02-26", "was_price": 6.49, "now_price": 5.0}, {"date": "2025-03-05", "was_price": 6.49, "now_price": 5.0}], "20005774001_EA": [{"date": "2025-02-26", "was_price": 2.5, "now_price": 1.99}, {"date": "2025-03-05", "was_price": 2.5, "now_price": 1.99}], "20119760001_EA": [{"date": "2025-02-26", "was_price": 4.99, "now_price": 3.5}, {"date": "2025-03-05", "was_price": 4.99, "now_price": 3.99}], "20167017001_EA": [{"date": "2025-02-12", "was_price": 4.99, "now_price": 4.5}, {"date": "2025-02-19", "was_price": 4.99, "now_price": 4.5}, {"date": "2025-02-26", "was_price": 4.99, "now_price": 4.5}, {"date": "2025-03-05", "was_price": 4.99, "now_price": 4.0}], "20039812_EA": [{"date": "2025-02-05", "was_price": 4.99, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 4.99, "now_price": 4.0}], "20159689001_EA": [{"date": "2025-02-26", "was_price": 3.0, "now_price": 2.49}, {"date": "2025-03-05", "was_price": 3.0, "now_price": 2.49}], "20795315001_EA": [{"date": "2025-02-12", "was_price": 5.99, "now_price": 5.0}, {"date": "2025-03-05", "was_price": 5.99, "now_price": 4.99}], "20811362001_EA": [{"date": "2025-02-19", "was_price": 6.0, "now_price": 5.0}, {"date": "2025-02-26", "was_price": 6.0, "now_price": 5.0}, {"date": "2025-03-05", "was_price": 6.0, "now_price": 5.0}], "20696626001_EA": [{"date": "2025-02-26", "was_price": null, "now_price": 3.0}, {"date": "2025-03-05", "was_price": 3.0, "now_price": 2.5}], "20600927001_EA": [{"date": "2025-03-05", "was_price": 3.0, "now_price": 2.5}], "20104062_EA": [{"date": "2025-02-12", "was_price": 12.0, "now_price": 10.0}, {"date": "2025-03-05", "was_price": 12.0, "now_price": 10.0}], "20130242001_EA": [{"date": "2025-02-05", "was_price": null, "now_price": 1.19}, {"date": "2025-02-26", "was_price": 1.19, "now_price": 1.0}, {"date": "2025-03-05", "was_price": 1.19, "now_price": 1.0}], "20047112001_EA": [{"date": "2025-02-26", "was_price": null, "now_price": 3.0}, {"date": "2025-03-05", "was_price": 3.49, "now_price": 2.99}], "20959290_EA": [{"date": "2025-02-05", "was_price": 7.0, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.0, "now_price": 6.0}], "20920821001_EA": [{"date": "2025-02-05", "was_price": 6.99, "now_price": 6.0}, {"date": "2025-02-26", "was_price": 6.99, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 6.99, "now_price": 6.0}], "20145379001_EA": [{"date": "2025-02-05", "was_price": null, "now_price": 7.0}, {"date": "2025-03-05", "was_price": 6.99, "now_price": 6.0}], "21406192_EA": [{"date": "2025-03-05", "was_price": 3.49, "now_price": 3.0}], "21362564_EA": [{"date": "2025-02-19", "was_price": null, "now_price": 3.5}, {"date": "2025-03-05", "was_price": 3.49, "now_price": 3.0}], "21362519_EA": [{"date": "2025-02-19", "was_price": null, "now_price": 3.5}, {"date": "2025-03-05", "was_price": 3.49, "now_price": 3.0}], "21362499_EA": [{"date": "2025-02-19", "was_price": null, "now_price": 3.5}, {"date": "2025-03-05", "was_price": 3.49, "now_price": 3.0}], "21362495_EA": [{"date": "2025-02-19", "was_price": null, "now_price": 3.5}, {"date": "2025-03-05", "was_price": 3.49, "now_price": 3.0}], "20033488001_KG": [{"date": "2025-02-26", "was_price": 2.17, "now_price": 1.89}, {"date": "2025-03-05", "was_price": 2.17, "now_price": 1.89}], "20868985001_EA": [{"date": "2025-02-05", "was_price": 8.0, "now_price": 7.0}, {"date": "2025-02-12", "was_price": 8.0, "now_price": 7.0}, {"date": "2025-02-19", "was_price": 8.0, "now_price": 7.0}, {"date": "2025-02-26", "was_price": 8.0, "now_price": 7.0}, {"date": "2025-03-05", "was_price": 8.0, "now_price": 7.0}], "20045276001_EA": [{"date": "2025-02-26", "was_price": 7.99, "now_price": 7.0}, {"date": "2025-03-05", "was_price": 7.99, "now_price": 7.0}], "20168395001_EA": [{"date": "2025-02-26", "was_price": 3.99, "now_price": 3.5}, {"date": "2025-03-05", "was_price": 3.99, "now_price": 3.5}], "21549854001_KG": [{"date": "2025-02-26", "was_price": 1.98, "now_price": 1.74}, {"date": "2025-03-05", "was_price": 1.98, "now_price": 1.74}], "20121509001_EA": [{"date": "2025-02-26", "was_price": 1.99, "now_price": 1.75}, {"date": "2025-03-05", "was_price": 1.99, "now_price": 1.75}], "20157487001_EA": [{"date": "2025-02-26", "was_price": null, "now_price": 4.49}, {"date": "2025-03-05", "was_price": 4.99, "now_price": 4.49}], "20067389001_EA": [{"date": "2025-02-19", "was_price": 5.0, "now_price": 4.49}, {"date": "2025-02-22", "was_price": 5.0, "now_price": 4.49}, {"date": "2025-02-28", "was_price": 5.0, "now_price": 4.5}], "20649591001_KG": [{"date": "2025-02-26", "was_price": 4.21, "now_price": 3.79}, {"date": "2025-03-05", "was_price": 4.21, "now_price": 3.79}], "20051015001_EA": [{"date": "2025-03-05", "was_price": 4.99, "now_price": 4.5}]};
+});
+
+function toggleChart(btn) {
+    var container = btn.closest('.item-container');
+    var details = container.querySelector('.item-details');
+    var chart = container.querySelector('.price-history-chart');
+    if (chart.style.display === 'none' || chart.style.display === '') {
+        // Show chart, hide details
+        details.style.display = 'none';
+        chart.style.display = 'block';
+        btn.textContent = 'Show Details';
+        // Render the chart if not rendered
+        var productId = container.getAttribute('data-product-id');
+        var data = window.priceHistoryData[productId];
+        renderChart(productId, data);
+    } else {
+        // Hide chart, show details
+        chart.style.display = 'none';
+        details.style.display = 'block';
+        btn.textContent = 'Show History';
+    }
+}
+
+function renderChart(productId, data) {
+    var chartContainer = document.getElementById('chart-' + productId);
+    // Clear previous content
+    chartContainer.innerHTML = '';
+    if (!data || data.length === 0) {
+        chartContainer.innerHTML = '<p style="text-align:center;">No history available</p>';
+        return;
+    }
+    // Determine max price for scaling
+    var maxPrice = 0;
+    data.forEach(function(item) {
+        maxPrice = Math.max(maxPrice, item.was_price, item.now_price);
+    });
+    // Create x-axis labels container
+    var xAxis = document.createElement('div');
+    xAxis.className = 'x-axis';
+    chartContainer.appendChild(xAxis);
+    // Create y-axis labels container
+    var yAxis = document.createElement('div');
+    yAxis.className = 'y-axis';
+    chartContainer.appendChild(yAxis);
+
+    // For each data point, create a bar group
+    data.forEach(function(item, index) {
+        // Create container for the bar pair
+        var barGroup = document.createElement('div');
+        barGroup.style.position = 'absolute';
+        // Calculate left position based on index and total width
+        var totalBars = data.length;
+        var chartWidth = chartContainer.clientWidth - 50; // accounting for y-axis space
+        var spacing = chartWidth / totalBars;
+        barGroup.style.left = (40 + index * spacing) + 'px';
+        barGroup.style.bottom = '20px';
+
+        // Create was_price bar
+        var wasBar = document.createElement('div');
+        wasBar.className = 'chart-bar was';
+        var wasHeight = (item.was_price / maxPrice) * 150;
+        wasBar.style.height = wasHeight + 'px';
+        wasBar.style.width = '8px';
+        wasBar.style.display = 'inline-block';
+        wasBar.style.marginRight = '2px';
+        // Create now_price bar
+        var nowBar = document.createElement('div');
+        nowBar.className = 'chart-bar now';
+        var nowHeight = (item.now_price / maxPrice) * 150;
+        nowBar.style.height = nowHeight + 'px';
+        nowBar.style.width = '8px';
+        nowBar.style.display = 'inline-block';
+
+        barGroup.appendChild(wasBar);
+        barGroup.appendChild(nowBar);
+        chartContainer.appendChild(barGroup);
+
+        // Add x-axis label
+        var label = document.createElement('div');
+        label.style.position = 'absolute';
+        label.style.bottom = '-15px';
+        label.style.left = (index * spacing) + 'px';
+        label.style.width = spacing + 'px';
+        label.style.textAlign = 'center';
+        label.textContent = item.date;
+        xAxis.appendChild(label);
+    });
+
+    // Add y-axis labels (e.g., 0, maxPrice/2, maxPrice)
+    var yLabels = [0, maxPrice/2, maxPrice];
+    yLabels.forEach(function(val, idx) {
+        var label = document.createElement('div');
+        label.style.position = 'absolute';
+        label.style.left = '0';
+        label.style.bottom = ((val / maxPrice) * 150) + 20 + 'px';
+        label.textContent = val.toFixed(2);
+        yAxis.appendChild(label);
+    });
+}
+</script>
+<script>
+window.addEventListener('pageshow', function(event) {
+    if (event.persisted) { window.location.reload(); }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var firstElems = document.getElementsByClassName('first-word');
+    for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].dataset.original = firstElems[i].innerHTML;
+    }
+    var secondElems = document.getElementsByClassName('product-name-text');
+    for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].dataset.original = secondElems[i].innerHTML;
+    }
+});
+
+function showSearchBar() {
+    var header = document.querySelector('.header-container');
+    header.style.display = 'none';
+    var searchBar = document.getElementById('searchBarContainer');
+    searchBar.style.display = 'flex';
+    setTimeout(function() {
+        searchBar.style.opacity = "1";
+    }, 10);
+    document.getElementById('searchInput').focus();
+}
+
+function hideSearchBar() {
+    var searchInput = document.getElementById('searchInput');
+    searchInput.value = '';
+    var firstElems = document.getElementsByClassName('first-word');
+    var secondElems = document.getElementsByClassName('product-name-text');
+    for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].innerHTML = firstElems[i].dataset.original;
+    }
+    for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].innerHTML = secondElems[i].dataset.original;
+    }
+    var items = document.getElementsByClassName('item-container');
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = "";
+    }
+    document.getElementById('searchCount').innerText = "";
+    var searchBar = document.getElementById('searchBarContainer');
+    var header = document.querySelector('.header-container');
+    searchBar.style.opacity = "0";
+    setTimeout(function() {
+         searchBar.style.display = 'none';
+         header.style.display = 'flex';
+    }, 500);
+}
+
+function inPageSearch() {
+    var input = document.getElementById('searchInput').value.trim();
+    var term = input.toLowerCase();
+    var items = document.getElementsByClassName('item-container');
+    var visibleCount = 0;
+    for (var i = 0; i < items.length; i++) {
+        var firstElem = items[i].querySelector('.first-word');
+        var secondElem = items[i].querySelector('.product-name-text');
+        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+        if (term === '' || fullName.indexOf(term) > -1) {
+            items[i].style.display = '';
+            visibleCount++;
+            if (term !== '') {
+                firstElem.innerHTML = firstElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                secondElem.innerHTML = secondElem.dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            } else {
+                firstElem.innerHTML = firstElem.dataset.original;
+                secondElem.innerHTML = secondElem.dataset.original;
+            }
+        } else {
+            items[i].style.display = 'none';
+        }
+    }
+    document.getElementById('searchCount').innerText = visibleCount + " found";
+}
+</script>
 </head>
 <body>
 <div class='header-container'>
@@ -307,7 +446,7 @@ body {
     </button>
     <div class='page-title'>Veg.&Fruit</div>
   </div>
-  <div class='creation-time'>Created on: 2025-02-28 00:18:12</div>
+  <div class='creation-time'>Created on: 2025-02-28 00:34:07</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
@@ -317,10 +456,11 @@ body {
   <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
 </div>
 
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20143381001_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20143381001/b3/en/front/20143381001_front_a06_@2.png' alt='Roma Tomatoes' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/roma-tomatoes/p/20143381001_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -333,12 +473,14 @@ body {
             <div class='now-price'>NOW: $0.47</div>
             <div class='discount-badge'>40.5% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20143381001_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20811994001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20811994001/b3/en/front/20811994001_front_a06_@2.png' alt='Yellow Onions, 3 lb Bag' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/yellow-onions-3-lb-bag/p/20811994001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -351,12 +493,14 @@ body {
             <div class='now-price'>NOW: $2.50</div>
             <div class='discount-badge'>37.3% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20811994001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21626132_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21626132/b3/en/front/21626132_front_a06_@2.png' alt='Brusselslaw' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/brusselslaw/p/21626132_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -369,12 +513,14 @@ body {
             <div class='now-price'>NOW: $3.99</div>
             <div class='discount-badge'>33.5% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21626132_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20186654_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20186654/b3/en/front/20186654_front_a06_@2.png' alt='Vegetable Medley' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/vegetable-medley/p/20186654_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -387,12 +533,14 @@ body {
             <div class='now-price'>NOW: $4.00</div>
             <div class='discount-badge'>33.3% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20186654_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21022511001_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21022511001/b3/en/front/21022511001_front_a06_@2.png' alt='Canary Melon' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/canary-melon/p/21022511001_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -405,12 +553,14 @@ body {
             <div class='now-price'>NOW: $4.10</div>
             <div class='discount-badge'>30.2% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21022511001_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21023094001_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21023094001/b3/en/front/21023094001_front_a06_@2.png' alt='Santa Claus Melons' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/santa-claus-melons/p/21023094001_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -423,12 +573,14 @@ body {
             <div class='now-price'>NOW: $7.34</div>
             <div class='discount-badge'>29.7% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21023094001_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20070132001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20070132001/b3/en/front/20070132001_front_a06_@2.png' alt='English Cucumber' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/english-cucumber/p/20070132001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -441,12 +593,14 @@ body {
             <div class='now-price'>NOW: $1.79</div>
             <div class='discount-badge'>28.1% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20070132001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20020863001_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20020863001/b3/en/front/20020863001_front_a06_@2.png' alt='Taiwanese Flat Cabbage' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/taiwanese-flat-cabbage/p/20020863001_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -459,12 +613,14 @@ body {
             <div class='now-price'>NOW: $3.68</div>
             <div class='discount-badge'>25.8% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20020863001_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20162500001_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20162500001/b3/en/front/20162500001_front_a06_@2.png' alt='Guava' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/guava/p/20162500001_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -477,12 +633,14 @@ body {
             <div class='now-price'>NOW: $6.62</div>
             <div class='discount-badge'>24.9% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20162500001_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20119813001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20119813001/b3/en/angle/20119813001_angle_a06_@2.png' alt='Pineapple' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pineapple/p/20119813001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -495,12 +653,14 @@ body {
             <div class='now-price'>NOW: $5.00</div>
             <div class='discount-badge'>23.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20119813001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20005774001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20005774001/b3/en/front/20005774001_front_a06_@2.png' alt='Coconuts' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/coconuts/p/20005774001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -513,12 +673,14 @@ body {
             <div class='now-price'>NOW: $1.99</div>
             <div class='discount-badge'>20.4% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20005774001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20119760001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20119760001/b3/en/front/20119760001_front_a06_@2.png' alt='Caribbean Avocado' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/caribbean-avocado/p/20119760001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -531,12 +693,14 @@ body {
             <div class='now-price'>NOW: $3.99</div>
             <div class='discount-badge'>20.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20119760001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20167017001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20167017001/b3/en/front/20167017001_front_a06_@2.png' alt='Cantaloupe' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/cantaloupe/p/20167017001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -549,12 +713,14 @@ body {
             <div class='now-price'>NOW: $4.00</div>
             <div class='discount-badge'>19.8% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20167017001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20039812_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20039812/b3/en/front/20039812_front_a06_@2.png' alt='Broccoli Florets' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/broccoli-florets/p/20039812_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -567,12 +733,14 @@ body {
             <div class='now-price'>NOW: $4.00</div>
             <div class='discount-badge'>19.8% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20039812_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20159689001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20159689001/b3/en/front/20159689001_front_a06_@2.png' alt='Fenugreek Bunch' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fenugreek-bunch/p/20159689001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -585,12 +753,14 @@ body {
             <div class='now-price'>NOW: $2.49</div>
             <div class='discount-badge'>17.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20159689001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20795315001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20795315001/b3/en/front/20795315001_front_a06_@2.png' alt='Lemons, 2 lb Bag' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/lemons-2-lb-bag/p/20795315001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -603,12 +773,14 @@ body {
             <div class='now-price'>NOW: $4.99</div>
             <div class='discount-badge'>16.7% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20795315001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20811362001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20811362001/b3/en/front/20811362001_front_a06_@2.png' alt='Red Onions, 3 lb Bag' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/red-onions-3-lb-bag/p/20811362001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -621,12 +793,14 @@ body {
             <div class='now-price'>NOW: $5.00</div>
             <div class='discount-badge'>16.7% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20811362001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20696626001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20696626001/b3/en/front/20696626001_front_a06_@2.png' alt='Granadilla' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/granadilla/p/20696626001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -639,12 +813,14 @@ body {
             <div class='now-price'>NOW: $2.50</div>
             <div class='discount-badge'>16.7% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20696626001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20600927001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20600927001/b3/en/front/20600927001_front_a06_@2.png' alt='Carrots, 3 lb Bag' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/carrots-3-lb-bag/p/20600927001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -657,12 +833,14 @@ body {
             <div class='now-price'>NOW: $2.50</div>
             <div class='discount-badge'>16.7% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20600927001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20104062_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20104062/b3/en/front/20104062_front_a06_@2.png' alt='Popeye Select Spinach' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/popeye-select-spinach/p/20104062_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -675,12 +853,14 @@ body {
             <div class='now-price'>NOW: $10.00</div>
             <div class='discount-badge'>16.7% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20104062_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20130242001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20130242001/b3/en/front/20130242001_front_a06_@2.png' alt='Kiwis' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/kiwis/p/20130242001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -693,12 +873,14 @@ body {
             <div class='now-price'>NOW: $1.00</div>
             <div class='discount-badge'>16.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20130242001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20047112001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20047112001/b3/en/beauty/20047112001_beauty_a06_@2.png' alt='Quince' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/quince/p/20047112001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -711,12 +893,14 @@ body {
             <div class='now-price'>NOW: $2.99</div>
             <div class='discount-badge'>14.3% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20047112001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20959290_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20959290/b3/en/front/20959290_front_a06_@2.png' alt='Organic Broccoli Florets' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-broccoli-florets/p/20959290_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -729,12 +913,14 @@ body {
             <div class='now-price'>NOW: $6.00</div>
             <div class='discount-badge'>14.3% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20959290_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20920821001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20920821001/b3/en/front/20920821001_front_a06_@2.png' alt='Mini Sweet Peppers' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mini-sweet-peppers/p/20920821001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -747,12 +933,14 @@ body {
             <div class='now-price'>NOW: $6.00</div>
             <div class='discount-badge'>14.2% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20920821001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20145379001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20145379001/b3/en/front/20145379001_front_a06_@2.png' alt='Mini Seedless Watermelon' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mini-seedless-watermelon/p/20145379001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -765,12 +953,14 @@ body {
             <div class='now-price'>NOW: $6.00</div>
             <div class='discount-badge'>14.2% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20145379001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21406192_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21406192/b3/en/front/21406192_front_a06_@2.png' alt='Mango Turmeric' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mango-turmeric/p/21406192_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -783,12 +973,14 @@ body {
             <div class='now-price'>NOW: $3.00</div>
             <div class='discount-badge'>14.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21406192_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21362564_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21362564/b3/en/front/21362564_front_a06_@2.png' alt='Blueberry Organic Kombucha' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/blueberry-organic-kombucha/p/21362564_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -801,12 +993,14 @@ body {
             <div class='now-price'>NOW: $3.00</div>
             <div class='discount-badge'>14.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21362564_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21362519_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21362519/b3/en/front/21362519_front_a06_@2.png' alt='Organic Pink Grapefruit Smoothie' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-pink-grapefruit-smoothie/p/21362519_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -819,12 +1013,14 @@ body {
             <div class='now-price'>NOW: $3.00</div>
             <div class='discount-badge'>14.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21362519_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21362499_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21362499/b3/en/front/21362499_front_a06_@2.png' alt='Organic Raspberry Lemon Kombucha' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-raspberry-lemon-kombucha/p/21362499_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -837,12 +1033,14 @@ body {
             <div class='now-price'>NOW: $3.00</div>
             <div class='discount-badge'>14.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21362499_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21362495_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21362495/b3/en/front/21362495_front_a06_@2.png' alt='Organic Lime Strawberry Kombucha' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-lime-strawberry-kombucha/p/21362495_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -855,12 +1053,14 @@ body {
             <div class='now-price'>NOW: $3.00</div>
             <div class='discount-badge'>14.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21362495_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20033488001_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20033488001/b3/en/front/20033488001_front_a06_@2.png' alt='Mini Bananas, Bunch' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/mini-bananas-bunch/p/20033488001_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -873,12 +1073,14 @@ body {
             <div class='now-price'>NOW: $1.89</div>
             <div class='discount-badge'>12.9% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20033488001_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20868985001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20868985001/b3/en/front/20868985001_front_a06_@2.png' alt='Imperfect Apples, 6 lb bag' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/imperfect-apples-6-lb-bag/p/20868985001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -891,12 +1093,14 @@ body {
             <div class='now-price'>NOW: $7.00</div>
             <div class='discount-badge'>12.5% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20868985001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20045276001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20045276001/b3/en/front/20045276001_front_a06_@2.png' alt='Honeydew Melon' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/honeydew-melon/p/20045276001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -909,12 +1113,14 @@ body {
             <div class='now-price'>NOW: $7.00</div>
             <div class='discount-badge'>12.4% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20045276001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20168395001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20168395001/b3/en/angle/20168395001_angle_a06_@2.png' alt='Dragon Fruit' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/dragon-fruit/p/20168395001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -927,12 +1133,14 @@ body {
             <div class='now-price'>NOW: $3.50</div>
             <div class='discount-badge'>12.3% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20168395001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='21549854001_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/21549854001/b3/en/front/21549854001_front_a06_@2.png' alt='Jackfruit Slice' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/jackfruit-slice/p/21549854001_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -945,12 +1153,14 @@ body {
             <div class='now-price'>NOW: $1.74</div>
             <div class='discount-badge'>12.1% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-21549854001_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20121509001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20121509001/b3/en/front/20121509001_front_a06_@2.png' alt='Ataulfo Mango' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/ataulfo-mango/p/20121509001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -963,12 +1173,14 @@ body {
             <div class='now-price'>NOW: $1.75</div>
             <div class='discount-badge'>12.1% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20121509001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20157487001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20157487001/b3/en/front/20157487001_front_a06_@2.png' alt='Fresh Coconut Young' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fresh-coconut-young/p/20157487001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -981,12 +1193,14 @@ body {
             <div class='now-price'>NOW: $4.49</div>
             <div class='discount-badge'>10.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20157487001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20067389001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20067389001/b3/en/front/20067389001_front_a06_@2.png' alt='Romaine Heart, 3 Pack' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/romaine-heart-3-pack/p/20067389001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -999,12 +1213,14 @@ body {
             <div class='now-price'>NOW: $4.50</div>
             <div class='discount-badge'>10.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20067389001_EA' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20649591001_KG'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20649591001/b3/en/front/20649591001_front_a06_@2.png' alt='Manzano Bananas, Bunch' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/manzano-bananas-bunch/p/20649591001_KG' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -1017,12 +1233,14 @@ body {
             <div class='now-price'>NOW: $3.79</div>
             <div class='discount-badge'>10.0% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20649591001_KG' style='display:none;'></div>
         </div>
         
-        <div class='item-container'>
+        <div class='item-container' data-product-id='20051015001_EA'>
           <div class='item-image'>
             <img src='https://assets.shop.loblaws.ca/products/20051015001/b3/en/front/20051015001_front_a06_@2.png' alt='Blackberries Half Pint' />
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/blackberries-half-pint/p/20051015001_EA' target='_top'>SHOP →</a>
+            <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
           <div class='item-details'>
             <div class='item-name'>
@@ -1035,6 +1253,7 @@ body {
             <div class='now-price'>NOW: $4.50</div>
             <div class='discount-badge'>9.8% OFF</div>
           </div>
+          <div class='price-history-chart' id='chart-20051015001_EA' style='display:none;'></div>
         </div>
         
 </body>
