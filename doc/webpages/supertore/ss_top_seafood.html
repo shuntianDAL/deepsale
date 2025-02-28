@@ -21,18 +21,16 @@ body {
     font-family: 'Montserrat', Arial, sans-serif;
     background-color: #fff;
     overflow-x: hidden;
-}
-/* We'll add a 'page-loaded' class to <body> to trigger fade in animations after DOMContentLoaded */
-body {
     transition: opacity 0.5s ease;
 }
-/* Fade in effect for the detail button */
-.fade-on-load {
-    opacity: 0;
-    transition: opacity 0.8s ease;
-}
-body.page-loaded .fade-on-load {
+/* Fade effect classes */
+.fade-in {
     opacity: 1;
+    transition: opacity 0.5s ease;
+}
+.fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 .header-container {
     position: fixed;
@@ -156,6 +154,7 @@ body.page-loaded .fade-on-load {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: opacity 0.5s ease;
 }
 .vertical-switch-button.selected {
     background-color: #3e7d53;
@@ -284,14 +283,12 @@ body.page-loaded .fade-on-load {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add a class to body so that fade-on-load elements become visible
     document.body.classList.add('page-loaded');
-    // Provide chart data as a global dictionary
     window.priceHistoryData = {"20720065_KG": {"1mon": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "1yr": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}]}, "20852143_KG": {"1mon": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "1yr": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}]}, "21043887_EA": {"1mon": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}]}, "21211819_EA": {"1mon": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}]}, "20750012_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749901_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749798_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20699832_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21108887_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]}};
 });
 
 /**
- * "Detail" button => show detail, hide chart, revert toggle => disabled style with label "1 Yr"
+ * "Detail" button: show detail panel (fade in) and hide chart panel (fade out).
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
@@ -306,22 +303,20 @@ function switchToDetail(btn) {
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
-    var rightSide = container.querySelector('.right-side');
-    var viewContainer = rightSide.querySelector('.view-container');
-    var detailView = viewContainer.querySelector('.detail-view');
-    var chartView = viewContainer.querySelector('.chart-view');
-    detailView.style.opacity = '1';
-    chartView.style.opacity = '0';
+    var detailView = container.querySelector('.detail-view');
+    var chartView = container.querySelector('.chart-view');
+    detailView.classList.add('fade-in');
+    detailView.classList.remove('fade-out');
+    chartView.classList.add('fade-out');
+    chartView.classList.remove('fade-in');
     setTimeout(function() {
         chartView.innerHTML = '';
-    }, 400);
+    }, 500);
 }
 
 /**
- * Toggle => if .disabled => remove => chart is active
- * If checked => 1 Yr => line chart
- * else => 1 Mon => bar chart
- * skipping zero data rows
+ * Toggle switch: when changed, hide the detail panel (fade out) and show the chart panel (fade in).
+ * If checked, render the 1 Yr (line) chart; if unchecked, render the 1 Mon (bar) chart.
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
@@ -333,12 +328,12 @@ function toggleMonYr(checkbox) {
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
-    var rightSide = container.querySelector('.right-side');
-    var viewContainer = rightSide.querySelector('.view-container');
-    var detailView = viewContainer.querySelector('.detail-view');
-    var chartView = viewContainer.querySelector('.chart-view');
-    detailView.style.opacity = '0';
-    chartView.style.opacity = '1';
+    var detailView = container.querySelector('.detail-view');
+    var chartView = container.querySelector('.chart-view');
+    detailView.classList.add('fade-out');
+    detailView.classList.remove('fade-in');
+    chartView.classList.add('fade-in');
+    chartView.classList.remove('fade-out');
 
     var productId = container.getAttribute('data-product-id');
     var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
@@ -357,7 +352,7 @@ function toggleMonYr(checkbox) {
 }
 
 /**
- * Renders bar chart for 1 Mon data
+ * Renders a stacked bar chart for 1 Mon data.
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
@@ -369,7 +364,6 @@ function renderStackedChart(chartView, data) {
     data.forEach(function(d) {
         if (d.was_price > maxWas) maxWas = d.was_price;
     });
-    // Add overhead
     maxWas *= 1.05;
 
     var width = chartView.clientWidth;
@@ -381,11 +375,10 @@ function renderStackedChart(chartView, data) {
 
     var leftPad = 40;
     var bottomPad = 20;
-    var topPad = 10;
+    var topPad = 30;
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
-    // y-axis
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -414,7 +407,6 @@ function renderStackedChart(chartView, data) {
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
 
-        // green bottom
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
@@ -424,7 +416,6 @@ function renderStackedChart(chartView, data) {
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
 
-        // orange top
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
@@ -434,7 +425,6 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
 
-        // label now_price => numeric
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -444,7 +434,6 @@ function renderStackedChart(chartView, data) {
         txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
 
-        // label was_price => numeric
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -458,7 +447,6 @@ function renderStackedChart(chartView, data) {
         var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
 
-        // date label
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
@@ -469,7 +457,6 @@ function renderStackedChart(chartView, data) {
         svg.appendChild(txtDate);
     });
 
-    // line connecting top of green portion
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
         for (var i=1; i<linePoints.length; i++) {
@@ -483,7 +470,6 @@ function renderStackedChart(chartView, data) {
         svg.appendChild(linePath);
     }
 
-    // Y-axis => "$ "
     var labelVals = [0, maxWas/2, maxWas];
     labelVals.forEach(function(val) {
         var y = (height - bottomPad) - (val / maxWas)*chartH;
@@ -508,25 +494,18 @@ function renderStackedChart(chartView, data) {
     chartView.appendChild(svg);
 }
 
-/**
- * Renders a two-line chart for 1-year data:
- * skip zero data, label only highest,lowest,last points,
- * label each date on x-axis,
- * add overhead so top isn't cut off.
- */
 function renderLineChart(chartView, data) {
     chartView.innerHTML = '';
     if (!data || data.length === 0) {
         chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No 1 Yr data</p>';
         return;
     }
-    // find max among was_price, now_price
     var maxVal = 0;
     data.forEach(d => {
         if (d.was_price > maxVal) maxVal = d.was_price;
         if (d.now_price > maxVal) maxVal = d.now_price;
     });
-    maxVal *= 1.05; // overhead
+    maxVal *= 1.05;
 
     var width = chartView.clientWidth;
     var height = chartView.clientHeight;
@@ -537,11 +516,10 @@ function renderLineChart(chartView, data) {
 
     var leftPad = 40;
     var bottomPad = 20;
-    var topPad = 10;
+    var topPad = 30;
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
-    // y-axis
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -584,9 +562,9 @@ function renderLineChart(chartView, data) {
             let x = getX(i);
             let y = scaleY(arr[i]);
             if (i===0) {
-                pathD = "M "+ x +" "+ y;
+                pathD = "M " + x + " " + y;
             } else {
-                pathD += " L "+ x +" "+ y;
+                pathD += " L " + x + " " + y;
             }
         }
         let path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -624,17 +602,14 @@ function renderLineChart(chartView, data) {
         });
     }
 
-    // was line => blue
     drawLine(wasArr, "#0077cc");
     drawDots(wasArr);
     labelKeyPoints(wasArr, "#0077cc", wasKeyIdx);
 
-    // now line => green
     drawLine(nowArr, "#009900");
     drawDots(nowArr);
     labelKeyPoints(nowArr, "#009900", nowKeyIdx);
 
-    // x-axis line
     let xAxisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     xAxisLine.setAttribute('x1', leftPad);
     xAxisLine.setAttribute('y1', height - bottomPad);
@@ -643,7 +618,6 @@ function renderLineChart(chartView, data) {
     xAxisLine.setAttribute('stroke', '#000');
     svg.appendChild(xAxisLine);
 
-    // label each date along x-axis
     for (let i=0; i<data.length; i++) {
         let x = getX(i);
         let y = height - 5;
@@ -657,7 +631,6 @@ function renderLineChart(chartView, data) {
         svg.appendChild(txtDate);
     }
 
-    // y-axis ticks => "$ "
     let labelVals = [0, maxVal/2, maxVal];
     labelVals.forEach(function(val) {
         let y = (height - bottomPad) - (val / maxVal)*chartH;
@@ -692,7 +665,7 @@ function renderLineChart(chartView, data) {
     </button>
     <div class="page-title">ss_seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 16:02:11</div>
+  <div class="creation-time">Created on: 2025-02-28 16:06:44</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -710,10 +683,9 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
+    <!-- "Detail" button => green by default with fade in effect -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
+    <!-- Toggle switch => styled disabled (gray), label "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20720065_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20720065_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20720065_KG">
@@ -726,7 +698,7 @@ function renderLineChart(chartView, data) {
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <div class="detail-view fade-in">
         
           <div class="item-name">
             <span class="item-number">#1</span>
@@ -739,7 +711,7 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">31.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20720065_KG"></div>
+      <div class="chart-view fade-out" id="chart-20720065_KG"></div>
     </div>
   </div>
         
@@ -751,10 +723,9 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
+    <!-- "Detail" button => green by default with fade in effect -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
+    <!-- Toggle switch => styled disabled (gray), label "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20852143_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20852143_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20852143_KG">
@@ -767,7 +738,7 @@ function renderLineChart(chartView, data) {
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <div class="detail-view fade-in">
         
           <div class="item-name">
             <span class="item-number">#2</span>
@@ -780,7 +751,7 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">26.4% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20852143_KG"></div>
+      <div class="chart-view fade-out" id="chart-20852143_KG"></div>
     </div>
   </div>
         
@@ -792,10 +763,9 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
+    <!-- "Detail" button => green by default with fade in effect -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
+    <!-- Toggle switch => styled disabled (gray), label "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21043887_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21043887_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21043887_EA">
@@ -808,7 +778,7 @@ function renderLineChart(chartView, data) {
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <div class="detail-view fade-in">
         
           <div class="item-name">
             <span class="item-number">#3</span>
@@ -821,7 +791,7 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">26.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21043887_EA"></div>
+      <div class="chart-view fade-out" id="chart-21043887_EA"></div>
     </div>
   </div>
         
@@ -833,10 +803,9 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
+    <!-- "Detail" button => green by default with fade in effect -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
+    <!-- Toggle switch => styled disabled (gray), label "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21211819_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21211819_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21211819_EA">
@@ -849,7 +818,7 @@ function renderLineChart(chartView, data) {
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <div class="detail-view fade-in">
         
           <div class="item-name">
             <span class="item-number">#4</span>
@@ -862,7 +831,7 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21211819_EA"></div>
+      <div class="chart-view fade-out" id="chart-21211819_EA"></div>
     </div>
   </div>
         
@@ -874,10 +843,9 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
+    <!-- "Detail" button => green by default with fade in effect -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
+    <!-- Toggle switch => styled disabled (gray), label "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20750012_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20750012_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20750012_EA">
@@ -890,7 +858,7 @@ function renderLineChart(chartView, data) {
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <div class="detail-view fade-in">
         
           <div class="item-name">
             <span class="item-number">#5</span>
@@ -903,7 +871,7 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20750012_EA"></div>
+      <div class="chart-view fade-out" id="chart-20750012_EA"></div>
     </div>
   </div>
         
@@ -915,10 +883,9 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
+    <!-- "Detail" button => green by default with fade in effect -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
+    <!-- Toggle switch => styled disabled (gray), label "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20749901_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20749901_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20749901_EA">
@@ -931,7 +898,7 @@ function renderLineChart(chartView, data) {
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <div class="detail-view fade-in">
         
           <div class="item-name">
             <span class="item-number">#6</span>
@@ -944,7 +911,7 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20749901_EA"></div>
+      <div class="chart-view fade-out" id="chart-20749901_EA"></div>
     </div>
   </div>
         
@@ -956,10 +923,9 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
+    <!-- "Detail" button => green by default with fade in effect -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
+    <!-- Toggle switch => styled disabled (gray), label "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20749798_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20749798_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20749798_EA">
@@ -972,7 +938,7 @@ function renderLineChart(chartView, data) {
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <div class="detail-view fade-in">
         
           <div class="item-name">
             <span class="item-number">#7</span>
@@ -985,7 +951,7 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20749798_EA"></div>
+      <div class="chart-view fade-out" id="chart-20749798_EA"></div>
     </div>
   </div>
         
@@ -997,10 +963,9 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
+    <!-- "Detail" button => green by default with fade in effect -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
+    <!-- Toggle switch => styled disabled (gray), label "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="20699832_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20699832_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20699832_EA">
@@ -1013,7 +978,7 @@ function renderLineChart(chartView, data) {
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <div class="detail-view fade-in">
         
           <div class="item-name">
             <span class="item-number">#8</span>
@@ -1026,7 +991,7 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20699832_EA"></div>
+      <div class="chart-view fade-out" id="chart-20699832_EA"></div>
     </div>
   </div>
         
@@ -1038,10 +1003,9 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
+    <!-- "Detail" button => green by default with fade in effect -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
-
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
+    <!-- Toggle switch => styled disabled (gray), label "1 Yr" -->
     <div class="toggle-switch disabled" data-product-id="21108887_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21108887_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21108887_EA">
@@ -1054,7 +1018,7 @@ function renderLineChart(chartView, data) {
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <div class="detail-view fade-in">
         
           <div class="item-name">
             <span class="item-number">#9</span>
@@ -1067,7 +1031,7 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">9.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21108887_EA"></div>
+      <div class="chart-view fade-out" id="chart-21108887_EA"></div>
     </div>
   </div>
         
