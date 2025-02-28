@@ -212,47 +212,48 @@ body {
 }
 .price-history-chart {
     width: 100%;
-    height: 250px; /* bigger for clarity */
+    height: 160px; /* smaller so it won't push other content too far */
     border: 1px solid #ccc;
     margin-top: 10px;
     position: relative;
     display: none;
     background-color: #f9f9f9;
+    opacity: 0; /* Start hidden for fade-in */
+    transition: opacity 0.4s ease; /* fade in */
 }
-/* Container for the stacked bar, including outlines for debugging */
+.price-history-chart.fade-in {
+    opacity: 1;
+}
 .bar-container {
     position: absolute;
     bottom: 20px; /* space for x-axis */
-    width: 20px;
-    border: 1px solid #aaa; /* debug outline around entire bar container */
+    width: 16px; /* narrower bars */
+    border: 1px solid #aaa; /* debug outline */
     z-index: 10;
 }
 .bar-now, .bar-was {
     position: absolute;
     left: 0;
     width: 100%;
-    /* removed growUp animation for debugging clarity */
-}
-/* bright colors + outline to ensure visibility */
-.bar-now {
-    background-color: #0000FF; /* bright blue for now_price */
     border: 1px solid #333;
+}
+.bar-now {
+    background-color: #0000FF; /* bright blue */
 }
 .bar-was {
-    background-color: #FF0000; /* bright red for was_price */
-    border: 1px solid #333;
+    background-color: #FF0000; /* bright red */
     opacity: 0.8;
 }
 .price-label {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 10px;
+    font-size: 9px;
     font-weight: bold;
     color: #000;
-    background: #fff; /* white background behind text */
+    background: #fff;
     border: 1px solid #999;
-    padding: 1px 3px;
+    padding: 0 2px;
 }
 .x-axis, .y-axis {
     position: absolute;
@@ -282,29 +283,30 @@ function toggleChart(btn) {
     var details = container.querySelector('.item-details');
     var chart = container.querySelector('.price-history-chart');
     if (chart.style.display === 'none' || chart.style.display === '') {
-        // Show chart, hide details
+        // Show chart area
         details.style.display = 'none';
         chart.style.display = 'block';
+        // Trigger fade-in
+        setTimeout(function() {
+            chart.classList.add('fade-in');
+        }, 10);
+
         btn.textContent = 'Show Details';
-        // Render the chart if not rendered
+        // Render the chart
         var productId = container.getAttribute('data-product-id');
         var data = window.priceHistoryData[productId];
         renderChart(productId, data);
     } else {
-        // Hide chart, show details
-        chart.style.display = 'none';
+        // Hide chart
+        chart.classList.remove('fade-in');
+        setTimeout(function() {
+            chart.style.display = 'none';
+        }, 400); // match transition
         details.style.display = 'block';
         btn.textContent = 'Show History';
     }
 }
 
-/**
- * Renders a stacked bar chart:
- *  - Red portion (bar-was) for was_price
- *  - Blue portion (bar-now) for now_price
- *  - If was_price < now_price, the larger portion is blue on top
- *  - Price labels at the top of each portion
- */
 function renderChart(productId, data) {
     var chartContainer = document.getElementById('chart-' + productId);
     // Clear previous content
@@ -319,93 +321,85 @@ function renderChart(productId, data) {
         maxPrice = Math.max(maxPrice, item.was_price || 0, item.now_price || 0);
     });
 
+    // We'll use 100px as the max bar height
+    var barMaxHeight = 100;
+
     // Create x-axis labels container
     var xAxis = document.createElement('div');
     xAxis.className = 'x-axis';
     chartContainer.appendChild(xAxis);
+
     // Create y-axis labels container
     var yAxis = document.createElement('div');
     yAxis.className = 'y-axis';
     chartContainer.appendChild(yAxis);
 
-    // For each data point, create the stacked bar
     data.forEach(function(item, index) {
         var totalBars = data.length;
-        var chartWidth = chartContainer.getBoundingClientRect().width - 50; // account for y-axis space
+        var chartWidth = chartContainer.getBoundingClientRect().width - 50; // y-axis space
         var spacing = chartWidth / totalBars;
 
         // Convert prices to pixel heights
-        var wasH = (item.was_price / maxPrice) * 180; // use 180 px scale for the bar area
-        var nowH = (item.now_price / maxPrice) * 180;
+        var wasH = (item.was_price / maxPrice) * barMaxHeight;
+        var nowH = (item.now_price / maxPrice) * barMaxHeight;
 
         // Create a bar container
         var barContainer = document.createElement('div');
         barContainer.className = 'bar-container';
         barContainer.style.left = (40 + index * spacing) + 'px';
-        // The total bar height is the bigger of the two
+
         var barHeight = Math.max(wasH, nowH);
         barContainer.style.height = barHeight + 'px';
 
-        // Create the "now" portion
+        // Create barNow
         var barNow = document.createElement('div');
         barNow.className = 'bar-now';
-        // Position at bottom
         barNow.style.bottom = '0px';
         barNow.style.height = nowH + 'px';
 
-        // Create the "was" portion
+        // Create barWas
         var barWas = document.createElement('div');
         barWas.className = 'bar-was';
         barWas.style.height = wasH + 'px';
-        // Also initially at bottom
         barWas.style.bottom = '0px';
 
-        // We'll stack them by comparing item.was_price vs item.now_price
+        // If now >= was, stack was above now
         if (item.now_price >= item.was_price) {
-            // now is bigger or equal
-            // barNow covers the entire height from bottom
-            // shift barWas up on top of barNow
             if (wasH < nowH) {
                 barWas.style.bottom = nowH - wasH + 'px';
             }
         } else {
-            // was is bigger
-            // barNow is smaller, so keep it at bottom
-            // shift barWas above barNow
+            // was bigger
             if (wasH > nowH) {
                 barWas.style.bottom = nowH + 'px';
             }
         }
 
+        barContainer.appendChild(barNow);
+        barContainer.appendChild(barWas);
+
         // Now label
         var nowLabel = document.createElement('div');
         nowLabel.className = 'price-label';
         nowLabel.textContent = item.now_price.toFixed(2);
-        // put it near the top of the now portion
-        nowLabel.style.bottom = (nowH - 15) + 'px';
+        nowLabel.style.bottom = (nowH - 12) + 'px'; // place label near top of now portion
+        barContainer.appendChild(nowLabel);
 
         // Was label
         var wasLabel = document.createElement('div');
         wasLabel.className = 'price-label';
         wasLabel.textContent = item.was_price.toFixed(2);
-        // put it near the top of the was portion
-        // if was portion is stacked above now, the top is nowH + wasH
-        if (item.was_price > item.now_price) {
-            wasLabel.style.bottom = (nowH + wasH - 15) + 'px';
+        if (item.was_price >= item.now_price) {
+            // was portion on top
+            wasLabel.style.bottom = (nowH + wasH - 12) + 'px';
         } else {
-            // was is smaller or equal, so it's the top portion
-            wasLabel.style.bottom = (wasH - 15) + 'px';
+            wasLabel.style.bottom = (wasH - 12) + 'px';
         }
-
-        // Append them
-        barContainer.appendChild(barNow);
-        barContainer.appendChild(barWas);
-        barContainer.appendChild(nowLabel);
         barContainer.appendChild(wasLabel);
 
         chartContainer.appendChild(barContainer);
 
-        // X-axis label
+        // x-axis label
         var dateLabel = document.createElement('div');
         dateLabel.style.position = 'absolute';
         dateLabel.style.bottom = '-15px';
@@ -416,13 +410,14 @@ function renderChart(productId, data) {
         xAxis.appendChild(dateLabel);
     });
 
-    // Add y-axis labels (0, mid, max)
+    // y-axis labels (0, mid, max)
     var yLabels = [0, maxPrice / 2, maxPrice];
     yLabels.forEach(function(val) {
         var label = document.createElement('div');
         label.style.position = 'absolute';
         label.style.left = '0';
-        label.style.bottom = ((val / maxPrice) * 180) + 20 + 'px';
+        // scale label
+        label.style.bottom = ((val / maxPrice) * 100) + 20 + 'px';
         label.textContent = val.toFixed(2);
         yAxis.appendChild(label);
     });
@@ -516,7 +511,7 @@ function inPageSearch() {
     </button>
     <div class='page-title'>Seafood</div>
   </div>
-  <div class='creation-time'>Created on: 2025-02-28 00:55:58</div>
+  <div class='creation-time'>Created on: 2025-02-28 01:06:50</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
