@@ -53,7 +53,7 @@ body {
     margin: 0 20px 10px;
 }
 .header-spacer {
-    height: 70px; /* offset fixed header */
+    height: 70px;
 }
 .search-button {
     background-color: #3e7d53;
@@ -118,9 +118,9 @@ body {
     gap: 15px;
     width: 90%;
     max-width: 600px;
-    margin: 10px auto; /* reduce vertical spacing */
+    margin: 10px auto;
     border-bottom: 1px solid #ccc;
-    padding-bottom: 10px; /* reduce padding */
+    padding-bottom: 10px;
 }
 .left-side {
     display: flex;
@@ -131,6 +131,11 @@ body {
 .item-image img {
     width: 80px;
     height: auto;
+}
+.button-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 .vertical-switch-button {
     background-color: #3e7d53;
@@ -153,43 +158,49 @@ body {
     background-color: #ddd;
     color: #000;
 }
+/* iOS-style toggle switch */
 .toggle-switch {
-    width: 50px;
-    height: 26px;
+    width: 80px;
+    height: 28px;
     position: relative;
 }
 .toggle-input {
-    display: none; /* hide raw checkbox */
+    display: none;
 }
 .toggle-label {
     display: inline-block;
     width: 100%;
     height: 100%;
-    background-color: #ddd;
+    background-color: #3e7d53;
     border-radius: 9999px;
-    cursor: pointer;
     position: relative;
+    cursor: pointer;
     transition: background-color 0.3s ease;
 }
 .toggle-label .toggle-circle {
-    content: "";
     position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 20px;
-    height: 20px;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
     background-color: #fff;
     border-radius: 50%;
     transition: transform 0.3s ease;
 }
-.toggle-label:hover {
-    background-color: #bbb;
-}
-.toggle-input:checked + .toggle-label {
-    background-color: #3e7d53;
-}
 .toggle-input:checked + .toggle-label .toggle-circle {
-    transform: translateX(24px);
+    transform: translateX(52px);
+}
+.toggle-label .toggle-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    line-height: 28px;
+    font-size: 12px;
+    color: #fff;
+    pointer-events: none;
 }
 .right-side {
     flex: 1;
@@ -260,21 +271,24 @@ body {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // priceHistoryData[product_id] = { "1mon": [...], "1yr": [...] }
     window.priceHistoryData = {"20143381001_KG": {"1mon": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}], "1yr": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}]}, "20811994001_EA": {"1mon": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}], "1yr": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}]}, "21626132_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}]}, "20186654_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21022511001_KG": {"1mon": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}], "1yr": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}]}, "21023094001_KG": {"1mon": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}], "1yr": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}]}, "20070132001_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}]}, "20020863001_KG": {"1mon": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}], "1yr": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}]}, "20162500001_KG": {"1mon": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}], "1yr": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}]}, "20119813001_EA": {"1mon": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}], "1yr": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}]}, "20005774001_EA": {"1mon": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}], "1yr": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}]}, "20119760001_EA": {"1mon": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}], "1yr": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}]}, "20167017001_EA": {"1mon": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "20039812_EA": {"1mon": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "21121560001_EA": {"1mon": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}], "1yr": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}]}, "20159689001_EA": {"1mon": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}], "1yr": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}]}, "20795315001_EA": {"1mon": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}]}, "20811362001_EA": {"1mon": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}], "1yr": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}]}, "20696626001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20600927001_EA": {"1mon": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20104062_EA": {"1mon": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}], "1yr": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}]}, "20130242001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}]}, "20047112001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}]}, "20959290_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20920821001_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20145379001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "21406192_EA": {"1mon": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362564_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362519_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362499_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362495_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "20033488001_KG": {"1mon": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}], "1yr": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}]}, "20868985001_EA": {"1mon": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}]}, "20045276001_EA": {"1mon": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20168395001_EA": {"1mon": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}], "1yr": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}]}, "21549854001_KG": {"1mon": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}], "1yr": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}]}, "20121509001_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}]}, "20157487001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}]}, "20067389001_EA": {"1mon": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}], "1yr": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}]}, "20649591001_KG": {"1mon": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}], "1yr": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}]}, "20051015001_EA": {"1mon": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}], "1yr": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}]}};
 });
 
 /**
- * Switch to "Detail" view. Clears the chart.
+ * When "Detail" button is clicked, switch to detail view and disable the toggle.
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
-    // unselect the toggle checkbox (not forcibly, but we remove 'selected' from the detail button if needed)
     var allButtons = container.querySelectorAll('.vertical-switch-button');
     allButtons.forEach(function(b) { b.classList.remove('selected'); });
     btn.classList.add('selected');
-
-    // show detail, hide chart
+    // Also disable the toggle switch (gray out)
+    var toggleSwitch = container.querySelector('.toggle-switch');
+    toggleSwitch.classList.add('disabled');
+    // Set toggle input to unchecked
+    var toggleInput = container.querySelector('.toggle-input');
+    toggleInput.checked = false;
+    // Show detail, hide chart
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
@@ -287,44 +301,46 @@ function switchToDetail(btn) {
 }
 
 /**
- * Toggle iOS switch => if checked => 1yr, else => 1mon
+ * When the toggle switch changes state, load the corresponding chart.
+ * The toggle remains green (unless disabled by Detail view).
+ * If checked, show 1 Year data and update the inner text to "1 Y".
+ * If unchecked, show 1 Month data and update the inner text to "1 M".
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
-    // unselect the "Detail" button
-    var detailBtn = container.querySelector('[data-type="detail"]');
-    detailBtn.classList.remove('selected');
-
-    // show chart
+    // If detail view is active, do nothing.
+    var toggleSwitch = container.querySelector('.toggle-switch');
+    if (toggleSwitch.classList.contains('disabled')) {
+        return;
+    }
+    var productId = container.getAttribute('data-product-id');
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
     var chartView = viewContainer.querySelector('.chart-view');
     detailView.style.opacity = '0';
     chartView.style.opacity = '1';
-
-    var productId = container.getAttribute('data-product-id');
     var dataSet;
+    var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
     if (checkbox.checked) {
-        // checked => 1yr
         dataSet = window.priceHistoryData[productId]["1yr"];
+        toggleLabel.textContent = "1 Y";
     } else {
-        // unchecked => 1mon
         dataSet = window.priceHistoryData[productId]["1mon"];
+        toggleLabel.textContent = "1 M";
     }
-
     setTimeout(function() {
         renderStackedChart(chartView, dataSet);
     }, 50);
 }
 
 /**
- * Renders the stacked bar chart in <svg>:
- * - was_price => total bar height
+ * Renders a stacked bar chart in an <svg>.
+ * - was_price => total bar height, but bar labels have no "$"
  * - now_price => bottom (green)
  * - difference => top (orange)
- * - Remove $ sign from bar labels
- * - Keep $ sign only for Y-axis
+ * - Y-axis numeric labels include "$ "
+ * - was_price label is placed above the bar (without "$")
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
@@ -350,7 +366,7 @@ function renderStackedChart(chartView, data) {
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
-    // vertical axis line
+    // Axis line
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -359,10 +375,7 @@ function renderStackedChart(chartView, data) {
     axisLine.setAttribute('stroke', '#000');
     svg.appendChild(axisLine);
 
-    // we remove the top axis "$" label => no axisLabel
-
     var linePoints = [];
-
     data.forEach(function(d, i) {
         var total = d.was_price;
         var bottomVal = d.now_price;
@@ -373,15 +386,12 @@ function renderStackedChart(chartView, data) {
         var totalH = (total / maxWas) * chartH;
         var bottomH = (bottomVal / total) * totalH;
         var topH = totalH - bottomH;
-
         var barSpacing = chartW / data.length;
-        var barX = leftPad + i * barSpacing + barSpacing * 0.2;
+        var barX = leftPad + i * barSpacing + barSpacing*0.2;
         var barWidth = barSpacing * 0.6;
-
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
 
-        // bottom portion => green
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
@@ -391,7 +401,6 @@ function renderStackedChart(chartView, data) {
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
 
-        // top portion => orange
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
@@ -401,7 +410,7 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
 
-        // label for now_price => no $ sign
+        // Label for now_price (no $ sign)
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -411,7 +420,7 @@ function renderStackedChart(chartView, data) {
         txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
 
-        // label for was_price => above bar => no $ sign
+        // Label for was_price above bar (no $ sign)
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -425,7 +434,6 @@ function renderStackedChart(chartView, data) {
         var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
 
-        // date label
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
@@ -435,8 +443,6 @@ function renderStackedChart(chartView, data) {
         txtDate.textContent = d.date;
         svg.appendChild(txtDate);
     });
-
-    // line across top of green portion
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
         for (var i=1; i<linePoints.length; i++) {
@@ -449,8 +455,6 @@ function renderStackedChart(chartView, data) {
         linePath.setAttribute('stroke-width', '2');
         svg.appendChild(linePath);
     }
-
-    // y-axis ticks + dotted lines => keep $ sign
     var labelVals = [0, maxWas/2, maxWas];
     labelVals.forEach(function(val) {
         var y = (height - bottomPad) - (val / maxWas)*chartH;
@@ -462,17 +466,14 @@ function renderStackedChart(chartView, data) {
         gridLine.setAttribute('stroke', '#ccc');
         gridLine.setAttribute('stroke-dasharray', '2,2');
         svg.appendChild(gridLine);
-
         var txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtLabel.setAttribute('x', 5);
         txtLabel.setAttribute('y', y+3);
         txtLabel.setAttribute('font-size', '10');
         txtLabel.setAttribute('fill', '#000');
-        // keep $ sign for y-axis
         txtLabel.textContent = "$ " + val.toFixed(2);
         svg.appendChild(txtLabel);
     });
-
     chartView.appendChild(svg);
 }
 </script>
@@ -486,7 +487,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">ss_veg</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 12:52:26</div>
+  <div class="creation-time">Created on: 2025-02-28 13:03:02</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -504,18 +505,13 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20143381001/b3/en/front/20143381001_front_a06_@2.png' alt='Roma Tomatoes' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20143381001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20143381001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20143381001_KG">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -540,25 +536,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20811994001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20811994001/b3/en/front/20811994001_front_a06_@2.png' alt='Yellow Onions, 3 lb Bag' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20811994001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811994001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20811994001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -583,25 +574,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21626132_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21626132/b3/en/front/21626132_front_a06_@2.png' alt='Brusselslaw' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21626132_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21626132_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21626132_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -626,25 +612,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20186654_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20186654/b3/en/front/20186654_front_a06_@2.png' alt='Vegetable Medley' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20186654_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20186654_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20186654_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -669,25 +650,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21022511001_KG">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21022511001/b3/en/front/21022511001_front_a06_@2.png' alt='Canary Melon' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21022511001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21022511001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21022511001_KG">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -712,25 +688,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21023094001_KG">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21023094001/b3/en/front/21023094001_front_a06_@2.png' alt='Santa Claus Melons' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21023094001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21023094001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21023094001_KG">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -755,25 +726,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20070132001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20070132001/b3/en/front/20070132001_front_a06_@2.png' alt='English Cucumber' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20070132001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20070132001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20070132001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -798,25 +764,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20020863001_KG">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20020863001/b3/en/front/20020863001_front_a06_@2.png' alt='Taiwanese Flat Cabbage' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20020863001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20020863001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20020863001_KG">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -841,25 +802,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20162500001_KG">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20162500001/b3/en/front/20162500001_front_a06_@2.png' alt='Guava' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20162500001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20162500001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20162500001_KG">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -884,25 +840,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20119813001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20119813001/b3/en/angle/20119813001_angle_a06_@2.png' alt='Pineapple' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20119813001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119813001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20119813001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -927,25 +878,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20005774001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20005774001/b3/en/front/20005774001_front_a06_@2.png' alt='Coconuts' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20005774001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20005774001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20005774001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -970,25 +916,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20119760001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20119760001/b3/en/front/20119760001_front_a06_@2.png' alt='Caribbean Avocado' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20119760001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119760001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20119760001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1013,25 +954,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20167017001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20167017001/b3/en/front/20167017001_front_a06_@2.png' alt='Cantaloupe' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20167017001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20167017001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20167017001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1056,25 +992,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20039812_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20039812/b3/en/front/20039812_front_a06_@2.png' alt='Broccoli Florets' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20039812_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20039812_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20039812_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1099,25 +1030,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21121560001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21121560001/b3/en/front/21121560001_front_a06_@2.png' alt='Broccoli Crown' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21121560001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21121560001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21121560001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1142,25 +1068,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20159689001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20159689001/b3/en/front/20159689001_front_a06_@2.png' alt='Fenugreek Bunch' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20159689001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20159689001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20159689001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1185,25 +1106,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20795315001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20795315001/b3/en/front/20795315001_front_a06_@2.png' alt='Lemons, 2 lb Bag' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20795315001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20795315001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20795315001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1228,25 +1144,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20811362001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20811362001/b3/en/front/20811362001_front_a06_@2.png' alt='Red Onions, 3 lb Bag' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20811362001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811362001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20811362001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1271,25 +1182,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20696626001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20696626001/b3/en/front/20696626001_front_a06_@2.png' alt='Granadilla' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20696626001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20696626001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20696626001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1314,25 +1220,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20600927001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20600927001/b3/en/front/20600927001_front_a06_@2.png' alt='Carrots, 3 lb Bag' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20600927001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20600927001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20600927001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1357,25 +1258,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20104062_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20104062/b3/en/front/20104062_front_a06_@2.png' alt='Popeye Select Spinach' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20104062_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20104062_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20104062_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1400,25 +1296,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20130242001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20130242001/b3/en/front/20130242001_front_a06_@2.png' alt='Kiwis' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20130242001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20130242001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20130242001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1443,25 +1334,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20047112001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20047112001/b3/en/beauty/20047112001_beauty_a06_@2.png' alt='Quince' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20047112001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20047112001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20047112001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1486,25 +1372,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20959290_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20959290/b3/en/front/20959290_front_a06_@2.png' alt='Organic Broccoli Florets' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20959290_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20959290_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20959290_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1529,25 +1410,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20920821001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20920821001/b3/en/front/20920821001_front_a06_@2.png' alt='Mini Sweet Peppers' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20920821001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20920821001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20920821001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1572,25 +1448,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20145379001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20145379001/b3/en/front/20145379001_front_a06_@2.png' alt='Mini Seedless Watermelon' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20145379001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20145379001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20145379001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1615,25 +1486,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21406192_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21406192/b3/en/front/21406192_front_a06_@2.png' alt='Mango Turmeric' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21406192_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21406192_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21406192_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1658,25 +1524,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21362564_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362564/b3/en/front/21362564_front_a06_@2.png' alt='Blueberry Organic Kombucha' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21362564_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362564_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362564_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1701,25 +1562,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21362519_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362519/b3/en/front/21362519_front_a06_@2.png' alt='Organic Pink Grapefruit Smoothie' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21362519_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362519_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362519_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1744,25 +1600,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21362499_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362499/b3/en/front/21362499_front_a06_@2.png' alt='Organic Raspberry Lemon Kombucha' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21362499_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362499_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362499_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1787,25 +1638,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21362495_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362495/b3/en/front/21362495_front_a06_@2.png' alt='Organic Lime Strawberry Kombucha' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21362495_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362495_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21362495_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1830,25 +1676,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20033488001_KG">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20033488001/b3/en/front/20033488001_front_a06_@2.png' alt='Mini Bananas, Bunch' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20033488001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20033488001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20033488001_KG">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1873,25 +1714,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20868985001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20868985001/b3/en/front/20868985001_front_a06_@2.png' alt='Imperfect Apples, 6 lb bag' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20868985001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20868985001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20868985001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1916,25 +1752,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20045276001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20045276001/b3/en/front/20045276001_front_a06_@2.png' alt='Honeydew Melon' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20045276001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20045276001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20045276001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -1959,25 +1790,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20168395001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20168395001/b3/en/angle/20168395001_angle_a06_@2.png' alt='Dragon Fruit' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20168395001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20168395001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20168395001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -2002,25 +1828,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="21549854001_KG">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21549854001/b3/en/front/21549854001_front_a06_@2.png' alt='Jackfruit Slice' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="21549854001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21549854001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21549854001_KG">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -2045,25 +1866,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20121509001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20121509001/b3/en/front/20121509001_front_a06_@2.png' alt='Ataulfo Mango' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20121509001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20121509001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20121509001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -2088,25 +1904,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20157487001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20157487001/b3/en/front/20157487001_front_a06_@2.png' alt='Fresh Coconut Young' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20157487001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20157487001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20157487001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -2131,25 +1942,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20067389001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20067389001/b3/en/front/20067389001_front_a06_@2.png' alt='Romaine Heart, 3 Pack' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20067389001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20067389001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20067389001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -2174,25 +1980,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20649591001_KG">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20649591001/b3/en/front/20649591001_front_a06_@2.png' alt='Manzano Bananas, Bunch' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20649591001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20649591001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20649591001_KG">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -2217,25 +2018,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 <div class="item-container" data-product-id="20051015001_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20051015001/b3/en/front/20051015001_front_a06_@2.png' alt='Blackberries Half Pint' />
     </div>
-    <!-- "Detail" button -->
-    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-
-    <!-- iOS-style toggle for 1 Month vs 1 Year -->
+    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch" data-product-id="20051015001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20051015001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20051015001_EA">
         <span class="toggle-circle"></span>
+        <span class="toggle-text">1 M</span>
       </label>
-    </div>
-    <div style="font-size: 12px; text-align: center;">
-      <span>1 Mon &nbsp; | &nbsp; 1 Yr</span>
     </div>
   </div>
         
@@ -2260,7 +2056,7 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-
+        
 
 <script>
 function showSearchBar() {
@@ -2316,7 +2112,7 @@ function inPageSearch() {
                 secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent).replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
             } else {
                 firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
-                secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
+                secondElem.innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
             }
         } else {
             items[i].style.display = 'none';
