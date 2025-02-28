@@ -11,7 +11,7 @@
 <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
 <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
 
-<!-- Load Chart.js from a CDN -->
+<!-- Load Chart.js from a CDN over HTTPS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -170,10 +170,12 @@ body.page-loaded .fade-on-load {
     width: 80px;
     height: 28px;
     position: relative;
+    pointer-events: all; /* ensure taps are allowed */
 }
+/* .disabled now only dims the toggle, no 'not-allowed' cursor */
 .toggle-switch.disabled {
     opacity: 0.5;
-    cursor: not-allowed;
+    pointer-events: all;
 }
 .toggle-input {
     display: none;
@@ -488,7 +490,7 @@ function createLineChart(productId, data) {
     </button>
     <div class="page-title">ss_seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 17:29:42</div>
+  <div class="creation-time">Created on: 2025-02-28 17:36:06</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
