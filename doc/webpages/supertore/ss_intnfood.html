@@ -132,6 +132,11 @@ body {
     width: 80px;
     height: auto;
 }
+.button-group-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 .vertical-switch-button {
     background-color: #3e7d53;
     border: none;
@@ -153,6 +158,7 @@ body {
     background-color: #ddd;
     color: #000;
 }
+/* iOS-style toggle switch */
 .toggle-switch {
     width: 80px;
     height: 28px;
@@ -165,15 +171,11 @@ body {
     display: inline-block;
     width: 100%;
     height: 100%;
-    background-color: #ddd;
+    background-color: #3e7d53;
     border-radius: 9999px;
     position: relative;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-.toggle-switch.disabled .toggle-label {
-    background-color: #ccc;
-    cursor: not-allowed;
 }
 .toggle-label .toggle-circle {
     position: absolute;
@@ -184,9 +186,6 @@ body {
     background-color: #fff;
     border-radius: 50%;
     transition: transform 0.3s ease;
-}
-.toggle-input:checked + .toggle-label {
-    background-color: #3e7d53;
 }
 .toggle-input:checked + .toggle-label .toggle-circle {
     transform: translateX(52px);
@@ -209,7 +208,7 @@ body {
 }
 .view-container {
     width: 100%;
-    height: 200px;
+    height: 200px; /* shorter chart height */
     position: relative;
     background-color: #f9f9f9;
 }
@@ -283,12 +282,13 @@ function switchToDetail(btn) {
     var allButtons = container.querySelectorAll('.vertical-switch-button');
     allButtons.forEach(function(b) { b.classList.remove('selected'); });
     btn.classList.add('selected');
-    // Disable the toggle switch
+    // Also disable the toggle switch (gray out)
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
+    // Set toggle input to unchecked
     var toggleInput = container.querySelector('.toggle-input');
     toggleInput.checked = false;
-    // Show detail view
+    // Show detail, hide chart
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
@@ -301,30 +301,27 @@ function switchToDetail(btn) {
 }
 
 /**
- * When the toggle switch is clicked, remove the disabled state if present,
- * and toggle between 1 Month and 1 Year data.
+ * When the toggle switch changes state, load the corresponding chart.
+ * The toggle remains green (unless disabled by Detail view).
+ * If checked, show 1 Year data and update the inner text to "1 Y".
+ * If unchecked, show 1 Month data and update the inner text to "1 M".
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
+    // If detail view is active, do nothing.
     var toggleSwitch = container.querySelector('.toggle-switch');
-    // If currently disabled, remove the disabled state
     if (toggleSwitch.classList.contains('disabled')) {
-        toggleSwitch.classList.remove('disabled');
+        return;
     }
-    // Unselect the Detail button
-    var detailBtn = container.querySelector('[data-type="detail"]');
-    detailBtn.classList.remove('selected');
-
+    var productId = container.getAttribute('data-product-id');
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
     var chartView = viewContainer.querySelector('.chart-view');
     detailView.style.opacity = '0';
     chartView.style.opacity = '1';
-
-    var productId = container.getAttribute('data-product-id');
-    var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
     var dataSet;
+    var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
     if (checkbox.checked) {
         dataSet = window.priceHistoryData[productId]["1yr"];
         toggleLabel.textContent = "1 Y";
@@ -332,7 +329,6 @@ function toggleMonYr(checkbox) {
         dataSet = window.priceHistoryData[productId]["1mon"];
         toggleLabel.textContent = "1 M";
     }
-
     setTimeout(function() {
         renderStackedChart(chartView, dataSet);
     }, 50);
@@ -340,9 +336,11 @@ function toggleMonYr(checkbox) {
 
 /**
  * Renders a stacked bar chart in an <svg>.
- * - Bar labels (was_price, now_price) show only numbers (no "$").
- * - Y-axis numeric labels include "$ ".
- * - The was_price label is placed above the bar.
+ * - was_price => total bar height, but bar labels have no "$"
+ * - now_price => bottom (green)
+ * - difference => top (orange)
+ * - Y-axis numeric labels include "$ "
+ * - was_price label is placed above the bar (without "$")
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
@@ -389,12 +387,11 @@ function renderStackedChart(chartView, data) {
         var bottomH = (bottomVal / total) * totalH;
         var topH = totalH - bottomH;
         var barSpacing = chartW / data.length;
-        var barX = leftPad + i * barSpacing + barSpacing * 0.2;
+        var barX = leftPad + i * barSpacing + barSpacing*0.2;
         var barWidth = barSpacing * 0.6;
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
 
-        // Draw bottom (green)
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
@@ -404,7 +401,6 @@ function renderStackedChart(chartView, data) {
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
 
-        // Draw top (orange)
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
@@ -414,7 +410,7 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
 
-        // now_price label (no "$")
+        // Label for now_price (no $ sign)
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -424,7 +420,7 @@ function renderStackedChart(chartView, data) {
         txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
 
-        // was_price label above the bar (no "$")
+        // Label for was_price above bar (no $ sign)
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -438,7 +434,6 @@ function renderStackedChart(chartView, data) {
         var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
 
-        // Date label
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
@@ -450,7 +445,7 @@ function renderStackedChart(chartView, data) {
     });
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
-        for (var i = 1; i < linePoints.length; i++) {
+        for (var i=1; i<linePoints.length; i++) {
             pathD += " L " + linePoints[i][0] + " " + linePoints[i][1];
         }
         var linePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -492,7 +487,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">ss_intnfood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 13:32:57</div>
+  <div class="creation-time">Created on: 2025-02-28 13:34:12</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -511,7 +506,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21054846/b3/en/front/21054846_front_a06_@2.png' alt='Frozen Samosa' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21054846_EA">
+    <div class="toggle-switch" data-product-id="21054846_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21054846_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21054846_EA">
         <span class="toggle-circle"></span>
@@ -549,7 +544,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21054779/b3/en/angle/21054779_angle_a06_@2.png' alt='Veg Spring Roll' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21054779_EA">
+    <div class="toggle-switch" data-product-id="21054779_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21054779_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21054779_EA">
         <span class="toggle-circle"></span>
@@ -587,7 +582,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20143381001/b3/en/front/20143381001_front_a06_@2.png' alt='Roma Tomatoes' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20143381001_KG">
+    <div class="toggle-switch" data-product-id="20143381001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20143381001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20143381001_KG">
         <span class="toggle-circle"></span>
@@ -625,7 +620,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21447368/b3/en/front/21447368_front_a06_@2.png' alt='Sweet Potato Vermicelli, Wide' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21447368_EA">
+    <div class="toggle-switch" data-product-id="21447368_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21447368_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21447368_EA">
         <span class="toggle-circle"></span>
@@ -663,7 +658,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20975662/b3/en/front/20975662_front_a06_@2.png' alt='Mix, Super Extra' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20975662_EA">
+    <div class="toggle-switch" data-product-id="20975662_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20975662_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20975662_EA">
         <span class="toggle-circle"></span>
@@ -701,7 +696,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20026612/b3/en/angle/20026612_angle_a06_@2.png' alt='Couscous      ' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20026612_EA">
+    <div class="toggle-switch" data-product-id="20026612_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20026612_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20026612_EA">
         <span class="toggle-circle"></span>
@@ -739,7 +734,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21295389/b3/en/front/21295389_front_a06_@2.png' alt='Pasta, Vermicelli Longkou Pancit Sotanghon' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21295389_EA">
+    <div class="toggle-switch" data-product-id="21295389_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21295389_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21295389_EA">
         <span class="toggle-circle"></span>
@@ -777,7 +772,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21100328/b3/en/front/21100328_front_a06_@2.png' alt='Sushi Ginger' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21100328_EA">
+    <div class="toggle-switch" data-product-id="21100328_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21100328_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21100328_EA">
         <span class="toggle-circle"></span>
@@ -815,7 +810,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20594714/b3/en/angle/20594714_angle_a06_@2.png' alt='Premium Unsweetened Coconut Milk' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20594714_EA">
+    <div class="toggle-switch" data-product-id="20594714_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20594714_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20594714_EA">
         <span class="toggle-circle"></span>
@@ -853,7 +848,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20378063002/b3/en/angle/20378063002_angle_a06_@2.png' alt='Beef Bouillon Cubes' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20378063002_EA">
+    <div class="toggle-switch" data-product-id="20378063002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20378063002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20378063002_EA">
         <span class="toggle-circle"></span>
@@ -891,7 +886,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20378063001/b3/en/front/20378063001_front_a06_@2.png' alt='Chicken Bouillon Cubes' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20378063001_EA">
+    <div class="toggle-switch" data-product-id="20378063001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20378063001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20378063001_EA">
         <span class="toggle-circle"></span>
@@ -929,7 +924,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21499017/b3/en/front/21499017_front_a06_@2.png' alt='Sriracha Hot Chili Sauce Original' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21499017_EA">
+    <div class="toggle-switch" data-product-id="21499017_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21499017_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21499017_EA">
         <span class="toggle-circle"></span>
@@ -967,7 +962,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21352008/b3/en/angle/21352008_angle_a06_@2.png' alt='Free From Australian Lean Ground Lamb' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21352008_EA">
+    <div class="toggle-switch" data-product-id="21352008_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21352008_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21352008_EA">
         <span class="toggle-circle"></span>
@@ -1005,7 +1000,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20710715/b3/en/front/20710715_front_a06_@2.png' alt='Punjabi Samosa' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20710715_EA">
+    <div class="toggle-switch" data-product-id="20710715_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20710715_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20710715_EA">
         <span class="toggle-circle"></span>
@@ -1043,7 +1038,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21449248/b3/en/front/21449248_front_a06_@2.png' alt='Thickened Creamy Product' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21449248_EA">
+    <div class="toggle-switch" data-product-id="21449248_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21449248_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21449248_EA">
         <span class="toggle-circle"></span>
@@ -1081,7 +1076,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21451088/b3/en/front/21451088_front_a06_@2.png' alt='Crispy Coconut Rolls' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21451088_EA">
+    <div class="toggle-switch" data-product-id="21451088_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21451088_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21451088_EA">
         <span class="toggle-circle"></span>
@@ -1119,7 +1114,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20118969/b3/en/front/20118969_front_a06_@2.png' alt='Biscuits with Malt' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20118969_EA">
+    <div class="toggle-switch" data-product-id="20118969_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20118969_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20118969_EA">
         <span class="toggle-circle"></span>
@@ -1157,7 +1152,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20020863001/b3/en/front/20020863001_front_a06_@2.png' alt='Taiwanese Flat Cabbage' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20020863001_KG">
+    <div class="toggle-switch" data-product-id="20020863001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20020863001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20020863001_KG">
         <span class="toggle-circle"></span>
@@ -1195,7 +1190,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21238066/b3/en/front/21238066_front_a06_@2.png' alt='Faba Beans Foul Medamas' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21238066_EA">
+    <div class="toggle-switch" data-product-id="21238066_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21238066_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21238066_EA">
         <span class="toggle-circle"></span>
@@ -1233,7 +1228,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21214570/b3/en/front/21214570_front_a06_@2.png' alt='Chickpeas ' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21214570_EA">
+    <div class="toggle-switch" data-product-id="21214570_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214570_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21214570_EA">
         <span class="toggle-circle"></span>
@@ -1271,7 +1266,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21214481/b3/en/front/21214481_front_a06_@2.png' alt='Red Kidney Beans' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21214481_EA">
+    <div class="toggle-switch" data-product-id="21214481_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214481_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21214481_EA">
         <span class="toggle-circle"></span>
@@ -1309,7 +1304,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21214480/b3/en/front/21214480_front_a06_@2.png' alt='Small Red Beans' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21214480_EA">
+    <div class="toggle-switch" data-product-id="21214480_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214480_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21214480_EA">
         <span class="toggle-circle"></span>
@@ -1347,7 +1342,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21214477/b3/en/front/21214477_front_a06_@2.png' alt='White Kidney Beans' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21214477_EA">
+    <div class="toggle-switch" data-product-id="21214477_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214477_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21214477_EA">
         <span class="toggle-circle"></span>
@@ -1385,7 +1380,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21214470/b3/en/front/21214470_front_a06_@2.png' alt='Green Lentils' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21214470_EA">
+    <div class="toggle-switch" data-product-id="21214470_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214470_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21214470_EA">
         <span class="toggle-circle"></span>
@@ -1423,7 +1418,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21214469/b3/en/front/21214469_front_a06_@2.png' alt='Blaturtle Beans     ' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21214469_EA">
+    <div class="toggle-switch" data-product-id="21214469_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21214469_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21214469_EA">
         <span class="toggle-circle"></span>
@@ -1461,7 +1456,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21089449/b3/en/angle/21089449_angle_a06_@2.png' alt='Pancit Canton Instant Noodles Hot Chilli Flavour' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21089449_EA">
+    <div class="toggle-switch" data-product-id="21089449_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21089449_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21089449_EA">
         <span class="toggle-circle"></span>
@@ -1499,7 +1494,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20689357002/b3/en/front/20689357002_front_a06_@2.png' alt='Lucky Me Original Chow Mein' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20689357002_EA">
+    <div class="toggle-switch" data-product-id="20689357002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20689357002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20689357002_EA">
         <span class="toggle-circle"></span>
@@ -1537,7 +1532,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20689357001/b3/en/angle/20689357001_angle_a06_@2.png' alt='Instant Pancit Canton Chow Mein' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20689357001_EA">
+    <div class="toggle-switch" data-product-id="20689357001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20689357001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20689357001_EA">
         <span class="toggle-circle"></span>
@@ -1575,7 +1570,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20162500001/b3/en/front/20162500001_front_a06_@2.png' alt='Guava' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20162500001_KG">
+    <div class="toggle-switch" data-product-id="20162500001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20162500001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20162500001_KG">
         <span class="toggle-circle"></span>
@@ -1613,7 +1608,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20693092/b3/en/front/20693092_front_a06_@2.png' alt='Organic Coconut Sugar' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20693092_EA">
+    <div class="toggle-switch" data-product-id="20693092_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20693092_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20693092_EA">
         <span class="toggle-circle"></span>
@@ -1651,7 +1646,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21377793/b3/en/front/21377793_front_a06_@2.png' alt='Coconut Milk Unsweetened' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21377793_EA">
+    <div class="toggle-switch" data-product-id="21377793_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21377793_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21377793_EA">
         <span class="toggle-circle"></span>
@@ -1689,7 +1684,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20703060/b3/en/front/20703060_front_a06_@2.png' alt='Sushi Nori Roasted Seaweed Sheets' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20703060_EA">
+    <div class="toggle-switch" data-product-id="20703060_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20703060_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20703060_EA">
         <span class="toggle-circle"></span>
@@ -1727,7 +1722,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20823424/b3/en/front/20823424_front_a06_@2.png' alt='Chipotle Pepper Sauce' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20823424_EA">
+    <div class="toggle-switch" data-product-id="20823424_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20823424_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20823424_EA">
         <span class="toggle-circle"></span>
@@ -1765,7 +1760,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21416495/b3/en/front/21416495_front_a06_@2.png' alt='Corned Beef Halal' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21416495_EA">
+    <div class="toggle-switch" data-product-id="21416495_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21416495_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21416495_EA">
         <span class="toggle-circle"></span>
@@ -1803,7 +1798,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20119760001/b3/en/front/20119760001_front_a06_@2.png' alt='Caribbean Avocado' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20119760001_EA">
+    <div class="toggle-switch" data-product-id="20119760001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119760001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20119760001_EA">
         <span class="toggle-circle"></span>
@@ -1841,7 +1836,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20971707/b3/en/front/20971707_front_a06_@2.png' alt='Mix Classic ' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20971707_EA">
+    <div class="toggle-switch" data-product-id="20971707_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20971707_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20971707_EA">
         <span class="toggle-circle"></span>
@@ -1879,7 +1874,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20348550002/b3/en/front/20348550002_front_a06_@2.png' alt='Banana Chili Sauce' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20348550002_EA">
+    <div class="toggle-switch" data-product-id="20348550002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20348550002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20348550002_EA">
         <span class="toggle-circle"></span>
@@ -1917,7 +1912,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20945705/b3/en/angle/20945705_angle_a06_@2.png' alt='Pre-Cooked White Corn Meal' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20945705_EA">
+    <div class="toggle-switch" data-product-id="20945705_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20945705_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20945705_EA">
         <span class="toggle-circle"></span>
@@ -1955,7 +1950,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20945695/b3/en/front/20945695_front_a06_@2.png' alt='Pre-Cooked Yellow Corn Meal' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20945695_EA">
+    <div class="toggle-switch" data-product-id="20945695_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20945695_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20945695_EA">
         <span class="toggle-circle"></span>
@@ -1993,7 +1988,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20896606/b3/en/front/20896606_front_a06_@2.png' alt='Basmati Rice' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20896606_EA">
+    <div class="toggle-switch" data-product-id="20896606_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20896606_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20896606_EA">
         <span class="toggle-circle"></span>
@@ -2031,7 +2026,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20040825/b3/en/front/20040825_front_a06_@2.png' alt='Jamaican Water Crackers' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20040825_EA">
+    <div class="toggle-switch" data-product-id="20040825_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20040825_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20040825_EA">
         <span class="toggle-circle"></span>
@@ -2069,7 +2064,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20159689001/b3/en/front/20159689001_front_a06_@2.png' alt='Fenugreek Bunch' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20159689001_EA">
+    <div class="toggle-switch" data-product-id="20159689001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20159689001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20159689001_EA">
         <span class="toggle-circle"></span>
@@ -2107,7 +2102,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20854556002/b3/en/front/20854556002_front_a06_@2.png' alt='Sunflower Seeds, Original' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20854556002_EA">
+    <div class="toggle-switch" data-product-id="20854556002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20854556002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20854556002_EA">
         <span class="toggle-circle"></span>
@@ -2145,7 +2140,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20661711/b3/en/back/20661711_back_a06_@2.png' alt='Premium Unsweetened Coconut Milk' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20661711_EA">
+    <div class="toggle-switch" data-product-id="20661711_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20661711_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20661711_EA">
         <span class="toggle-circle"></span>
@@ -2183,7 +2178,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20275924/b3/en/back/20275924_back_a06_@2.png' alt='Lite Coconut Milk' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20275924_EA">
+    <div class="toggle-switch" data-product-id="20275924_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20275924_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20275924_EA">
         <span class="toggle-circle"></span>
@@ -2221,7 +2216,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20214568/b3/en/front/20214568_front_a06_@2.png' alt='Sweet Chili Sauce for Chicken' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20214568_EA">
+    <div class="toggle-switch" data-product-id="20214568_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20214568_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20214568_EA">
         <span class="toggle-circle"></span>
@@ -2259,7 +2254,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21450739/b3/en/front/21450739_front_a06_@2.png' alt='Tocino Flavoured' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21450739_EA">
+    <div class="toggle-switch" data-product-id="21450739_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21450739_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21450739_EA">
         <span class="toggle-circle"></span>
@@ -2297,7 +2292,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20811362001/b3/en/front/20811362001_front_a06_@2.png' alt='Red Onions, 3 lb Bag' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20811362001_EA">
+    <div class="toggle-switch" data-product-id="20811362001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811362001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20811362001_EA">
         <span class="toggle-circle"></span>
@@ -2335,7 +2330,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20696626001/b3/en/front/20696626001_front_a06_@2.png' alt='Granadilla' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20696626001_EA">
+    <div class="toggle-switch" data-product-id="20696626001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20696626001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20696626001_EA">
         <span class="toggle-circle"></span>
@@ -2373,7 +2368,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21365951/b3/en/front/21365951_front_a06_@2.png' alt='Raw Honey' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21365951_EA">
+    <div class="toggle-switch" data-product-id="21365951_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21365951_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21365951_EA">
         <span class="toggle-circle"></span>
@@ -2411,7 +2406,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20367557/b3/en/angle/20367557_angle_a06_@2.png' alt='Gulab Jamun' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20367557_EA">
+    <div class="toggle-switch" data-product-id="20367557_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20367557_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20367557_EA">
         <span class="toggle-circle"></span>
@@ -2449,7 +2444,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21570722/b3/en/front/21570722_front_a06_@2.png' alt='Pastrami Mild' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21570722_EA">
+    <div class="toggle-switch" data-product-id="21570722_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570722_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21570722_EA">
         <span class="toggle-circle"></span>
@@ -2487,7 +2482,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21570684/b3/en/front/21570684_front_a06_@2.png' alt='Cajun Turkey Breast Mild' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21570684_EA">
+    <div class="toggle-switch" data-product-id="21570684_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570684_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21570684_EA">
         <span class="toggle-circle"></span>
@@ -2525,7 +2520,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21570639/b3/en/front/21570639_front_a06_@2.png' alt='Roast Beef Mild' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21570639_EA">
+    <div class="toggle-switch" data-product-id="21570639_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570639_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21570639_EA">
         <span class="toggle-circle"></span>
@@ -2563,7 +2558,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21570617/b3/en/front/21570617_front_a06_@2.png' alt='Smoked Turkey Breast Mild' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21570617_EA">
+    <div class="toggle-switch" data-product-id="21570617_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570617_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21570617_EA">
         <span class="toggle-circle"></span>
@@ -2601,7 +2596,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21531421/b3/en/front/21531421_front_a06_@2.png' alt='Ground Chili Paste With Extra Garlic Sambal Oelek' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21531421_EA">
+    <div class="toggle-switch" data-product-id="21531421_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21531421_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21531421_EA">
         <span class="toggle-circle"></span>
@@ -2639,7 +2634,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21531411/b3/en/front/21531411_front_a06_@2.png' alt='Ground Chili Sauce Sambal Oelek' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21531411_EA">
+    <div class="toggle-switch" data-product-id="21531411_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21531411_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21531411_EA">
         <span class="toggle-circle"></span>
@@ -2677,7 +2672,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20006325002/b3/en/front/20006325002_front_a06_@2.png' alt='Vinegar Salta' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20006325002_EA">
+    <div class="toggle-switch" data-product-id="20006325002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20006325002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20006325002_EA">
         <span class="toggle-circle"></span>
@@ -2715,7 +2710,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20582962/b3/en/front/20582962_front_a06_@2.png' alt='100% Pure Coconut Water' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20582962_EA">
+    <div class="toggle-switch" data-product-id="20582962_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20582962_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20582962_EA">
         <span class="toggle-circle"></span>
@@ -2753,7 +2748,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20322953002/b3/en/front/20322953002_front_a06_@2.png' alt='Salsa, Medium' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20322953002_EA">
+    <div class="toggle-switch" data-product-id="20322953002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20322953002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20322953002_EA">
         <span class="toggle-circle"></span>
@@ -2791,7 +2786,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20322953001/b3/en/front/20322953001_front_a06_@2.png' alt='Salsa, Hot' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20322953001_EA">
+    <div class="toggle-switch" data-product-id="20322953001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20322953001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20322953001_EA">
         <span class="toggle-circle"></span>
@@ -2829,7 +2824,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20045048/b3/en/front/20045048_front_a06_@2.png' alt='Hoisin Squeeze Sauce' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20045048_EA">
+    <div class="toggle-switch" data-product-id="20045048_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20045048_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20045048_EA">
         <span class="toggle-circle"></span>
@@ -2867,7 +2862,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21357761/b3/en/angle/21357761_angle_a06_@2.png' alt='Iodized Himalayan Pink Salt ' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21357761_EA">
+    <div class="toggle-switch" data-product-id="21357761_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21357761_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21357761_EA">
         <span class="toggle-circle"></span>
@@ -2905,7 +2900,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20168395001/b3/en/angle/20168395001_angle_a06_@2.png' alt='Dragon Fruit' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20168395001_EA">
+    <div class="toggle-switch" data-product-id="20168395001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20168395001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20168395001_EA">
         <span class="toggle-circle"></span>
@@ -2943,7 +2938,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20121509001/b3/en/front/20121509001_front_a06_@2.png' alt='Ataulfo Mango' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20121509001_EA">
+    <div class="toggle-switch" data-product-id="20121509001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20121509001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20121509001_EA">
         <span class="toggle-circle"></span>
@@ -2981,7 +2976,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20877966/b3/en/front/20877966_front_a06_@2.png' alt='Sweetened Condensed Whitener' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20877966_EA">
+    <div class="toggle-switch" data-product-id="20877966_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20877966_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20877966_EA">
         <span class="toggle-circle"></span>
@@ -3019,7 +3014,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20165080/b3/en/front/20165080_front_a06_@2.png' alt='Pure Sesame Oil' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20165080_EA">
+    <div class="toggle-switch" data-product-id="20165080_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20165080_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20165080_EA">
         <span class="toggle-circle"></span>
@@ -3057,7 +3052,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20807760/b3/en/front/20807760_front_a06_@2.png' alt='Cashews, Salted' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20807760_EA">
+    <div class="toggle-switch" data-product-id="20807760_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20807760_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20807760_EA">
         <span class="toggle-circle"></span>
@@ -3095,7 +3090,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20167418/b3/en/front/20167418_front_a06_@2.png' alt='Panda Oyster Sauce' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20167418_EA">
+    <div class="toggle-switch" data-product-id="20167418_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20167418_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20167418_EA">
         <span class="toggle-circle"></span>
@@ -3133,7 +3128,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20122943/b3/en/front/20122943_front_a06_@2.png' alt='Jerk Marinade' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20122943_EA">
+    <div class="toggle-switch" data-product-id="20122943_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20122943_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20122943_EA">
         <span class="toggle-circle"></span>
@@ -3171,7 +3166,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21570068/b3/en/front/21570068_front_a06_@2.png' alt='Wjx Soy Sauce' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21570068_EA">
+    <div class="toggle-switch" data-product-id="21570068_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21570068_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21570068_EA">
         <span class="toggle-circle"></span>
@@ -3209,7 +3204,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20157487001/b3/en/front/20157487001_front_a06_@2.png' alt='Fresh Coconut Young' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20157487001_EA">
+    <div class="toggle-switch" data-product-id="20157487001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20157487001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20157487001_EA">
         <span class="toggle-circle"></span>
@@ -3247,7 +3242,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20649591001/b3/en/front/20649591001_front_a06_@2.png' alt='Manzano Bananas, Bunch' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20649591001_KG">
+    <div class="toggle-switch" data-product-id="20649591001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20649591001_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20649591001_KG">
         <span class="toggle-circle"></span>
@@ -3285,7 +3280,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21182437/b3/en/front/21182437_front_a06_@2.png' alt='Liquid Honey     ' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21182437_EA">
+    <div class="toggle-switch" data-product-id="21182437_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21182437_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21182437_EA">
         <span class="toggle-circle"></span>
@@ -3323,7 +3318,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21456471/b3/en/front/21456471_front_a06_@2.png' alt='Cream Of Coconut Beverage Base' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21456471_EA">
+    <div class="toggle-switch" data-product-id="21456471_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21456471_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21456471_EA">
         <span class="toggle-circle"></span>
@@ -3361,7 +3356,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20286980001/b3/en/angle/20286980001_angle_a06_@2.png' alt='Kesar Rasmalai    ' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20286980001_EA">
+    <div class="toggle-switch" data-product-id="20286980001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20286980001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20286980001_EA">
         <span class="toggle-circle"></span>
@@ -3399,7 +3394,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21001564/b3/en/front/21001564_front_a06_@2.png' alt='Pure Natural White Honey' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21001564_EA">
+    <div class="toggle-switch" data-product-id="21001564_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21001564_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21001564_EA">
         <span class="toggle-circle"></span>
@@ -3437,7 +3432,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20802664/b3/en/front/20802664_front_a06_@2.png' alt='Noodles, Masala' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20802664_EA">
+    <div class="toggle-switch" data-product-id="20802664_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20802664_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20802664_EA">
         <span class="toggle-circle"></span>
@@ -3475,7 +3470,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21447860/b3/en/front/21447860_front_a06_@2.png' alt='Young Green Jackfruit In Brine' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21447860_EA">
+    <div class="toggle-switch" data-product-id="21447860_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21447860_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21447860_EA">
         <span class="toggle-circle"></span>
@@ -3513,7 +3508,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21100563/b3/en/front/21100563_front_a06_@2.png' alt='Coconut Milk Organic' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21100563_EA">
+    <div class="toggle-switch" data-product-id="21100563_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21100563_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21100563_EA">
         <span class="toggle-circle"></span>
@@ -3551,7 +3546,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20936031/b3/en/angle/20936031_angle_a06_@2.png' alt='Bouillon Cubes, Pork' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20936031_EA">
+    <div class="toggle-switch" data-product-id="20936031_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20936031_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20936031_EA">
         <span class="toggle-circle"></span>
@@ -3589,7 +3584,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20935963/b3/en/angle/20935963_angle_a06_@2.png' alt='Bouillon Cubes, Beef' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20935963_EA">
+    <div class="toggle-switch" data-product-id="20935963_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20935963_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20935963_EA">
         <span class="toggle-circle"></span>
@@ -3627,7 +3622,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20935924/b3/en/angle/20935924_angle_a06_@2.png' alt='Bouillon Cubes, Chicken' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20935924_EA">
+    <div class="toggle-switch" data-product-id="20935924_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20935924_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20935924_EA">
         <span class="toggle-circle"></span>
@@ -3665,7 +3660,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20659463/b3/en/angle/20659463_angle_a06_@2.png' alt='Rice Vermicelli Noodles' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20659463_EA">
+    <div class="toggle-switch" data-product-id="20659463_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20659463_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20659463_EA">
         <span class="toggle-circle"></span>
@@ -3703,7 +3698,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20795464/b3/en/front/20795464_front_a06_@2.png' alt='Grand Extra Basmati Rice' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20795464_EA">
+    <div class="toggle-switch" data-product-id="20795464_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20795464_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20795464_EA">
         <span class="toggle-circle"></span>
@@ -3741,7 +3736,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20844097/b3/en/front/20844097_front_a06_@2.png' alt='Coconut Milk, Powdered' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20844097_EA">
+    <div class="toggle-switch" data-product-id="20844097_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20844097_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20844097_EA">
         <span class="toggle-circle"></span>
@@ -3779,7 +3774,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20603048002/b3/en/front/20603048002_front_a06_@2.png' alt='Shirley Biscuits, Coconut' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20603048002_EA">
+    <div class="toggle-switch" data-product-id="20603048002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20603048002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20603048002_EA">
         <span class="toggle-circle"></span>
@@ -3817,7 +3812,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21342684/b3/en/angle/21342684_angle_a06_@2.png' alt='Medium Grain Sushi Rice ' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21342684_EA">
+    <div class="toggle-switch" data-product-id="21342684_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21342684_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21342684_EA">
         <span class="toggle-circle"></span>
@@ -3855,7 +3850,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21290266/b3/en/angle/21290266_angle_a06_@2.png' alt='Thai Hom Mali Brown Jasmine Rice' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21290266_EA">
+    <div class="toggle-switch" data-product-id="21290266_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21290266_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21290266_EA">
         <span class="toggle-circle"></span>
@@ -3893,7 +3888,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20874066/b3/en/front/20874066_front_a06_@2.png' alt='Chili Paste' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20874066_EA">
+    <div class="toggle-switch" data-product-id="20874066_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20874066_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20874066_EA">
         <span class="toggle-circle"></span>
@@ -3931,7 +3926,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21367021/b3/en/front/21367021_front_a06_@2.png' alt='Chow Style Chili' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21367021_EA">
+    <div class="toggle-switch" data-product-id="21367021_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21367021_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21367021_EA">
         <span class="toggle-circle"></span>
@@ -3969,7 +3964,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21533720/b3/en/front/21533720_front_a06_@2.png' alt='Dressing & Marinade Roasted Garlic Onion' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21533720_EA">
+    <div class="toggle-switch" data-product-id="21533720_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21533720_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21533720_EA">
         <span class="toggle-circle"></span>
@@ -4007,7 +4002,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21455280/b3/en/front/21455280_front_a06_@2.png' alt='Crispy Shrimp Cheeks Snacks Original' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21455280_EA">
+    <div class="toggle-switch" data-product-id="21455280_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21455280_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21455280_EA">
         <span class="toggle-circle"></span>
@@ -4045,7 +4040,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20176654/b3/en/angle/20176654_angle_a06_@2.png' alt='Instant Coffee & Roasted Chicory' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20176654_EA">
+    <div class="toggle-switch" data-product-id="20176654_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20176654_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20176654_EA">
         <span class="toggle-circle"></span>
@@ -4083,7 +4078,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20105016/b3/en/beauty/20105016_beauty_a06_@2.png' alt='Green Olives with Garlic' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20105016_EA">
+    <div class="toggle-switch" data-product-id="20105016_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20105016_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20105016_EA">
         <span class="toggle-circle"></span>
@@ -4121,7 +4116,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20087448/b3/en/beauty/20087448_beauty_a06_@2.png' alt='Green Olives with Almonds' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20087448_EA">
+    <div class="toggle-switch" data-product-id="20087448_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20087448_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20087448_EA">
         <span class="toggle-circle"></span>
@@ -4159,7 +4154,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20603025/b3/en/front/20603025_front_a06_@2.png' alt='Plantain Chips' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20603025_EA">
+    <div class="toggle-switch" data-product-id="20603025_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20603025_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20603025_EA">
         <span class="toggle-circle"></span>
@@ -4197,7 +4192,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20602609002/b3/en/front/20602609002_front_a06_@2.png' alt='Sweet Plantain Chips' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20602609002_EA">
+    <div class="toggle-switch" data-product-id="20602609002_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20602609002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20602609002_EA">
         <span class="toggle-circle"></span>
@@ -4235,7 +4230,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20544362001/b3/en/angle/20544362001_angle_a06_@2.png' alt='Halal Yogurt 2% Plain' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20544362001_EA">
+    <div class="toggle-switch" data-product-id="20544362001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20544362001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20544362001_EA">
         <span class="toggle-circle"></span>
@@ -4273,7 +4268,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20343515/b3/en/angle/20343515_angle_a06_@2.png' alt='Halal Yogurt 3% Plain' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20343515_EA">
+    <div class="toggle-switch" data-product-id="20343515_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20343515_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20343515_EA">
         <span class="toggle-circle"></span>
@@ -4311,7 +4306,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20795451/b3/en/front/20795451_front_a06_@2.png' alt='Organic Virgin Coconut Oil' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20795451_EA">
+    <div class="toggle-switch" data-product-id="20795451_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20795451_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20795451_EA">
         <span class="toggle-circle"></span>
@@ -4349,7 +4344,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20602261/b3/en/front/20602261_front_a06_@2.png' alt='Jack Mackerel In Brine' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20602261_EA">
+    <div class="toggle-switch" data-product-id="20602261_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20602261_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20602261_EA">
         <span class="toggle-circle"></span>
@@ -4387,7 +4382,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21407916/b3/en/front/21407916_front_a06_@2.png' alt='Cream Crackers ' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21407916_EA">
+    <div class="toggle-switch" data-product-id="21407916_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21407916_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21407916_EA">
         <span class="toggle-circle"></span>
@@ -4425,7 +4420,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20601749/b3/en/front/20601749_front_a06_@2.png' alt='Festival Unique Jamaican Dough Mix' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20601749_EA">
+    <div class="toggle-switch" data-product-id="20601749_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20601749_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20601749_EA">
         <span class="toggle-circle"></span>
@@ -4463,7 +4458,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20007741/b3/en/front/20007741_front_a06_@2.png' alt='Johnny Cake Mix' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20007741_EA">
+    <div class="toggle-switch" data-product-id="20007741_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20007741_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20007741_EA">
         <span class="toggle-circle"></span>
@@ -4501,7 +4496,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20139600/b3/en/front/20139600_front_a06_@2.png' alt='Panda Brand Oyster Sauce' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20139600_EA">
+    <div class="toggle-switch" data-product-id="20139600_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20139600_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20139600_EA">
         <span class="toggle-circle"></span>
@@ -4539,7 +4534,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21176798/b3/en/angle/21176798_angle_a06_@2.png' alt='M.Y Sans Crackers' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21176798_EA">
+    <div class="toggle-switch" data-product-id="21176798_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21176798_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21176798_EA">
         <span class="toggle-circle"></span>
@@ -4577,7 +4572,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/21365899/b3/en/front/21365899_front_a06_@2.png' alt='Diced Chipotle Peppers' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="21365899_EA">
+    <div class="toggle-switch" data-product-id="21365899_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21365899_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21365899_EA">
         <span class="toggle-circle"></span>
@@ -4615,7 +4610,7 @@ function renderStackedChart(chartView, data) {
       <img src='https://assets.shop.loblaws.ca/products/20318656001/b3/en/front/20318656001_front_a06_@2.png' alt='Green Mexican Sauce' />
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch disabled" data-product-id="20318656001_EA">
+    <div class="toggle-switch" data-product-id="20318656001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20318656001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20318656001_EA">
         <span class="toggle-circle"></span>
