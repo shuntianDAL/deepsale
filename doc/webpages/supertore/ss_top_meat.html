@@ -53,7 +53,7 @@ body {
     margin: 0 20px 20px;
 }
 .header-spacer {
-    height: 70px;
+    height: 70px; /* offset the fixed header */
 }
 .search-button {
     background-color: #3e7d53;
@@ -112,8 +112,10 @@ body {
     line-height: 1;
     padding: 0;
 }
+/* Layout for each item container (row) */
 .item-container {
     display: flex;
+    align-items: flex-start;
     gap: 15px;
     width: 90%;
     max-width: 600px;
@@ -121,50 +123,53 @@ body {
     border-bottom: 1px solid #ccc;
     padding-bottom: 15px;
 }
-.left-column {
-    width: 100px;
+.left-side {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
-.right-column {
-    flex: 1;
+.item-image img {
+    width: 80px;
+    height: auto;
 }
-.button-group {
+.button-group-vertical {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width: 100%;
 }
-.switch-button {
+.vertical-switch-button {
     background-color: #3e7d53;
     border: none;
     color: #fff;
-    padding: 6px;
+    padding: 6px 12px;
     border-radius: 9999px;
     cursor: pointer;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
-.switch-button.selected {
+.vertical-switch-button.selected {
     background-color: #3e7d53;
     color: #fff;
 }
-.switch-button:not(.selected) {
+.vertical-switch-button:not(.selected) {
     background-color: #ddd;
     color: #000;
 }
+.right-side {
+    flex: 1;
+    position: relative;
+}
 .view-container {
     position: relative;
+    min-height: 80px;
 }
 .detail-view, .chart-view {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     transition: opacity 0.4s ease;
 }
 .detail-view {
@@ -219,26 +224,26 @@ body {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Global dictionary: priceHistoryData[product_id] = { "1mon": [...], "1yr": [...] }
     window.priceHistoryData = {"20822350_KG": {"1mon": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}], "1yr": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}]}, "20822150_KG": {"1mon": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}], "1yr": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}]}, "20836762_KG": {"1mon": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}], "1yr": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}]}, "21618256_KG": {"1mon": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}], "1yr": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}]}, "20822343_KG": {"1mon": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}], "1yr": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}]}, "20835855_KG": {"1mon": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}], "1yr": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}]}, "20822906_KG": {"1mon": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}], "1yr": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}]}, "20822347_KG": {"1mon": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}], "1yr": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}]}, "20822459_KG": {"1mon": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}], "1yr": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}]}, "20822322_KG": {"1mon": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}], "1yr": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}]}, "20875645_KG": {"1mon": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}], "1yr": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}]}, "20827782_KG": {"1mon": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}], "1yr": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}]}, "20827787_KG": {"1mon": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}], "1yr": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}]}, "20836766_KG": {"1mon": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}], "1yr": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}]}, "20822452_KG": {"1mon": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}], "1yr": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}]}, "20823075_KG": {"1mon": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}], "1yr": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}]}, "20825554_KG": {"1mon": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}]}, "20827788_KG": {"1mon": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}], "1yr": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}]}, "20823076_KG": {"1mon": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}], "1yr": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}]}, "20827783_KG": {"1mon": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}], "1yr": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}]}, "20826506_KG": {"1mon": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}], "1yr": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}]}, "20822907_KG": {"1mon": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}], "1yr": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}]}, "20827785_KG": {"1mon": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}], "1yr": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}]}, "20823073_KG": {"1mon": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}], "1yr": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}]}, "20416522_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20415978_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20593099_KG": {"1mon": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}], "1yr": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}]}, "20826455_KG": {"1mon": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}], "1yr": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}]}, "20794618_KG": {"1mon": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}], "1yr": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}]}, "20826460_KG": {"1mon": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}], "1yr": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}]}, "20162170_KG": {"1mon": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}], "1yr": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}]}, "21601003_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21600979_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21352008_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}]}, "21588066_EA": {"1mon": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}], "1yr": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}]}, "21290136_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289868_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289731_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "20794616_KG": {"1mon": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}], "1yr": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}]}, "20315210_KG": {"1mon": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}], "1yr": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}]}, "21201106_KG": {"1mon": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21061099_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21061096_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21059807_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21366170_EA": {"1mon": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}]}, "20321514_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20319035_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20794617_KG": {"1mon": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}], "1yr": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}]}, "20794619_KG": {"1mon": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}], "1yr": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}]}, "21646160_EA": {"1mon": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}]}, "21201094_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21201089_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21570722_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570684_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570639_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570617_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566593_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566049_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21539305_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21538773_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178761_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178745_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178744_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20174909_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20156771_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20152629_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20117351_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20057892_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21546108_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20766562_KG": {"1mon": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}], "1yr": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}]}, "20320534_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20313480_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20298289_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "21399630_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "21193815_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20794831_KG": {"1mon": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}], "1yr": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}]}, "20766602_KG": {"1mon": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}], "1yr": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}]}, "20794620_KG": {"1mon": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}], "1yr": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}]}, "21300113_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21300103_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21220674_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "20507161_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507160_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507159_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "21076606_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20923814_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903492_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903241_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20798252_KG": {"1mon": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}], "1yr": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}]}};
 });
 
 /**
- * Switch view based on the clicked button in the vertical button group.
- * The button's data-type attribute indicates:
- *  - "detail": show detail view.
- *  - "1mon": show 1 Month chart.
- *  - "1yr": show 1 Year chart.
- * Updates button styles and toggles the view accordingly.
+ * Switch view based on which vertical button is clicked:
+ *   - "detail": show detail text
+ *   - "1mon": show chart for 1-month data
+ *   - "1yr": show chart for 1-year data
  */
 function switchView(btn) {
     var container = btn.closest('.item-container');
-    var leftCol = container.querySelector('.left-column');
-    var rightCol = container.querySelector('.right-column');
-    var viewContainer = rightCol.querySelector('.view-container');
+    var leftSide = container.querySelector('.left-side');
+    var rightSide = container.querySelector('.right-side');
+    var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
     var chartView = viewContainer.querySelector('.chart-view');
     var productId = container.getAttribute('data-product-id');
-    var allButtons = container.querySelectorAll('.switch-button');
+    // Unselect all buttons
+    var allButtons = container.querySelectorAll('.vertical-switch-button');
     allButtons.forEach(function(b) {
         b.classList.remove('selected');
     });
@@ -253,6 +258,7 @@ function switchView(btn) {
     } else {
         detailView.style.opacity = '0';
         chartView.style.opacity = '1';
+        // fetch the data from the global dictionary
         var dataSet = window.priceHistoryData[productId][viewType];
         setTimeout(function() {
             renderStackedChart(chartView, dataSet);
@@ -261,15 +267,13 @@ function switchView(btn) {
 }
 
 /**
- * Renders a stacked bar chart in an <svg> using the provided dataset.
- * - Each bar's total height corresponds to was_price.
- * - The bottom (green) represents now_price.
- * - The top (orange) represents the difference.
- * - All numeric labels are prefixed with "$ " with a small space.
- * - Y-axis numeric labels include "$ " as well.
- * - A vertical axis line and horizontal grid lines are drawn.
- * - A line connects the top of the now_price portion across bars.
- * - The was_price label is positioned above (outside) the bar.
+ * Renders a stacked bar chart in an <svg> using the provided data.
+ * - was_price => total bar height
+ * - now_price => bottom (green)
+ * - difference => top (orange)
+ * - All numeric labels have "$ " prefix
+ * - Y-axis numeric labels also have "$ "
+ * - was_price label is placed above the bar
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
@@ -294,6 +298,7 @@ function renderStackedChart(chartView, data) {
     var topPad = 10;
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
+    // Axis line
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -301,7 +306,7 @@ function renderStackedChart(chartView, data) {
     axisLine.setAttribute('y2', topPad);
     axisLine.setAttribute('stroke', '#000');
     svg.appendChild(axisLine);
-    // Place '$' label at the top with a space after; this label is now at the top of Y-axis
+    // Place "$" label near top
     var axisLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     axisLabel.setAttribute('x', leftPad - 5);
     axisLabel.setAttribute('y', topPad + 5);
@@ -322,10 +327,11 @@ function renderStackedChart(chartView, data) {
         var bottomH = (bottomVal / total) * totalH;
         var topH = totalH - bottomH;
         var barSpacing = chartW / data.length;
-        var barX = leftPad + i * barSpacing + barSpacing * 0.2;
+        var barX = leftPad + i * barSpacing + barSpacing*0.2;
         var barWidth = barSpacing * 0.6;
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
+        // bottom portion (green)
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
@@ -334,6 +340,7 @@ function renderStackedChart(chartView, data) {
         rectNow.setAttribute('fill', '#009900');
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
+        // top portion (orange)
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
@@ -342,28 +349,31 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('fill', '#FF9900');
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
+        // label for now_price
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtNow.setAttribute('x', barX + barWidth / 2);
+        txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
         txtNow.setAttribute('text-anchor', 'middle');
         txtNow.setAttribute('font-size', '10');
         txtNow.setAttribute('fill', '#000');
         txtNow.textContent = "$ " + d.now_price.toFixed(2);
         svg.appendChild(txtNow);
-        // was_price label placed above the bar (outside)
+        // label for was_price above top
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtWas.setAttribute('x', barX + barWidth / 2);
+        txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
         txtWas.setAttribute('text-anchor', 'middle');
         txtWas.setAttribute('font-size', '10');
         txtWas.setAttribute('fill', '#000');
         txtWas.textContent = "$ " + d.was_price.toFixed(2);
         svg.appendChild(txtWas);
-        var midBarX = barX + barWidth / 2;
+        // line points
+        var midBarX = barX + barWidth/2;
         var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
+        // date label
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing / 2);
+        txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
         txtDate.setAttribute('text-anchor', 'middle');
         txtDate.setAttribute('font-size', '10');
@@ -371,9 +381,10 @@ function renderStackedChart(chartView, data) {
         txtDate.textContent = d.date;
         svg.appendChild(txtDate);
     });
+    // connect line across the top of the green portion
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
-        for (var i = 1; i < linePoints.length; i++) {
+        for (var i=1; i<linePoints.length; i++) {
             pathD += " L " + linePoints[i][0] + " " + linePoints[i][1];
         }
         var linePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -383,9 +394,11 @@ function renderStackedChart(chartView, data) {
         linePath.setAttribute('stroke-width', '2');
         svg.appendChild(linePath);
     }
-    var labelVals = [0, maxWas / 2, maxWas];
+    // y-axis ticks + grid lines
+    var labelVals = [0, maxWas/2, maxWas];
     labelVals.forEach(function(val) {
-        var y = (height - bottomPad) - (val / maxWas) * chartH;
+        var y = (height - bottomPad) - (val / maxWas)*chartH;
+        // dotted grid line
         var gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
         gridLine.setAttribute('x1', leftPad);
         gridLine.setAttribute('y1', y);
@@ -394,6 +407,7 @@ function renderStackedChart(chartView, data) {
         gridLine.setAttribute('stroke', '#ccc');
         gridLine.setAttribute('stroke-dasharray', '2,2');
         svg.appendChild(gridLine);
+        // label
         var txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtLabel.setAttribute('x', 5);
         txtLabel.setAttribute('y', y + 3);
@@ -415,7 +429,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">Meat</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 11:56:42</div>
+  <div class="creation-time">Created on: 2025-02-28 12:04:21</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -428,19 +442,19 @@ function renderStackedChart(chartView, data) {
 
 
 <div class="item-container" data-product-id="20822350_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822350/b3/en/front/20822350_front_a06_@2.png' alt='Pork Loin Chop Rib End, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -461,21 +475,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20822150_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822150/b3/en/angle/20822150_angle_a06_@2.png' alt='Pork Sirloin Roast' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -496,21 +510,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20836762_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20836762/b3/en/front/20836762_front_a06_@2.png' alt='Boneless Pork Sirloin Roast' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -531,21 +545,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21618256_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21618256/b3/en/front/21618256_front_a06_@2.png' alt='Pork Loin Combination Chops, Sirloin and Rib' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -566,21 +580,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20822343_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822343/b3/en/angle/20822343_angle_a06_@2.png' alt='Pork Rib Loin & Sirloin Combination Chop' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -601,21 +615,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20835855_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20835855/b3/en/angle/20835855_angle_a06_@2.png' alt='Pork Sirloin Chops Boneless, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -636,21 +650,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20822906_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822906/b3/en/front/20822906_front_a06_@2.png' alt='Pork Loin Rib End Chop' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -671,21 +685,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20822347_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822347/b3/en/front/20822347_front_a06_@2.png' alt='Pork Loin Chop Rib, Fast Fry' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -706,21 +720,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20822459_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822459/b3/en/front/20822459_front_a06_@2.png' alt='Pork Loin Rib Roast Portion' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -741,21 +755,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20822322_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822322/b3/en/front/20822322_front_a06_@2.png' alt='Pork Sirloin Chop, End Portion' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -776,21 +790,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20875645_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20875645/b3/en/front/20875645_front_a06_@2.png' alt='Boneless Pork For Stew' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -811,21 +825,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20827782_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827782/b3/en/front/20827782_front_a06_@2.png' alt='Boneless Pork Loin Rib Chops, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -846,21 +860,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20827787_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827787/b3/en/front/20827787_front_a06_@2.png' alt='Pork Rib Roast, Boneless' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -881,21 +895,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20836766_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20836766/b3/en/front/20836766_front_a06_@2.png' alt='Pork Sirloin Chops Boneless' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -916,21 +930,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20822452_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822452/b3/en/front/20822452_front_a06_@2.png' alt='Pork Loin Roast, Center Cut with Bone' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -951,21 +965,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20823075_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20823075/b3/en/front/20823075_front_a06_@2.png' alt='Pork Loin Chop Center Chop, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -986,21 +1000,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20825554_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20825554/b3/en/front/20825554_front_a06_@2.png' alt='Pork Loin Butterfly Center Cut Boneless, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1021,21 +1035,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20827788_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827788/b3/en/front/20827788_front_a06_@2.png' alt='Centre Cut Pork Loin Chop Boneless' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1056,21 +1070,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20823076_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20823076/b3/en/front/20823076_front_a06_@2.png' alt='Pork Loin Chopfast Fry  Bone In, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1091,21 +1105,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20827783_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827783/b3/en/front/20827783_front_a06_@2.png' alt='Pork Rib Chops Boneless' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1126,21 +1140,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20826506_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20826506/b3/en/beauty/20826506_beauty_a06_@2.png' alt='Pork Loin Chop Boneless Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1161,21 +1175,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20822907_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822907/b3/en/angle/20822907_angle_a06_@2.png' alt='Pork Loin Chop, Bone In Center Cut' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1196,21 +1210,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20827785_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827785/b3/en/beauty/20827785_beauty_a06_@2.png' alt='Centre Cut Pork Loin Roast Boneless' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1231,21 +1245,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20823073_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20823073/b3/en/front/20823073_front_a06_@2.png' alt='Pork Loin Chop Center Cut Fast Fry' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1266,21 +1280,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20416522_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20416522/b3/en/front/20416522_front_a06_@2.png' alt='Classic Wieners, Family Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1301,21 +1315,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20415978_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20415978/b3/en/front/20415978_front_a06_@2.png' alt='Barbecue Style Wieners' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1336,21 +1350,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20593099_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20593099/b3/en/beauty/20593099_beauty_a06_@2.png' alt='Chicken Breast, Club Pack Boneless Skinless' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1371,21 +1385,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20826455_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20826455/b3/en/front/20826455_front_a06_@2.png' alt='Pork Loin Center Cut Boneless Cutlet' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1406,21 +1420,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20794618_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794618/b3/en/angle/20794618_angle_a06_@2.png' alt='Beef Cross Rib Roast, Boneless' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1441,21 +1455,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20826460_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20826460/b3/en/front/20826460_front_a06_@2.png' alt='Pork Loin Chop, Boneless Butterfly Cut' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1476,21 +1490,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20162170_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20162170/b3/en/angle/20162170_angle_a06_@2.png' alt='Chicken Thigh  Boneless Skinless Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1511,21 +1525,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21601003_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21601003/b3/en/front/21601003_front_a06_@2.png' alt='Extra Lean Ground Chicken' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1546,21 +1560,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21600979_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21600979/b3/en/front/21600979_front_a06_@2.png' alt='Extra Lean Ground Turkey' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1581,21 +1595,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21352008_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21352008/b3/en/angle/21352008_angle_a06_@2.png' alt='Free From Australian Lean Ground Lamb' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1616,21 +1630,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21588066_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21588066/b3/en/angle/21588066_angle_a06_@2.png' alt='Chicken Breast Schnitzel' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1651,21 +1665,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21290136_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21290136/b3/en/front/21290136_front_a06_@2.png' alt='Frozen Twisters Jumbo Sausage' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1686,21 +1700,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21289868_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21289868/b3/en/front/21289868_front_a06_@2.png' alt='Hot Italian Jumbo Sausage' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1721,21 +1735,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21289731_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21289731/b3/en/front/21289731_front_a06_@2.png' alt='Sweet Italian Jumbo Sausage' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1756,21 +1770,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20794616_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794616/b3/en/angle/20794616_angle_a06_@2.png' alt='Beef Cross Rib Steak Boneless, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1791,21 +1805,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20315210_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20315210/b3/en/angle/20315210_angle_a06_@2.png' alt='Big Stick Large Wax Bologna' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1826,21 +1840,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21201106_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21201106/b3/en/angle/21201106_angle_a06_@2.png' alt='Small Batch Oven Roasted Ham' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1861,21 +1875,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21061099_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21061099/b3/en/front/21061099_front_a06_@2.png' alt='Genoa Salami    ' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1896,21 +1910,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21061096_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21061096/b3/en/front/21061096_front_a06_@2.png' alt='Genoa Hot Salami' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1931,21 +1945,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21059807_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21059807/b3/en/front/21059807_front_a06_@2.png' alt='Calabrese Salami, Hot' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -1966,21 +1980,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21366170_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21366170/b3/en/front/21366170_front_a06_@2.png' alt='Marc Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2001,21 +2015,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20321514_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20321514/b3/en/angle/20321514_angle_a06_@2.png' alt='Calabrese Spicy Salami (Thin Sliced)' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2036,21 +2050,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20319035_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20319035/b3/en/angle/20319035_angle_a06_@2.png' alt='Soppressata (Thin Sliced)' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2071,21 +2085,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20794617_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794617/b3/en/angle/20794617_angle_a06_@2.png' alt='Beef Cross Rib Steak, Boneless' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2106,21 +2120,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20794619_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794619/b3/en/front/20794619_front_a06_@2.png' alt='Cross Rib Steak Fast Fry' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2141,21 +2155,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21646160_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21646160/b3/en/front/21646160_front_a06_@2.png' alt='Lean Ground Pork' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2176,21 +2190,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21201094_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21201094/b3/en/angle/21201094_angle_a06_@2.png' alt='Small Batch Smoked Turkey Breast' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2211,21 +2225,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21201089_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21201089/b3/en/angle/21201089_angle_a06_@2.png' alt='Small Batch Cajun Turkey Breast' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2246,21 +2260,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21570722_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21570722/b3/en/front/21570722_front_a06_@2.png' alt='Pastrami Mild' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2281,21 +2295,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21570684_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21570684/b3/en/front/21570684_front_a06_@2.png' alt='Cajun Turkey Breast Mild' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2316,21 +2330,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21570639_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21570639/b3/en/front/21570639_front_a06_@2.png' alt='Roast Beef Mild' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2351,21 +2365,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21570617_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21570617/b3/en/front/21570617_front_a06_@2.png' alt='Smoked Turkey Breast Mild' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2386,21 +2400,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21566593_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21566593/b3/en/front/21566593_front_a06_@2.png' alt='Pepperoni Toppings Mild' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2421,21 +2435,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21566049_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21566049/b3/en/front/21566049_front_a06_@2.png' alt='Salami Spicy' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2456,21 +2470,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21539305_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21539305/b3/en/angle/21539305_angle_a06_@2.png' alt='Smoky Bonfire Double-Smoked Bacon' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2491,21 +2505,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21538773_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21538773/b3/en/angle/21538773_angle_a06_@2.png' alt='Applewood Smoked Bacon' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2526,21 +2540,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21178761_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21178761/b3/en/angle/21178761_angle_a06_@2.png' alt='Fully Cooked, Breaded Chicken Burgers' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2561,21 +2575,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21178745_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21178745/b3/en/angle/21178745_angle_a06_@2.png' alt='Fully Cooked, Breaded Chicken Nuggets Cutlettes' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2596,21 +2610,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21178744_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21178744/b3/en/angle/21178744_angle_a06_@2.png' alt='Breaded Chicken Cutlettes Chicken Strips' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2631,21 +2645,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20174909_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20174909/b3/en/front/20174909_front_a06_@2.png' alt='Bacon, Mild Sugar Cured with Reduced Salt, Uncooked' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2666,21 +2680,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20156771_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20156771/b3/en/angle/20156771_angle_a06_@2.png' alt='Mild Sugar-Cured Bacon' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2701,21 +2715,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20152629_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20152629/b3/en/angle/20152629_angle_a06_@2.png' alt='Bacon' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2736,21 +2750,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20117351_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20117351/b3/en/front/20117351_front_a06_@2.png' alt='Maple Flavoured Naturally Smoked Bacon' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2771,21 +2785,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20057892_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20057892/b3/en/front/20057892_front_a06_@2.png' alt='Reduced Salt Bacon  ' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2806,21 +2820,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21546108_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21546108/b3/en/angle/21546108_angle_a06_@2.png' alt='Wiltshire Bacon Rashers' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2841,21 +2855,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20766562_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20766562/b3/en/angle/20766562_angle_a06_@2.png' alt='Stewing Beef Cubes, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2876,21 +2890,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20320534_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20320534/b3/en/angle/20320534_angle_a06_@2.png' alt='Black Forest Ham, Traditional' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2911,21 +2925,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20313480_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20313480/b3/en/angle/20313480_angle_a06_@2.png' alt='Extra Lean Cooked Ham' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2946,21 +2960,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20298289_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20298289/b3/en/angle/20298289_angle_a06_@2.png' alt='Honey Maple Ham (Thin Sliced)' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -2981,21 +2995,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21399630_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21399630/b3/en/front/21399630_front_a06_@2.png' alt='Breakfast Sausage' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3016,21 +3030,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21193815_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21193815/b3/en/angle/21193815_angle_a06_@2.png' alt='Beyond Burger Plant-Based' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3051,21 +3065,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20794831_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794831/b3/en/front/20794831_front_a06_@2.png' alt='Deluxe Stewing Beef Cubes, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3086,21 +3100,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20766602_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20766602/b3/en/angle/20766602_angle_a06_@2.png' alt='Stewing Beef Cubes' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3121,21 +3135,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20794620_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794620/b3/en/front/20794620_front_a06_@2.png' alt='Deluxe Stewing Beef Cubes' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3156,21 +3170,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21300113_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21300113/b3/en/front/21300113_front_a06_@2.png' alt='Sausage Mild Italian' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3191,21 +3205,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21300103_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21300103/b3/en/front/21300103_front_a06_@2.png' alt='Beyond Sausage Hot Italian' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3226,21 +3240,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21220674_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21220674/b3/en/front/21220674_front_a06_@2.png' alt='Beyond Beef Grounds' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3261,21 +3275,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20507161_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20507161/b3/en/angle/20507161_angle_a06_@2.png' alt='Veggie Ground Round, Mexican' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3296,21 +3310,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20507160_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20507160/b3/en/angle/20507160_angle_a06_@2.png' alt='Veggie Ground Round, Italian' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3331,21 +3345,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20507159_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20507159/b3/en/angle/20507159_angle_a06_@2.png' alt='Veggie Ground Round, Original' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3366,21 +3380,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="21076606_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21076606/b3/en/front/21076606_front_a06_@2.png' alt='Free From Oven-Roasted Chicken Breast' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3401,21 +3415,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20923814_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20923814/b3/en/front/20923814_front_a06_@2.png' alt='Free From Oven Roasted Turkey, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3436,21 +3450,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20903492_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20903492/b3/en/front/20903492_front_a06_@2.png' alt='Free From Black Forrest Ham, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3471,21 +3485,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20903241_EA">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20903241/b3/en/front/20903241_front_a06_@2.png' alt='Free From Honey Ham, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3506,21 +3520,21 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 <div class="item-container" data-product-id="20798252_KG">
-  <div class="left-column">
+  <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20798252/b3/en/angle/20798252_angle_a06_@2.png' alt='Extra Lean Ground Beef, Club Pack' />
     </div>
     
-          <div class="button-group">
-            <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+          <div class="button-group-vertical">
+            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
+            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
+            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
   </div>
-  <div class="right-column">
+  <div class="right-side">
     
           <div class="view-container">
             <div class="detail-view">
@@ -3541,7 +3555,7 @@ function renderStackedChart(chartView, data) {
         
   </div>
 </div>
-        
+
 
 <script>
 function showSearchBar() {
