@@ -14,15 +14,16 @@
 html {
     overflow-y: scroll;
 }
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: #fff;
+    overflow-x: hidden;
 }
 .header-container {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    top: 0; left: 0; right: 0;
     background: #fff;
     padding: 10px 20px;
     display: flex;
@@ -39,102 +40,30 @@ html {
 .page-title {
     font-size: 22px;
     font-weight: 600;
-    font-family: 'Montserrat', Arial, sans-serif;
-}
-.divider {
-    border: 0;
-    height: 1px;
-    background: #ccc;
-    margin: 0 20px 20px;
-}
-.search-button {
-    background-color: #3e7d53;
-    border: none;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 9999px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    animation: fadeIn 0.8s forwards;
-}
-.search-button:hover {
-    background-color: #2c5f3d;
-}
-#searchBarContainer {
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 240px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    text-align: center;
-    transition: opacity 0.5s ease;
-    opacity: 0;
-    display: none;
-    align-items: center;
-    z-index: 1001;
-}
-#searchInput {
-    padding: 4px;
-    width: calc(100% - 60px);
-    border: none;
-    outline: none;
-    font-size: 12px;
-    flex-grow: 1;
-}
-#searchCount {
-    font-size: 12px;
-    color: #3e7d53;
-    margin-left: 8px;
-    white-space: nowrap;
-}
-#closeSearchButton {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: #3e7d53;
-    margin-left: 8px;
-    line-height: 1;
-    padding: 0;
-}
-.header-spacer { height: 70px; }
-body {
-    font-family: 'Montserrat', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #fff;
-    overflow-x: hidden;
 }
 .creation-time {
     text-align: center;
     font-size: 12px;
     color: gray;
-    margin-top: 10px;
+    margin-top: 5px;
 }
-.item-number {
-    color: red;
-    font-weight: 600;
-    border: 2px solid red;
-    border-radius: 50%;
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    text-align: center;
-    line-height: 20px;
-    margin-right: 8px;
-    font-size: 12px;
+.divider {
+    border: 0; height: 1px; background: #ccc;
+    margin: 0 20px 20px;
+}
+.header-spacer {
+    height: 70px; /* to offset fixed header */
+}
+.search-button {
+    background-color: #3e7d53;
+    border: none; color: #fff;
+    padding: 6px 12px;
+    border-radius: 9999px;
+    cursor: pointer; font-size: 12px;
+    font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-flex; align-items: center;
+    gap: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 .item-container {
     width: 90%;
@@ -153,33 +82,49 @@ body {
     align-items: center;
 }
 .item-image img {
-    width: 60px;
-    height: auto;
+    width: 60px; height: auto;
 }
 .view-button {
     margin-top: 6px;
     padding: 8px 16px;
     background-color: #3e7d53;
-    color: #fff;
-    text-decoration: none;
+    color: #fff; text-decoration: none;
     border-radius: 9999px;
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    display: inline-block; border: none; cursor: pointer;
+    outline: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.toggle-chart {
+    margin-top: 8px;
+    padding: 4px 8px;
     font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-block;
-    border: none;
     cursor: pointer;
-    outline: none;
-    animation: fadeIn 0.8s forwards;
 }
-.view-button:hover {
-    background-color: #2c5f3d;
+.chart-and-detail {
+    position: relative;
+    width: 100%;
+    height: 200px; /* fixed height so mobile won't resize */
+    overflow: hidden; /* keep same block size */
 }
-.item-details {
-    flex: 1;
-    text-align: left;
-    font-size: 13px;
+.detail-view, .chart-view {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    padding: 5px;
+    transition: opacity 0.4s ease;
+}
+.detail-view {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    opacity: 1; /* default visible */
+    z-index: 2; /* on top */
+}
+.chart-view {
+    background-color: #f9f9f9;
+    opacity: 0; /* default hidden */
+    z-index: 1; /* behind detail */
 }
 .item-name {
     font-size: 14px;
@@ -187,318 +132,214 @@ body {
     font-weight: 600;
     color: black;
 }
+.item-number {
+    color: red; font-weight: 600;
+    border: 2px solid red; border-radius: 50%;
+    display: inline-block; width: 22px; height: 22px;
+    text-align: center; line-height: 20px;
+    margin-right: 8px; font-size: 12px;
+}
 .now-price {
-    color: red;
-    font-weight: 600;
-    font-size: 12px;
-    margin: 6px 0;
+    color: red; font-weight: 600; font-size: 12px;
+    margin: 4px 0;
 }
 .discount-badge {
     background-color: yellow;
-    display: inline-block;
-    font-weight: 600;
-    padding: 2px 5px;
-    margin: 6px 0;
-    font-size: 16px;
+    display: inline-block; font-weight: 600;
+    padding: 2px 5px; font-size: 16px;
 }
 .was-price {
     text-decoration: line-through;
 }
-.toggle-chart {
-    margin-top: 10px;
-    padding: 4px 8px;
-    font-size: 12px;
-    cursor: pointer;
-}
-.price-history-chart {
-    width: 100%;
-    height: 160px; /* smaller so it won't push other content too far */
-    border: 1px solid #ccc;
-    margin-top: 10px;
-    position: relative;
-    display: none;
-    background-color: #f9f9f9;
-    opacity: 0; /* Start hidden for fade-in */
-    transition: opacity 0.4s ease; /* fade in */
-}
-.price-history-chart.fade-in {
-    opacity: 1;
-}
-.bar-container {
-    position: absolute;
-    bottom: 20px; /* space for x-axis */
-    width: 16px; /* narrower bars */
-    border: 1px solid #aaa; /* debug outline */
-    z-index: 10;
-}
-.bar-now, .bar-was {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    border: 1px solid #333;
-}
-.bar-now {
-    background-color: #0000FF; /* bright blue */
-}
-.bar-was {
-    background-color: #FF0000; /* bright red */
-    opacity: 0.8;
-}
-.price-label {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    font-weight: bold;
-    color: #000;
-    background: #fff;
-    border: 1px solid #999;
-    padding: 0 2px;
-}
-.x-axis, .y-axis {
-    position: absolute;
-    font-size: 10px;
-    color: #666;
-    z-index: 5;
-}
-.x-axis {
-    bottom: 0;
-    left: 40px;
-    right: 10px;
-}
-.y-axis {
-    left: 0;
-    bottom: 20px;
-    top: 10px;
-}
+/* The actual chart (bars + line) will be drawn in an <svg> we create via JS. */
 </style>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Global price history data from server
-    window.priceHistoryData = {"21040974_EA": [{"date": "2025-02-05", "was_price": 2.49, "now_price": 2.0}, {"date": "2025-02-12", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-02-19", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-02-26", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-03-12", "was_price": 2.49, "now_price": 1.0}], "21040956_EA": [{"date": "2025-02-05", "was_price": 2.49, "now_price": 2.0}, {"date": "2025-02-12", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-02-19", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-02-26", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-03-12", "was_price": 2.49, "now_price": 1.0}], "21040942_EA": [{"date": "2025-02-05", "was_price": 2.49, "now_price": 2.0}, {"date": "2025-02-12", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-02-19", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-02-26", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-03-12", "was_price": 2.49, "now_price": 1.0}], "21040932_EA": [{"date": "2025-02-05", "was_price": 2.49, "now_price": 2.0}, {"date": "2025-02-12", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-02-19", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-02-26", "was_price": 2.49, "now_price": 1.0}, {"date": "2025-03-12", "was_price": 2.49, "now_price": 1.0}], "20666187_EA": [{"date": "2025-03-26", "was_price": 4.49, "now_price": 2.49}], "21547597_EA": [{"date": "2025-02-12", "was_price": null, "now_price": 5.49}, {"date": "2025-02-19", "was_price": 3.99, "now_price": 3.69}, {"date": "2025-03-05", "was_price": 3.99, "now_price": 2.5}, {"date": "9999-12-31", "was_price": null, "now_price": 5.49}], "21547587_EA": [{"date": "2025-02-19", "was_price": 3.99, "now_price": 3.69}, {"date": "2025-03-05", "was_price": 3.99, "now_price": 2.5}, {"date": "9999-12-31", "was_price": null, "now_price": 5.49}], "20943890_EA": [{"date": "2025-02-12", "was_price": 5.49, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 5.49, "now_price": 3.49}], "20431607002_EA": [{"date": "2025-02-12", "was_price": 4.99, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 4.99, "now_price": 3.49}], "20279976_EA": [{"date": "2025-02-12", "was_price": 9.99, "now_price": 6.0}, {"date": "2025-03-12", "was_price": 9.99, "now_price": 7.0}], "20056004_EA": [{"date": "2025-02-12", "was_price": 9.99, "now_price": 6.0}, {"date": "2025-03-12", "was_price": 9.99, "now_price": 7.0}], "20638003003_EA": [{"date": "2025-02-12", "was_price": 6.49, "now_price": 4.99}, {"date": "2025-02-19", "was_price": 6.49, "now_price": 5.0}, {"date": "2025-03-05", "was_price": 6.49, "now_price": 4.99}], "20316485005_EA": [{"date": "2025-02-12", "was_price": 6.49, "now_price": 4.99}, {"date": "2025-03-05", "was_price": 6.49, "now_price": 4.99}], "21161998_EA": [{"date": "2025-03-12", "was_price": 7.49, "now_price": 5.99}], "21433695_EA": [{"date": "2025-02-19", "was_price": 7.49, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.49, "now_price": 6.0}], "21353874_EA": [{"date": "2025-02-19", "was_price": 7.49, "now_price": 6.0}, {"date": "2025-03-05", "was_price": 7.49, "now_price": 6.0}], "21588326_EA": [{"date": "2025-02-12", "was_price": 5.49, "now_price": 4.49}, {"date": "2025-02-19", "was_price": 5.49, "now_price": 4.49}, {"date": "2025-02-26", "was_price": 5.49, "now_price": 4.49}, {"date": "2025-03-05", "was_price": 5.49, "now_price": 4.49}], "21041543002_EA": [{"date": "2025-02-12", "was_price": 5.49, "now_price": 4.49}, {"date": "2025-02-19", "was_price": 5.49, "now_price": 4.49}, {"date": "2025-02-26", "was_price": 5.49, "now_price": 4.49}, {"date": "2025-03-05", "was_price": 5.49, "now_price": 4.49}], "21547995_EA": [{"date": "2025-03-26", "was_price": 2.99, "now_price": 2.49}], "21312346_EA": [{"date": "2025-03-26", "was_price": 2.99, "now_price": 2.49}], "21109025_EA": [{"date": "2025-02-05", "was_price": 2.99, "now_price": 2.49}, {"date": "2025-03-26", "was_price": 2.99, "now_price": 2.49}], "21561135_EA": [{"date": "2025-03-26", "was_price": 5.99, "now_price": 4.99}], "21560949_EA": [{"date": "2025-03-26", "was_price": 5.99, "now_price": 4.99}], "21560899_EA": [{"date": "2025-03-26", "was_price": 5.99, "now_price": 4.99}], "20316485002_EA": [{"date": "2025-02-12", "was_price": 5.99, "now_price": 4.99}, {"date": "2025-02-19", "was_price": 5.99, "now_price": 5.0}, {"date": "2025-03-05", "was_price": 5.99, "now_price": 4.99}], "21619809_EA": [{"date": "2025-03-19", "was_price": 3.29, "now_price": 2.79}], "21592483_EA": [{"date": "2025-03-19", "was_price": 9.29, "now_price": 7.99}], "21588150_EA": [{"date": "2025-02-05", "was_price": 4.29, "now_price": 4.0}, {"date": "2025-02-19", "was_price": 4.29, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 4.29, "now_price": 3.69}], "20821364001_EA": [{"date": "2025-03-05", "was_price": 8.99, "now_price": 8.0}], "21619591_EA": [{"date": "2025-02-05", "was_price": null, "now_price": 4.99}, {"date": "2025-02-26", "was_price": 4.49, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}, {"date": "9999-12-31", "was_price": null, "now_price": 5.69}], "21588667_EA": [{"date": "2025-02-05", "was_price": 4.49, "now_price": 3.49}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}], "21547567_EA": [{"date": "2025-02-05", "was_price": null, "now_price": 4.99}, {"date": "2025-02-26", "was_price": 4.49, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}, {"date": "9999-12-31", "was_price": null, "now_price": 5.69}], "21547564_EA": [{"date": "2025-02-05", "was_price": null, "now_price": 4.99}, {"date": "2025-02-26", "was_price": 4.49, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}, {"date": "9999-12-31", "was_price": null, "now_price": 5.69}], "21473714_EA": [{"date": "2025-02-26", "was_price": 4.49, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}, {"date": "9999-12-31", "was_price": null, "now_price": 5.69}], "21429094_EA": [{"date": "2025-02-05", "was_price": 4.49, "now_price": 3.49}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}], "21107643_EA": [{"date": "2025-02-05", "was_price": 4.49, "now_price": 3.49}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}], "21043151001_EA": [{"date": "2025-02-05", "was_price": 4.49, "now_price": 3.49}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}], "20788062002_EA": [{"date": "2025-02-26", "was_price": 4.49, "now_price": 4.0}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}, {"date": "9999-12-31", "was_price": null, "now_price": 5.69}], "20325132007_EA": [{"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}], "20325132003_EA": [{"date": "2025-02-05", "was_price": 4.49, "now_price": 3.49}, {"date": "2025-03-05", "was_price": 4.49, "now_price": 4.0}]};
+    // Make the price history data globally available
+    window.priceHistoryData = {"21040974_EA": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "21040956_EA": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "21040942_EA": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "21040932_EA": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "20666187_EA": [{"date": "03.26", "was_price": 4.49, "now_price": 2.49}], "21547597_EA": [{"date": "02.12", "was_price": 0.0, "now_price": 5.49}, {"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}], "21547587_EA": [{"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}], "20943890_EA": [{"date": "02.12", "was_price": 5.49, "now_price": 4.0}, {"date": "03.05", "was_price": 5.49, "now_price": 3.49}], "20431607002_EA": [{"date": "02.12", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 3.49}], "20279976_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}], "20056004_EA": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}], "20638003003_EA": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "02.19", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}], "20316485005_EA": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}], "21161998_EA": [{"date": "03.12", "was_price": 7.49, "now_price": 5.99}], "21433695_EA": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}], "21353874_EA": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}], "21588326_EA": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}], "21041543002_EA": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}], "21547995_EA": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "21312346_EA": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "21109025_EA": [{"date": "02.05", "was_price": 2.99, "now_price": 2.49}, {"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "21561135_EA": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "21560949_EA": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "21560899_EA": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "20316485002_EA": [{"date": "02.12", "was_price": 5.99, "now_price": 4.99}, {"date": "02.19", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}], "21619809_EA": [{"date": "03.19", "was_price": 3.29, "now_price": 2.79}], "21592483_EA": [{"date": "03.19", "was_price": 9.29, "now_price": 7.99}], "21588150_EA": [{"date": "02.05", "was_price": 4.29, "now_price": 4.0}, {"date": "02.19", "was_price": 4.29, "now_price": 4.0}, {"date": "03.05", "was_price": 4.29, "now_price": 3.69}], "20821364001_EA": [{"date": "03.05", "was_price": 8.99, "now_price": 8.0}], "21619591_EA": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "21588667_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "21547567_EA": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "21547564_EA": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "21473714_EA": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "21429094_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "21107643_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "21043151001_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "20788062002_EA": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "20325132007_EA": [{"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "20325132003_EA": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]};
 });
 
+/**
+ * When toggling, fade out detail-view and fade in chart-view, or vice versa.
+ * We do NOT resize the container. Both views are absolutely positioned in the same area.
+ */
 function toggleChart(btn) {
     var container = btn.closest('.item-container');
-    var details = container.querySelector('.item-details');
-    var chart = container.querySelector('.price-history-chart');
-    if (chart.style.display === 'none' || chart.style.display === '') {
-        // Show chart area
-        details.style.display = 'none';
-        chart.style.display = 'block';
-        // Trigger fade-in
+    var chartDetailWrapper = container.querySelector('.chart-and-detail');
+    var detailView = chartDetailWrapper.querySelector('.detail-view');
+    var chartView = chartDetailWrapper.querySelector('.chart-view');
+    var productId = container.getAttribute('data-product-id');
+    var data = window.priceHistoryData[productId] || [];
+
+    // If chart is currently hidden => show chart, hide detail
+    if (chartView.style.opacity === '' || chartView.style.opacity === '0') {
+        // fade out detail
+        detailView.style.opacity = '0';
+        // fade in chart
+        chartView.style.opacity = '1';
+
+        // Actually load & draw the chart
         setTimeout(function() {
-            chart.classList.add('fade-in');
-        }, 10);
+            renderStackedChart(chartView, data);
+        }, 50);
 
         btn.textContent = 'Show Details';
-        // Render the chart
-        var productId = container.getAttribute('data-product-id');
-        var data = window.priceHistoryData[productId];
-        renderChart(productId, data);
     } else {
-        // Hide chart
-        chart.classList.remove('fade-in');
+        // fade out chart
+        chartView.style.opacity = '0';
+        // fade in detail
+        detailView.style.opacity = '1';
+        // clear the chart after fade out (optional)
         setTimeout(function() {
-            chart.style.display = 'none';
-        }, 400); // match transition
-        details.style.display = 'block';
+            chartView.innerHTML = '';
+        }, 400);
         btn.textContent = 'Show History';
     }
 }
 
-function renderChart(productId, data) {
-    var chartContainer = document.getElementById('chart-' + productId);
-    // Clear previous content
-    chartContainer.innerHTML = '';
+function renderStackedChart(chartView, data) {
+    chartView.innerHTML = '';
     if (!data || data.length === 0) {
-        chartContainer.innerHTML = '<p style="text-align:center;">No history available</p>';
+        chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No history available</p>';
         return;
     }
-    // Determine max price for scaling
-    var maxPrice = 0;
-    data.forEach(function(item) {
-        maxPrice = Math.max(maxPrice, item.was_price || 0, item.now_price || 0);
+    // We'll treat was_price as total. bottom portion = now_price, top portion = was_price - now_price
+    // Also draw a line that connects the top of the bottom portion (the "now" portion).
+
+    // figure out max was_price so all bars scale equally
+    var maxWas = 0;
+    data.forEach(function(d) {
+        if (d.was_price > maxWas) {
+            maxWas = d.was_price;
+        }
     });
 
-    // We'll use 100px as the max bar height
-    var barMaxHeight = 100;
+    // Create an <svg> that fills the chartView
+    var width = chartView.clientWidth;
+    var height = chartView.clientHeight;
+    var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
+    svg.style.backgroundColor = '#f9f9f9';
 
-    // Create x-axis labels container
-    var xAxis = document.createElement('div');
-    xAxis.className = 'x-axis';
-    chartContainer.appendChild(xAxis);
+    // We'll leave some padding for y-axis
+    var leftPad = 40;
+    var bottomPad = 20;
+    var topPad = 10;
+    var chartH = height - bottomPad - topPad;
+    var chartW = width - leftPad - 10;
 
-    // Create y-axis labels container
-    var yAxis = document.createElement('div');
-    yAxis.className = 'y-axis';
-    chartContainer.appendChild(yAxis);
+    // We'll store x,y positions for the line connecting the "now" portion
+    var linePoints = [];
 
-    data.forEach(function(item, index) {
-        var totalBars = data.length;
-        var chartWidth = chartContainer.getBoundingClientRect().width - 50; // y-axis space
-        var spacing = chartWidth / totalBars;
-
-        // Convert prices to pixel heights
-        var wasH = (item.was_price / maxPrice) * barMaxHeight;
-        var nowH = (item.now_price / maxPrice) * barMaxHeight;
-
-        // Create a bar container
-        var barContainer = document.createElement('div');
-        barContainer.className = 'bar-container';
-        barContainer.style.left = (40 + index * spacing) + 'px';
-
-        var barHeight = Math.max(wasH, nowH);
-        barContainer.style.height = barHeight + 'px';
-
-        // Create barNow
-        var barNow = document.createElement('div');
-        barNow.className = 'bar-now';
-        barNow.style.bottom = '0px';
-        barNow.style.height = nowH + 'px';
-
-        // Create barWas
-        var barWas = document.createElement('div');
-        barWas.className = 'bar-was';
-        barWas.style.height = wasH + 'px';
-        barWas.style.bottom = '0px';
-
-        // If now >= was, stack was above now
-        if (item.now_price >= item.was_price) {
-            if (wasH < nowH) {
-                barWas.style.bottom = nowH - wasH + 'px';
-            }
-        } else {
-            // was bigger
-            if (wasH > nowH) {
-                barWas.style.bottom = nowH + 'px';
-            }
+    data.forEach(function(d, i) {
+        // total is d.was_price
+        // bottom portion is d.now_price
+        // top portion is (d.was_price - d.now_price)
+        var total = d.was_price;
+        var bottomVal = d.now_price;
+        if (bottomVal > total) {
+            bottomVal = total; // edge case
         }
+        var topVal = total - bottomVal;
+        // scale to chartH
+        var totalH = (total / maxWas) * chartH;
+        var bottomH = (bottomVal / total) * totalH; // portion
+        var topH = totalH - bottomH;
 
-        barContainer.appendChild(barNow);
-        barContainer.appendChild(barWas);
+        // x position
+        var barSpacing = chartW / data.length;
+        var barX = leftPad + i * barSpacing + barSpacing*0.2; // a bit of offset
+        var barWidth = barSpacing * 0.6; // narrower bars
 
-        // Now label
-        var nowLabel = document.createElement('div');
-        nowLabel.className = 'price-label';
-        nowLabel.textContent = item.now_price.toFixed(2);
-        nowLabel.style.bottom = (nowH - 12) + 'px'; // place label near top of now portion
-        barContainer.appendChild(nowLabel);
+        var barBottomY = (height - bottomPad) - bottomH; // from top
+        var barTopY = barBottomY - topH;
 
-        // Was label
-        var wasLabel = document.createElement('div');
-        wasLabel.className = 'price-label';
-        wasLabel.textContent = item.was_price.toFixed(2);
-        if (item.was_price >= item.now_price) {
-            // was portion on top
-            wasLabel.style.bottom = (nowH + wasH - 12) + 'px';
-        } else {
-            wasLabel.style.bottom = (wasH - 12) + 'px';
-        }
-        barContainer.appendChild(wasLabel);
+        // Draw bottom portion (green)
+        var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rectNow.setAttribute('x', barX);
+        rectNow.setAttribute('y', barBottomY);
+        rectNow.setAttribute('width', barWidth);
+        rectNow.setAttribute('height', bottomH);
+        rectNow.setAttribute('fill', '#009900'); // green
+        rectNow.setAttribute('stroke', '#333');
+        svg.appendChild(rectNow);
 
-        chartContainer.appendChild(barContainer);
+        // Draw top portion (orange)
+        var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rectWas.setAttribute('x', barX);
+        rectWas.setAttribute('y', barTopY);
+        rectWas.setAttribute('width', barWidth);
+        rectWas.setAttribute('height', topH);
+        rectWas.setAttribute('fill', '#FF9900'); // orange
+        rectWas.setAttribute('stroke', '#333');
+        svg.appendChild(rectWas);
 
-        // x-axis label
-        var dateLabel = document.createElement('div');
-        dateLabel.style.position = 'absolute';
-        dateLabel.style.bottom = '-15px';
-        dateLabel.style.left = (index * spacing) + 'px';
-        dateLabel.style.width = spacing + 'px';
-        dateLabel.style.textAlign = 'center';
-        dateLabel.textContent = item.date;
-        xAxis.appendChild(dateLabel);
+        // Label for bottom portion
+        var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtNow.setAttribute('x', barX + barWidth/2);
+        txtNow.setAttribute('y', barBottomY - 2);
+        txtNow.setAttribute('text-anchor', 'middle');
+        txtNow.setAttribute('font-size', '10');
+        txtNow.setAttribute('fill', '#000');
+        txtNow.textContent = d.now_price.toFixed(2);
+        svg.appendChild(txtNow);
+
+        // Label for top portion
+        var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtWas.setAttribute('x', barX + barWidth/2);
+        txtWas.setAttribute('y', barTopY + 10);
+        txtWas.setAttribute('text-anchor', 'middle');
+        txtWas.setAttribute('font-size', '10');
+        txtWas.setAttribute('fill', '#000');
+        txtWas.textContent = d.was_price.toFixed(2);
+        svg.appendChild(txtWas);
+
+        // track the top of the bottom portion for the line
+        var midBarX = barX + barWidth/2;
+        var bottomTopY = barBottomY; // the top edge of the green portion
+        linePoints.push([midBarX, bottomTopY]);
+
+        // X-axis label (the short date)
+        var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
+        txtDate.setAttribute('y', height - 5);
+        txtDate.setAttribute('text-anchor', 'middle');
+        txtDate.setAttribute('font-size', '10');
+        txtDate.setAttribute('fill', '#000');
+        txtDate.textContent = d.date; // already "MM.DD"
+        svg.appendChild(txtDate);
     });
 
-    // y-axis labels (0, mid, max)
-    var yLabels = [0, maxPrice / 2, maxPrice];
-    yLabels.forEach(function(val) {
-        var label = document.createElement('div');
-        label.style.position = 'absolute';
-        label.style.left = '0';
-        // scale label
-        label.style.bottom = ((val / maxPrice) * 100) + 20 + 'px';
-        label.textContent = val.toFixed(2);
-        yAxis.appendChild(label);
-    });
-}
-</script>
-<script>
-window.addEventListener('pageshow', function(event) {
-    if (event.persisted) { window.location.reload(); }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    var firstElems = document.getElementsByClassName('first-word');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].dataset.original = firstElems[i].innerHTML;
-    }
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].dataset.original = secondElems[i].innerHTML;
-    }
-});
-
-function showSearchBar() {
-    var header = document.querySelector('.header-container');
-    header.style.display = 'none';
-    var searchBar = document.getElementById('searchBarContainer');
-    searchBar.style.display = 'flex';
-    setTimeout(function() {
-        searchBar.style.opacity = "1";
-    }, 10);
-    document.getElementById('searchInput').focus();
-}
-
-function hideSearchBar() {
-    var searchInput = document.getElementById('searchInput');
-    searchInput.value = '';
-    var firstElems = document.getElementsByClassName('first-word');
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].innerHTML = firstElems[i].dataset.original;
-    }
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].innerHTML = secondElems[i].dataset.original;
-    }
-    var items = document.getElementsByClassName('item-container');
-    for (var i = 0; i < items.length; i++) {
-        items[i].style.display = "";
-    }
-    document.getElementById('searchCount').innerText = "";
-    var searchBar = document.getElementById('searchBarContainer');
-    var header = document.querySelector('.header-container');
-    searchBar.style.opacity = "0";
-    setTimeout(function() {
-         searchBar.style.display = 'none';
-         header.style.display = 'flex';
-    }, 500);
-}
-
-function inPageSearch() {
-    var input = document.getElementById('searchInput').value.trim();
-    var term = input.toLowerCase();
-    var items = document.getElementsByClassName('item-container');
-    var visibleCount = 0;
-    for (var i = 0; i < items.length; i++) {
-        var firstElem = items[i].querySelector('.first-word');
-        var secondElem = items[i].querySelector('.product-name-text');
-        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-        if (term === '' || fullName.indexOf(term) > -1) {
-            items[i].style.display = '';
-            visibleCount++;
-            if (term !== '') {
-                firstElem.innerHTML = firstElems[i].dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-                secondElem.innerHTML = secondElems[i].dataset.original.replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-            } else {
-                firstElem.innerHTML = firstElems[i].dataset.original;
-                secondElem.innerHTML = secondElems[i].dataset.original;
-            }
-        } else {
-            items[i].style.display = 'none';
+    // Now draw the line connecting the bottom portion across bars
+    // We'll create a path from linePoints
+    if (linePoints.length > 1) {
+        var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
+        for (var i=1; i<linePoints.length; i++) {
+            pathD += " L " + linePoints[i][0] + " " + linePoints[i][1];
         }
+        var linePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        linePath.setAttribute('d', pathD);
+        linePath.setAttribute('fill', 'none');
+        linePath.setAttribute('stroke', '#0077cc'); // some color
+        linePath.setAttribute('stroke-width', '2');
+        svg.appendChild(linePath);
     }
-    document.getElementById('searchCount').innerText = visibleCount + " found";
+
+    // Y-axis labels (0, mid, max)
+    var labelVals = [0, maxWas/2, maxWas];
+    labelVals.forEach(function(val) {
+        var y = (height - bottomPad) - (val / maxWas)*chartH;
+        var txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        txtLabel.setAttribute('x', 5);
+        txtLabel.setAttribute('y', y+3);
+        txtLabel.setAttribute('font-size', '10');
+        txtLabel.setAttribute('fill', '#000');
+        txtLabel.textContent = val.toFixed(2);
+        svg.appendChild(txtLabel);
+    });
+
+    chartView.appendChild(svg);
 }
 </script>
 </head>
@@ -506,20 +347,15 @@ function inPageSearch() {
 <div class='header-container'>
   <div class='header-row'>
     <button class='search-button' onclick='showSearchBar()'>
-      <span class='search-icon'>🔍</span>
-      FIND ➜
+      🔍 FIND ➜
     </button>
     <div class='page-title'>Dairy</div>
   </div>
-  <div class='creation-time'>Created on: 2025-02-28 08:28:28</div>
+  <div class='creation-time'>Created on: 2025-02-28 09:45:19</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
-<div id='searchBarContainer'>
-  <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
-  <span id='searchCount'></span>
-  <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
-</div>
+
 
         <div class='item-container' data-product-id='21040974_EA'>
           <div class='item-image'>
@@ -527,18 +363,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/original-chocolate-milkshake/p/21040974_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#1</span>
-              <span class='first-word'>Original</span>
-              <span class='product-name-text'>Chocolate Milkshake</span>
-            </div>
-            <div>Expire On: 2025-03-12</div>
-            <div>WAS: <span class='was-price'>$2.49</span></div>
-            <div class='now-price'>NOW: $1.00</div>
-            <div class='discount-badge'>59.8% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21040974_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#1</span>
+      <span class='first-word'>Original</span>
+      <span class='product-name-text'>Chocolate Milkshake</span>
+    </div>
+    <div>Expire On: 2025-03-12</div>
+    <div>WAS: <span class='was-price'>$2.49</span></div>
+    <div class='now-price'>NOW: $1.00</div>
+    <div class='discount-badge'>59.8% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21040974_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21040956_EA'>
@@ -547,18 +385,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/chocolate-milkshake/p/21040956_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#2</span>
-              <span class='first-word'>Chocolate</span>
-              <span class='product-name-text'>Milkshake</span>
-            </div>
-            <div>Expire On: 2025-03-12</div>
-            <div>WAS: <span class='was-price'>$2.49</span></div>
-            <div class='now-price'>NOW: $1.00</div>
-            <div class='discount-badge'>59.8% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21040956_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#2</span>
+      <span class='first-word'>Chocolate</span>
+      <span class='product-name-text'>Milkshake</span>
+    </div>
+    <div>Expire On: 2025-03-12</div>
+    <div>WAS: <span class='was-price'>$2.49</span></div>
+    <div class='now-price'>NOW: $1.00</div>
+    <div class='discount-badge'>59.8% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21040956_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21040942_EA'>
@@ -567,18 +407,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/caramel-chocolate-milkshake/p/21040942_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#3</span>
-              <span class='first-word'>Caramel</span>
-              <span class='product-name-text'>Chocolate Milkshake</span>
-            </div>
-            <div>Expire On: 2025-03-12</div>
-            <div>WAS: <span class='was-price'>$2.49</span></div>
-            <div class='now-price'>NOW: $1.00</div>
-            <div class='discount-badge'>59.8% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21040942_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#3</span>
+      <span class='first-word'>Caramel</span>
+      <span class='product-name-text'>Chocolate Milkshake</span>
+    </div>
+    <div>Expire On: 2025-03-12</div>
+    <div>WAS: <span class='was-price'>$2.49</span></div>
+    <div class='now-price'>NOW: $1.00</div>
+    <div class='discount-badge'>59.8% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21040942_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21040932_EA'>
@@ -587,18 +429,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/french-vanilla-milkshake/p/21040932_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#4</span>
-              <span class='first-word'>French</span>
-              <span class='product-name-text'>Vanilla Milkshake</span>
-            </div>
-            <div>Expire On: 2025-03-12</div>
-            <div>WAS: <span class='was-price'>$2.49</span></div>
-            <div class='now-price'>NOW: $1.00</div>
-            <div class='discount-badge'>59.8% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21040932_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#4</span>
+      <span class='first-word'>French</span>
+      <span class='product-name-text'>Vanilla Milkshake</span>
+    </div>
+    <div>Expire On: 2025-03-12</div>
+    <div>WAS: <span class='was-price'>$2.49</span></div>
+    <div class='now-price'>NOW: $1.00</div>
+    <div class='discount-badge'>59.8% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21040932_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20666187_EA'>
@@ -607,18 +451,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/soy-barista/p/20666187_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#5</span>
-              <span class='first-word'>Soy</span>
-              <span class='product-name-text'>Barista</span>
-            </div>
-            <div>Expire On: 2025-03-26</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $2.49</div>
-            <div class='discount-badge'>44.5% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20666187_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#5</span>
+      <span class='first-word'>Soy</span>
+      <span class='product-name-text'>Barista</span>
+    </div>
+    <div>Expire On: 2025-03-26</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $2.49</div>
+    <div class='discount-badge'>44.5% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20666187_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21547597_EA'>
@@ -627,18 +473,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/tubes-yogurt-raspberry-flavour-1-m-f/p/21547597_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#6</span>
-              <span class='first-word'>Tubes</span>
-              <span class='product-name-text'>Yogurt Raspberry Flavour 1% M.F.</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$3.99</span></div>
-            <div class='now-price'>NOW: $2.50</div>
-            <div class='discount-badge'>37.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21547597_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#6</span>
+      <span class='first-word'>Tubes</span>
+      <span class='product-name-text'>Yogurt Raspberry Flavour 1% M.F.</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.99</span></div>
+    <div class='now-price'>NOW: $2.50</div>
+    <div class='discount-badge'>37.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21547597_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21547587_EA'>
@@ -647,18 +495,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/tubes-yogurt-mixed-berry-flavour-1-m-f/p/21547587_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#7</span>
-              <span class='first-word'>Tubes</span>
-              <span class='product-name-text'>Yogurt Mixed Berry Flavour 1% M.F.</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$3.99</span></div>
-            <div class='now-price'>NOW: $2.50</div>
-            <div class='discount-badge'>37.3% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21547587_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#7</span>
+      <span class='first-word'>Tubes</span>
+      <span class='product-name-text'>Yogurt Mixed Berry Flavour 1% M.F.</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.99</span></div>
+    <div class='now-price'>NOW: $2.50</div>
+    <div class='discount-badge'>37.3% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21547587_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20943890_EA'>
@@ -667,18 +517,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/original-yogurt-banana-balkan-style-3-25/p/20943890_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#8</span>
-              <span class='first-word'>Original</span>
-              <span class='product-name-text'>Yogurt Banana, Balkan Style 3.25%</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$5.49</span></div>
-            <div class='now-price'>NOW: $3.49</div>
-            <div class='discount-badge'>36.4% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20943890_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#8</span>
+      <span class='first-word'>Original</span>
+      <span class='product-name-text'>Yogurt Banana, Balkan Style 3.25%</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$5.49</span></div>
+    <div class='now-price'>NOW: $3.49</div>
+    <div class='discount-badge'>36.4% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20943890_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20431607002_EA'>
@@ -687,18 +539,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/original-yogurt-cappuccino-balkan-style-6/p/20431607002_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#9</span>
-              <span class='first-word'>Original</span>
-              <span class='product-name-text'>Yogurt Cappuccino, Balkan Style 6%</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.99</span></div>
-            <div class='now-price'>NOW: $3.49</div>
-            <div class='discount-badge'>30.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20431607002_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#9</span>
+      <span class='first-word'>Original</span>
+      <span class='product-name-text'>Yogurt Cappuccino, Balkan Style 6%</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.99</span></div>
+    <div class='now-price'>NOW: $3.49</div>
+    <div class='discount-badge'>30.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20431607002_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20279976_EA'>
@@ -707,18 +561,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/vegetable-oil-margarine/p/20279976_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#10</span>
-              <span class='first-word'>Vegetable</span>
-              <span class='product-name-text'>Oil Margarine</span>
-            </div>
-            <div>Expire On: 2025-03-12</div>
-            <div>WAS: <span class='was-price'>$9.99</span></div>
-            <div class='now-price'>NOW: $7.00</div>
-            <div class='discount-badge'>29.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20279976_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#10</span>
+      <span class='first-word'>Vegetable</span>
+      <span class='product-name-text'>Oil Margarine</span>
+    </div>
+    <div>Expire On: 2025-03-12</div>
+    <div>WAS: <span class='was-price'>$9.99</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>29.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20279976_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20056004_EA'>
@@ -727,18 +583,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/original-margarine-square-spread-12-units/p/20056004_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#11</span>
-              <span class='first-word'>Original</span>
-              <span class='product-name-text'>Margarine Square Spread, 12 units</span>
-            </div>
-            <div>Expire On: 2025-03-12</div>
-            <div>WAS: <span class='was-price'>$9.99</span></div>
-            <div class='now-price'>NOW: $7.00</div>
-            <div class='discount-badge'>29.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20056004_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#11</span>
+      <span class='first-word'>Original</span>
+      <span class='product-name-text'>Margarine Square Spread, 12 units</span>
+    </div>
+    <div>Expire On: 2025-03-12</div>
+    <div>WAS: <span class='was-price'>$9.99</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>29.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20056004_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20638003003_EA'>
@@ -747,18 +605,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-yogurt-mango-3/p/20638003003_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#12</span>
-              <span class='first-word'>Organic</span>
-              <span class='product-name-text'>Yogurt Mango 3%</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$6.49</span></div>
-            <div class='now-price'>NOW: $4.99</div>
-            <div class='discount-badge'>23.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20638003003_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#12</span>
+      <span class='first-word'>Organic</span>
+      <span class='product-name-text'>Yogurt Mango 3%</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$6.49</span></div>
+    <div class='now-price'>NOW: $4.99</div>
+    <div class='discount-badge'>23.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20638003003_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20316485005_EA'>
@@ -767,18 +627,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-plain-yogurt-3-5/p/20316485005_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#13</span>
-              <span class='first-word'>Organic</span>
-              <span class='product-name-text'>Plain Yogurt 3.5%</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$6.49</span></div>
-            <div class='now-price'>NOW: $4.99</div>
-            <div class='discount-badge'>23.1% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20316485005_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#13</span>
+      <span class='first-word'>Organic</span>
+      <span class='product-name-text'>Plain Yogurt 3.5%</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$6.49</span></div>
+    <div class='now-price'>NOW: $4.99</div>
+    <div class='discount-badge'>23.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20316485005_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21161998_EA'>
@@ -787,18 +649,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/barista-blend/p/21161998_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#14</span>
-              <span class='first-word'>Barista</span>
-              <span class='product-name-text'>Blend</span>
-            </div>
-            <div>Expire On: 2025-03-12</div>
-            <div>WAS: <span class='was-price'>$7.49</span></div>
-            <div class='now-price'>NOW: $5.99</div>
-            <div class='discount-badge'>20.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21161998_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#14</span>
+      <span class='first-word'>Barista</span>
+      <span class='product-name-text'>Blend</span>
+    </div>
+    <div>Expire On: 2025-03-12</div>
+    <div>WAS: <span class='was-price'>$7.49</span></div>
+    <div class='now-price'>NOW: $5.99</div>
+    <div class='discount-badge'>20.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21161998_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21433695_EA'>
@@ -807,18 +671,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/skyr-yogurt-strawberry-2/p/21433695_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#15</span>
-              <span class='first-word'>Skyr</span>
-              <span class='product-name-text'>Yogurt Strawberry 2%</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.49</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>19.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21433695_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#15</span>
+      <span class='first-word'>Skyr</span>
+      <span class='product-name-text'>Yogurt Strawberry 2%</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.49</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>19.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21433695_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21353874_EA'>
@@ -827,18 +693,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/skyr-yogurt-vanilla-0-high-protein/p/21353874_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#16</span>
-              <span class='first-word'>Skyr</span>
-              <span class='product-name-text'>Yogurt Vanilla 0% High Protein</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$7.49</span></div>
-            <div class='now-price'>NOW: $6.00</div>
-            <div class='discount-badge'>19.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21353874_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#16</span>
+      <span class='first-word'>Skyr</span>
+      <span class='product-name-text'>Yogurt Vanilla 0% High Protein</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$7.49</span></div>
+    <div class='now-price'>NOW: $6.00</div>
+    <div class='discount-badge'>19.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21353874_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21588326_EA'>
@@ -847,18 +715,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/greek-yogourt-crunch-caf-latte-flavour-2-m-f/p/21588326_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#17</span>
-              <span class='first-word'>Greek</span>
-              <span class='product-name-text'>Yogourt Crunch Café Latte Flavour 2 % M.F.</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$5.49</span></div>
-            <div class='now-price'>NOW: $4.49</div>
-            <div class='discount-badge'>18.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21588326_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#17</span>
+      <span class='first-word'>Greek</span>
+      <span class='product-name-text'>Yogourt Crunch Café Latte Flavour 2 % M.F.</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$5.49</span></div>
+    <div class='now-price'>NOW: $4.49</div>
+    <div class='discount-badge'>18.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21588326_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21041543002_EA'>
@@ -867,18 +737,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/greek-2-vanilla-bean-yogurt-crunch-cups-with-dark/p/21041543002_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#18</span>
-              <span class='first-word'>Greek</span>
-              <span class='product-name-text'>2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$5.49</span></div>
-            <div class='now-price'>NOW: $4.49</div>
-            <div class='discount-badge'>18.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21041543002_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#18</span>
+      <span class='first-word'>Greek</span>
+      <span class='product-name-text'>2% Vanilla Bean Yogurt Crunch Cups with Dark Chocolate, Salted Almonds, and Caramel Toppings, 130 g, 2 ct</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$5.49</span></div>
+    <div class='now-price'>NOW: $4.49</div>
+    <div class='discount-badge'>18.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21041543002_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21547995_EA'>
@@ -887,18 +759,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/oat-zero-sugar-beverage-vanilla/p/21547995_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#19</span>
-              <span class='first-word'>Oat</span>
-              <span class='product-name-text'>Zero Sugar Beverage Vanilla</span>
-            </div>
-            <div>Expire On: 2025-03-26</div>
-            <div>WAS: <span class='was-price'>$2.99</span></div>
-            <div class='now-price'>NOW: $2.49</div>
-            <div class='discount-badge'>16.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21547995_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#19</span>
+      <span class='first-word'>Oat</span>
+      <span class='product-name-text'>Zero Sugar Beverage Vanilla</span>
+    </div>
+    <div>Expire On: 2025-03-26</div>
+    <div>WAS: <span class='was-price'>$2.99</span></div>
+    <div class='now-price'>NOW: $2.49</div>
+    <div class='discount-badge'>16.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21547995_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21312346_EA'>
@@ -907,18 +781,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/oat-beverage-chocolate/p/21312346_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#20</span>
-              <span class='first-word'>Oat</span>
-              <span class='product-name-text'>Beverage, Chocolate</span>
-            </div>
-            <div>Expire On: 2025-03-26</div>
-            <div>WAS: <span class='was-price'>$2.99</span></div>
-            <div class='now-price'>NOW: $2.49</div>
-            <div class='discount-badge'>16.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21312346_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#20</span>
+      <span class='first-word'>Oat</span>
+      <span class='product-name-text'>Beverage, Chocolate</span>
+    </div>
+    <div>Expire On: 2025-03-26</div>
+    <div>WAS: <span class='was-price'>$2.99</span></div>
+    <div class='now-price'>NOW: $2.49</div>
+    <div class='discount-badge'>16.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21312346_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21109025_EA'>
@@ -927,18 +803,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/oat-beverage-original/p/21109025_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#21</span>
-              <span class='first-word'>Oat</span>
-              <span class='product-name-text'>Beverage, Original</span>
-            </div>
-            <div>Expire On: 2025-03-26</div>
-            <div>WAS: <span class='was-price'>$2.99</span></div>
-            <div class='now-price'>NOW: $2.49</div>
-            <div class='discount-badge'>16.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21109025_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#21</span>
+      <span class='first-word'>Oat</span>
+      <span class='product-name-text'>Beverage, Original</span>
+    </div>
+    <div>Expire On: 2025-03-26</div>
+    <div>WAS: <span class='was-price'>$2.99</span></div>
+    <div class='now-price'>NOW: $2.49</div>
+    <div class='discount-badge'>16.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21109025_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21561135_EA'>
@@ -947,18 +825,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/oat-drink-extra-creamy/p/21561135_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#22</span>
-              <span class='first-word'>Oat</span>
-              <span class='product-name-text'>Drink, Extra Creamy</span>
-            </div>
-            <div>Expire On: 2025-03-26</div>
-            <div>WAS: <span class='was-price'>$5.99</span></div>
-            <div class='now-price'>NOW: $4.99</div>
-            <div class='discount-badge'>16.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21561135_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#22</span>
+      <span class='first-word'>Oat</span>
+      <span class='product-name-text'>Drink, Extra Creamy</span>
+    </div>
+    <div>Expire On: 2025-03-26</div>
+    <div>WAS: <span class='was-price'>$5.99</span></div>
+    <div class='now-price'>NOW: $4.99</div>
+    <div class='discount-badge'>16.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21561135_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21560949_EA'>
@@ -967,18 +847,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/oat-drink/p/21560949_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#23</span>
-              <span class='first-word'>Oat</span>
-              <span class='product-name-text'>Drink</span>
-            </div>
-            <div>Expire On: 2025-03-26</div>
-            <div>WAS: <span class='was-price'>$5.99</span></div>
-            <div class='now-price'>NOW: $4.99</div>
-            <div class='discount-badge'>16.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21560949_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#23</span>
+      <span class='first-word'>Oat</span>
+      <span class='product-name-text'>Drink</span>
+    </div>
+    <div>Expire On: 2025-03-26</div>
+    <div>WAS: <span class='was-price'>$5.99</span></div>
+    <div class='now-price'>NOW: $4.99</div>
+    <div class='discount-badge'>16.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21560949_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21560899_EA'>
@@ -987,18 +869,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/oat-drink-chocolate/p/21560899_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#24</span>
-              <span class='first-word'>Oat</span>
-              <span class='product-name-text'>Drink, Chocolate</span>
-            </div>
-            <div>Expire On: 2025-03-26</div>
-            <div>WAS: <span class='was-price'>$5.99</span></div>
-            <div class='now-price'>NOW: $4.99</div>
-            <div class='discount-badge'>16.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21560899_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#24</span>
+      <span class='first-word'>Oat</span>
+      <span class='product-name-text'>Drink, Chocolate</span>
+    </div>
+    <div>Expire On: 2025-03-26</div>
+    <div>WAS: <span class='was-price'>$5.99</span></div>
+    <div class='now-price'>NOW: $4.99</div>
+    <div class='discount-badge'>16.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21560899_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20316485002_EA'>
@@ -1007,18 +891,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/organic-yogurt-plain-0/p/20316485002_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#25</span>
-              <span class='first-word'>Organic</span>
-              <span class='product-name-text'>Yogurt Plain 0%</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$5.99</span></div>
-            <div class='now-price'>NOW: $4.99</div>
-            <div class='discount-badge'>16.7% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20316485002_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#25</span>
+      <span class='first-word'>Organic</span>
+      <span class='product-name-text'>Yogurt Plain 0%</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$5.99</span></div>
+    <div class='now-price'>NOW: $4.99</div>
+    <div class='discount-badge'>16.7% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20316485002_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21619809_EA'>
@@ -1027,18 +913,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/coffee-enhancer-maple-brown-sugar-oat-dairy-free-c/p/21619809_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#26</span>
-              <span class='first-word'>Coffee</span>
-              <span class='product-name-text'>Enhancer Maple Brown Sugar Oat Dairy-Free Creamer</span>
-            </div>
-            <div>Expire On: 2025-03-19</div>
-            <div>WAS: <span class='was-price'>$3.29</span></div>
-            <div class='now-price'>NOW: $2.79</div>
-            <div class='discount-badge'>15.2% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21619809_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#26</span>
+      <span class='first-word'>Coffee</span>
+      <span class='product-name-text'>Enhancer Maple Brown Sugar Oat Dairy-Free Creamer</span>
+    </div>
+    <div>Expire On: 2025-03-19</div>
+    <div>WAS: <span class='was-price'>$3.29</span></div>
+    <div class='now-price'>NOW: $2.79</div>
+    <div class='discount-badge'>15.2% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21619809_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21592483_EA'>
@@ -1047,18 +935,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/dairy-free-cheese-crumbled-parmesan-style/p/21592483_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#27</span>
-              <span class='first-word'>Dairy-free</span>
-              <span class='product-name-text'>Cheese, Crumbled Parmesan Style</span>
-            </div>
-            <div>Expire On: 2025-03-19</div>
-            <div>WAS: <span class='was-price'>$9.29</span></div>
-            <div class='now-price'>NOW: $7.99</div>
-            <div class='discount-badge'>14.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21592483_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#27</span>
+      <span class='first-word'>Dairy-free</span>
+      <span class='product-name-text'>Cheese, Crumbled Parmesan Style</span>
+    </div>
+    <div>Expire On: 2025-03-19</div>
+    <div>WAS: <span class='was-price'>$9.29</span></div>
+    <div class='now-price'>NOW: $7.99</div>
+    <div class='discount-badge'>14.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21592483_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21588150_EA'>
@@ -1067,18 +957,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/source-0-smooth-traditional-yogurt-pack-vanilla-hi/p/21588150_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#28</span>
-              <span class='first-word'>Source</span>
-              <span class='product-name-text'>0% Smooth Traditional Yogurt Pack, Vanilla, High Protein,</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.29</span></div>
-            <div class='now-price'>NOW: $3.69</div>
-            <div class='discount-badge'>14.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21588150_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#28</span>
+      <span class='first-word'>Source</span>
+      <span class='product-name-text'>0% Smooth Traditional Yogurt Pack, Vanilla, High Protein,</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.29</span></div>
+    <div class='now-price'>NOW: $3.69</div>
+    <div class='discount-badge'>14.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21588150_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20821364001_EA'>
@@ -1087,18 +979,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/egg-whites/p/20821364001_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#29</span>
-              <span class='first-word'>Egg</span>
-              <span class='product-name-text'>Whites</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$8.99</span></div>
-            <div class='now-price'>NOW: $8.00</div>
-            <div class='discount-badge'>11.0% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20821364001_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#29</span>
+      <span class='first-word'>Egg</span>
+      <span class='product-name-text'>Whites</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$8.99</span></div>
+    <div class='now-price'>NOW: $8.00</div>
+    <div class='discount-badge'>11.0% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20821364001_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21619591_EA'>
@@ -1107,18 +1001,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/m-diterran-e-9-yogurt-special-edition/p/21619591_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#30</span>
-              <span class='first-word'>Méditerranée</span>
-              <span class='product-name-text'>9% Yogurt Special Edition</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21619591_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#30</span>
+      <span class='first-word'>Méditerranée</span>
+      <span class='product-name-text'>9% Yogurt Special Edition</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21619591_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21588667_EA'>
@@ -1127,18 +1023,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/probiotics-yogurt-fiber-plain/p/21588667_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#31</span>
-              <span class='first-word'>Probiotics</span>
-              <span class='product-name-text'>Yogurt Fiber Plain</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21588667_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#31</span>
+      <span class='first-word'>Probiotics</span>
+      <span class='product-name-text'>Yogurt Fiber Plain</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21588667_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21547567_EA'>
@@ -1147,18 +1045,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/m-diterran-e-yogourt-mango-9-m-f/p/21547567_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#32</span>
-              <span class='first-word'>Méditerranée</span>
-              <span class='product-name-text'>Yogourt Mango 9 % M.F.</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21547567_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#32</span>
+      <span class='first-word'>Méditerranée</span>
+      <span class='product-name-text'>Yogourt Mango 9 % M.F.</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21547567_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21547564_EA'>
@@ -1167,18 +1067,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/m-diterran-e-yogourt-key-lime-pie-9-m-f/p/21547564_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#33</span>
-              <span class='first-word'>Méditerranée</span>
-              <span class='product-name-text'>Yogourt Key Lime Pie 9 % M.F.</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21547564_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#33</span>
+      <span class='first-word'>Méditerranée</span>
+      <span class='product-name-text'>Yogourt Key Lime Pie 9 % M.F.</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21547564_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21473714_EA'>
@@ -1187,18 +1089,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/m-diterran-e-9-yogurt-raspberry-cheesecake/p/21473714_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#34</span>
-              <span class='first-word'>Méditerranée</span>
-              <span class='product-name-text'>9% Yogurt, Raspberry Cheesecake</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21473714_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#34</span>
+      <span class='first-word'>Méditerranée</span>
+      <span class='product-name-text'>9% Yogurt, Raspberry Cheesecake</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21473714_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21429094_EA'>
@@ -1207,18 +1111,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-mango-flavour-tub/p/21429094_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#35</span>
-              <span class='first-word'>Yogurt</span>
-              <span class='product-name-text'>with Probiotics, Mango Flavour Tub</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21429094_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#35</span>
+      <span class='first-word'>Yogurt</span>
+      <span class='product-name-text'>with Probiotics, Mango Flavour Tub</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21429094_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21107643_EA'>
@@ -1227,18 +1133,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-peach-flavour-value-tub/p/21107643_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#36</span>
-              <span class='first-word'>Yogurt</span>
-              <span class='product-name-text'>with Probiotics, Peach Flavour, Value Tub</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21107643_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#36</span>
+      <span class='first-word'>Yogurt</span>
+      <span class='product-name-text'>with Probiotics, Peach Flavour, Value Tub</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21107643_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='21043151001_EA'>
@@ -1247,18 +1155,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-plain-3-2-m-f/p/21043151001_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#37</span>
-              <span class='first-word'>Yogurt</span>
-              <span class='product-name-text'>with Probiotics, Plain 3.2% M/F.</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-21043151001_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#37</span>
+      <span class='first-word'>Yogurt</span>
+      <span class='product-name-text'>with Probiotics, Plain 3.2% M/F.</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21043151001_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20788062002_EA'>
@@ -1267,18 +1177,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/m-diterran-e-9-yogurt-coconut/p/20788062002_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#38</span>
-              <span class='first-word'>Méditerranée</span>
-              <span class='product-name-text'>9% Yogurt, Coconut</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20788062002_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#38</span>
+      <span class='first-word'>Méditerranée</span>
+      <span class='product-name-text'>9% Yogurt, Coconut</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20788062002_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20325132007_EA'>
@@ -1287,18 +1199,20 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-coconut-flavour/p/20325132007_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#39</span>
-              <span class='first-word'>Yogurt</span>
-              <span class='product-name-text'>with Probiotics, Coconut Flavour</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20325132007_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#39</span>
+      <span class='first-word'>Yogurt</span>
+      <span class='product-name-text'>with Probiotics, Coconut Flavour</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20325132007_EA'></div>
+</div>
         </div>
         
         <div class='item-container' data-product-id='20325132003_EA'>
@@ -1307,19 +1221,31 @@ function inPageSearch() {
             <a class='view-button' href='https://www.atlanticsuperstore.ca/en/yogurt-with-probiotics-vanilla-flavour/p/20325132003_EA' target='_top'>SHOP →</a>
             <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
           </div>
-          <div class='item-details'>
-            <div class='item-name'>
-              <span class='item-number'>#40</span>
-              <span class='first-word'>Yogurt</span>
-              <span class='product-name-text'>with Probiotics, Vanilla Flavour</span>
-            </div>
-            <div>Expire On: 2025-03-05</div>
-            <div>WAS: <span class='was-price'>$4.49</span></div>
-            <div class='now-price'>NOW: $4.00</div>
-            <div class='discount-badge'>10.9% OFF</div>
-          </div>
-          <div class='price-history-chart' id='chart-20325132003_EA' style='display:none;'></div>
+          <div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#40</span>
+      <span class='first-word'>Yogurt</span>
+      <span class='product-name-text'>with Probiotics, Vanilla Flavour</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$4.49</span></div>
+    <div class='now-price'>NOW: $4.00</div>
+    <div class='discount-badge'>10.9% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20325132003_EA'></div>
+</div>
         </div>
         
+
+<script>
+function showSearchBar() {
+    // example for search, if needed
+}
+function hideSearchBar() {
+    // example for search, if needed
+}
+</script>
+
 </body>
 </html>
