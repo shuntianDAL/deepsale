@@ -21,19 +21,13 @@ body {
     font-family: 'Montserrat', Arial, sans-serif;
     background-color: #fff;
     overflow-x: hidden;
-}
-/* We'll add a 'page-loaded' class to <body> to trigger fade in animations after DOMContentLoaded */
-body {
     transition: opacity 0.5s ease;
 }
-/* Fade in effect for the detail button */
-.fade-on-load {
-    opacity: 0;
-    transition: opacity 0.8s ease;
+/* fade in the page once loaded */
+body:not(.page-loaded) {
+    opacity: 0.2;
 }
-body.page-loaded .fade-on-load {
-    opacity: 1;
-}
+
 .header-container {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -65,7 +59,7 @@ body.page-loaded .fade-on-load {
     margin: 0 20px 10px;
 }
 .header-spacer {
-    height: 70px; /* offset fixed header */
+    height: 70px; /* offset the fixed header */
 }
 .search-button {
     background-color: #3e7d53;
@@ -156,6 +150,7 @@ body.page-loaded .fade-on-load {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: opacity 0.5s ease;
 }
 .vertical-switch-button.selected {
     background-color: #3e7d53;
@@ -175,7 +170,7 @@ body.page-loaded .fade-on-load {
     cursor: not-allowed;
 }
 .toggle-input {
-    display: none;
+    display: none; /* we toggle it manually in JS */
 }
 .toggle-label {
     display: inline-block;
@@ -187,9 +182,6 @@ body.page-loaded .fade-on-load {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-.toggle-switch:not(.disabled) .toggle-label {
-    background-color: #3e7d53;
-}
 .toggle-label .toggle-circle {
     position: absolute;
     top: 2px;
@@ -199,9 +191,6 @@ body.page-loaded .fade-on-load {
     background-color: #fff;
     border-radius: 50%;
     transition: transform 0.3s ease;
-}
-.toggle-input:checked + .toggle-label .toggle-circle {
-    transform: translateX(52px);
 }
 .toggle-label .toggle-text {
     position: absolute;
@@ -230,20 +219,13 @@ body.page-loaded .fade-on-load {
     top: 0; left: 0; right: 0; bottom: 0;
     transition: opacity 0.5s ease;
 }
-.detail-view {
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+.fade-in {
     opacity: 1;
-    z-index: 2;
+    pointer-events: auto;
 }
-.chart-view {
-    width: 100%;
-    height: 100%;
-    background-color: #f9f9f9;
+.fade-out {
     opacity: 0;
-    z-index: 1;
+    pointer-events: none;
 }
 .item-name {
     font-size: 14px;
@@ -283,81 +265,100 @@ body.page-loaded .fade-on-load {
 </style>
 
 <script>
+// We'll attach the data after DOMContentLoaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Add a class to body so that fade-on-load elements become visible
     document.body.classList.add('page-loaded');
-    // Provide chart data as a global dictionary
     window.priceHistoryData = {"20720065_KG": {"1mon": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "1yr": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}]}, "20852143_KG": {"1mon": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "1yr": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}]}, "21043887_EA": {"1mon": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}]}, "21211819_EA": {"1mon": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}]}, "20750012_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749901_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749798_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20699832_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21108887_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]}};
 });
 
 /**
- * "Detail" button => show detail, hide chart, revert toggle => disabled style with label "1 Yr"
+ * Clicking the "Detail" button => show detail, hide chart, revert toggle => disabled style with label "1 Yr"
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
+    // detail button => selected
     var allButtons = container.querySelectorAll('.vertical-switch-button');
     allButtons.forEach(function(b) { b.classList.remove('selected'); });
     btn.classList.add('selected');
 
+    // toggle => disabled
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
-    var toggleInput = container.querySelector('.toggle-input');
-    toggleInput.checked = false;
+    var input = toggleSwitch.querySelector('.toggle-input');
+    input.checked = false;
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
-    var rightSide = container.querySelector('.right-side');
-    var viewContainer = rightSide.querySelector('.view-container');
-    var detailView = viewContainer.querySelector('.detail-view');
-    var chartView = viewContainer.querySelector('.chart-view');
-    detailView.style.opacity = '1';
-    chartView.style.opacity = '0';
+    // fade out chart, fade in detail
+    var detailView = container.querySelector('.detail-view');
+    var chartView = container.querySelector('.chart-view');
+    detailView.classList.remove('fade-out');
+    detailView.classList.add('fade-in');
+    chartView.classList.remove('fade-in');
+    chartView.classList.add('fade-out');
+
+    // Clear chart after fade
     setTimeout(function() {
         chartView.innerHTML = '';
-    }, 400);
+    }, 500);
 }
 
 /**
- * Toggle => if .disabled => remove => chart is active
- * If checked => 1 Yr => line chart
- * else => 1 Mon => bar chart
- * skipping zero data rows
+ * The main click handler for the entire toggle switch area.
+ * - If .disabled => remove => becomes active
+ * - We manually toggle the <input> state
+ * - If input.checked => 1 Yr => line chart
+ * - else => 1 Mon => bar chart
+ * - skip zero data
  */
-function toggleMonYr(checkbox) {
-    var container = checkbox.closest('.item-container');
-    var toggleSwitch = container.querySelector('.toggle-switch');
-    if (toggleSwitch.classList.contains('disabled')) {
-        toggleSwitch.classList.remove('disabled');
-    }
-
+function toggleSwitchClick(toggleSwitchDiv) {
+    var container = toggleSwitchDiv.closest('.item-container');
+    // remove 'selected' from the "Detail" button
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
-    var rightSide = container.querySelector('.right-side');
-    var viewContainer = rightSide.querySelector('.view-container');
-    var detailView = viewContainer.querySelector('.detail-view');
-    var chartView = viewContainer.querySelector('.chart-view');
-    detailView.style.opacity = '0';
-    chartView.style.opacity = '1';
+    // If toggleSwitchDiv is disabled => remove that class
+    if (toggleSwitchDiv.classList.contains('disabled')) {
+        toggleSwitchDiv.classList.remove('disabled');
+    }
 
+    // get the <input>
+    var input = toggleSwitchDiv.querySelector('.toggle-input');
+    // toggle the checkbox state
+    input.checked = !input.checked;
+
+    // fade out detail, fade in chart
+    var detailView = container.querySelector('.detail-view');
+    var chartView = container.querySelector('.chart-view');
+    detailView.classList.remove('fade-in');
+    detailView.classList.add('fade-out');
+    chartView.classList.remove('fade-out');
+    chartView.classList.add('fade-in');
+
+    // figure out data
     var productId = container.getAttribute('data-product-id');
-    var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
     var data1mon = window.priceHistoryData[productId]["1mon"] || [];
     var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
+    var toggleLabel = toggleSwitchDiv.querySelector('.toggle-text');
 
-    if (checkbox.checked) {
+    if (input.checked) {
+        // checked => 1 Yr
         toggleLabel.textContent = "1 Yr";
         var filtered = data1yr.filter(d => d.was_price > 0 && d.now_price > 0);
+        // render line chart
         renderLineChart(chartView, filtered);
     } else {
+        // unchecked => 1 Mon
         toggleLabel.textContent = "1 Mon";
         var filtered = data1mon.filter(d => d.was_price > 0 && d.now_price > 0);
+        // render bar chart
         renderStackedChart(chartView, filtered);
     }
 }
 
 /**
- * Renders bar chart for 1 Mon data
+ * Renders bar chart for 1 Mon
+ * topPad=30 => more space
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
@@ -369,7 +370,6 @@ function renderStackedChart(chartView, data) {
     data.forEach(function(d) {
         if (d.was_price > maxWas) maxWas = d.was_price;
     });
-    // Add overhead
     maxWas *= 1.05;
 
     var width = chartView.clientWidth;
@@ -381,7 +381,7 @@ function renderStackedChart(chartView, data) {
 
     var leftPad = 40;
     var bottomPad = 20;
-    var topPad = 10;
+    var topPad = 30; 
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
@@ -403,13 +403,13 @@ function renderStackedChart(chartView, data) {
         }
         var topVal = total - bottomVal;
 
-        var totalH = (total / maxWas) * chartH;
-        var bottomH = (bottomVal / total) * totalH;
+        var totalH = (total / maxWas)*chartH;
+        var bottomH = (bottomVal / total)*totalH;
         var topH = totalH - bottomH;
 
         var barSpacing = chartW / data.length;
-        var barX = leftPad + i * barSpacing + barSpacing*0.2;
-        var barWidth = barSpacing * 0.6;
+        var barX = leftPad + i*barSpacing + barSpacing*0.2;
+        var barWidth = barSpacing*0.6;
 
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
@@ -460,7 +460,7 @@ function renderStackedChart(chartView, data) {
 
         // date label
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
+        txtDate.setAttribute('x', leftPad + i*barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
         txtDate.setAttribute('text-anchor', 'middle');
         txtDate.setAttribute('font-size', '10');
@@ -469,7 +469,7 @@ function renderStackedChart(chartView, data) {
         svg.appendChild(txtDate);
     });
 
-    // line connecting top of green portion
+    // connect top of green portion
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
         for (var i=1; i<linePoints.length; i++) {
@@ -509,10 +509,8 @@ function renderStackedChart(chartView, data) {
 }
 
 /**
- * Renders a two-line chart for 1-year data:
- * skip zero data, label only highest,lowest,last points,
- * label each date on x-axis,
- * add overhead so top isn't cut off.
+ * Renders a 2-line chart for 1 Yr data
+ * skip zero data, label only highest/lowest/last, label each date, topPad=30
  */
 function renderLineChart(chartView, data) {
     chartView.innerHTML = '';
@@ -520,13 +518,13 @@ function renderLineChart(chartView, data) {
         chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No 1 Yr data</p>';
         return;
     }
-    // find max among was_price, now_price
+
     var maxVal = 0;
     data.forEach(d => {
         if (d.was_price > maxVal) maxVal = d.was_price;
         if (d.now_price > maxVal) maxVal = d.now_price;
     });
-    maxVal *= 1.05; // overhead
+    maxVal *= 1.05;
 
     var width = chartView.clientWidth;
     var height = chartView.clientHeight;
@@ -537,7 +535,7 @@ function renderLineChart(chartView, data) {
 
     var leftPad = 40;
     var bottomPad = 20;
-    var topPad = 10;
+    var topPad = 30; // more space
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
@@ -624,12 +622,12 @@ function renderLineChart(chartView, data) {
         });
     }
 
-    // was line => blue
+    // was => blue
     drawLine(wasArr, "#0077cc");
     drawDots(wasArr);
     labelKeyPoints(wasArr, "#0077cc", wasKeyIdx);
 
-    // now line => green
+    // now => green
     drawLine(nowArr, "#009900");
     drawDots(nowArr);
     labelKeyPoints(nowArr, "#009900", nowKeyIdx);
@@ -657,7 +655,7 @@ function renderLineChart(chartView, data) {
         svg.appendChild(txtDate);
     }
 
-    // y-axis ticks => "$ "
+    // y-axis => "$ "
     let labelVals = [0, maxVal/2, maxVal];
     labelVals.forEach(function(val) {
         let y = (height - bottomPad) - (val / maxVal)*chartH;
@@ -692,16 +690,10 @@ function renderLineChart(chartView, data) {
     </button>
     <div class="page-title">ss_seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 15:03:17</div>
+  <div class="creation-time">Created on: 2025-02-28 15:32:17</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
-
-<div id="searchBarContainer">
-  <input type="text" id="searchInput" placeholder="Search in page..." onkeyup="inPageSearch()">
-  <span id="searchCount"></span>
-  <button id="closeSearchButton" onclick="hideSearchBar()">×</button>
-</div>
 
 
 <div class="item-container" data-product-id="20720065_KG">
@@ -710,23 +702,24 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default -->
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
-    <div class="toggle-switch disabled" data-product-id="20720065_KG">
-      <input type="checkbox" class="toggle-input" id="toggle-20720065_KG" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20720065_KG">
+    <!-- Toggle switch => we do NOT rely on <input> events. We put onclick on the parent div. -->
+    <div class="toggle-switch disabled" data-product-id="20720065_KG" onclick="toggleSwitchClick(this)">
+      <input type="checkbox" class="toggle-input" />
+      <div class="toggle-label">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
-      </label>
+      </div>
     </div>
   </div>
         
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <!-- detail-view => fade in by default -->
+      <div class="detail-view fade-in" style="opacity:1;">
         
           <div class="item-name">
             <span class="item-number">#1</span>
@@ -739,7 +732,8 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">31.3% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20720065_KG"></div>
+      <!-- chart-view => fade out by default -->
+      <div class="chart-view fade-out" style="opacity:0;" id="chart-20720065_KG"></div>
     </div>
   </div>
         
@@ -751,23 +745,24 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default -->
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
-    <div class="toggle-switch disabled" data-product-id="20852143_KG">
-      <input type="checkbox" class="toggle-input" id="toggle-20852143_KG" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20852143_KG">
+    <!-- Toggle switch => we do NOT rely on <input> events. We put onclick on the parent div. -->
+    <div class="toggle-switch disabled" data-product-id="20852143_KG" onclick="toggleSwitchClick(this)">
+      <input type="checkbox" class="toggle-input" />
+      <div class="toggle-label">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
-      </label>
+      </div>
     </div>
   </div>
         
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <!-- detail-view => fade in by default -->
+      <div class="detail-view fade-in" style="opacity:1;">
         
           <div class="item-name">
             <span class="item-number">#2</span>
@@ -780,7 +775,8 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">26.4% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20852143_KG"></div>
+      <!-- chart-view => fade out by default -->
+      <div class="chart-view fade-out" style="opacity:0;" id="chart-20852143_KG"></div>
     </div>
   </div>
         
@@ -792,23 +788,24 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default -->
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
-    <div class="toggle-switch disabled" data-product-id="21043887_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21043887_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21043887_EA">
+    <!-- Toggle switch => we do NOT rely on <input> events. We put onclick on the parent div. -->
+    <div class="toggle-switch disabled" data-product-id="21043887_EA" onclick="toggleSwitchClick(this)">
+      <input type="checkbox" class="toggle-input" />
+      <div class="toggle-label">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
-      </label>
+      </div>
     </div>
   </div>
         
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <!-- detail-view => fade in by default -->
+      <div class="detail-view fade-in" style="opacity:1;">
         
           <div class="item-name">
             <span class="item-number">#3</span>
@@ -821,7 +818,8 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">26.2% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21043887_EA"></div>
+      <!-- chart-view => fade out by default -->
+      <div class="chart-view fade-out" style="opacity:0;" id="chart-21043887_EA"></div>
     </div>
   </div>
         
@@ -833,23 +831,24 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default -->
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
-    <div class="toggle-switch disabled" data-product-id="21211819_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21211819_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21211819_EA">
+    <!-- Toggle switch => we do NOT rely on <input> events. We put onclick on the parent div. -->
+    <div class="toggle-switch disabled" data-product-id="21211819_EA" onclick="toggleSwitchClick(this)">
+      <input type="checkbox" class="toggle-input" />
+      <div class="toggle-label">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
-      </label>
+      </div>
     </div>
   </div>
         
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <!-- detail-view => fade in by default -->
+      <div class="detail-view fade-in" style="opacity:1;">
         
           <div class="item-name">
             <span class="item-number">#4</span>
@@ -862,7 +861,8 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.9% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21211819_EA"></div>
+      <!-- chart-view => fade out by default -->
+      <div class="chart-view fade-out" style="opacity:0;" id="chart-21211819_EA"></div>
     </div>
   </div>
         
@@ -874,23 +874,24 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default -->
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
-    <div class="toggle-switch disabled" data-product-id="20750012_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20750012_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20750012_EA">
+    <!-- Toggle switch => we do NOT rely on <input> events. We put onclick on the parent div. -->
+    <div class="toggle-switch disabled" data-product-id="20750012_EA" onclick="toggleSwitchClick(this)">
+      <input type="checkbox" class="toggle-input" />
+      <div class="toggle-label">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
-      </label>
+      </div>
     </div>
   </div>
         
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <!-- detail-view => fade in by default -->
+      <div class="detail-view fade-in" style="opacity:1;">
         
           <div class="item-name">
             <span class="item-number">#5</span>
@@ -903,7 +904,8 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20750012_EA"></div>
+      <!-- chart-view => fade out by default -->
+      <div class="chart-view fade-out" style="opacity:0;" id="chart-20750012_EA"></div>
     </div>
   </div>
         
@@ -915,23 +917,24 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default -->
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
-    <div class="toggle-switch disabled" data-product-id="20749901_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20749901_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20749901_EA">
+    <!-- Toggle switch => we do NOT rely on <input> events. We put onclick on the parent div. -->
+    <div class="toggle-switch disabled" data-product-id="20749901_EA" onclick="toggleSwitchClick(this)">
+      <input type="checkbox" class="toggle-input" />
+      <div class="toggle-label">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
-      </label>
+      </div>
     </div>
   </div>
         
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <!-- detail-view => fade in by default -->
+      <div class="detail-view fade-in" style="opacity:1;">
         
           <div class="item-name">
             <span class="item-number">#6</span>
@@ -944,7 +947,8 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20749901_EA"></div>
+      <!-- chart-view => fade out by default -->
+      <div class="chart-view fade-out" style="opacity:0;" id="chart-20749901_EA"></div>
     </div>
   </div>
         
@@ -956,23 +960,24 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default -->
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
-    <div class="toggle-switch disabled" data-product-id="20749798_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20749798_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20749798_EA">
+    <!-- Toggle switch => we do NOT rely on <input> events. We put onclick on the parent div. -->
+    <div class="toggle-switch disabled" data-product-id="20749798_EA" onclick="toggleSwitchClick(this)">
+      <input type="checkbox" class="toggle-input" />
+      <div class="toggle-label">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
-      </label>
+      </div>
     </div>
   </div>
         
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <!-- detail-view => fade in by default -->
+      <div class="detail-view fade-in" style="opacity:1;">
         
           <div class="item-name">
             <span class="item-number">#7</span>
@@ -985,7 +990,8 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20749798_EA"></div>
+      <!-- chart-view => fade out by default -->
+      <div class="chart-view fade-out" style="opacity:0;" id="chart-20749798_EA"></div>
     </div>
   </div>
         
@@ -997,23 +1003,24 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default -->
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
-    <div class="toggle-switch disabled" data-product-id="20699832_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20699832_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-20699832_EA">
+    <!-- Toggle switch => we do NOT rely on <input> events. We put onclick on the parent div. -->
+    <div class="toggle-switch disabled" data-product-id="20699832_EA" onclick="toggleSwitchClick(this)">
+      <input type="checkbox" class="toggle-input" />
+      <div class="toggle-label">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
-      </label>
+      </div>
     </div>
   </div>
         
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <!-- detail-view => fade in by default -->
+      <div class="detail-view fade-in" style="opacity:1;">
         
           <div class="item-name">
             <span class="item-number">#8</span>
@@ -1026,7 +1033,8 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">25.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-20699832_EA"></div>
+      <!-- chart-view => fade out by default -->
+      <div class="chart-view fade-out" style="opacity:0;" id="chart-20699832_EA"></div>
     </div>
   </div>
         
@@ -1038,23 +1046,24 @@ function renderLineChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
     </div>
-    <!-- "Detail" button => green by default (with fade in effect) -->
-    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <!-- "Detail" button => green by default -->
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
 
-    <!-- Toggle switch => styled disabled (gray), label => "1 Yr" -->
-    <div class="toggle-switch disabled" data-product-id="21108887_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21108887_EA" onchange="toggleMonYr(this)">
-      <label class="toggle-label" for="toggle-21108887_EA">
+    <!-- Toggle switch => we do NOT rely on <input> events. We put onclick on the parent div. -->
+    <div class="toggle-switch disabled" data-product-id="21108887_EA" onclick="toggleSwitchClick(this)">
+      <input type="checkbox" class="toggle-input" />
+      <div class="toggle-label">
         <span class="toggle-circle"></span>
         <span class="toggle-text">1 Yr</span>
-      </label>
+      </div>
     </div>
   </div>
         
   
   <div class="right-side">
     <div class="view-container">
-      <div class="detail-view">
+      <!-- detail-view => fade in by default -->
+      <div class="detail-view fade-in" style="opacity:1;">
         
           <div class="item-name">
             <span class="item-number">#9</span>
@@ -1067,12 +1076,19 @@ function renderLineChart(chartView, data) {
           <div class="discount-badge">9.1% OFF</div>
         
       </div>
-      <div class="chart-view" id="chart-21108887_EA"></div>
+      <!-- chart-view => fade out by default -->
+      <div class="chart-view fade-out" style="opacity:0;" id="chart-21108887_EA"></div>
     </div>
   </div>
         
 </div>
 
+
+<div id="searchBarContainer">
+  <input type="text" id="searchInput" placeholder="Search in page..." onkeyup="inPageSearch()">
+  <span id="searchCount"></span>
+  <button id="closeSearchButton" onclick="hideSearchBar()">×</button>
+</div>
 
 <script>
 function showSearchBar() {
