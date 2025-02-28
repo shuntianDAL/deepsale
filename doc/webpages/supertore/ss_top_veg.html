@@ -113,50 +113,50 @@ body {
     padding: 0;
 }
 .item-container {
+    display: flex;
+    gap: 15px;
     width: 90%;
     max-width: 600px;
     margin: 20px auto;
     border-bottom: 1px solid #ccc;
     padding-bottom: 15px;
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    position: relative;
 }
-.item-image {
+.left-column {
+    width: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-.item-image img {
-    width: 60px;
-    height: auto;
-}
-.content-view {
-    display: flex;
     gap: 10px;
-    width: 100%;
+}
+.right-column {
+    flex: 1;
 }
 .button-group {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    width: 80px;
+    width: 100%;
 }
 .switch-button {
-    padding: 5px;
-    font-size: 12px;
+    background-color: #3e7d53;
     border: none;
-    border-radius: 5px;
-    background-color: #ddd;
+    color: #fff;
+    padding: 6px;
+    border-radius: 9999px;
     cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 .switch-button.selected {
     background-color: #3e7d53;
     color: #fff;
 }
+.switch-button:not(.selected) {
+    background-color: #ddd;
+    color: #000;
+}
 .view-container {
-    flex: 1;
     position: relative;
 }
 .detail-view, .chart-view {
@@ -224,16 +224,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 /**
  * Switch view based on the clicked button in the vertical button group.
- * The button's data-type attribute indicates which view:
- * - "detail": show detail view.
- * - "1mon": show chart based on 1 Month data.
- * - "1yr": show chart based on 1 Year data.
- * This function updates button styles and toggles the view.
+ * The button's data-type attribute indicates:
+ *  - "detail": show detail view.
+ *  - "1mon": show 1 Month chart.
+ *  - "1yr": show 1 Year chart.
+ * Updates button styles and toggles the view accordingly.
  */
 function switchView(btn) {
     var container = btn.closest('.item-container');
-    var contentView = container.querySelector('.content-view');
-    var viewContainer = contentView.querySelector('.view-container');
+    var leftCol = container.querySelector('.left-column');
+    var rightCol = container.querySelector('.right-column');
+    var viewContainer = rightCol.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
     var chartView = viewContainer.querySelector('.chart-view');
     var productId = container.getAttribute('data-product-id');
@@ -262,10 +263,10 @@ function switchView(btn) {
 /**
  * Renders a stacked bar chart in an <svg> using the provided dataset.
  * - Each bar's total height corresponds to was_price.
- * - The bottom portion (green) represents now_price.
- * - The top portion (orange) represents the difference.
- * - All numeric labels are prefixed with "$ " and spaced appropriately.
- * - Y-axis numeric labels also include "$ ".
+ * - The bottom (green) represents now_price.
+ * - The top (orange) represents the difference.
+ * - All numeric labels are prefixed with "$ " with a small space.
+ * - Y-axis numeric labels include "$ " as well.
  * - A vertical axis line and horizontal grid lines are drawn.
  * - A line connects the top of the now_price portion across bars.
  * - The was_price label is positioned above (outside) the bar.
@@ -300,7 +301,7 @@ function renderStackedChart(chartView, data) {
     axisLine.setAttribute('y2', topPad);
     axisLine.setAttribute('stroke', '#000');
     svg.appendChild(axisLine);
-    // Place '$' label at the top, with "$ " before numeric labels.
+    // Place '$' label at the top with a space after; this label is now at the top of Y-axis
     var axisLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     axisLabel.setAttribute('x', leftPad - 5);
     axisLabel.setAttribute('y', topPad + 5);
@@ -349,7 +350,7 @@ function renderStackedChart(chartView, data) {
         txtNow.setAttribute('fill', '#000');
         txtNow.textContent = "$ " + d.now_price.toFixed(2);
         svg.appendChild(txtNow);
-        // was_price label above the bar (outside)
+        // was_price label placed above the bar (outside)
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth / 2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -414,7 +415,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">Veg.&Fruit</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 11:43:48</div>
+  <div class="creation-time">Created on: 2025-02-28 11:50:57</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -427,19 +428,20 @@ function renderStackedChart(chartView, data) {
 
 
 <div class="item-container" data-product-id="20143381001_KG">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20143381001/b3/en/front/20143381001_front_a06_@2.png' alt='Roma Tomatoes' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20143381001/b3/en/front/20143381001_front_a06_@2.png' alt='Roma Tomatoes' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -457,24 +459,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20143381001_KG"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20811994001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20811994001/b3/en/front/20811994001_front_a06_@2.png' alt='Yellow Onions, 3 lb Bag' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20811994001/b3/en/front/20811994001_front_a06_@2.png' alt='Yellow Onions, 3 lb Bag' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -492,24 +494,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20811994001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="21626132_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/21626132/b3/en/front/21626132_front_a06_@2.png' alt='Brusselslaw' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21626132/b3/en/front/21626132_front_a06_@2.png' alt='Brusselslaw' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -527,24 +529,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-21626132_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20186654_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20186654/b3/en/front/20186654_front_a06_@2.png' alt='Vegetable Medley' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20186654/b3/en/front/20186654_front_a06_@2.png' alt='Vegetable Medley' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -562,24 +564,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20186654_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="21022511001_KG">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/21022511001/b3/en/front/21022511001_front_a06_@2.png' alt='Canary Melon' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21022511001/b3/en/front/21022511001_front_a06_@2.png' alt='Canary Melon' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -597,24 +599,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-21022511001_KG"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="21023094001_KG">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/21023094001/b3/en/front/21023094001_front_a06_@2.png' alt='Santa Claus Melons' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21023094001/b3/en/front/21023094001_front_a06_@2.png' alt='Santa Claus Melons' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -632,24 +634,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-21023094001_KG"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20070132001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20070132001/b3/en/front/20070132001_front_a06_@2.png' alt='English Cucumber' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20070132001/b3/en/front/20070132001_front_a06_@2.png' alt='English Cucumber' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -667,24 +669,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20070132001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20020863001_KG">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20020863001/b3/en/front/20020863001_front_a06_@2.png' alt='Taiwanese Flat Cabbage' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20020863001/b3/en/front/20020863001_front_a06_@2.png' alt='Taiwanese Flat Cabbage' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -702,24 +704,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20020863001_KG"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20162500001_KG">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20162500001/b3/en/front/20162500001_front_a06_@2.png' alt='Guava' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20162500001/b3/en/front/20162500001_front_a06_@2.png' alt='Guava' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -737,24 +739,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20162500001_KG"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20119813001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20119813001/b3/en/angle/20119813001_angle_a06_@2.png' alt='Pineapple' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20119813001/b3/en/angle/20119813001_angle_a06_@2.png' alt='Pineapple' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -772,24 +774,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20119813001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20005774001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20005774001/b3/en/front/20005774001_front_a06_@2.png' alt='Coconuts' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20005774001/b3/en/front/20005774001_front_a06_@2.png' alt='Coconuts' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -807,24 +809,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20005774001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20119760001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20119760001/b3/en/front/20119760001_front_a06_@2.png' alt='Caribbean Avocado' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20119760001/b3/en/front/20119760001_front_a06_@2.png' alt='Caribbean Avocado' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -842,24 +844,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20119760001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20167017001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20167017001/b3/en/front/20167017001_front_a06_@2.png' alt='Cantaloupe' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20167017001/b3/en/front/20167017001_front_a06_@2.png' alt='Cantaloupe' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -877,24 +879,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20167017001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20039812_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20039812/b3/en/front/20039812_front_a06_@2.png' alt='Broccoli Florets' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20039812/b3/en/front/20039812_front_a06_@2.png' alt='Broccoli Florets' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -912,24 +914,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20039812_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20159689001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20159689001/b3/en/front/20159689001_front_a06_@2.png' alt='Fenugreek Bunch' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20159689001/b3/en/front/20159689001_front_a06_@2.png' alt='Fenugreek Bunch' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -947,24 +949,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20159689001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20795315001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20795315001/b3/en/front/20795315001_front_a06_@2.png' alt='Lemons, 2 lb Bag' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20795315001/b3/en/front/20795315001_front_a06_@2.png' alt='Lemons, 2 lb Bag' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -982,24 +984,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20795315001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20811362001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20811362001/b3/en/front/20811362001_front_a06_@2.png' alt='Red Onions, 3 lb Bag' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20811362001/b3/en/front/20811362001_front_a06_@2.png' alt='Red Onions, 3 lb Bag' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1017,24 +1019,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20811362001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20696626001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20696626001/b3/en/front/20696626001_front_a06_@2.png' alt='Granadilla' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20696626001/b3/en/front/20696626001_front_a06_@2.png' alt='Granadilla' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1052,24 +1054,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20696626001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20600927001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20600927001/b3/en/front/20600927001_front_a06_@2.png' alt='Carrots, 3 lb Bag' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20600927001/b3/en/front/20600927001_front_a06_@2.png' alt='Carrots, 3 lb Bag' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1087,24 +1089,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20600927001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20104062_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20104062/b3/en/front/20104062_front_a06_@2.png' alt='Popeye Select Spinach' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20104062/b3/en/front/20104062_front_a06_@2.png' alt='Popeye Select Spinach' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1122,24 +1124,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20104062_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20130242001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20130242001/b3/en/front/20130242001_front_a06_@2.png' alt='Kiwis' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20130242001/b3/en/front/20130242001_front_a06_@2.png' alt='Kiwis' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1157,24 +1159,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20130242001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20047112001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20047112001/b3/en/beauty/20047112001_beauty_a06_@2.png' alt='Quince' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20047112001/b3/en/beauty/20047112001_beauty_a06_@2.png' alt='Quince' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1192,24 +1194,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20047112001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20959290_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20959290/b3/en/front/20959290_front_a06_@2.png' alt='Organic Broccoli Florets' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20959290/b3/en/front/20959290_front_a06_@2.png' alt='Organic Broccoli Florets' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1227,24 +1229,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20959290_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20920821001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20920821001/b3/en/front/20920821001_front_a06_@2.png' alt='Mini Sweet Peppers' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20920821001/b3/en/front/20920821001_front_a06_@2.png' alt='Mini Sweet Peppers' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1262,24 +1264,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20920821001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20145379001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20145379001/b3/en/front/20145379001_front_a06_@2.png' alt='Mini Seedless Watermelon' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20145379001/b3/en/front/20145379001_front_a06_@2.png' alt='Mini Seedless Watermelon' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1297,24 +1299,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20145379001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="21406192_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/21406192/b3/en/front/21406192_front_a06_@2.png' alt='Mango Turmeric' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21406192/b3/en/front/21406192_front_a06_@2.png' alt='Mango Turmeric' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1332,24 +1334,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-21406192_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="21362564_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/21362564/b3/en/front/21362564_front_a06_@2.png' alt='Blueberry Organic Kombucha' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21362564/b3/en/front/21362564_front_a06_@2.png' alt='Blueberry Organic Kombucha' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1367,24 +1369,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-21362564_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="21362519_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/21362519/b3/en/front/21362519_front_a06_@2.png' alt='Organic Pink Grapefruit Smoothie' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21362519/b3/en/front/21362519_front_a06_@2.png' alt='Organic Pink Grapefruit Smoothie' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1402,24 +1404,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-21362519_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="21362499_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/21362499/b3/en/front/21362499_front_a06_@2.png' alt='Organic Raspberry Lemon Kombucha' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21362499/b3/en/front/21362499_front_a06_@2.png' alt='Organic Raspberry Lemon Kombucha' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1437,24 +1439,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-21362499_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="21362495_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/21362495/b3/en/front/21362495_front_a06_@2.png' alt='Organic Lime Strawberry Kombucha' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21362495/b3/en/front/21362495_front_a06_@2.png' alt='Organic Lime Strawberry Kombucha' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1472,24 +1474,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-21362495_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20033488001_KG">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20033488001/b3/en/front/20033488001_front_a06_@2.png' alt='Mini Bananas, Bunch' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20033488001/b3/en/front/20033488001_front_a06_@2.png' alt='Mini Bananas, Bunch' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1507,24 +1509,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20033488001_KG"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20868985001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20868985001/b3/en/front/20868985001_front_a06_@2.png' alt='Imperfect Apples, 6 lb bag' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20868985001/b3/en/front/20868985001_front_a06_@2.png' alt='Imperfect Apples, 6 lb bag' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1542,24 +1544,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20868985001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20045276001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20045276001/b3/en/front/20045276001_front_a06_@2.png' alt='Honeydew Melon' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20045276001/b3/en/front/20045276001_front_a06_@2.png' alt='Honeydew Melon' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1577,24 +1579,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20045276001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20168395001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20168395001/b3/en/angle/20168395001_angle_a06_@2.png' alt='Dragon Fruit' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20168395001/b3/en/angle/20168395001_angle_a06_@2.png' alt='Dragon Fruit' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1612,24 +1614,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20168395001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="21549854001_KG">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/21549854001/b3/en/front/21549854001_front_a06_@2.png' alt='Jackfruit Slice' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/21549854001/b3/en/front/21549854001_front_a06_@2.png' alt='Jackfruit Slice' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1647,24 +1649,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-21549854001_KG"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20121509001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20121509001/b3/en/front/20121509001_front_a06_@2.png' alt='Ataulfo Mango' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20121509001/b3/en/front/20121509001_front_a06_@2.png' alt='Ataulfo Mango' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1682,24 +1684,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20121509001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20157487001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20157487001/b3/en/front/20157487001_front_a06_@2.png' alt='Fresh Coconut Young' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20157487001/b3/en/front/20157487001_front_a06_@2.png' alt='Fresh Coconut Young' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1717,24 +1719,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20157487001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20067389001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20067389001/b3/en/front/20067389001_front_a06_@2.png' alt='Romaine Heart, 3 Pack' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20067389001/b3/en/front/20067389001_front_a06_@2.png' alt='Romaine Heart, 3 Pack' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1752,24 +1754,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20067389001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20649591001_KG">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20649591001/b3/en/front/20649591001_front_a06_@2.png' alt='Manzano Bananas, Bunch' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20649591001/b3/en/front/20649591001_front_a06_@2.png' alt='Manzano Bananas, Bunch' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1787,24 +1789,24 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20649591001_KG"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 <div class="item-container" data-product-id="20051015001_EA">
-  <div class="item-image">
-    <img src='https://assets.shop.loblaws.ca/products/20051015001/b3/en/front/20051015001_front_a06_@2.png' alt='Blackberries Half Pint' />
-  </div>
-  
-          <div class="content-view">
-            
+  <div class="left-column">
+    <div class="item-image">
+      <img src='https://assets.shop.loblaws.ca/products/20051015001/b3/en/front/20051015001_front_a06_@2.png' alt='Blackberries Half Pint' />
+    </div>
+    
           <div class="button-group">
             <button class="switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
             <button class="switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
             <button class="switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
           </div>
         
-            
+  </div>
+  <div class="right-column">
+    
           <div class="view-container">
             <div class="detail-view">
               
@@ -1822,8 +1824,7 @@ function renderStackedChart(chartView, data) {
             <div class="chart-view" id="chart-20051015001_EA"></div>
           </div>
         
-          </div>
-        
+  </div>
 </div>
         
 
