@@ -53,7 +53,7 @@ body {
     margin: 0 20px 10px;
 }
 .header-spacer {
-    height: 70px;
+    height: 70px; /* offset fixed header */
 }
 .search-button {
     background-color: #3e7d53;
@@ -132,11 +132,6 @@ body {
     width: 80px;
     height: auto;
 }
-.button-group-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
 .vertical-switch-button {
     background-color: #3e7d53;
     border: none;
@@ -164,18 +159,26 @@ body {
     height: 28px;
     position: relative;
 }
+.toggle-switch.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 .toggle-input {
+    /* DO NOT use 'disabled' attribute, so 'onchange' can fire. We only style it as disabled. */
     display: none;
 }
 .toggle-label {
     display: inline-block;
     width: 100%;
     height: 100%;
-    background-color: #3e7d53;
+    background-color: #ddd;
     border-radius: 9999px;
     position: relative;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+.toggle-switch:not(.disabled) .toggle-label {
+    background-color: #3e7d53;
 }
 .toggle-label .toggle-circle {
     position: absolute;
@@ -208,7 +211,7 @@ body {
 }
 .view-container {
     width: 100%;
-    height: 200px; /* shorter chart height */
+    height: 200px;
     position: relative;
     background-color: #f9f9f9;
 }
@@ -271,23 +274,31 @@ body {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Provide chart data as a global dictionary: priceHistoryData[product_id] = { "1mon": [...], "1yr": [...] }
     window.priceHistoryData = {"20720065_KG": {"1mon": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "1yr": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}]}, "20852143_KG": {"1mon": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "1yr": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}]}, "21043887_EA": {"1mon": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}]}, "21211819_EA": {"1mon": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}]}, "20750012_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749901_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749798_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20699832_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21108887_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]}};
 });
 
 /**
- * When "Detail" button is clicked, switch to detail view and disable the toggle.
+ * When "Detail" button is clicked => show detail view, disable toggle (gray).
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
+    // Make this button selected, others not
     var allButtons = container.querySelectorAll('.vertical-switch-button');
     allButtons.forEach(function(b) { b.classList.remove('selected'); });
     btn.classList.add('selected');
-    // Also disable the toggle switch (gray out)
+
+    // Reapply 'disabled' styling to the toggle
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
-    // Set toggle input to unchecked
     var toggleInput = container.querySelector('.toggle-input');
+    // Force the toggle to be unchecked
     toggleInput.checked = false;
+
+    // Force label text to "1 Y"
+    var toggleLabel = toggleSwitch.querySelector('.toggle-text');
+    toggleLabel.textContent = "1 Y";
+
     // Show detail, hide chart
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
@@ -295,33 +306,43 @@ function switchToDetail(btn) {
     var chartView = viewContainer.querySelector('.chart-view');
     detailView.style.opacity = '1';
     chartView.style.opacity = '0';
+
+    // Clear chart after fade
     setTimeout(function() {
         chartView.innerHTML = '';
     }, 400);
 }
 
 /**
- * When the toggle switch changes state, load the corresponding chart.
- * The toggle remains green (unless disabled by Detail view).
- * If checked, show 1 Year data and update the inner text to "1 Y".
- * If unchecked, show 1 Month data and update the inner text to "1 M".
+ * When the toggle switch is changed => if 'disabled' class is present => remove it so it becomes active
+ * Then show chart, hide detail, load either 1-month or 1-year data
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
-    // If detail view is active, do nothing.
     var toggleSwitch = container.querySelector('.toggle-switch');
+
+    // If it's styled as disabled => remove that style
     if (toggleSwitch.classList.contains('disabled')) {
-        return;
+        toggleSwitch.classList.remove('disabled');
     }
-    var productId = container.getAttribute('data-product-id');
+
+    // Deselect the Detail button
+    var detailBtn = container.querySelector('[data-type="detail"]');
+    detailBtn.classList.remove('selected');
+
+    // Show chart, hide detail
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
     var chartView = viewContainer.querySelector('.chart-view');
     detailView.style.opacity = '0';
     chartView.style.opacity = '1';
-    var dataSet;
+
+    var productId = container.getAttribute('data-product-id');
     var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
+
+    // If checked => load 1yr data, label "1 Y"; else => load 1mon data, label "1 M"
+    var dataSet;
     if (checkbox.checked) {
         dataSet = window.priceHistoryData[productId]["1yr"];
         toggleLabel.textContent = "1 Y";
@@ -329,18 +350,17 @@ function toggleMonYr(checkbox) {
         dataSet = window.priceHistoryData[productId]["1mon"];
         toggleLabel.textContent = "1 M";
     }
+
+    // Render the chart
     setTimeout(function() {
         renderStackedChart(chartView, dataSet);
     }, 50);
 }
 
 /**
- * Renders a stacked bar chart in an <svg>.
- * - was_price => total bar height, but bar labels have no "$"
- * - now_price => bottom (green)
- * - difference => top (orange)
- * - Y-axis numeric labels include "$ "
- * - was_price label is placed above the bar (without "$")
+ * Renders the bar chart in an <svg>.
+ * - Bar labels: numeric only
+ * - Y-axis labels: "$ " prefix
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
@@ -354,19 +374,21 @@ function renderStackedChart(chartView, data) {
             maxWas = d.was_price;
         }
     });
+
     var width = chartView.clientWidth;
     var height = chartView.clientHeight;
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
     svg.style.backgroundColor = '#f9f9f9';
+
     var leftPad = 40;
     var bottomPad = 20;
     var topPad = 10;
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
-    // Axis line
+    // Vertical axis line
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -376,6 +398,7 @@ function renderStackedChart(chartView, data) {
     svg.appendChild(axisLine);
 
     var linePoints = [];
+
     data.forEach(function(d, i) {
         var total = d.was_price;
         var bottomVal = d.now_price;
@@ -383,15 +406,19 @@ function renderStackedChart(chartView, data) {
             bottomVal = total;
         }
         var topVal = total - bottomVal;
+
         var totalH = (total / maxWas) * chartH;
         var bottomH = (bottomVal / total) * totalH;
         var topH = totalH - bottomH;
+
         var barSpacing = chartW / data.length;
         var barX = leftPad + i * barSpacing + barSpacing*0.2;
         var barWidth = barSpacing * 0.6;
+
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
 
+        // bottom portion (green)
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
@@ -401,6 +428,7 @@ function renderStackedChart(chartView, data) {
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
 
+        // top portion (orange)
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
@@ -410,7 +438,7 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
 
-        // Label for now_price (no $ sign)
+        // Label for now_price => numeric only
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -420,7 +448,7 @@ function renderStackedChart(chartView, data) {
         txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
 
-        // Label for was_price above bar (no $ sign)
+        // Label for was_price => numeric only, placed above
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -434,6 +462,7 @@ function renderStackedChart(chartView, data) {
         var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
 
+        // X-axis date
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
@@ -443,6 +472,8 @@ function renderStackedChart(chartView, data) {
         txtDate.textContent = d.date;
         svg.appendChild(txtDate);
     });
+
+    // line connecting top of green portion
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
         for (var i=1; i<linePoints.length; i++) {
@@ -455,6 +486,8 @@ function renderStackedChart(chartView, data) {
         linePath.setAttribute('stroke-width', '2');
         svg.appendChild(linePath);
     }
+
+    // Y-axis ticks => "$ " prefix
     var labelVals = [0, maxWas/2, maxWas];
     labelVals.forEach(function(val) {
         var y = (height - bottomPad) - (val / maxWas)*chartH;
@@ -466,6 +499,7 @@ function renderStackedChart(chartView, data) {
         gridLine.setAttribute('stroke', '#ccc');
         gridLine.setAttribute('stroke-dasharray', '2,2');
         svg.appendChild(gridLine);
+
         var txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtLabel.setAttribute('x', 5);
         txtLabel.setAttribute('y', y+3);
@@ -474,6 +508,7 @@ function renderStackedChart(chartView, data) {
         txtLabel.textContent = "$ " + val.toFixed(2);
         svg.appendChild(txtLabel);
     });
+
     chartView.appendChild(svg);
 }
 </script>
@@ -487,7 +522,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">ss_seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 13:34:09</div>
+  <div class="creation-time">Created on: 2025-02-28 13:39:51</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -505,12 +540,13 @@ function renderStackedChart(chartView, data) {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
     </div>
-    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch" data-product-id="20720065_KG">
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <div class="toggle-switch disabled" data-product-id="20720065_KG">
+      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20720065_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20720065_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 M</span>
+        <span class="toggle-text">1 Y</span>
       </label>
     </div>
   </div>
@@ -536,19 +572,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-        
+
 <div class="item-container" data-product-id="20852143_KG">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
     </div>
-    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch" data-product-id="20852143_KG">
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <div class="toggle-switch disabled" data-product-id="20852143_KG">
+      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20852143_KG" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20852143_KG">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 M</span>
+        <span class="toggle-text">1 Y</span>
       </label>
     </div>
   </div>
@@ -574,19 +611,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-        
+
 <div class="item-container" data-product-id="21043887_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
     </div>
-    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch" data-product-id="21043887_EA">
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <div class="toggle-switch disabled" data-product-id="21043887_EA">
+      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-21043887_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21043887_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 M</span>
+        <span class="toggle-text">1 Y</span>
       </label>
     </div>
   </div>
@@ -612,19 +650,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-        
+
 <div class="item-container" data-product-id="21211819_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
     </div>
-    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch" data-product-id="21211819_EA">
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <div class="toggle-switch disabled" data-product-id="21211819_EA">
+      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-21211819_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21211819_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 M</span>
+        <span class="toggle-text">1 Y</span>
       </label>
     </div>
   </div>
@@ -650,19 +689,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-        
+
 <div class="item-container" data-product-id="20750012_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch" data-product-id="20750012_EA">
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <div class="toggle-switch disabled" data-product-id="20750012_EA">
+      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20750012_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20750012_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 M</span>
+        <span class="toggle-text">1 Y</span>
       </label>
     </div>
   </div>
@@ -688,19 +728,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-        
+
 <div class="item-container" data-product-id="20749901_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch" data-product-id="20749901_EA">
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <div class="toggle-switch disabled" data-product-id="20749901_EA">
+      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20749901_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20749901_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 M</span>
+        <span class="toggle-text">1 Y</span>
       </label>
     </div>
   </div>
@@ -726,19 +767,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-        
+
 <div class="item-container" data-product-id="20749798_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch" data-product-id="20749798_EA">
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <div class="toggle-switch disabled" data-product-id="20749798_EA">
+      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20749798_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20749798_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 M</span>
+        <span class="toggle-text">1 Y</span>
       </label>
     </div>
   </div>
@@ -764,19 +806,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-        
+
 <div class="item-container" data-product-id="20699832_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch" data-product-id="20699832_EA">
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <div class="toggle-switch disabled" data-product-id="20699832_EA">
+      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-20699832_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20699832_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 M</span>
+        <span class="toggle-text">1 Y</span>
       </label>
     </div>
   </div>
@@ -802,19 +845,20 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-        
+
 <div class="item-container" data-product-id="21108887_EA">
   
   <div class="left-side">
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
     </div>
-    <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
-    <div class="toggle-switch" data-product-id="21108887_EA">
+    <button class="vertical-switch-button selected" data-type="detail" onclick="switchToDetail(this)">Detail</button>
+    <div class="toggle-switch disabled" data-product-id="21108887_EA">
+      <!-- NOTE: The input is NOT physically disabled => so we can still get 'onchange' event. -->
       <input type="checkbox" class="toggle-input" id="toggle-21108887_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21108887_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 M</span>
+        <span class="toggle-text">1 Y</span>
       </label>
     </div>
   </div>
@@ -840,7 +884,7 @@ function renderStackedChart(chartView, data) {
   </div>
         
 </div>
-        
+
 
 <script>
 function showSearchBar() {
