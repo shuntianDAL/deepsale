@@ -153,15 +153,10 @@ body {
     background-color: #ddd;
     color: #000;
 }
-/* iOS-style toggle switch */
 .toggle-switch {
     width: 80px;
     height: 28px;
     position: relative;
-}
-.toggle-switch.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
 }
 .toggle-input {
     display: none;
@@ -176,8 +171,9 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-.toggle-switch:not(.disabled) .toggle-label {
-    background-color: #3e7d53;
+.toggle-switch.disabled .toggle-label {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 .toggle-label .toggle-circle {
     position: absolute;
@@ -188,6 +184,9 @@ body {
     background-color: #fff;
     border-radius: 50%;
     transition: transform 0.3s ease;
+}
+.toggle-input:checked + .toggle-label {
+    background-color: #3e7d53;
 }
 .toggle-input:checked + .toggle-label .toggle-circle {
     transform: translateX(52px);
@@ -284,13 +283,12 @@ function switchToDetail(btn) {
     var allButtons = container.querySelectorAll('.vertical-switch-button');
     allButtons.forEach(function(b) { b.classList.remove('selected'); });
     btn.classList.add('selected');
+    // Disable the toggle switch
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
     var toggleInput = container.querySelector('.toggle-input');
-    toggleInput.disabled = true;
     toggleInput.checked = false;
-    var toggleLabel = toggleSwitch.querySelector('.toggle-text');
-    toggleLabel.textContent = "1 Y";
+    // Show detail view
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
@@ -303,26 +301,27 @@ function switchToDetail(btn) {
 }
 
 /**
- * When the toggle switch changes state, enable it (if disabled) and toggle chart view.
- * This deselects the "Detail" button.
- * If the checkbox is checked, load 1yr data and label "1 Y"; if unchecked, load 1mon data and label "1 M".
+ * When the toggle switch is clicked, remove the disabled state if present,
+ * and toggle between 1 Month and 1 Year data.
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
     var toggleSwitch = container.querySelector('.toggle-switch');
+    // If currently disabled, remove the disabled state
     if (toggleSwitch.classList.contains('disabled')) {
         toggleSwitch.classList.remove('disabled');
-        var toggleInput = container.querySelector('.toggle-input');
-        toggleInput.disabled = false;
     }
+    // Unselect the Detail button
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
+
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
     var chartView = viewContainer.querySelector('.chart-view');
     detailView.style.opacity = '0';
     chartView.style.opacity = '1';
+
     var productId = container.getAttribute('data-product-id');
     var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
     var dataSet;
@@ -333,6 +332,7 @@ function toggleMonYr(checkbox) {
         dataSet = window.priceHistoryData[productId]["1mon"];
         toggleLabel.textContent = "1 M";
     }
+
     setTimeout(function() {
         renderStackedChart(chartView, dataSet);
     }, 50);
@@ -340,8 +340,8 @@ function toggleMonYr(checkbox) {
 
 /**
  * Renders a stacked bar chart in an <svg>.
- * - Bar labels (for was_price and now_price) display only numbers (no "$").
- * - Y-axis labels display "$ " before the number.
+ * - Bar labels (was_price, now_price) show only numbers (no "$").
+ * - Y-axis numeric labels include "$ ".
  * - The was_price label is placed above the bar.
  */
 function renderStackedChart(chartView, data) {
@@ -368,7 +368,7 @@ function renderStackedChart(chartView, data) {
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
-    // Draw vertical axis line
+    // Axis line
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -414,7 +414,7 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
 
-        // Label for now_price (only number)
+        // now_price label (no "$")
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -424,7 +424,7 @@ function renderStackedChart(chartView, data) {
         txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
 
-        // Label for was_price above bar (only number)
+        // was_price label above the bar (no "$")
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -492,7 +492,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">ss_dairy</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 13:28:11</div>
+  <div class="creation-time">Created on: 2025-02-28 13:32:53</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -512,10 +512,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21040974_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21040974_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21040974_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21040974_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -550,10 +550,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21040956_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21040956_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21040956_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21040956_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -588,10 +588,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21040942_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21040942_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21040942_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21040942_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -626,10 +626,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21040932_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21040932_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21040932_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21040932_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -664,10 +664,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20666187_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20666187_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20666187_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20666187_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -702,10 +702,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21547597_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21547597_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21547597_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21547597_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -740,10 +740,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21547587_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21547587_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21547587_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21547587_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -778,10 +778,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20943890_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20943890_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20943890_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20943890_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -816,10 +816,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20431607002_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20431607002_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20431607002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20431607002_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -854,10 +854,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20279976_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20279976_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20279976_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20279976_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -892,10 +892,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20056004_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20056004_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20056004_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20056004_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -930,10 +930,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20638003003_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20638003003_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20638003003_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20638003003_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -968,10 +968,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20316485005_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20316485005_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20316485005_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20316485005_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1006,10 +1006,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21161998_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21161998_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21161998_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21161998_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1044,10 +1044,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21433695_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21433695_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21433695_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21433695_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1082,10 +1082,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21353874_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21353874_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21353874_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21353874_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1120,10 +1120,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21588326_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21588326_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21588326_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21588326_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1158,10 +1158,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21041543002_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21041543002_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21041543002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21041543002_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1196,10 +1196,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21547995_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21547995_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21547995_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21547995_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1234,10 +1234,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21312346_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21312346_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21312346_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21312346_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1272,10 +1272,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21109025_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21109025_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21109025_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21109025_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1310,10 +1310,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21561135_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21561135_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21561135_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21561135_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1348,10 +1348,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21560949_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21560949_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21560949_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21560949_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1386,10 +1386,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21560899_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21560899_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21560899_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21560899_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1424,10 +1424,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20316485002_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20316485002_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20316485002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20316485002_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1462,10 +1462,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21619809_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21619809_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21619809_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21619809_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1500,10 +1500,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21592483_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21592483_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21592483_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21592483_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1538,10 +1538,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21588150_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21588150_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21588150_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21588150_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1576,10 +1576,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20821364001_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20821364001_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20821364001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20821364001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1614,10 +1614,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21619591_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21619591_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21619591_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21619591_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1652,10 +1652,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21588667_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21588667_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21588667_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21588667_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1690,10 +1690,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21547567_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21547567_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21547567_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21547567_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1728,10 +1728,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21547564_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21547564_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21547564_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21547564_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1766,10 +1766,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21473714_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21473714_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21473714_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21473714_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1804,10 +1804,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21429094_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21429094_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21429094_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21429094_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1842,10 +1842,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21107643_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21107643_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21107643_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21107643_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1880,10 +1880,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="21043151001_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-21043151001_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-21043151001_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-21043151001_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1918,10 +1918,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20788062002_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20788062002_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20788062002_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20788062002_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1956,10 +1956,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20325132007_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20325132007_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20325132007_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20325132007_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
@@ -1994,10 +1994,10 @@ function renderStackedChart(chartView, data) {
     </div>
     <button class="vertical-switch-button" data-type="detail" onclick="switchToDetail(this)">Detail</button>
     <div class="toggle-switch disabled" data-product-id="20325132003_EA">
-      <input type="checkbox" class="toggle-input" id="toggle-20325132003_EA" disabled onchange="toggleMonYr(this)">
+      <input type="checkbox" class="toggle-input" id="toggle-20325132003_EA" onchange="toggleMonYr(this)">
       <label class="toggle-label" for="toggle-20325132003_EA">
         <span class="toggle-circle"></span>
-        <span class="toggle-text">1 Y</span>
+        <span class="toggle-text">1 M</span>
       </label>
     </div>
   </div>
