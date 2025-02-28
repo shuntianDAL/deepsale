@@ -165,7 +165,7 @@ body {
 }
 .view-container {
     width: 100%;
-    height: 240px; /* Larger chart area */
+    height: 240px; /* bigger chart area */
     position: relative;
     background-color: #f9f9f9;
 }
@@ -228,54 +228,94 @@ body {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Dictionary: priceHistoryData[product_id] = { "1mon": [...], "1yr": [...] }
+    // dictionary: priceHistoryData[product_id] = { "1mon": [...], "1yr": [...] }
     window.priceHistoryData = {"21040974_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}]}, "21040956_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}]}, "21040942_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}]}, "21040932_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "02.12", "was_price": 2.49, "now_price": 1.0}, {"date": "02.19", "was_price": 2.49, "now_price": 1.0}, {"date": "02.26", "was_price": 2.49, "now_price": 1.0}, {"date": "03.12", "was_price": 2.49, "now_price": 1.0}]}, "20666187_EA": {"1mon": [{"date": "03.26", "was_price": 4.49, "now_price": 2.49}], "1yr": [{"date": "03.26", "was_price": 4.49, "now_price": 2.49}]}, "21547597_EA": {"1mon": [{"date": "02.12", "was_price": 0.0, "now_price": 5.49}, {"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}], "1yr": [{"date": "02.12", "was_price": 0.0, "now_price": 5.49}, {"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}]}, "21547587_EA": {"1mon": [{"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}], "1yr": [{"date": "02.19", "was_price": 3.99, "now_price": 3.69}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}, {"date": "12.31", "was_price": 0.0, "now_price": 5.49}]}, "20943890_EA": {"1mon": [{"date": "02.12", "was_price": 5.49, "now_price": 4.0}, {"date": "03.05", "was_price": 5.49, "now_price": 3.49}], "1yr": [{"date": "02.12", "was_price": 5.49, "now_price": 4.0}, {"date": "03.05", "was_price": 5.49, "now_price": 3.49}]}, "20431607002_EA": {"1mon": [{"date": "02.12", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 3.49}], "1yr": [{"date": "02.12", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 3.49}]}, "20279976_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}]}, "20056004_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 6.0}, {"date": "03.12", "was_price": 9.99, "now_price": 7.0}]}, "20638003003_EA": {"1mon": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "02.19", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "02.19", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}]}, "20316485005_EA": {"1mon": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 6.49, "now_price": 4.99}, {"date": "03.05", "was_price": 6.49, "now_price": 4.99}]}, "21161998_EA": {"1mon": [{"date": "03.12", "was_price": 7.49, "now_price": 5.99}], "1yr": [{"date": "03.12", "was_price": 7.49, "now_price": 5.99}]}, "21433695_EA": {"1mon": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}], "1yr": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}]}, "21353874_EA": {"1mon": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}], "1yr": [{"date": "02.19", "was_price": 7.49, "now_price": 6.0}, {"date": "03.05", "was_price": 7.49, "now_price": 6.0}]}, "21588326_EA": {"1mon": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}], "1yr": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}]}, "21041543002_EA": {"1mon": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}], "1yr": [{"date": "02.12", "was_price": 5.49, "now_price": 4.49}, {"date": "02.19", "was_price": 5.49, "now_price": 4.49}, {"date": "02.26", "was_price": 5.49, "now_price": 4.49}, {"date": "03.05", "was_price": 5.49, "now_price": 4.49}]}, "21547995_EA": {"1mon": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}]}, "21312346_EA": {"1mon": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "03.26", "was_price": 2.99, "now_price": 2.49}]}, "21109025_EA": {"1mon": [{"date": "02.05", "was_price": 2.99, "now_price": 2.49}, {"date": "03.26", "was_price": 2.99, "now_price": 2.49}], "1yr": [{"date": "02.05", "was_price": 2.99, "now_price": 2.49}, {"date": "03.26", "was_price": 2.99, "now_price": 2.49}]}, "21561135_EA": {"1mon": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}]}, "21560949_EA": {"1mon": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}]}, "21560899_EA": {"1mon": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "03.26", "was_price": 5.99, "now_price": 4.99}]}, "20316485002_EA": {"1mon": [{"date": "02.12", "was_price": 5.99, "now_price": 4.99}, {"date": "02.19", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 5.99, "now_price": 4.99}, {"date": "02.19", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}]}, "21619809_EA": {"1mon": [{"date": "03.19", "was_price": 3.29, "now_price": 2.79}], "1yr": [{"date": "03.19", "was_price": 3.29, "now_price": 2.79}]}, "21592483_EA": {"1mon": [{"date": "03.19", "was_price": 9.29, "now_price": 7.99}], "1yr": [{"date": "03.19", "was_price": 9.29, "now_price": 7.99}]}, "21588150_EA": {"1mon": [{"date": "02.05", "was_price": 4.29, "now_price": 4.0}, {"date": "02.19", "was_price": 4.29, "now_price": 4.0}, {"date": "03.05", "was_price": 4.29, "now_price": 3.69}], "1yr": [{"date": "02.05", "was_price": 4.29, "now_price": 4.0}, {"date": "02.19", "was_price": 4.29, "now_price": 4.0}, {"date": "03.05", "was_price": 4.29, "now_price": 3.69}]}, "20821364001_EA": {"1mon": [{"date": "03.05", "was_price": 8.99, "now_price": 8.0}], "1yr": [{"date": "03.05", "was_price": 8.99, "now_price": 8.0}]}, "21619591_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "21588667_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "21547567_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "21547564_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 4.99}, {"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "21473714_EA": {"1mon": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "21429094_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "21107643_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "21043151001_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "20788062002_EA": {"1mon": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}], "1yr": [{"date": "02.26", "was_price": 4.49, "now_price": 4.0}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}, {"date": "12.31", "was_price": 0.0, "now_price": 5.69}]}, "20325132007_EA": {"1mon": [{"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}, "20325132003_EA": {"1mon": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.49, "now_price": 3.49}, {"date": "03.05", "was_price": 4.49, "now_price": 4.0}]}};
 });
 
 /**
- * Switches the view based on which vertical button is clicked:
- * - "detail" => show detail text
- * - "1mon"   => show 1-month chart
- * - "1yr"    => show 1-year chart
+ * Switch to detail view
+ * Clears chart area
  */
-function switchView(btn) {
-    var container = btn.closest('.item-container');
-    var leftSide = container.querySelector('.left-side');
+function switchToDetail(container) {
     var rightSide = container.querySelector('.right-side');
     var viewContainer = rightSide.querySelector('.view-container');
     var detailView = viewContainer.querySelector('.detail-view');
     var chartView = viewContainer.querySelector('.chart-view');
-    var productId = container.getAttribute('data-product-id');
-    var allButtons = container.querySelectorAll('.vertical-switch-button');
-    allButtons.forEach(function(b) {
-        b.classList.remove('selected');
-    });
-    btn.classList.add('selected');
-    var viewType = btn.getAttribute('data-type');
-    if (viewType === "detail") {
-        detailView.style.opacity = '1';
-        chartView.style.opacity = '0';
-        setTimeout(function() {
-            chartView.innerHTML = '';
-        }, 400);
-    } else {
-        detailView.style.opacity = '0';
-        chartView.style.opacity = '1';
-        var dataSet = window.priceHistoryData[productId][viewType];
-        setTimeout(function() {
-            renderStackedChart(chartView, dataSet);
-        }, 50);
-    }
+    detailView.style.opacity = '1';
+    chartView.style.opacity = '0';
+    setTimeout(function() {
+        chartView.innerHTML = '';
+    }, 400);
 }
 
 /**
- * Renders the stacked bar chart in an <svg>:
+ * Switch view for the "Detail" button
+ */
+function switchView(btn) {
+    // unselect the toggle button if it's selected
+    var container = btn.closest('.item-container');
+    var toggleBtn = container.querySelector('[data-type="1mon"]');
+    toggleBtn.classList.remove('selected');
+
+    // Mark detail button as selected
+    var allButtons = container.querySelectorAll('.vertical-switch-button');
+    allButtons.forEach(function(b) { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+
+    switchToDetail(container);
+}
+
+/**
+ * Toggles between 1 Month and 1 Year on the same button:
+ * - If data-mode="mon", then next click => show 1yr data
+ * - If data-mode="yr", then next click => show 1mon data
+ */
+function toggleMonYr(btn) {
+    var container = btn.closest('.item-container');
+    var detailBtn = container.querySelector('[data-type="detail"]');
+    detailBtn.classList.remove('selected');
+
+    // Mark the toggle button as selected
+    var allButtons = container.querySelectorAll('.vertical-switch-button');
+    allButtons.forEach(function(b) { b.classList.remove('selected'); });
+    btn.classList.add('selected');
+
+    var mode = btn.getAttribute('data-mode'); // "mon" or "yr"
+    var productId = container.getAttribute('data-product-id');
+    var dataSet;
+    if (mode === "mon") {
+        // Switch to 1-year
+        dataSet = window.priceHistoryData[productId]["1yr"];
+        btn.setAttribute('data-mode', 'yr');
+        btn.textContent = "1 Yr";
+    } else {
+        // Switch to 1-month
+        dataSet = window.priceHistoryData[productId]["1mon"];
+        btn.setAttribute('data-mode', 'mon');
+        btn.textContent = "1 Mon";
+    }
+
+    var rightSide = container.querySelector('.right-side');
+    var viewContainer = rightSide.querySelector('.view-container');
+    var detailView = viewContainer.querySelector('.detail-view');
+    var chartView = viewContainer.querySelector('.chart-view');
+
+    detailView.style.opacity = '0';
+    chartView.style.opacity = '1';
+
+    setTimeout(function() {
+        renderStackedChart(chartView, dataSet);
+    }, 50);
+}
+
+/**
+ * Renders the stacked bar chart in an <svg>.
  * - was_price => total bar height
  * - now_price => bottom (green)
  * - difference => top (orange)
- * - All numeric labels have "$ " prefix
- * - Y-axis numeric labels also have "$ "
- * - The was_price label is above the top bar
+ * - All numeric labels => "$ "
+ * - Y-axis => "$ " as well
+ * - was_price label above the bar
  */
 function renderStackedChart(chartView, data) {
     chartView.innerHTML = '';
@@ -301,7 +341,7 @@ function renderStackedChart(chartView, data) {
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
 
-    // Vertical axis line
+    // Axis line
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -329,7 +369,6 @@ function renderStackedChart(chartView, data) {
             bottomVal = total;
         }
         var topVal = total - bottomVal;
-
         var totalH = (total / maxWas) * chartH;
         var bottomH = (bottomVal / total) * totalH;
         var topH = totalH - bottomH;
@@ -361,7 +400,7 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
 
-        // label for now_price
+        // now_price label
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtNow.setAttribute('x', barX + barWidth/2);
         txtNow.setAttribute('y', barBottomY - 2);
@@ -371,7 +410,7 @@ function renderStackedChart(chartView, data) {
         txtNow.textContent = "$ " + d.now_price.toFixed(2);
         svg.appendChild(txtNow);
 
-        // label for was_price above bar
+        // was_price label above bar
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtWas.setAttribute('x', barX + barWidth/2);
         txtWas.setAttribute('y', barTopY - 2);
@@ -381,12 +420,11 @@ function renderStackedChart(chartView, data) {
         txtWas.textContent = "$ " + d.was_price.toFixed(2);
         svg.appendChild(txtWas);
 
-        // line points (top of green portion)
         var midBarX = barX + barWidth/2;
         var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
 
-        // x-axis date label
+        // date label
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
         txtDate.setAttribute('y', height - 5);
@@ -415,7 +453,6 @@ function renderStackedChart(chartView, data) {
     var labelVals = [0, maxWas/2, maxWas];
     labelVals.forEach(function(val) {
         var y = (height - bottomPad) - (val / maxWas)*chartH;
-        // dotted line
         var gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
         gridLine.setAttribute('x1', leftPad);
         gridLine.setAttribute('y1', y);
@@ -425,7 +462,6 @@ function renderStackedChart(chartView, data) {
         gridLine.setAttribute('stroke-dasharray', '2,2');
         svg.appendChild(gridLine);
 
-        // label
         var txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtLabel.setAttribute('x', 5);
         txtLabel.setAttribute('y', y + 3);
@@ -448,7 +484,7 @@ function renderStackedChart(chartView, data) {
     </button>
     <div class="page-title">Dairy</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 12:20:19</div>
+  <div class="creation-time">Created on: 2025-02-28 12:28:52</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -468,8 +504,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -503,8 +538,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -538,8 +572,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -573,8 +606,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -608,8 +640,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -643,8 +674,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -678,8 +708,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -713,8 +742,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -748,8 +776,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -783,8 +810,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -818,8 +844,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -853,8 +878,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -888,8 +912,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -923,8 +946,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -958,8 +980,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -993,8 +1014,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1028,8 +1048,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1063,8 +1082,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1098,8 +1116,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1133,8 +1150,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1168,8 +1184,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1203,8 +1218,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1238,8 +1252,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1273,8 +1286,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1308,8 +1320,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1343,8 +1354,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1378,8 +1388,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1413,8 +1422,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1448,8 +1456,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1483,8 +1490,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1518,8 +1524,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1553,8 +1558,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1588,8 +1592,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1623,8 +1626,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1658,8 +1660,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1693,8 +1694,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1728,8 +1728,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1763,8 +1762,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1798,8 +1796,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1833,8 +1830,7 @@ function renderStackedChart(chartView, data) {
     
           <div class="button-group-vertical">
             <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
+            <button class="vertical-switch-button" data-type="1mon" data-mode="mon" onclick="toggleMonYr(this)">1 Mon</button>
           </div>
         
   </div>
@@ -1915,7 +1911,7 @@ function inPageSearch() {
                 secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent).replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
             } else {
                 firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
-                secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
+                secondElem.innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
             }
         } else {
             items[i].style.display = 'none';
