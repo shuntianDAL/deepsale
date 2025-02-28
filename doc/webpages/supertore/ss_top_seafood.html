@@ -53,23 +53,18 @@ body {
     margin: 0 20px 20px;
 }
 .header-spacer {
-    height: 70px; /* offset the fixed header */
+    height: 70px; /* offset for fixed header */
 }
 .search-button {
     background-color: #3e7d53;
-    border: none;
-    color: #fff;
+    border: none; color: #fff;
     padding: 6px 12px;
     border-radius: 9999px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
+    cursor: pointer; font-size: 12px;
+    font-weight: 600; text-transform: uppercase;
     letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: inline-flex; align-items: center;
+    gap: 5px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 #searchBarContainer {
     position: fixed;
@@ -112,64 +107,52 @@ body {
     line-height: 1;
     padding: 0;
 }
-/* Layout for each item container (row) */
 .item-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
     width: 90%;
     max-width: 600px;
     margin: 20px auto;
     border-bottom: 1px solid #ccc;
     padding-bottom: 15px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    position: relative;
 }
-.left-side {
+.item-image {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
 }
 .item-image img {
-    width: 80px;
-    height: auto;
+    width: 60px; height: auto;
 }
-.button-group-vertical {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-.vertical-switch-button {
+.view-button {
+    margin-top: 6px;
+    padding: 8px 16px;
     background-color: #3e7d53;
-    border: none;
-    color: #fff;
-    padding: 6px 12px;
+    color: #fff; text-decoration: none;
     border-radius: 9999px;
-    cursor: pointer;
+    font-size: 12px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    display: inline-block; border: none; cursor: pointer;
+    outline: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+.toggle-chart {
+    margin-top: 8px;
+    padding: 4px 8px;
     font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    cursor: pointer;
 }
-.vertical-switch-button.selected {
-    background-color: #3e7d53;
-    color: #fff;
-}
-.vertical-switch-button:not(.selected) {
-    background-color: #ddd;
-    color: #000;
-}
-.right-side {
-    flex: 1;
+.chart-and-detail {
     position: relative;
-}
-.view-container {
-    position: relative;
-    min-height: 80px;
+    width: 100%;
+    height: 200px; /* fixed so no container resizing on mobile */
+    overflow: hidden;
 }
 .detail-view, .chart-view {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
+    padding: 5px;
     transition: opacity 0.4s ease;
 }
 .detail-view {
@@ -177,13 +160,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    opacity: 1;
-    z-index: 2;
+    opacity: 1; /* default visible */
+    z-index: 2; /* on top */
 }
 .chart-view {
     background-color: #f9f9f9;
-    opacity: 0;
-    z-index: 1;
+    opacity: 0; /* default hidden */
+    z-index: 1; /* behind detail */
 }
 .item-name {
     font-size: 14px;
@@ -192,30 +175,20 @@ body {
     color: black;
 }
 .item-number {
-    color: red;
-    font-weight: 600;
-    border: 2px solid red;
-    border-radius: 50%;
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    text-align: center;
-    line-height: 20px;
-    margin-right: 8px;
-    font-size: 12px;
+    color: red; font-weight: 600;
+    border: 2px solid red; border-radius: 50%;
+    display: inline-block; width: 22px; height: 22px;
+    text-align: center; line-height: 20px;
+    margin-right: 8px; font-size: 12px;
 }
 .now-price {
-    color: red;
-    font-weight: 600;
-    font-size: 12px;
+    color: red; font-weight: 600; font-size: 12px;
     margin: 4px 0;
 }
 .discount-badge {
     background-color: yellow;
-    display: inline-block;
-    font-weight: 600;
-    padding: 2px 5px;
-    font-size: 16px;
+    display: inline-block; font-weight: 600;
+    padding: 2px 5px; font-size: 16px;
 }
 .was-price {
     text-decoration: line-through;
@@ -223,82 +196,86 @@ body {
 </style>
 
 <script>
+// Provide the global data
 document.addEventListener('DOMContentLoaded', function() {
-    // Global dictionary: priceHistoryData[product_id] = { "1mon": [...], "1yr": [...] }
-    window.priceHistoryData = {"20720065_KG": {"1mon": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "1yr": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}]}, "20852143_KG": {"1mon": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "1yr": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}]}, "21043887_EA": {"1mon": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}]}, "21211819_EA": {"1mon": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}]}, "20750012_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749901_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749798_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20699832_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21108887_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]}};
+    window.priceHistoryData = {"20720065_KG": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "20852143_KG": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "21043887_EA": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "21211819_EA": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "20750012_EA": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "20749901_EA": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "20749798_EA": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "20699832_EA": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "21108887_EA": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]};
 });
 
 /**
- * Switch view based on which vertical button is clicked:
- *   - "detail": show detail text
- *   - "1mon": show chart for 1-month data
- *   - "1yr": show chart for 1-year data
+ * Toggle chart vs detail:
+ * - If chart is hidden => fade out detail, fade in chart, draw the chart
+ * - Else => fade out chart, fade in detail
  */
-function switchView(btn) {
+function toggleChart(btn) {
     var container = btn.closest('.item-container');
-    var leftSide = container.querySelector('.left-side');
-    var rightSide = container.querySelector('.right-side');
-    var viewContainer = rightSide.querySelector('.view-container');
-    var detailView = viewContainer.querySelector('.detail-view');
-    var chartView = viewContainer.querySelector('.chart-view');
+    var chartDetailWrapper = container.querySelector('.chart-and-detail');
+    var detailView = chartDetailWrapper.querySelector('.detail-view');
+    var chartView = chartDetailWrapper.querySelector('.chart-view');
     var productId = container.getAttribute('data-product-id');
-    // Unselect all buttons
-    var allButtons = container.querySelectorAll('.vertical-switch-button');
-    allButtons.forEach(function(b) {
-        b.classList.remove('selected');
-    });
-    btn.classList.add('selected');
-    var viewType = btn.getAttribute('data-type');
-    if (viewType === "detail") {
-        detailView.style.opacity = '1';
+    var data = window.priceHistoryData[productId] || [];
+
+    if (chartView.style.opacity === '' || chartView.style.opacity === '0') {
+        // fade out detail
+        detailView.style.opacity = '0';
+        // fade in chart
+        chartView.style.opacity = '1';
+        setTimeout(function() {
+            renderStackedChart(chartView, data);
+        }, 50);
+        btn.textContent = 'Show Details';
+    } else {
+        // fade out chart
         chartView.style.opacity = '0';
+        // fade in detail
+        detailView.style.opacity = '1';
+        // optionally clear the chart after fade
         setTimeout(function() {
             chartView.innerHTML = '';
         }, 400);
-    } else {
-        detailView.style.opacity = '0';
-        chartView.style.opacity = '1';
-        // fetch the data from the global dictionary
-        var dataSet = window.priceHistoryData[productId][viewType];
-        setTimeout(function() {
-            renderStackedChart(chartView, dataSet);
-        }, 50);
+        btn.textContent = 'Show History';
     }
 }
 
 /**
- * Renders a stacked bar chart in an <svg> using the provided data.
+ * Renders a stacked bar chart in an <svg>.
  * - was_price => total bar height
  * - now_price => bottom (green)
  * - difference => top (orange)
- * - All numeric labels have "$ " prefix
- * - Y-axis numeric labels also have "$ "
- * - was_price label is placed above the bar
+ * - Places '$' near the top of Y-axis (no rotation)
+ * - Adds horizontal grid lines at 0, mid, max
+ * - A line connecting the "now_price" portion across bars
+ * - was_price label is placed above (outside) the top bar
  */
 function renderStackedChart(chartView, data) {
+    // Clear old chart
     chartView.innerHTML = '';
     if (!data || data.length === 0) {
         chartView.innerHTML = '<p style="text-align:center;margin-top:30px;">No history available</p>';
         return;
     }
+
+    // Find max was_price for scaling
     var maxWas = 0;
     data.forEach(function(d) {
         if (d.was_price > maxWas) {
             maxWas = d.was_price;
         }
     });
+
     var width = chartView.clientWidth;
     var height = chartView.clientHeight;
     var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute('width', width);
     svg.setAttribute('height', height);
     svg.style.backgroundColor = '#f9f9f9';
+
     var leftPad = 40;
     var bottomPad = 20;
     var topPad = 10;
     var chartH = height - bottomPad - topPad;
     var chartW = width - leftPad - 10;
-    // Axis line
+
+    // Vertical axis line
     var axisLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
     axisLine.setAttribute('x1', leftPad);
     axisLine.setAttribute('y1', height - bottomPad);
@@ -306,7 +283,8 @@ function renderStackedChart(chartView, data) {
     axisLine.setAttribute('y2', topPad);
     axisLine.setAttribute('stroke', '#000');
     svg.appendChild(axisLine);
-    // Place "$" label near top
+
+    // Place '$' label near top (no rotation)
     var axisLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
     axisLabel.setAttribute('x', leftPad - 5);
     axisLabel.setAttribute('y', topPad + 5);
@@ -315,23 +293,29 @@ function renderStackedChart(chartView, data) {
     axisLabel.setAttribute('fill', '#000');
     axisLabel.textContent = '$';
     svg.appendChild(axisLabel);
+
     var linePoints = [];
+
     data.forEach(function(d, i) {
         var total = d.was_price;
         var bottomVal = d.now_price;
         if (bottomVal > total) {
-            bottomVal = total;
+            bottomVal = total; // edge case
         }
         var topVal = total - bottomVal;
+
         var totalH = (total / maxWas) * chartH;
         var bottomH = (bottomVal / total) * totalH;
         var topH = totalH - bottomH;
+
         var barSpacing = chartW / data.length;
-        var barX = leftPad + i * barSpacing + barSpacing*0.2;
+        var barX = leftPad + i * barSpacing + barSpacing * 0.2;
         var barWidth = barSpacing * 0.6;
+
         var barBottomY = (height - bottomPad) - bottomH;
         var barTopY = barBottomY - topH;
-        // bottom portion (green)
+
+        // Bottom portion (green)
         var rectNow = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectNow.setAttribute('x', barX);
         rectNow.setAttribute('y', barBottomY);
@@ -340,7 +324,8 @@ function renderStackedChart(chartView, data) {
         rectNow.setAttribute('fill', '#009900');
         rectNow.setAttribute('stroke', '#333');
         svg.appendChild(rectNow);
-        // top portion (orange)
+
+        // Top portion (orange)
         var rectWas = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rectWas.setAttribute('x', barX);
         rectWas.setAttribute('y', barTopY);
@@ -349,31 +334,36 @@ function renderStackedChart(chartView, data) {
         rectWas.setAttribute('fill', '#FF9900');
         rectWas.setAttribute('stroke', '#333');
         svg.appendChild(rectWas);
-        // label for now_price
+
+        // Label bottom portion
         var txtNow = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtNow.setAttribute('x', barX + barWidth/2);
+        txtNow.setAttribute('x', barX + barWidth / 2);
         txtNow.setAttribute('y', barBottomY - 2);
         txtNow.setAttribute('text-anchor', 'middle');
         txtNow.setAttribute('font-size', '10');
         txtNow.setAttribute('fill', '#000');
-        txtNow.textContent = "$ " + d.now_price.toFixed(2);
+        txtNow.textContent = d.now_price.toFixed(2);
         svg.appendChild(txtNow);
-        // label for was_price above top
+
+        // Label top portion (above the bar, outside)
         var txtWas = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtWas.setAttribute('x', barX + barWidth/2);
+        txtWas.setAttribute('x', barX + barWidth / 2);
+        // Move it a bit above barTopY
         txtWas.setAttribute('y', barTopY - 2);
         txtWas.setAttribute('text-anchor', 'middle');
         txtWas.setAttribute('font-size', '10');
         txtWas.setAttribute('fill', '#000');
-        txtWas.textContent = "$ " + d.was_price.toFixed(2);
+        txtWas.textContent = d.was_price.toFixed(2);
         svg.appendChild(txtWas);
-        // line points
-        var midBarX = barX + barWidth/2;
+
+        // Track top of green portion for the line
+        var midBarX = barX + barWidth / 2;
         var bottomTopY = barBottomY;
         linePoints.push([midBarX, bottomTopY]);
-        // date label
+
+        // X-axis label
         var txtDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing/2);
+        txtDate.setAttribute('x', leftPad + i * barSpacing + barSpacing / 2);
         txtDate.setAttribute('y', height - 5);
         txtDate.setAttribute('text-anchor', 'middle');
         txtDate.setAttribute('font-size', '10');
@@ -381,10 +371,11 @@ function renderStackedChart(chartView, data) {
         txtDate.textContent = d.date;
         svg.appendChild(txtDate);
     });
-    // connect line across the top of the green portion
+
+    // Connect "now" portion across bars
     if (linePoints.length > 1) {
         var pathD = "M " + linePoints[0][0] + " " + linePoints[0][1];
-        for (var i=1; i<linePoints.length; i++) {
+        for (var i = 1; i < linePoints.length; i++) {
             pathD += " L " + linePoints[i][0] + " " + linePoints[i][1];
         }
         var linePath = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -394,11 +385,13 @@ function renderStackedChart(chartView, data) {
         linePath.setAttribute('stroke-width', '2');
         svg.appendChild(linePath);
     }
-    // y-axis ticks + grid lines
-    var labelVals = [0, maxWas/2, maxWas];
+
+    // Y-axis labels + horizontal grid lines
+    var labelVals = [0, maxWas / 2, maxWas];
     labelVals.forEach(function(val) {
-        var y = (height - bottomPad) - (val / maxWas)*chartH;
-        // dotted grid line
+        var y = (height - bottomPad) - (val / maxWas) * chartH;
+
+        // Horizontal grid line (dotted)
         var gridLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
         gridLine.setAttribute('x1', leftPad);
         gridLine.setAttribute('y1', y);
@@ -407,353 +400,255 @@ function renderStackedChart(chartView, data) {
         gridLine.setAttribute('stroke', '#ccc');
         gridLine.setAttribute('stroke-dasharray', '2,2');
         svg.appendChild(gridLine);
-        // label
+
+        // Numeric label
         var txtLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
         txtLabel.setAttribute('x', 5);
         txtLabel.setAttribute('y', y + 3);
         txtLabel.setAttribute('font-size', '10');
         txtLabel.setAttribute('fill', '#000');
-        txtLabel.textContent = "$ " + val.toFixed(2);
+        txtLabel.textContent = val.toFixed(2);
         svg.appendChild(txtLabel);
     });
+
     chartView.appendChild(svg);
 }
 </script>
-
 </head>
 <body>
-<div class="header-container">
-  <div class="header-row">
-    <button class="search-button" onclick="showSearchBar()">
-      <span class="search-icon">🔍</span> FIND ➜
+<div class='header-container'>
+  <div class='header-row'>
+    <button class='search-button' onclick='showSearchBar()'>
+      <span class='search-icon'>🔍</span> FIND ➜
     </button>
-    <div class="page-title">Seafood</div>
+    <div class='page-title'>Seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 12:04:29</div>
+  <div class='creation-time'>Created on: 2025-02-28 12:18:24</div>
 </div>
-<hr class="divider">
-<div class="header-spacer"></div>
+<hr class='divider'>
+<div class='header-spacer'></div>
 
-<div id="searchBarContainer">
-  <input type="text" id="searchInput" placeholder="Search in page..." onkeyup="inPageSearch()">
-  <span id="searchCount"></span>
-  <button id="closeSearchButton" onclick="hideSearchBar()">×</button>
+<div id='searchBarContainer'>
+  <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
+  <span id='searchCount'></span>
+  <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
 </div>
 
 
-<div class="item-container" data-product-id="20720065_KG">
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
+<div class='item-container' data-product-id='20720065_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fresh-atlantic-salmon-fillets-skin-on-packaged-clu/p/20720065_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  
+<div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#1</span>
+      <span class='first-word'>Fresh</span>
+      <span class='product-name-text'>Atlantic Salmon Fillets, Skin On, Packaged, Club Size</span>
     </div>
-    
-          <div class="button-group-vertical">
-            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
-          </div>
-        
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$29.79</span></div>
+    <div class='now-price'>NOW: $20.47</div>
+    <div class='discount-badge'>31.3% OFF</div>
   </div>
-  <div class="right-side">
-    
-          <div class="view-container">
-            <div class="detail-view">
-              
-          <div class="item-name">
-            <span class="item-number">#1</span>
-            <span class="first-word">Fresh</span>
-            <span class="product-name-text">Atlantic Salmon Fillets, Skin On, Packaged, Club Size</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 29.79</span></div>
-          <div class="now-price">NOW: $ 20.47</div>
-          <div class="discount-badge">31.3% OFF</div>
-        
-            </div>
-            <div class="chart-view" id="chart-20720065_KG"></div>
-          </div>
-        
-  </div>
+  <div class='chart-view' id='chart-20720065_KG'></div>
 </div>
 
-<div class="item-container" data-product-id="20852143_KG">
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
-    </div>
-    
-          <div class="button-group-vertical">
-            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
-          </div>
-        
-  </div>
-  <div class="right-side">
-    
-          <div class="view-container">
-            <div class="detail-view">
-              
-          <div class="item-name">
-            <span class="item-number">#2</span>
-            <span class="first-word">Fresh</span>
-            <span class="product-name-text">Atlantic Salmon Fillets, Skin On, Packaged</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 11.95</span></div>
-          <div class="now-price">NOW: $ 8.79</div>
-          <div class="discount-badge">26.4% OFF</div>
-        
-            </div>
-            <div class="chart-view" id="chart-20852143_KG"></div>
-          </div>
-        
-  </div>
 </div>
 
-<div class="item-container" data-product-id="21043887_EA">
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
+<div class='item-container' data-product-id='20852143_KG'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/fresh-atlantic-salmon-fillets-skin-on-packaged/p/20852143_KG' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  
+<div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#2</span>
+      <span class='first-word'>Fresh</span>
+      <span class='product-name-text'>Atlantic Salmon Fillets, Skin On, Packaged</span>
     </div>
-    
-          <div class="button-group-vertical">
-            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
-          </div>
-        
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$11.95</span></div>
+    <div class='now-price'>NOW: $8.79</div>
+    <div class='discount-badge'>26.4% OFF</div>
   </div>
-  <div class="right-side">
-    
-          <div class="view-container">
-            <div class="detail-view">
-              
-          <div class="item-name">
-            <span class="item-number">#3</span>
-            <span class="first-word">Pacific</span>
-            <span class="product-name-text">White Shrimp Raw 16-20/LB</span>
-          </div>
-          <div>Expire On: 2025-03-12</div>
-          <div>WAS: <span class="was-price">$ 9.49</span></div>
-          <div class="now-price">NOW: $ 7.00</div>
-          <div class="discount-badge">26.2% OFF</div>
-        
-            </div>
-            <div class="chart-view" id="chart-21043887_EA"></div>
-          </div>
-        
-  </div>
+  <div class='chart-view' id='chart-20852143_KG'></div>
 </div>
 
-<div class="item-container" data-product-id="21211819_EA">
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
-    </div>
-    
-          <div class="button-group-vertical">
-            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
-          </div>
-        
-  </div>
-  <div class="right-side">
-    
-          <div class="view-container">
-            <div class="detail-view">
-              
-          <div class="item-name">
-            <span class="item-number">#4</span>
-            <span class="first-word">Wild</span>
-            <span class="product-name-text">Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 13.49</span></div>
-          <div class="now-price">NOW: $ 9.99</div>
-          <div class="discount-badge">25.9% OFF</div>
-        
-            </div>
-            <div class="chart-view" id="chart-21211819_EA"></div>
-          </div>
-        
-  </div>
 </div>
 
-<div class="item-container" data-product-id="20750012_EA">
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
+<div class='item-container' data-product-id='21043887_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/pacific-white-shrimp-raw-16-20-lb/p/21043887_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  
+<div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#3</span>
+      <span class='first-word'>Pacific</span>
+      <span class='product-name-text'>White Shrimp Raw 16-20/LB</span>
     </div>
-    
-          <div class="button-group-vertical">
-            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
-          </div>
-        
+    <div>Expire On: 2025-03-12</div>
+    <div>WAS: <span class='was-price'>$9.49</span></div>
+    <div class='now-price'>NOW: $7.00</div>
+    <div class='discount-badge'>26.2% OFF</div>
   </div>
-  <div class="right-side">
-    
-          <div class="view-container">
-            <div class="detail-view">
-              
-          <div class="item-name">
-            <span class="item-number">#5</span>
-            <span class="first-word">Crab</span>
-            <span class="product-name-text">Flavoured Wild Alaska Pollock Chunks</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 3.99</span></div>
-          <div class="now-price">NOW: $ 2.99</div>
-          <div class="discount-badge">25.1% OFF</div>
-        
-            </div>
-            <div class="chart-view" id="chart-20750012_EA"></div>
-          </div>
-        
-  </div>
+  <div class='chart-view' id='chart-21043887_EA'></div>
 </div>
 
-<div class="item-container" data-product-id="20749901_EA">
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
-    </div>
-    
-          <div class="button-group-vertical">
-            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
-          </div>
-        
-  </div>
-  <div class="right-side">
-    
-          <div class="view-container">
-            <div class="detail-view">
-              
-          <div class="item-name">
-            <span class="item-number">#6</span>
-            <span class="first-word">Lobster</span>
-            <span class="product-name-text">Flavoured Wild Alaska Pollock Chunks</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 3.99</span></div>
-          <div class="now-price">NOW: $ 2.99</div>
-          <div class="discount-badge">25.1% OFF</div>
-        
-            </div>
-            <div class="chart-view" id="chart-20749901_EA"></div>
-          </div>
-        
-  </div>
 </div>
 
-<div class="item-container" data-product-id="20749798_EA">
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
+<div class='item-container' data-product-id='21211819_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/wild-yellowfin-tuna-skinless-boneless-steaks-susta/p/21211819_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  
+<div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#4</span>
+      <span class='first-word'>Wild</span>
+      <span class='product-name-text'>Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g</span>
     </div>
-    
-          <div class="button-group-vertical">
-            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
-          </div>
-        
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$13.49</span></div>
+    <div class='now-price'>NOW: $9.99</div>
+    <div class='discount-badge'>25.9% OFF</div>
   </div>
-  <div class="right-side">
-    
-          <div class="view-container">
-            <div class="detail-view">
-              
-          <div class="item-name">
-            <span class="item-number">#7</span>
-            <span class="first-word">Leg-Style</span>
-            <span class="product-name-text">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 3.99</span></div>
-          <div class="now-price">NOW: $ 2.99</div>
-          <div class="discount-badge">25.1% OFF</div>
-        
-            </div>
-            <div class="chart-view" id="chart-20749798_EA"></div>
-          </div>
-        
-  </div>
+  <div class='chart-view' id='chart-21211819_EA'></div>
 </div>
 
-<div class="item-container" data-product-id="20699832_EA">
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
-    </div>
-    
-          <div class="button-group-vertical">
-            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
-          </div>
-        
-  </div>
-  <div class="right-side">
-    
-          <div class="view-container">
-            <div class="detail-view">
-              
-          <div class="item-name">
-            <span class="item-number">#8</span>
-            <span class="first-word">Flake-Style</span>
-            <span class="product-name-text">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 3.99</span></div>
-          <div class="now-price">NOW: $ 2.99</div>
-          <div class="discount-badge">25.1% OFF</div>
-        
-            </div>
-            <div class="chart-view" id="chart-20699832_EA"></div>
-          </div>
-        
-  </div>
 </div>
 
-<div class="item-container" data-product-id="21108887_EA">
-  <div class="left-side">
-    <div class="item-image">
-      <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
+<div class='item-container' data-product-id='20750012_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/crab-flavoured-wild-alaska-pollock-chunks/p/20750012_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  
+<div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#5</span>
+      <span class='first-word'>Crab</span>
+      <span class='product-name-text'>Flavoured Wild Alaska Pollock Chunks</span>
     </div>
-    
-          <div class="button-group-vertical">
-            <button class="vertical-switch-button selected" data-type="detail" onclick="switchView(this)">Detail</button>
-            <button class="vertical-switch-button" data-type="1mon" onclick="switchView(this)">1 Mon</button>
-            <button class="vertical-switch-button" data-type="1yr" onclick="switchView(this)">1 Yr</button>
-          </div>
-        
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.99</span></div>
+    <div class='now-price'>NOW: $2.99</div>
+    <div class='discount-badge'>25.1% OFF</div>
   </div>
-  <div class="right-side">
-    
-          <div class="view-container">
-            <div class="detail-view">
-              
-          <div class="item-name">
-            <span class="item-number">#9</span>
-            <span class="first-word">Breaded</span>
-            <span class="product-name-text">Cod Bites With Sauce</span>
-          </div>
-          <div>Expire On: 2025-03-05</div>
-          <div>WAS: <span class="was-price">$ 10.99</span></div>
-          <div class="now-price">NOW: $ 9.99</div>
-          <div class="discount-badge">9.1% OFF</div>
-        
-            </div>
-            <div class="chart-view" id="chart-21108887_EA"></div>
-          </div>
-        
+  <div class='chart-view' id='chart-20750012_EA'></div>
+</div>
+
+</div>
+
+<div class='item-container' data-product-id='20749901_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/lobster-flavoured-wild-alaska-pollock-chunks/p/20749901_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
   </div>
+  
+<div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#6</span>
+      <span class='first-word'>Lobster</span>
+      <span class='product-name-text'>Flavoured Wild Alaska Pollock Chunks</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.99</span></div>
+    <div class='now-price'>NOW: $2.99</div>
+    <div class='discount-badge'>25.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20749901_EA'></div>
+</div>
+
+</div>
+
+<div class='item-container' data-product-id='20749798_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/leg-style-crab-flavoured-wild-alaska-pollock-and-w/p/20749798_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  
+<div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#7</span>
+      <span class='first-word'>Leg-Style</span>
+      <span class='product-name-text'>Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.99</span></div>
+    <div class='now-price'>NOW: $2.99</div>
+    <div class='discount-badge'>25.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20749798_EA'></div>
+</div>
+
+</div>
+
+<div class='item-container' data-product-id='20699832_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/flake-style-crab-flavoured-wild-alaska-pollock-and/p/20699832_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  
+<div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#8</span>
+      <span class='first-word'>Flake-Style</span>
+      <span class='product-name-text'>Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$3.99</span></div>
+    <div class='now-price'>NOW: $2.99</div>
+    <div class='discount-badge'>25.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-20699832_EA'></div>
+</div>
+
+</div>
+
+<div class='item-container' data-product-id='21108887_EA'>
+  <div class='item-image'>
+    <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
+    <a class='view-button' href='https://www.atlanticsuperstore.ca/en/breaded-cod-bites-with-sauce/p/21108887_EA' target='_top'>SHOP →</a>
+    <button class='toggle-chart' onclick='toggleChart(this)'>Show History</button>
+  </div>
+  
+<div class='chart-and-detail'>
+  <div class='detail-view'>
+    <div class='item-name'>
+      <span class='item-number'>#9</span>
+      <span class='first-word'>Breaded</span>
+      <span class='product-name-text'>Cod Bites With Sauce</span>
+    </div>
+    <div>Expire On: 2025-03-05</div>
+    <div>WAS: <span class='was-price'>$10.99</span></div>
+    <div class='now-price'>NOW: $9.99</div>
+    <div class='discount-badge'>9.1% OFF</div>
+  </div>
+  <div class='chart-view' id='chart-21108887_EA'></div>
+</div>
+
 </div>
 
 
@@ -770,8 +665,6 @@ function showSearchBar() {
 }
 
 function hideSearchBar() {
-    var searchBar = document.getElementById('searchBarContainer');
-    var header = document.querySelector('.header-container');
     var searchInput = document.getElementById('searchInput');
     searchInput.value = '';
     var firstElems = document.getElementsByClassName('first-word');
@@ -806,6 +699,7 @@ function inPageSearch() {
         if (term === '' || fullName.indexOf(term) > -1) {
             items[i].style.display = '';
             visibleCount++;
+            // highlight matches
             if (term !== '') {
                 firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent).replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
                 secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent).replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
@@ -820,6 +714,5 @@ function inPageSearch() {
     document.getElementById('searchCount').innerText = visibleCount + " found";
 }
 </script>
-
 </body>
 </html>
