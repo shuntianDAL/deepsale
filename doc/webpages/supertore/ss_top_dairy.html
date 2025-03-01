@@ -69,15 +69,12 @@ const axisTitleBackgroundPlugin = {
     ctx.restore();
   }
 };
-
-
 </script>
 
 <script>
   // Register the plugin with Chart.js
   Chart.register(ChartDataLabels);
   Chart.register(axisTitleBackgroundPlugin);
-
 </script>
 
 <style>
@@ -667,13 +664,13 @@ function renderLineChart(productId, data) {
             scales: {
                 x: {
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Date'
                     }
                 },
                 y: {
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Price'
                     },
                     beginAtZero: true
@@ -757,7 +754,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_dairy</div>
   </div>
-  <div class="creation-time">Created on: 2025-03-01 00:34:24</div>
+  <div class="creation-time">Created on: 2025-03-01 00:37:57</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
