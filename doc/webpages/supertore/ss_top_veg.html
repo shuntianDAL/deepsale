@@ -624,61 +624,79 @@ function renderStackedBarChart(productId, data) {
  * Legend is disabled.
  */
 function renderLineChart(productId, data) {
-    var ctx = document.getElementById('canvas-' + productId).getContext('2d');
-    if (!data || data.length === 0) {
-        ctx.font = "14px Arial";
-        ctx.fillText("No 1 Yr data", 10, 50);
-        return;
+  var ctx = document.getElementById('canvas-' + productId).getContext('2d');
+  if (!data || data.length === 0) {
+    ctx.font = "14px Arial";
+    ctx.fillText("No 1 Yr data", 10, 50);
+    return;
+  }
+
+  // 1) Find the highest price among was_price and now_price
+  let maxPrice = 0;
+  data.forEach(d => {
+    if (d.was_price > maxPrice) {
+      maxPrice = d.was_price;
     }
-    chartInstances[productId] = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: data.map(function(d) { return d.date; }),
-            datasets: [
-                {
-                    label: 'Was Price',
-                    data: data.map(function(d) { return d.was_price; }),
-                    borderColor: '#0077cc',
-                    backgroundColor: '#0077cc',
-                    fill: false,
-                    tension: 0.1
-                },
-                {
-                    label: 'Now Price',
-                    data: data.map(function(d) { return d.now_price; }),
-                    borderColor: '#009900',
-                    backgroundColor: '#009900',
-                    fill: false,
-                    tension: 0.1
-                }
-            ]
+    if (d.now_price > maxPrice) {
+      maxPrice = d.now_price;
+    }
+  });
+
+  // 2) Add 20% headroom
+  let yAxisMax = maxPrice * 1.2;
+
+  // 3) Create the line chart with max = yAxisMax
+  chartInstances[productId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map(d => d.date),
+      datasets: [
+        {
+          label: 'Was Price',
+          data: data.map(d => d.was_price),
+          borderColor: '#0077cc',
+          backgroundColor: '#0077cc',
+          fill: false,
+          tension: 0.1
         },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: false,
-                        text: 'Date'
-                    }
-                },
-                y: {
-                    title: {
-                        display: false,
-                        text: 'Price'
-                    },
-                    beginAtZero: true
-                }
-            }
+        {
+          label: 'Now Price',
+          data: data.map(d => d.now_price),
+          borderColor: '#009900',
+          backgroundColor: '#009900',
+          fill: false,
+          tension: 0.1
         }
-    });
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Date'
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Price'
+          },
+          beginAtZero: true,
+          max: yAxisMax // The top boundary is now 20% above the highest price
+        }
+      }
+    }
+  });
 }
+
 
 function showSearchBar() {
     var header = document.querySelector('.header-container');
@@ -754,7 +772,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_veg</div>
   </div>
-  <div class="creation-time">Created on: 2025-03-01 00:37:54</div>
+  <div class="creation-time">Created on: 2025-03-01 00:42:07</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
