@@ -506,7 +506,7 @@ function renderStackedBarChart(productId, data) {
           fill: false,
           tension: 0.1,
           pointBackgroundColor: '#000',
-          order: 10, // This ensures the line is drawn on top of the bars
+          z: 10, // This ensures the line is drawn on top of the bars
           // Disable data labels for the line dataset
           datalabels: {
             display: false
@@ -684,7 +684,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_intnfood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 23:59:12</div>
+  <div class="creation-time">Created on: 2025-03-01 00:02:20</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
