@@ -19,8 +19,65 @@
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
 <script>
+
+// A custom plugin that draws a background behind the x-axis title
+const axisTitleBackgroundPlugin = {
+  id: 'axisTitleBackgroundPlugin',
+  beforeDraw(chart, args, options) {
+    const { ctx, chartArea: { bottom }, scales } = chart;
+    const xScale = scales.x; // We’ll handle the x-axis title
+
+    // If there's no x-axis or no title, exit
+    if (!xScale || !xScale.options.title?.display) return;
+
+    // Title text, font, and any user config
+    const title = xScale.options.title.text;
+    const font = Chart.helpers.toFont(xScale.options.title.font);
+    const backgroundColor = options.backgroundColor || '#ccc';
+
+    ctx.save();
+    ctx.font = font.string;
+
+    // Measure the text size
+    const textWidth = ctx.measureText(title).width;
+    const textHeight = font.lineHeight || font.size;
+
+    // Chart.js draws the x-axis title below the bottom of the chart area
+    // We'll approximate the position for the rectangle
+    const xPos = xScale.left + (xScale.right - xScale.left) / 2; // center
+    // The "bottom" of the chart area is the top edge of the axis text
+    // We add a bit more padding if needed
+    const yPos = bottom + (xScale.options.title.padding?.bottom || 0);
+
+    // Compute rectangle dimensions
+    const rectWidth = textWidth + 10;   // 5px padding on each side
+    const rectHeight = textHeight + 6;  // 3px padding top & bottom
+    const rectX = xPos - rectWidth / 2; // center horizontally
+    // Move upward so the rectangle covers the title text
+    const rectY = yPos;
+
+    // Draw the rectangle
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+
+    // Draw the title text on top of the rectangle
+    ctx.fillStyle = xScale.options.title.color || '#000';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText(title, xPos, rectY + 3); // 3px from top edge
+
+    ctx.restore();
+  }
+};
+
+
+</script>
+
+<script>
   // Register the plugin with Chart.js
   Chart.register(ChartDataLabels);
+  Chart.register(axisTitleBackgroundPlugin);
+
 </script>
 
 <style>
@@ -522,6 +579,9 @@ function renderStackedBarChart(productId, data) {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
+        axisTitleBackgroundPlugin: {
+            backgroundColor: '#ddd' // or any color you like
+        },
         datalabels: {
           clip: false // keeps labels from being clipped at chart edges
         },
@@ -697,7 +757,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_dairy</div>
   </div>
-  <div class="creation-time">Created on: 2025-03-01 00:22:17</div>
+  <div class="creation-time">Created on: 2025-03-01 00:30:53</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
