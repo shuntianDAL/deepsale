@@ -24,8 +24,6 @@ body {
     font-family: 'Montserrat', Arial, sans-serif;
     background-color: #fff;
     overflow-x: hidden;
-}
-body {
     transition: opacity 0.5s ease;
 }
 .fade-on-load {
@@ -34,6 +32,22 @@ body {
 }
 body.page-loaded .fade-on-load {
     opacity: 1;
+}
+/* Fade in effect for product images */
+.item-image img {
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+}
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+/* "On Sale" button fade-out effect lasts longer */
+.on-sale-fade-out {
+    animation: fadeOutLong 3s forwards;
+}
+@keyframes fadeOutLong {
+    from { opacity: 1; }
+    to   { opacity: 0; }
 }
 .header-container {
     position: fixed;
@@ -283,9 +297,9 @@ body.page-loaded .fade-on-load {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add 'page-loaded' class to body for fade-on-load effect
+    // Add 'page-loaded' class to body for fade-on-load effects.
     document.body.classList.add('page-loaded');
-    // Ensure detail views are visible and chart views are hidden initially
+    // Ensure detail views are visible and chart views are hidden initially.
     document.querySelectorAll('.detail-view').forEach(function(el) {
         el.style.opacity = '1';
         el.style.display = 'block';
@@ -294,21 +308,28 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.opacity = '0';
         el.style.display = 'none';
     });
-    // Provide chart data as a global variable
+    // Provide chart data globally.
     window.priceHistoryData = {"20720065_KG": {"1mon": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "1yr": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}]}, "20852143_KG": {"1mon": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "1yr": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}]}, "21043887_EA": {"1mon": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}]}, "21211819_EA": {"1mon": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}]}, "20750012_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749901_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749798_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20699832_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21108887_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]}};
+
+    // After a delay, add the fade-out class to all "On Sale" buttons so they fade out gradually.
+    setTimeout(function() {
+        document.querySelectorAll('.vertical-switch-button').forEach(function(btn) {
+            btn.classList.add('on-sale-fade-out');
+        });
+    }, 3000);
 });
 
-// Store Chart.js instances by product id
+// Store Chart.js instances by product id.
 var chartInstances = {};
 
 /**
- * "Detail" button: show discount detail and hide chart view.
+ * "Detail" button: show discount view and hide chart view.
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
-    // Reset all toggle buttons in this container
     container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
         b.classList.remove('selected');
+        b.classList.remove('on-sale-fade-out');
     });
     btn.classList.add('selected');
 
@@ -319,7 +340,6 @@ function switchToDetail(btn) {
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
-    // Show detail view and hide chart view
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '1';
@@ -327,7 +347,7 @@ function switchToDetail(btn) {
     chartView.style.opacity = '0';
     chartView.style.display = 'none';
 
-    // Destroy any existing chart instance
+    // Destroy any existing chart instance.
     var productId = container.getAttribute('data-product-id');
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
@@ -337,7 +357,7 @@ function switchToDetail(btn) {
 
 /**
  * Toggle switch handler:
- * When toggled, always show the chart view and hide the discount (detail) view.
+ * When toggled, show the chart view and hide the discount view.
  * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
  */
 function toggleMonYr(checkbox) {
@@ -347,11 +367,10 @@ function toggleMonYr(checkbox) {
         toggleSwitch.classList.remove('disabled');
     }
 
-    // Unselect the "Detail" button so discount view stays hidden
+    // Unselect the "Detail" button so discount view remains hidden.
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
-    // Force chart view visible and discount view hidden
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '0';
@@ -364,7 +383,7 @@ function toggleMonYr(checkbox) {
     var data1mon = window.priceHistoryData[productId]["1mon"] || [];
     var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
 
-    // Destroy any existing chart
+    // Destroy any existing chart instance.
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
         delete chartInstances[productId];
@@ -519,9 +538,9 @@ function hideSearchBar() {
     }
     var items = document.getElementsByClassName('item-container');
     for (var i = 0; i < items.length; i++) {
-        items[i].style.display = "";
+        items[i].style.display = '';
     }
-    document.getElementById('searchCount').innerText = "";
+    document.getElementById('searchCount').innerText = '';
     searchBar.style.opacity = '0';
     setTimeout(function() {
         searchBar.style.display = 'none';
@@ -567,7 +586,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 20:26:02</div>
+  <div class="creation-time">Created on: 2025-02-28 20:30:56</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -603,7 +622,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20720065_KG">
         
           <div class="item-name">
-            <span class="item-number">#1</span>
+            <span class="item-number">#{i}</span>
             <span class="first-word" data-original="Fresh">Fresh</span>
             <span class="product-name-text" data-original="Atlantic Salmon Fillets, Skin On, Packaged, Club Size">Atlantic Salmon Fillets, Skin On, Packaged, Club Size</span>
           </div>
@@ -645,7 +664,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20852143_KG">
         
           <div class="item-name">
-            <span class="item-number">#2</span>
+            <span class="item-number">#{i}</span>
             <span class="first-word" data-original="Fresh">Fresh</span>
             <span class="product-name-text" data-original="Atlantic Salmon Fillets, Skin On, Packaged">Atlantic Salmon Fillets, Skin On, Packaged</span>
           </div>
@@ -687,7 +706,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-21043887_EA">
         
           <div class="item-name">
-            <span class="item-number">#3</span>
+            <span class="item-number">#{i}</span>
             <span class="first-word" data-original="Pacific">Pacific</span>
             <span class="product-name-text" data-original="White Shrimp Raw 16-20/LB">White Shrimp Raw 16-20/LB</span>
           </div>
@@ -729,7 +748,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-21211819_EA">
         
           <div class="item-name">
-            <span class="item-number">#4</span>
+            <span class="item-number">#{i}</span>
             <span class="first-word" data-original="Wild">Wild</span>
             <span class="product-name-text" data-original="Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g">Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g</span>
           </div>
@@ -771,7 +790,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20750012_EA">
         
           <div class="item-name">
-            <span class="item-number">#5</span>
+            <span class="item-number">#{i}</span>
             <span class="first-word" data-original="Crab">Crab</span>
             <span class="product-name-text" data-original="Flavoured Wild Alaska Pollock Chunks">Flavoured Wild Alaska Pollock Chunks</span>
           </div>
@@ -813,7 +832,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20749901_EA">
         
           <div class="item-name">
-            <span class="item-number">#6</span>
+            <span class="item-number">#{i}</span>
             <span class="first-word" data-original="Lobster">Lobster</span>
             <span class="product-name-text" data-original="Flavoured Wild Alaska Pollock Chunks">Flavoured Wild Alaska Pollock Chunks</span>
           </div>
@@ -855,7 +874,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20749798_EA">
         
           <div class="item-name">
-            <span class="item-number">#7</span>
+            <span class="item-number">#{i}</span>
             <span class="first-word" data-original="Leg-Style">Leg-Style</span>
             <span class="product-name-text" data-original="Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
           </div>
@@ -897,7 +916,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20699832_EA">
         
           <div class="item-name">
-            <span class="item-number">#8</span>
+            <span class="item-number">#{i}</span>
             <span class="first-word" data-original="Flake-Style">Flake-Style</span>
             <span class="product-name-text" data-original="Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
           </div>
@@ -939,7 +958,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-21108887_EA">
         
           <div class="item-name">
-            <span class="item-number">#9</span>
+            <span class="item-number">#{i}</span>
             <span class="first-word" data-original="Breaded">Breaded</span>
             <span class="product-name-text" data-original="Cod Bites With Sauce">Cod Bites With Sauce</span>
           </div>
