@@ -28,26 +28,17 @@ body {
 }
 .fade-on-load {
     opacity: 0;
-    transition: opacity 0.8s ease;
+    transition: opacity 1s ease;
 }
 body.page-loaded .fade-on-load {
     opacity: 1;
 }
-/* Fade in effect for product images */
 .item-image img {
     opacity: 0;
     animation: fadeIn 1s ease forwards;
 }
 @keyframes fadeIn {
     to { opacity: 1; }
-}
-/* "On Sale" button fade-out effect lasts longer */
-.on-sale-fade-out {
-    animation: fadeOutLong 3s forwards;
-}
-@keyframes fadeOutLong {
-    from { opacity: 1; }
-    to   { opacity: 0; }
 }
 .header-container {
     position: fixed;
@@ -308,15 +299,15 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.opacity = '0';
         el.style.display = 'none';
     });
-    // Provide chart data globally.
+    // Provide chart data as a global variable.
     window.priceHistoryData = {"20720065_KG": {"1mon": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "1yr": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}]}, "20852143_KG": {"1mon": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "1yr": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}]}, "21043887_EA": {"1mon": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}]}, "21211819_EA": {"1mon": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}]}, "20750012_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749901_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749798_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20699832_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21108887_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]}};
 
-    // After a delay, add the fade-out class to all "On Sale" buttons so they fade out gradually.
+    // After a delay, add a fade-in effect to all "On Sale" buttons.
     setTimeout(function() {
         document.querySelectorAll('.vertical-switch-button').forEach(function(btn) {
-            btn.classList.add('on-sale-fade-out');
+            btn.classList.add('fade-on-load');
         });
-    }, 3000);
+    }, 1000);
 });
 
 // Store Chart.js instances by product id.
@@ -329,7 +320,7 @@ function switchToDetail(btn) {
     var container = btn.closest('.item-container');
     container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
         b.classList.remove('selected');
-        b.classList.remove('on-sale-fade-out');
+        b.classList.remove('fade-on-load');
     });
     btn.classList.add('selected');
 
@@ -357,7 +348,7 @@ function switchToDetail(btn) {
 
 /**
  * Toggle switch handler:
- * When toggled, show the chart view and hide the discount view.
+ * When toggled, hide discount view and show chart view.
  * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
  */
 function toggleMonYr(checkbox) {
@@ -367,7 +358,7 @@ function toggleMonYr(checkbox) {
         toggleSwitch.classList.remove('disabled');
     }
 
-    // Unselect the "Detail" button so discount view remains hidden.
+    // Unselect the "Detail" button so discount view stays hidden.
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
@@ -383,32 +374,34 @@ function toggleMonYr(checkbox) {
     var data1mon = window.priceHistoryData[productId]["1mon"] || [];
     var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
 
-    // Destroy any existing chart instance.
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
         delete chartInstances[productId];
     }
 
-    if (checkbox.checked) {
-        toggleLabel.textContent = "1 Yr";
-        var filtered = data1yr.filter(function(d) {
-            return d.was_price > 0 && d.now_price > 0;
-        });
-        renderLineChart(productId, filtered);
-    } else {
-        toggleLabel.textContent = "1 Mon";
-        var filtered = data1mon.filter(function(d) {
-            return d.was_price > 0 && d.now_price > 0;
-        });
-        renderStackedBarChart(productId, filtered);
-    }
+    setTimeout(function() {
+        if (checkbox.checked) {
+            toggleLabel.textContent = "1 Yr";
+            var filtered = data1yr.filter(function(d) {
+                return d.was_price > 0 && d.now_price > 0;
+            });
+            renderLineChart(productId, filtered);
+        } else {
+            toggleLabel.textContent = "1 Mon";
+            var filtered = data1mon.filter(function(d) {
+                return d.was_price > 0 && d.now_price > 0;
+            });
+            renderStackedBarChart(productId, filtered);
+        }
+    }, 400);
 }
 
 /**
  * Renders a stacked bar chart (1 Mon data) using Chart.js.
  */
 function renderStackedBarChart(productId, data) {
-    var ctx = document.getElementById('canvas-' + productId).getContext('2d');
+    var canvas = document.getElementById('canvas-' + productId);
+    var ctx = canvas.getContext('2d');
     if (!data || data.length === 0) {
         ctx.font = "14px Arial";
         ctx.fillText("No 1 Mon data", 10, 50);
@@ -461,7 +454,8 @@ function renderStackedBarChart(productId, data) {
  * Renders a two-line chart (1 Yr data) using Chart.js.
  */
 function renderLineChart(productId, data) {
-    var ctx = document.getElementById('canvas-' + productId).getContext('2d');
+    var canvas = document.getElementById('canvas-' + productId);
+    var ctx = canvas.getContext('2d');
     if (!data || data.length === 0) {
         ctx.font = "14px Arial";
         ctx.fillText("No 1 Yr data", 10, 50);
@@ -586,7 +580,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 20:30:56</div>
+  <div class="creation-time">Created on: 2025-02-28 20:40:07</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -604,7 +598,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "Detail" button (selected by default, fades in on page load) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20720065_KG">
@@ -622,7 +616,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20720065_KG">
         
           <div class="item-name">
-            <span class="item-number">#{i}</span>
+            <span class="item-number">#1</span>
             <span class="first-word" data-original="Fresh">Fresh</span>
             <span class="product-name-text" data-original="Atlantic Salmon Fillets, Skin On, Packaged, Club Size">Atlantic Salmon Fillets, Skin On, Packaged, Club Size</span>
           </div>
@@ -646,7 +640,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "Detail" button (selected by default, fades in on page load) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20852143_KG">
@@ -664,7 +658,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20852143_KG">
         
           <div class="item-name">
-            <span class="item-number">#{i}</span>
+            <span class="item-number">#2</span>
             <span class="first-word" data-original="Fresh">Fresh</span>
             <span class="product-name-text" data-original="Atlantic Salmon Fillets, Skin On, Packaged">Atlantic Salmon Fillets, Skin On, Packaged</span>
           </div>
@@ -688,7 +682,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "Detail" button (selected by default, fades in on page load) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21043887_EA">
@@ -706,7 +700,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-21043887_EA">
         
           <div class="item-name">
-            <span class="item-number">#{i}</span>
+            <span class="item-number">#3</span>
             <span class="first-word" data-original="Pacific">Pacific</span>
             <span class="product-name-text" data-original="White Shrimp Raw 16-20/LB">White Shrimp Raw 16-20/LB</span>
           </div>
@@ -730,7 +724,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "Detail" button (selected by default, fades in on page load) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21211819_EA">
@@ -748,7 +742,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-21211819_EA">
         
           <div class="item-name">
-            <span class="item-number">#{i}</span>
+            <span class="item-number">#4</span>
             <span class="first-word" data-original="Wild">Wild</span>
             <span class="product-name-text" data-original="Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g">Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g</span>
           </div>
@@ -772,7 +766,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "Detail" button (selected by default, fades in on page load) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20750012_EA">
@@ -790,7 +784,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20750012_EA">
         
           <div class="item-name">
-            <span class="item-number">#{i}</span>
+            <span class="item-number">#5</span>
             <span class="first-word" data-original="Crab">Crab</span>
             <span class="product-name-text" data-original="Flavoured Wild Alaska Pollock Chunks">Flavoured Wild Alaska Pollock Chunks</span>
           </div>
@@ -814,7 +808,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "Detail" button (selected by default, fades in on page load) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20749901_EA">
@@ -832,7 +826,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20749901_EA">
         
           <div class="item-name">
-            <span class="item-number">#{i}</span>
+            <span class="item-number">#6</span>
             <span class="first-word" data-original="Lobster">Lobster</span>
             <span class="product-name-text" data-original="Flavoured Wild Alaska Pollock Chunks">Flavoured Wild Alaska Pollock Chunks</span>
           </div>
@@ -856,7 +850,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "Detail" button (selected by default, fades in on page load) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20749798_EA">
@@ -874,7 +868,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20749798_EA">
         
           <div class="item-name">
-            <span class="item-number">#{i}</span>
+            <span class="item-number">#7</span>
             <span class="first-word" data-original="Leg-Style">Leg-Style</span>
             <span class="product-name-text" data-original="Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
           </div>
@@ -898,7 +892,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "Detail" button (selected by default, fades in on page load) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20699832_EA">
@@ -916,7 +910,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-20699832_EA">
         
           <div class="item-name">
-            <span class="item-number">#{i}</span>
+            <span class="item-number">#8</span>
             <span class="first-word" data-original="Flake-Style">Flake-Style</span>
             <span class="product-name-text" data-original="Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
           </div>
@@ -940,7 +934,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "Detail" button (selected by default, fades in on page load) -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21108887_EA">
@@ -958,7 +952,7 @@ function inPageSearch() {
       <div class="detail-view" id="detail-21108887_EA">
         
           <div class="item-name">
-            <span class="item-number">#{i}</span>
+            <span class="item-number">#9</span>
             <span class="first-word" data-original="Breaded">Breaded</span>
             <span class="product-name-text" data-original="Cod Bites With Sauce">Cod Bites With Sauce</span>
           </div>
