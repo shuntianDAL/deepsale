@@ -453,7 +453,7 @@ function renderStackedBarChart(productId, data) {
       maxWas = d.was_price;
     }
   });
-  const yAxisMax = maxWas * 1.1; // add ~10% space at the top
+  const yAxisMax = maxWas * 1.1; // 10% extra space at the top
 
   chartInstances[productId] = new Chart(ctx, {
     type: 'bar',
@@ -470,16 +470,16 @@ function renderStackedBarChart(productId, data) {
             formatter: (value, context) => {
               return data[context.dataIndex].now_price.toFixed(2);
             },
-            color: '#fff',
+            color: '#fff', // White text
             font: { size: 10, weight: 'normal' },
             /*
-              anchor: 'end'  -> place the label at the top boundary of this bar
-              align:  'end'  -> position it outward from that boundary
-              offset:  -2    -> move it slightly inside the bar so it doesn't get cut off
+              anchor: 'end'  -> reference the top edge of the green bar
+              align:  'end'  -> place the label outward from that edge
+              offset: -4     -> nudge the label inside the bar (negative pushes it downward)
             */
             anchor: 'end',
             align: 'end',
-            offset: -2
+            offset: -4
           }
         },
         // Orange bar (difference: Was - Now)
@@ -523,7 +523,7 @@ function renderStackedBarChart(productId, data) {
       maintainAspectRatio: false,
       plugins: {
         datalabels: {
-          clip: false // prevents labels from being clipped at chart edges
+          clip: false // keeps labels from being clipped at chart edges
         },
         legend: {
           display: false
@@ -697,7 +697,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_meat</div>
   </div>
-  <div class="creation-time">Created on: 2025-03-01 00:10:58</div>
+  <div class="creation-time">Created on: 2025-03-01 00:12:59</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
