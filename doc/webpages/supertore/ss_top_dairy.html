@@ -430,75 +430,99 @@ function toggleMonYr(checkbox) {
  * Legend is disabled.
  */
 function renderStackedBarChart(productId, data) {
-    var ctx = document.getElementById('canvas-' + productId).getContext('2d');
-    if (!data || data.length === 0) {
-        ctx.font = "14px Arial";
-        ctx.fillText("No 1 Mon data", 10, 50);
-        return;
-    }
-    
-    // Find the highest "Was" price in the dataset
-    // because the stacked bar's total height = Was Price
-    let maxWas = 0;
-    data.forEach(function(d) {
-        if (d.was_price > maxWas) {
-            maxWas = d.was_price;
-        }
-    });
+  var ctx = document.getElementById('canvas-' + productId).getContext('2d');
+  if (!data || data.length === 0) {
+      ctx.font = "14px Arial";
+      ctx.fillText("No 1 Mon data", 10, 50);
+      return;
+  }
 
-    // Multiply by 1.2 to give some breathing room
-    let yAxisMax = maxWas * 1.2;
+  // Find the highest "Was" price to give some extra headroom
+  let maxWas = 0;
+  data.forEach(function(d) {
+      if (d.was_price > maxWas) {
+          maxWas = d.was_price;
+      }
+  });
+  let yAxisMax = maxWas * 1.2; // 20% extra space at top
 
-    chartInstances[productId] = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: data.map(function(d) { return d.date; }),
-            datasets: [
-                {
-                    label: 'Now Price',
-                    data: data.map(function(d) { return d.now_price; }),
-                    backgroundColor: '#009900',
-                    stack: 'Stack 0'
-                },
-                {
-                    label: 'Was Price',
-                    // We subtract now_price so the bar on top shows only the difference
-                    data: data.map(function(d) { return d.was_price - d.now_price; }),
-                    backgroundColor: '#FF9900',
-                    stack: 'Stack 0'
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
+  chartInstances[productId] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.date),
+      datasets: [
+        // Green bar for the NOW price
+        {
+          label: 'Now Price',
+          data: data.map(d => d.now_price),
+          backgroundColor: '#009900',
+          stack: 'Stack 0',
+          datalabels: {
+            // Show the actual "now_price" in the middle of the green bar
+            formatter: (value, context) => {
+              // Use the original "now_price" from data array
+              return data[context.dataIndex].now_price.toFixed(2);
             },
-            scales: {
-                x: {
-                    stacked: true,
-                    title: {
-                        display: true,
-                        text: 'Date'
-                    }
-                },
-                y: {
-                    stacked: true,
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Price'
-                    },
-                    // Set the maximum to be 20% higher than the highest Was price
-                    max: yAxisMax 
-                }
-            }
+            color: '#fff',
+            font: { weight: 'bold' },
+            align: 'center',
+            anchor: 'center'
+          }
+        },
+        // Orange bar for the difference (Was - Now)
+        {
+          label: 'Was Price',
+          data: data.map(d => d.was_price - d.now_price),
+          backgroundColor: '#FF9900',
+          stack: 'Stack 0',
+          datalabels: {
+            // Show the FULL was_price on top (outside) the orange bar
+            formatter: (value, context) => {
+              // Use the original "was_price" from data array
+              return data[context.dataIndex].was_price.toFixed(2);
+            },
+            color: '#000',
+            font: { weight: 'bold' },
+            align: 'end',
+            anchor: 'end'
+          }
         }
-    });
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        // Turn on DataLabels plugin for all datasets
+        datalabels: {
+          clip: false, // ensures labels aren't clipped at chart edges
+        },
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          title: {
+            display: true,
+            text: 'Date'
+          }
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Price'
+          },
+          max: yAxisMax // add extra headroom
+        }
+      }
+    }
+  });
 }
+
 
 
 /**
@@ -636,7 +660,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_dairy</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 23:37:50</div>
+  <div class="creation-time">Created on: 2025-02-28 23:41:29</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
