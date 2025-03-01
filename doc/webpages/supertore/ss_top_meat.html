@@ -240,8 +240,6 @@ body.page-loaded .fade-on-load {
     z-index: 2;
 }
 .chart-view {
-    width: 100%;
-    height: 100%;
     background-color: #f9f9f9;
     opacity: 0;
     z-index: 1;
@@ -284,17 +282,19 @@ body.page-loaded .fade-on-load {
 </style>
 
 <script>
-// On DOMContentLoaded, add the page-loaded class and set initial view states.
 document.addEventListener('DOMContentLoaded', function() {
+    // Add 'page-loaded' class to body for fade-on-load effect
     document.body.classList.add('page-loaded');
-    // Ensure detail views are visible and chart views are hidden
+    // Ensure detail views are visible and chart views are hidden initially
     document.querySelectorAll('.detail-view').forEach(function(el) {
         el.style.opacity = '1';
+        el.style.display = 'block';
     });
     document.querySelectorAll('.chart-view').forEach(function(el) {
         el.style.opacity = '0';
+        el.style.display = 'none';
     });
-    // Global chart data
+    // Provide chart data as a global variable
     window.priceHistoryData = {"20822350_KG": {"1mon": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}], "1yr": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}]}, "20822150_KG": {"1mon": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}], "1yr": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}]}, "20836762_KG": {"1mon": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}], "1yr": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}]}, "21618256_KG": {"1mon": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}], "1yr": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}]}, "20822343_KG": {"1mon": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}], "1yr": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}]}, "20835855_KG": {"1mon": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}], "1yr": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}]}, "20822906_KG": {"1mon": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}], "1yr": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}]}, "20822347_KG": {"1mon": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}], "1yr": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}]}, "20822459_KG": {"1mon": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}], "1yr": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}]}, "20822322_KG": {"1mon": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}], "1yr": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}]}, "20875645_KG": {"1mon": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}], "1yr": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}]}, "20827782_KG": {"1mon": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}], "1yr": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}]}, "20827787_KG": {"1mon": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}], "1yr": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}]}, "20836766_KG": {"1mon": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}], "1yr": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}]}, "20822452_KG": {"1mon": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}], "1yr": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}]}, "20823075_KG": {"1mon": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}], "1yr": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}]}, "20825554_KG": {"1mon": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}]}, "20827788_KG": {"1mon": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}], "1yr": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}]}, "20823076_KG": {"1mon": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}], "1yr": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}]}, "20827783_KG": {"1mon": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}], "1yr": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}]}, "20826506_KG": {"1mon": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}], "1yr": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}]}, "20822907_KG": {"1mon": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}], "1yr": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}]}, "20827785_KG": {"1mon": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}], "1yr": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}]}, "20823073_KG": {"1mon": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}], "1yr": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}]}, "20416522_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20415978_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20593099_KG": {"1mon": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}], "1yr": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}]}, "20826455_KG": {"1mon": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}], "1yr": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}]}, "20794618_KG": {"1mon": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}], "1yr": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}]}, "20826460_KG": {"1mon": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}], "1yr": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}]}, "20162170_KG": {"1mon": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}], "1yr": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}]}, "21601003_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21600979_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 0.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 0.0, "now_price": 6.0}]}, "21352008_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}]}, "21588066_EA": {"1mon": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}], "1yr": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}]}, "21290136_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289868_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289731_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "20794616_KG": {"1mon": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}], "1yr": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}]}, "20315210_KG": {"1mon": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}], "1yr": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}]}, "21201106_KG": {"1mon": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21061099_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21061096_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21059807_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21366170_EA": {"1mon": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}]}, "20321514_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20319035_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20794617_KG": {"1mon": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}], "1yr": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}]}, "20794619_KG": {"1mon": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}], "1yr": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}]}, "21646160_EA": {"1mon": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}]}, "21201094_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21201089_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21570722_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570684_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570639_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570617_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566593_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566049_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21539305_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21538773_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178761_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178745_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178744_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20174909_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20156771_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20152629_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20117351_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20057892_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21546108_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20766562_KG": {"1mon": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}], "1yr": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}]}, "20320534_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20313480_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20298289_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "21399630_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "21193815_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20794831_KG": {"1mon": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}], "1yr": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}]}, "20766602_KG": {"1mon": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}], "1yr": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}]}, "20794620_KG": {"1mon": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}], "1yr": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}]}, "21300113_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21300103_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21220674_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "20507161_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507160_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507159_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "21076606_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20923814_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903492_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903241_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20798252_KG": {"1mon": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}], "1yr": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}]}};
 });
 
@@ -302,17 +302,16 @@ document.addEventListener('DOMContentLoaded', function() {
 var chartInstances = {};
 
 /**
- * "Detail" button: show discount detail, hide chart view, and reset the toggle.
+ * "Detail" button: show discount detail and hide chart view.
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
-    // Reset button state
+    // Reset all toggle buttons in this container
     container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
         b.classList.remove('selected');
     });
     btn.classList.add('selected');
 
-    // Disable the toggle and set it to unchecked with label "1 Yr"
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
     var toggleInput = container.querySelector('.toggle-input');
@@ -320,13 +319,15 @@ function switchToDetail(btn) {
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
-    // Show detail view, hide chart view (with fade-out/in)
+    // Show detail view and hide chart view
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '1';
+    detailView.style.display = 'block';
     chartView.style.opacity = '0';
+    chartView.style.display = 'none';
 
-    // Remove any previously rendered chart
+    // Destroy any existing chart instance
     var productId = container.getAttribute('data-product-id');
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
@@ -336,9 +337,8 @@ function switchToDetail(btn) {
 
 /**
  * Toggle switch handler:
- * If checked, hide the discount detail and show chart view.
- * If unchecked, show discount detail and hide chart view.
- * Also, render the chart using Chart.js (1 Yr line chart if checked, 1 Mon stacked bar chart if unchecked).
+ * When toggled, always show the chart view and hide the discount (detail) view.
+ * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
@@ -347,36 +347,38 @@ function toggleMonYr(checkbox) {
         toggleSwitch.classList.remove('disabled');
     }
 
-    // Unselect the "Detail" button
+    // Unselect the "Detail" button so discount view stays hidden
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
+    // Force chart view visible and discount view hidden
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
+    detailView.style.opacity = '0';
+    detailView.style.display = 'none';
+    chartView.style.opacity = '1';
+    chartView.style.display = 'block';
+
     var productId = container.getAttribute('data-product-id');
     var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
+    var data1mon = window.priceHistoryData[productId]["1mon"] || [];
+    var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
 
-    // Remove any existing chart instance
+    // Destroy any existing chart
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
         delete chartInstances[productId];
     }
 
     if (checkbox.checked) {
-        // Checked: hide discount info, show chart view and render 1 Yr line chart.
         toggleLabel.textContent = "1 Yr";
-        detailView.style.opacity = '0';
-        chartView.style.opacity = '1';
-        var filtered = window.priceHistoryData[productId]["1yr"].filter(function(d) {
+        var filtered = data1yr.filter(function(d) {
             return d.was_price > 0 && d.now_price > 0;
         });
         renderLineChart(productId, filtered);
     } else {
-        // Unchecked: show discount info, hide chart view and render 1 Mon stacked bar chart.
         toggleLabel.textContent = "1 Mon";
-        detailView.style.opacity = '1';
-        chartView.style.opacity = '0';
-        var filtered = window.priceHistoryData[productId]["1mon"].filter(function(d) {
+        var filtered = data1mon.filter(function(d) {
             return d.was_price > 0 && d.now_price > 0;
         });
         renderStackedBarChart(productId, filtered);
@@ -384,7 +386,7 @@ function toggleMonYr(checkbox) {
 }
 
 /**
- * Renders a stacked bar chart for 1 Mon data using Chart.js.
+ * Renders a stacked bar chart (1 Mon data) using Chart.js.
  */
 function renderStackedBarChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -437,7 +439,7 @@ function renderStackedBarChart(productId, data) {
 }
 
 /**
- * Renders a two-line chart for 1 Yr data using Chart.js.
+ * Renders a two-line chart (1 Yr data) using Chart.js.
  */
 function renderLineChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -565,7 +567,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_meat</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 19:57:44</div>
+  <div class="creation-time">Created on: 2025-02-28 20:05:07</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
