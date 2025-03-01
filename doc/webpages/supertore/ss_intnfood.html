@@ -446,17 +446,17 @@ function renderStackedBarChart(productId, data) {
     return;
   }
 
-  // Find the highest "Was" price to give some headroom
+  // Find the highest "Was" price for some extra headroom
   let maxWas = 0;
   data.forEach(d => {
     if (d.was_price > maxWas) {
       maxWas = d.was_price;
     }
   });
-  let yAxisMax = maxWas * 1.1; // 10% extra space at the top
+  const yAxisMax = maxWas * 1.1; // add ~10% space at the top
 
   chartInstances[productId] = new Chart(ctx, {
-    type: 'bar', // Overall chart type is bar
+    type: 'bar',
     data: {
       labels: data.map(d => d.date),
       datasets: [
@@ -472,11 +472,17 @@ function renderStackedBarChart(productId, data) {
             },
             color: '#fff',
             font: { size: 10, weight: 'normal' },
-            align: 'center',
-            anchor: 'center'
+            /*
+              anchor: 'end'  -> place the label at the top boundary of this bar
+              align:  'end'  -> position it outward from that boundary
+              offset:  -2    -> move it slightly inside the bar so it doesn't get cut off
+            */
+            anchor: 'end',
+            align: 'end',
+            offset: -2
           }
         },
-        // Orange bar (Was - Now)
+        // Orange bar (difference: Was - Now)
         {
           label: 'Was Price',
           data: data.map(d => d.was_price - d.now_price),
@@ -488,12 +494,12 @@ function renderStackedBarChart(productId, data) {
             },
             color: '#000',
             font: { size: 10, weight: 'normal' },
-            align: 'end',
             anchor: 'end',
+            align: 'end',
             offset: 2
           }
         },
-        // Line dataset on a separate y-axis
+        // Optional line to show Now Price trend on top
         {
           type: 'line',
           label: 'Now Price Trend',
@@ -503,10 +509,8 @@ function renderStackedBarChart(productId, data) {
           fill: false,
           tension: 0.1,
           pointBackgroundColor: '#000',
-          // Force the line to draw last & on top
           order: 99,
           z: 9999,
-          // Use the separate (non-stacked) y-axis
           yAxisID: 'yLine',
           datalabels: {
             display: false
@@ -519,7 +523,7 @@ function renderStackedBarChart(productId, data) {
       maintainAspectRatio: false,
       plugins: {
         datalabels: {
-          clip: false
+          clip: false // prevents labels from being clipped at chart edges
         },
         legend: {
           display: false
@@ -533,7 +537,7 @@ function renderStackedBarChart(productId, data) {
             text: 'Date'
           }
         },
-        // The stacked bar axis
+        // Stacked bar axis
         y: {
           stacked: true,
           beginAtZero: true,
@@ -543,10 +547,10 @@ function renderStackedBarChart(productId, data) {
           },
           max: yAxisMax
         },
-        // A second axis for the line (not stacked)
+        // Separate axis for the line dataset
         yLine: {
           beginAtZero: true,
-          display: false,     // hide extra axis visually
+          display: false,
           min: 0,
           max: yAxisMax
         }
@@ -693,7 +697,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_intnfood</div>
   </div>
-  <div class="creation-time">Created on: 2025-03-01 00:06:08</div>
+  <div class="creation-time">Created on: 2025-03-01 00:11:08</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
