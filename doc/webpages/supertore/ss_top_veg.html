@@ -195,9 +195,8 @@ body.page-loaded .fade-on-load {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-/* Make disabled toggle background darker */
-.toggle-switch.disabled .toggle-label {
-    background-color: #bbb;
+.toggle-switch:not(.disabled) .toggle-label {
+    background-color: #153d26;
 }
 .toggle-label .toggle-circle {
     position: absolute;
@@ -221,7 +220,7 @@ body.page-loaded .fade-on-load {
     text-align: center;
     line-height: 28px;
     font-size: 12px;
-    color: #000;
+    color: #fff;
     pointer-events: none;
 }
 .right-side {
@@ -588,7 +587,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_veg</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 23:03:11</div>
+  <div class="creation-time">Created on: 2025-02-28 23:04:43</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
