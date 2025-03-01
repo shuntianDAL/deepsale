@@ -1,806 +1,341 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset='UTF-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1.0'>
-<meta http-equiv='Cache-Control' content='no-cache, no-store, must-revalidate'>
-<meta http-equiv='Pragma' content='no-cache'>
-<meta http-equiv='Expires' content='0'>
-<title>Discounted Items - ss_meat</title>
-<link rel='preconnect' href='https://fonts.googleapis.com'>
-<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
-<link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Discounted Items - ss_meat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 
-<!-- Load Chart.js from CDN -->
-<!-- Load Chart.js (already in your code) -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+  <!-- Load Chart.js and the DataLabels plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
 
-<!-- Load the Chart.js DataLabels plugin -->
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
-
-<script>
-
-// A custom plugin that draws a background behind the x-axis title
-const axisTitleBackgroundPlugin = {
-  id: 'axisTitleBackgroundPlugin',
-  beforeDraw(chart, args, options) {
-    const { ctx, chartArea: { bottom }, scales } = chart;
-    const xScale = scales.x; // We’ll handle the x-axis title
-
-    // If there's no x-axis or no title, exit
-    if (!xScale || !xScale.options.title?.display) return;
-
-    // Title text, font, and any user config
-    const title = xScale.options.title.text;
-    const font = Chart.helpers.toFont(xScale.options.title.font);
-    const backgroundColor = options.backgroundColor || '#ccc';
-
-    ctx.save();
-    ctx.font = font.string;
-
-    // Measure the text size
-    const textWidth = ctx.measureText(title).width;
-    const textHeight = font.lineHeight || font.size;
-
-    // Chart.js draws the x-axis title below the bottom of the chart area
-    // We'll approximate the position for the rectangle
-    const xPos = xScale.left + (xScale.right - xScale.left) / 2; // center
-    // The "bottom" of the chart area is the top edge of the axis text
-    // We add a bit more padding if needed
-    const yPos = bottom + (xScale.options.title.padding?.bottom || 0);
-
-    // Compute rectangle dimensions
-    const rectWidth = textWidth + 10;   // 5px padding on each side
-    const rectHeight = textHeight + 6;  // 3px padding top & bottom
-    const rectX = xPos - rectWidth / 2; // center horizontally
-    // Move upward so the rectangle covers the title text
-    const rectY = yPos;
-
-    // Draw the rectangle
-    ctx.fillStyle = backgroundColor;
-    ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
-
-    // Draw the title text on top of the rectangle
-    ctx.fillStyle = xScale.options.title.color || '#000';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
-    ctx.fillText(title, xPos, rectY + 3); // 3px from top edge
-
-    ctx.restore();
-  }
-};
-</script>
-
-<script>
-  // Register the plugin with Chart.js
-  Chart.register(ChartDataLabels);
-  Chart.register(axisTitleBackgroundPlugin);
-</script>
-
-<style>
-html {
-    overflow-y: scroll;
-}
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Montserrat', Arial, sans-serif;
-    background-color: #fff;
-    overflow-x: hidden;
-}
-body {
-    transition: opacity 0.5s ease;
-}
-.fade-on-load {
-    opacity: 0;
-    transition: opacity 0.8s ease;
-}
-body.page-loaded .fade-on-load {
-    opacity: 1;
-}
-.header-container {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    background: #fff;
-    padding: 10px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    z-index: 1000;
-}
-.header-row {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-.page-title {
-    font-size: 22px;
-    font-weight: 600;
-}
-.creation-time {
-    text-align: center;
-    font-size: 12px;
-    color: gray;
-    margin-top: 5px;
-}
-.divider {
-    border: 0; height: 1px; background: #ccc;
-    margin: 0 20px 10px;
-}
-.header-spacer {
-    height: 70px;
-}
-.search-button {
-    background-color: #3e7d53;
-    border: none;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 9999px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-#searchBarContainer {
-    position: fixed;
-    top: 20px; left: 50%;
-    transform: translateX(-50%);
-    width: 240px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    text-align: center;
-    transition: opacity 0.5s ease;
-    opacity: 0;
-    display: none;
-    align-items: center;
-    z-index: 1001;
-}
-#searchInput {
-    padding: 4px;
-    width: calc(100% - 60px);
-    border: none;
-    outline: none;
-    font-size: 12px;
-    flex-grow: 1;
-}
-#searchCount {
-    font-size: 12px;
-    color: #3e7d53;
-    margin-left: 8px;
-    white-space: nowrap;
-}
-#closeSearchButton {
-    background: none;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    color: #3e7d53;
-    margin-left: 8px;
-    line-height: 1;
-    padding: 0;
-}
-.item-container {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    width: 90%;
-    max-width: 600px;
-    margin: 10px auto;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 10px;
-}
-.left-side {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-.item-image img {
-    width: 80px;
-    height: auto;
-    /* Fade in effect for product images */
-    opacity: 0;
-    animation: fadeIn 1.5s ease forwards;
-}
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-.vertical-switch-button {
-    background-color: #3e7d53;
-    border: none;
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 9999px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-.vertical-switch-button.selected {
-    background-color: #3e7d53;
-    color: #fff;
-}
-.vertical-switch-button:not(.selected) {
-    background-color: #ddd;
-    color: #555;       /* A darker gray instead of pure black */
-    font-weight: 400;  /* Normal (non-bold) weight */
-}
-.toggle-switch {
-    width: 80px;
-    height: 28px;
-    position: relative;
-}
-.toggle-switch.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-.toggle-input {
-    display: none;
-}
-.toggle-label {
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    background-color: #ddd;
-    border-radius: 9999px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-.toggle-switch:not(.disabled) .toggle-label {
-    background-color: #3e7d53;
-}
-
-/* When the toggle is not disabled (i.e. selected and green), make the text white */
-.toggle-switch:not(.disabled) .toggle-label .toggle-text {
-    color: #fff;
-}
-
-.toggle-switch.disabled .toggle-label {
-    background-color: #aaa;
-}
-.toggle-label .toggle-circle {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 24px;
-    height: 24px;
-    background-color: #fff;
-    border-radius: 50%;
-    transition: transform 0.3s ease;
-}
-.toggle-input:checked + .toggle-label .toggle-circle {
-    transform: translateX(52px);
-}
-.toggle-label .toggle-text {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    text-align: center;
-    line-height: 28px;
-    font-size: 12px;
-    color: #000;
-    font-weight: bold;
-    pointer-events: none;
-}
-
-/* By default, display an arrow pointing right in bold black */
-.toggle-circle::before {
-    content: "→";
-    color: #000;
-    font-size: 14px;
-    font-weight: 700; /* or "bold" */
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none; 
-}
-
-/* When the toggle is checked, flip the arrow to point left (also bold black) */
-.toggle-input:checked + .toggle-label .toggle-circle::before {
-    content: "←";
-    color: #000;
-    font-weight: 700;
-}
-
-.right-side {
-    flex: 1;
-    position: relative;
-}
-.view-container {
-    width: 100%;
-    height: 200px;
-    position: relative;
-    background-color: #f9f9f9;
-}
-.detail-view, .chart-view {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    transition: opacity 0.5s ease;
-}
-.detail-view {
-    background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    opacity: 1;
-    z-index: 2;
-}
-.chart-view {
-    background-color: #f9f9f9;
-    opacity: 0;
-    z-index: 1;
-}
-.item-name {
-    font-size: 14px;
-    margin-bottom: 6px;
-    font-weight: 600;
-    color: black;
-}
-.item-number {
-    color: red;
-    font-weight: 600;
-    border: 2px solid red;
-    border-radius: 50%;
-    display: inline-block;
-    width: 22px;
-    height: 22px;
-    text-align: center;
-    line-height: 20px;
-    margin-right: 8px;
-    font-size: 12px;
-}
-.now-price {
-    color: red;
-    font-weight: 600;
-    font-size: 12px;
-    margin: 4px 0;
-}
-.discount-badge {
-    background-color: yellow;
-    display: inline-block;
-    font-weight: 600;
-    padding: 2px 5px;
-    font-size: 16px;
-}
-.was-price {
-    text-decoration: line-through;
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add 'page-loaded' class to body for fade-on-load effects.
-    document.body.classList.add('page-loaded');
-    // Ensure detail views are visible and chart views are hidden initially.
-    document.querySelectorAll('.detail-view').forEach(function(el) {
-        el.style.opacity = '1';
-        el.style.display = 'block';
-    });
-    document.querySelectorAll('.chart-view').forEach(function(el) {
-        el.style.opacity = '0';
-        el.style.display = 'none';
-    });
-    // Provide chart data as a global variable.
-    window.priceHistoryData = {"20822350_KG": {"1mon": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}], "1yr": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}]}, "20822150_KG": {"1mon": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}], "1yr": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}]}, "20836762_KG": {"1mon": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}], "1yr": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}]}, "21618256_KG": {"1mon": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}], "1yr": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}]}, "20822343_KG": {"1mon": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}], "1yr": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}]}, "20835855_KG": {"1mon": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}], "1yr": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}]}, "20822906_KG": {"1mon": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}], "1yr": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}]}, "20822347_KG": {"1mon": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}], "1yr": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}]}, "20822459_KG": {"1mon": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}], "1yr": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}]}, "20822322_KG": {"1mon": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}], "1yr": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}]}, "20875645_KG": {"1mon": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}], "1yr": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}]}, "20827782_KG": {"1mon": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}], "1yr": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}]}, "20827787_KG": {"1mon": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}], "1yr": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}]}, "20836766_KG": {"1mon": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}], "1yr": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}]}, "20822452_KG": {"1mon": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}], "1yr": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}]}, "20823075_KG": {"1mon": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}], "1yr": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}]}, "20825554_KG": {"1mon": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}]}, "20827788_KG": {"1mon": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}], "1yr": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}]}, "20823076_KG": {"1mon": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}], "1yr": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}]}, "20827783_KG": {"1mon": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}], "1yr": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}]}, "20826506_KG": {"1mon": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}], "1yr": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}]}, "20822907_KG": {"1mon": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}], "1yr": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}]}, "20827785_KG": {"1mon": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}], "1yr": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}]}, "20823073_KG": {"1mon": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}], "1yr": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}]}, "20416522_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20415978_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20593099_KG": {"1mon": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}], "1yr": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}]}, "20826455_KG": {"1mon": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}], "1yr": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}]}, "20794618_KG": {"1mon": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}], "1yr": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}]}, "20826460_KG": {"1mon": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}], "1yr": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}]}, "20162170_KG": {"1mon": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}], "1yr": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}]}, "21601003_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21600979_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21352008_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}]}, "21588066_EA": {"1mon": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}], "1yr": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}]}, "21290136_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289868_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289731_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "20794616_KG": {"1mon": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}], "1yr": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}]}, "20315210_KG": {"1mon": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}], "1yr": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}]}, "21201106_KG": {"1mon": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21061099_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21061096_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21059807_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21366170_EA": {"1mon": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}]}, "20321514_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20319035_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20794617_KG": {"1mon": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}], "1yr": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}]}, "20794619_KG": {"1mon": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}], "1yr": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}]}, "21646160_EA": {"1mon": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}]}, "21201094_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21201089_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21570722_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570684_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570639_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570617_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566593_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566049_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21539305_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21538773_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178761_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178745_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178744_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20174909_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20156771_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20152629_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20117351_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20057892_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21546108_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20766562_KG": {"1mon": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}], "1yr": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}]}, "20320534_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20313480_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20298289_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "21399630_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "21193815_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20794831_KG": {"1mon": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}], "1yr": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}]}, "20766602_KG": {"1mon": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}], "1yr": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}]}, "20794620_KG": {"1mon": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}], "1yr": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}]}, "21300113_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21300103_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21220674_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "20507161_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507160_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507159_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "21076606_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20923814_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903492_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903241_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20798252_KG": {"1mon": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}], "1yr": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}]}};
-});
-
-// Store Chart.js instances by product id.
-var chartInstances = {};
-
-/**
- * "Detail" button: show discount (detail) view and hide chart view.
- */
-function switchToDetail(btn) {
-    var container = btn.closest('.item-container');
-    // Reset all toggle buttons in this container.
-    container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
-        b.classList.remove('selected');
-    });
-    btn.classList.add('selected');
-
-    var toggleSwitch = container.querySelector('.toggle-switch');
-    toggleSwitch.classList.add('disabled');
-    var toggleInput = container.querySelector('.toggle-input');
-    toggleInput.checked = false;
-    var toggleLabel = toggleSwitch.querySelector('.toggle-text');
-    toggleLabel.textContent = "1 Yr";
-
-    // Show detail view and hide chart view.
-    var detailView = container.querySelector('.detail-view');
-    var chartView = container.querySelector('.chart-view');
-    detailView.style.opacity = '1';
-    detailView.style.display = 'block';
-    chartView.style.opacity = '0';
-    chartView.style.display = 'none';
-
-    // Destroy any existing chart instance.
-    var productId = container.getAttribute('data-product-id');
-    if (chartInstances[productId]) {
-        chartInstances[productId].destroy();
-        delete chartInstances[productId];
-    }
-}
-
-/**
- * Toggle switch handler:
- * When toggled, hide discount view and show chart view immediately.
- * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
- */
-function toggleMonYr(checkbox) {
-    var container = checkbox.closest('.item-container');
-    var toggleSwitch = container.querySelector('.toggle-switch');
-    if (toggleSwitch.classList.contains('disabled')) {
-        toggleSwitch.classList.remove('disabled');
-    }
-
-    // Unselect the "Detail" button so discount view stays hidden.
-    var detailBtn = container.querySelector('[data-type="detail"]');
-    detailBtn.classList.remove('selected');
-
-    // Force chart view visible and discount view hidden.
-    var detailView = container.querySelector('.detail-view');
-    var chartView = container.querySelector('.chart-view');
-    detailView.style.opacity = '0';
-    detailView.style.display = 'none';
-    chartView.style.opacity = '1';
-    chartView.style.display = 'block';
-
-    var productId = container.getAttribute('data-product-id');
-    var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
-    var data1mon = window.priceHistoryData[productId]["1mon"] || [];
-    var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
-
-    // Destroy any existing chart.
-    if (chartInstances[productId]) {
-        chartInstances[productId].destroy();
-        delete chartInstances[productId];
-    }
-
-    // Immediately render the chart based on the toggle state.
-    if (checkbox.checked) {
-        toggleLabel.textContent = "Yr.";
-        var filtered = data1yr.filter(function(d) {
-            return d.was_price > 0 && d.now_price > 0;
-        });
-        renderLineChart(productId, filtered);
-    } else {
-        toggleLabel.textContent = "Mon";
-        var filtered = data1mon.filter(function(d) {
-            return d.was_price > 0 && d.now_price > 0;
-        });
-        renderStackedBarChart(productId, filtered);
-    }
-}
-
-/**
- * Renders a stacked bar chart (1 Mon data) using Chart.js.
- * Legend is disabled.
- */
-function renderStackedBarChart(productId, data) {
-  const ctx = document.getElementById('canvas-' + productId).getContext('2d');
-  if (!data || data.length === 0) {
-    ctx.font = "14px Arial";
-    ctx.fillText("No 1 Mon data", 10, 50);
-    return;
-  }
-
-  // Find the highest "Was" price for some extra headroom
-  let maxWas = 0;
-  data.forEach(d => {
-    if (d.was_price > maxWas) {
-      maxWas = d.was_price;
-    }
-  });
-  const yAxisMax = maxWas * 1.1; // 10% extra space at the top
-
-  chartInstances[productId] = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: data.map(d => d.date),
-      datasets: [
-        // Green bar (Now Price)
-        {
-          label: 'Now Price',
-          data: data.map(d => d.now_price),
-          backgroundColor: '#009900',
-          stack: 'Stack 0',
-          datalabels: {
-            formatter: (value, context) => {
-              return data[context.dataIndex].now_price.toFixed(2);
-            },
-            color: '#000', // White text
-            font: { size: 10, weight: 'normal' },
-            /*
-              anchor: 'end'  -> reference the top edge of the green bar
-              align:  'end'  -> place the label outward from that edge
-              offset: -4     -> nudge the label inside the bar (negative pushes it downward)
-            */
-            anchor: 'end',
-            align: 'end',
-            offset: -4
-          }
-        },
-        // Orange bar (difference: Was - Now)
-        {
-          label: 'Was Price',
-          data: data.map(d => d.was_price - d.now_price),
-          backgroundColor: '#FF9900',
-          stack: 'Stack 0',
-          datalabels: {
-            formatter: (value, context) => {
-              return data[context.dataIndex].was_price.toFixed(2);
-            },
-            color: '#000',
-            font: { size: 10, weight: 'normal' },
-            anchor: 'end',
-            align: 'end',
-            offset: 2
-          }
-        },
-        // Optional line to show Now Price trend on top
-        {
-          type: 'line',
-          label: 'Now Price Trend',
-          data: data.map(d => d.now_price),
-          borderColor: '#000',
-          borderWidth: 1,
-          fill: false,
-          tension: 0.1,
-          pointBackgroundColor: '#000',
-          order: 99,
-          z: 9999,
-          yAxisID: 'yLine',
-          datalabels: {
-            display: false
-          }
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        axisTitleBackgroundPlugin: {
-            backgroundColor: '#ddd' // or any color you like
-        },
-        datalabels: {
-          clip: false // keeps labels from being clipped at chart edges
-        },
-        legend: {
-          display: false
-        }
-      },
-      scales: {
-        x: {
-          stacked: true,
-          title: {
-            display: false,
-            text: 'Date'
-          }
-        },
-        // Stacked bar axis
-        y: {
-          stacked: true,
-          beginAtZero: true,
-          title: {
-            display: false,
-            text: 'Price'
-          },
-          max: yAxisMax
-        },
-        // Separate axis for the line dataset
-        yLine: {
-          beginAtZero: true,
-          display: false,
-          min: 0,
-          max: yAxisMax
-        }
+  
+  <script>
+    // A custom plugin that draws a background behind the x-axis title
+    const axisTitleBackgroundPlugin = {
+      id: 'axisTitleBackgroundPlugin',
+      beforeDraw(chart, args, options) {
+        const { ctx, chartArea: { bottom }, scales } = chart;
+        const xScale = scales.x;
+        if (!xScale || !xScale.options.title?.display) return;
+        const title = xScale.options.title.text;
+        const font = Chart.helpers.toFont(xScale.options.title.font);
+        const backgroundColor = options.backgroundColor || '#ccc';
+        ctx.save();
+        ctx.font = font.string;
+        const textWidth = ctx.measureText(title).width;
+        const textHeight = font.lineHeight || font.size;
+        const xPos = xScale.left + (xScale.right - xScale.left) / 2;
+        const yPos = bottom + (xScale.options.title.padding?.bottom || 0);
+        const rectWidth = textWidth + 10;
+        const rectHeight = textHeight + 6;
+        const rectX = xPos - rectWidth / 2;
+        const rectY = yPos;
+        ctx.fillStyle = backgroundColor;
+        ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+        ctx.fillStyle = xScale.options.title.color || '#000';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(title, xPos, rectY + 3);
+        ctx.restore();
       }
+    };
+  </script>
+  <script>
+    // Register the plugins with Chart.js
+    Chart.register(ChartDataLabels);
+    Chart.register(axisTitleBackgroundPlugin);
+  </script>
+  
+
+  <style>
+    html { overflow-y: scroll; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', Arial, sans-serif;
+      background-color: #fff;
+      overflow-x: hidden;
+      transition: opacity 0.5s ease;
     }
-  });
-}
-
-
-
-
-/**
- * Renders a two-line chart (1 Yr data) using Chart.js.
- * Legend is disabled.
- */
-function renderLineChart(productId, data) {
-  const ctx = document.getElementById('canvas-' + productId).getContext('2d');
-  if (!data || data.length === 0) {
-    ctx.font = "14px Arial";
-    ctx.fillText("No 1 Yr data", 10, 50);
-    return;
-  }
-
-  // 1) Find the highest price among was_price and now_price
-  let maxPrice = 0;
-  data.forEach(d => {
-    if (d.was_price > maxPrice) maxPrice = d.was_price;
-    if (d.now_price > maxPrice) maxPrice = d.now_price;
-  });
-
-  // 2) Add 20% headroom
-  const yAxisMax = maxPrice * 1.2;
-
-  // 3) Create the line chart with DataLabels
-  chartInstances[productId] = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: data.map(d => d.date),
-      datasets: [
-        {
-          label: 'Was Price',
-          data: data.map(d => d.was_price),
-          borderColor: '#0077cc',
-          backgroundColor: '#0077cc',
-          fill: false,
-          tension: 0.1,
-          // DataLabels: Was Price above the line in blue with a smaller font
-          datalabels: {
-            color: '#0077cc',
-            anchor: 'end',   // place label above the point
-            align: 'end',    // outward from that anchor
-            offset: 4,       // space between point and label
-            font: { size: 10, weight: 'normal' },
-            formatter: (value) => value.toFixed(2)
-          }
-        },
-        {
-          label: 'Now Price',
-          data: data.map(d => d.now_price),
-          borderColor: '#009900',
-          backgroundColor: '#009900',
-          fill: false,
-          tension: 0.1,
-          // DataLabels: Now Price below the line in green with a smaller font
-          datalabels: {
-            color: '#009900',
-            anchor: 'start', // place label below the point
-            align: 'start',  // outward from that anchor
-            offset: 4,       // space between point and label
-            font: { size: 10, weight: 'normal' },
-            formatter: (value) => value.toFixed(2)
-          }
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        datalabels: {
-          clip: false // prevents labels from being cut off at edges
-        },
-        legend: {
-          display: false
-        }
-      },
-      scales: {
-        x: {
-          title: {
-            display: false,
-            text: 'Date'
-          }
-        },
-        y: {
-          title: {
-            display: false,
-            text: 'Price'
-          },
-          beginAtZero: true,
-          max: yAxisMax
-        }
-      }
+    .fade-on-load { opacity: 0; transition: opacity 0.8s ease; }
+    body.page-loaded .fade-on-load { opacity: 1; }
+    .header-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 10px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
     }
-  });
-}
-
-
-function showSearchBar() {
-    var header = document.querySelector('.header-container');
-    header.style.display = 'none';
-    var searchBar = document.getElementById('searchBarContainer');
-    searchBar.style.display = 'flex';
-    setTimeout(function() {
-        searchBar.style.opacity = '1';
-    }, 10);
-    document.getElementById('searchInput').focus();
-}
-
-function hideSearchBar() {
-    var searchBar = document.getElementById('searchBarContainer');
-    var header = document.querySelector('.header-container');
-    var searchInput = document.getElementById('searchInput');
-    searchInput.value = '';
-    var firstElems = document.getElementsByClassName('first-word');
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].innerHTML = firstElems[i].dataset.original || firstElems[i].innerHTML;
+    .header-row { display: flex; align-items: center; gap: 20px; }
+    .page-title { font-size: 22px; font-weight: 600; }
+    .creation-time { text-align: center; font-size: 12px; color: gray; margin-top: 5px; }
+    .divider { border: 0; height: 1px; background: #ccc; margin: 0 20px 10px; }
+    .header-spacer { height: 70px; }
+    .search-button {
+      background-color: #3e7d53;
+      border: none;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
+    #searchBarContainer {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 240px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      padding: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      text-align: center;
+      transition: opacity 0.5s ease;
+      opacity: 0;
+      display: none;
+      align-items: center;
+      z-index: 1001;
     }
-    var items = document.getElementsByClassName('item-container');
-    for (var i = 0; i < items.length; i++) {
-        items[i].style.display = '';
+    #searchInput {
+      padding: 4px;
+      width: calc(100% - 60px);
+      border: none;
+      outline: none;
+      font-size: 12px;
+      flex-grow: 1;
     }
-    document.getElementById('searchCount').innerText = '';
-    searchBar.style.opacity = '0';
-    setTimeout(function() {
-        searchBar.style.display = 'none';
-        header.style.display = 'flex';
-    }, 500);
-}
-
-function inPageSearch() {
-    var input = document.getElementById('searchInput').value.trim();
-    var term = input.toLowerCase();
-    var items = document.getElementsByClassName('item-container');
-    var visibleCount = 0;
-    for (var i = 0; i < items.length; i++) {
-        var firstElem = items[i].querySelector('.first-word');
-        var secondElem = items[i].querySelector('.product-name-text');
-        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-        if (term === '' || fullName.indexOf(term) > -1) {
-            items[i].style.display = '';
-            visibleCount++;
-            if (term !== '') {
-                firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent)
-                                      .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-                secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent)
-                                      .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-            } else {
-                firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
-                secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
-            }
-        } else {
-            items[i].style.display = 'none';
-        }
+    #searchCount {
+      font-size: 12px;
+      color: #3e7d53;
+      margin-left: 8px;
+      white-space: nowrap;
     }
-    document.getElementById('searchCount').innerText = visibleCount + " found";
-}
-</script>
-
+    #closeSearchButton {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      color: #3e7d53;
+      margin-left: 8px;
+      line-height: 1;
+      padding: 0;
+    }
+    .item-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      width: 90%;
+      max-width: 600px;
+      margin: 10px auto;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+    }
+    .left-side {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .item-image img {
+      width: 80px;
+      height: auto;
+      opacity: 0;
+      animation: fadeIn 1.5s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .vertical-switch-button {
+      background-color: #3e7d53;
+      border: none;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .vertical-switch-button.selected {
+      background-color: #3e7d53;
+      color: #fff;
+    }
+    .vertical-switch-button:not(.selected) {
+      background-color: #ddd;
+      color: #555;
+      font-weight: 400;
+    }
+    .toggle-switch {
+      width: 80px;
+      height: 28px;
+      position: relative;
+    }
+    .toggle-switch.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .toggle-input { display: none; }
+    .toggle-label {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      background-color: #ddd;
+      border-radius: 9999px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .toggle-switch:not(.disabled) .toggle-label { background-color: #3e7d53; }
+    .toggle-switch:not(.disabled) .toggle-label .toggle-text { color: #fff; }
+    .toggle-switch.disabled .toggle-label { background-color: #aaa; }
+    .toggle-label .toggle-circle {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 24px;
+      height: 24px;
+      background-color: #fff;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+    .toggle-input:checked + .toggle-label .toggle-circle {
+      transform: translateX(52px);
+    }
+    .toggle-label .toggle-text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      text-align: center;
+      line-height: 28px;
+      font-size: 12px;
+      color: #000;
+      font-weight: bold;
+      pointer-events: none;
+    }
+    .toggle-circle::before {
+      content: "→";
+      color: #000;
+      font-size: 14px;
+      font-weight: 700;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+    .toggle-input:checked + .toggle-label .toggle-circle::before {
+      content: "←";
+      color: #000;
+      font-weight: 700;
+    }
+    .right-side {
+      flex: 1;
+      position: relative;
+    }
+    .view-container {
+      width: 100%;
+      height: 200px;
+      position: relative;
+      background-color: #f9f9f9;
+    }
+    .detail-view, .chart-view {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      transition: opacity 0.5s ease;
+    }
+    .detail-view {
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      opacity: 1;
+      z-index: 2;
+    }
+    .chart-view {
+      background-color: #f9f9f9;
+      opacity: 0;
+      z-index: 1;
+    }
+    .item-name {
+      font-size: 14px;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: black;
+    }
+    .item-number {
+      color: red;
+      font-weight: 600;
+      border: 2px solid red;
+      border-radius: 50%;
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      text-align: center;
+      line-height: 20px;
+      margin-right: 8px;
+      font-size: 12px;
+    }
+    .now-price {
+      color: red;
+      font-weight: 600;
+      font-size: 12px;
+      margin: 4px 0;
+    }
+    .discount-badge {
+      background-color: yellow;
+      display: inline-block;
+      font-weight: 600;
+      padding: 2px 5px;
+      font-size: 16px;
+    }
+    .was-price { text-decoration: line-through; }
+  </style>
 </head>
 <body>
-<div class="header-container">
-  <div class="header-row">
-    <button class="search-button" onclick="showSearchBar()">
-      <span class="search-icon">🔍</span> FIND ➜
-    </button>
-    <div class="page-title">ss_meat</div>
+  <div class="header-container">
+    <div class="header-row">
+      <button class="search-button" onclick="showSearchBar()">
+        <span class="search-icon">🔍</span> FIND ➜
+      </button>
+      <div class="page-title">ss_meat</div>
+    </div>
+    <div class="creation-time">Created on: 2025-03-01 10:46:26</div>
   </div>
-  <div class="creation-time">Created on: 2025-03-01 08:26:11</div>
-</div>
-<hr class="divider">
-<div class="header-spacer"></div>
+  <hr class="divider">
+  <div class="header-spacer"></div>
 
-<div id="searchBarContainer">
-  <input type="text" id="searchInput" placeholder="Search in page..." onkeyup="inPageSearch()">
-  <span id="searchCount"></span>
-  <button id="closeSearchButton" onclick="hideSearchBar()">×</button>
-</div>
-
-
+  <!-- Inject the dynamically generated items HTML -->
+  
 <div class="item-container" data-product-id="20822350_KG">
   
   <div class="left-side">
@@ -4540,5 +4075,305 @@ function inPageSearch() {
 </div>
 
 
+  
+  <script>
+    // Provide chart data as a global variable.
+    window.priceHistoryData = {{ price_history_data | tojson }};
+
+    // Store Chart.js instances by product id.
+    var chartInstances = {};
+
+    /**
+     * "Detail" button: show discount (detail) view and hide chart view.
+     */
+    function switchToDetail(btn) {
+      var container = btn.closest('.item-container');
+      container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
+        b.classList.remove('selected');
+      });
+      btn.classList.add('selected');
+      var toggleSwitch = container.querySelector('.toggle-switch');
+      toggleSwitch.classList.add('disabled');
+      var toggleInput = container.querySelector('.toggle-input');
+      toggleInput.checked = false;
+      var toggleLabel = toggleSwitch.querySelector('.toggle-text');
+      toggleLabel.textContent = "1 Yr";
+      var detailView = container.querySelector('.detail-view');
+      var chartView = container.querySelector('.chart-view');
+      detailView.style.opacity = '1';
+      detailView.style.display = 'block';
+      chartView.style.opacity = '0';
+      chartView.style.display = 'none';
+      var productId = container.getAttribute('data-product-id');
+      if (chartInstances[productId]) {
+        chartInstances[productId].destroy();
+        delete chartInstances[productId];
+      }
+    }
+
+    /**
+     * Toggle switch handler:
+     * When toggled, hide discount view and show chart view.
+     * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
+     */
+    function toggleMonYr(checkbox) {
+      var container = checkbox.closest('.item-container');
+      var toggleSwitch = container.querySelector('.toggle-switch');
+      if (toggleSwitch.classList.contains('disabled')) {
+        toggleSwitch.classList.remove('disabled');
+      }
+      var detailBtn = container.querySelector('[data-type="detail"]');
+      detailBtn.classList.remove('selected');
+      var detailView = container.querySelector('.detail-view');
+      var chartView = container.querySelector('.chart-view');
+      detailView.style.opacity = '0';
+      detailView.style.display = 'none';
+      chartView.style.opacity = '1';
+      chartView.style.display = 'block';
+      var productId = container.getAttribute('data-product-id');
+      var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
+      var data1mon = window.priceHistoryData[productId]["1mon"] || [];
+      var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
+      if (chartInstances[productId]) {
+        chartInstances[productId].destroy();
+        delete chartInstances[productId];
+      }
+      if (checkbox.checked) {
+        toggleLabel.textContent = "Yr.";
+        var filtered = data1yr.filter(function(d) {
+          return d.was_price > 0 && d.now_price > 0;
+        });
+        renderLineChart(productId, filtered);
+      } else {
+        toggleLabel.textContent = "Mon";
+        var filtered = data1mon.filter(function(d) {
+          return d.was_price > 0 && d.now_price > 0;
+        });
+        renderStackedBarChart(productId, filtered);
+      }
+    }
+
+    /**
+     * Renders a stacked bar chart (1 Mon data) using Chart.js.
+     */
+    function renderStackedBarChart(productId, data) {
+      const ctx = document.getElementById('canvas-' + productId).getContext('2d');
+      if (!data || data.length === 0) {
+        ctx.font = "14px Arial";
+        ctx.fillText("No 1 Mon data", 10, 50);
+        return;
+      }
+      let maxWas = 0;
+      data.forEach(function(d) {
+        if (d.was_price > maxWas) { maxWas = d.was_price; }
+      });
+      const yAxisMax = maxWas * 1.1;
+      chartInstances[productId] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.map(function(d) { return d.date; }),
+          datasets: [
+            {
+              label: 'Now Price',
+              data: data.map(function(d) { return d.now_price; }),
+              backgroundColor: '#009900',
+              stack: 'Stack 0',
+              datalabels: {
+                formatter: function(value, context) {
+                  return data[context.dataIndex].now_price.toFixed(2);
+                },
+                color: '#000',
+                font: { size: 10, weight: 'normal' },
+                anchor: 'end',
+                align: 'end',
+                offset: -4
+              }
+            },
+            {
+              label: 'Was Price',
+              data: data.map(function(d) { return d.was_price - d.now_price; }),
+              backgroundColor: '#FF9900',
+              stack: 'Stack 0',
+              datalabels: {
+                formatter: function(value, context) {
+                  return data[context.dataIndex].was_price.toFixed(2);
+                },
+                color: '#000',
+                font: { size: 10, weight: 'normal' },
+                anchor: 'end',
+                align: 'end',
+                offset: 2
+              }
+            },
+            {
+              type: 'line',
+              label: 'Now Price Trend',
+              data: data.map(function(d) { return d.now_price; }),
+              borderColor: '#000',
+              borderWidth: 1,
+              fill: false,
+              tension: 0.1,
+              pointBackgroundColor: '#000',
+              order: 99,
+              z: 9999,
+              yAxisID: 'yLine',
+              datalabels: { display: false }
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            axisTitleBackgroundPlugin: { backgroundColor: '#ddd' },
+            datalabels: { clip: false },
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              stacked: true,
+              title: { display: false, text: 'Date' }
+            },
+            y: {
+              stacked: true,
+              beginAtZero: true,
+              title: { display: false, text: 'Price' },
+              max: yAxisMax
+            },
+            yLine: {
+              beginAtZero: true,
+              display: false,
+              min: 0,
+              max: yAxisMax
+            }
+          }
+        }
+      });
+    }
+
+    /**
+     * Renders a two-line chart (1 Yr data) using Chart.js.
+     */
+    function renderLineChart(productId, data) {
+      const ctx = document.getElementById('canvas-' + productId).getContext('2d');
+      if (!data || data.length === 0) {
+        ctx.font = "14px Arial";
+        ctx.fillText("No 1 Yr data", 10, 50);
+        return;
+      }
+      let maxPrice = 0;
+      data.forEach(function(d) {
+        if (d.was_price > maxPrice) { maxPrice = d.was_price; }
+        if (d.now_price > maxPrice) { maxPrice = d.now_price; }
+      });
+      const yAxisMax = maxPrice * 1.2;
+      chartInstances[productId] = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map(function(d) { return d.date; }),
+          datasets: [
+            {
+              label: 'Was Price',
+              data: data.map(function(d) { return d.was_price; }),
+              borderColor: '#0077cc',
+              backgroundColor: '#0077cc',
+              fill: false,
+              tension: 0.1,
+              datalabels: {
+                color: '#0077cc',
+                anchor: 'end',
+                align: 'end',
+                offset: 4,
+                font: { size: 10, weight: 'normal' },
+                formatter: function(value) { return value.toFixed(2); }
+              }
+            },
+            {
+              label: 'Now Price',
+              data: data.map(function(d) { return d.now_price; }),
+              borderColor: '#009900',
+              backgroundColor: '#009900',
+              fill: false,
+              tension: 0.1,
+              datalabels: {
+                color: '#009900',
+                anchor: 'start',
+                align: 'start',
+                offset: 4,
+                font: { size: 10, weight: 'normal' },
+                formatter: function(value) { return value.toFixed(2); }
+              }
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            datalabels: { clip: false },
+            legend: { display: false }
+          },
+          scales: {
+            x: { title: { display: false, text: 'Date' } },
+            y: { title: { display: false, text: 'Price' }, beginAtZero: true, max: yAxisMax }
+          }
+        }
+      });
+    }
+
+    function inPageSearch() {
+      var input = document.getElementById('searchInput').value.trim();
+      var term = input.toLowerCase();
+      var items = document.getElementsByClassName('item-container');
+      var visibleCount = 0;
+      for (var i = 0; i < items.length; i++) {
+        var firstElem = items[i].querySelector('.first-word');
+        var secondElem = items[i].querySelector('.product-name-text');
+        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+        if (term === '' || fullName.indexOf(term) > -1) {
+          items[i].style.display = '';
+          visibleCount++;
+          if (term !== '') {
+            firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent)
+                                  .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent)
+                                  .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+          } else {
+            firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
+            secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
+          }
+        } else {
+          items[i].style.display = 'none';
+        }
+      }
+      document.getElementById('searchCount').innerText = visibleCount + " found";
+    }
+
+    function hideSearchBar() {
+      var searchBar = document.getElementById('searchBarContainer');
+      var header = document.querySelector('.header-container');
+      var searchInput = document.getElementById('searchInput');
+      searchInput.value = '';
+      var firstElems = document.getElementsByClassName('first-word');
+      var secondElems = document.getElementsByClassName('product-name-text');
+      for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].innerHTML = firstElems[i].dataset.original || firstElems[i].innerHTML;
+      }
+      for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
+      }
+      var items = document.getElementsByClassName('item-container');
+      for (var i = 0; i < items.length; i++) {
+        items[i].style.display = '';
+      }
+      document.getElementById('searchCount').innerText = '';
+      searchBar.style.opacity = '0';
+      setTimeout(function() {
+        searchBar.style.display = 'none';
+        header.style.display = 'flex';
+      }, 500);
+    }
+  </script>
+  
 </body>
 </html>
