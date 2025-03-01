@@ -144,7 +144,7 @@ body.page-loaded .fade-on-load {
 .item-image img {
     width: 80px;
     height: auto;
-    /* Added fade-in effect for product images */
+    /* Fade in effect for product images */
     opacity: 0;
     animation: fadeIn 1.5s ease forwards;
 }
@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
 var chartInstances = {};
 
 /**
- * "Detail" button: show discount detail and hide chart view.
+ * "Detail" button: show discount (detail) view and hide chart view.
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
@@ -326,7 +326,7 @@ function switchToDetail(btn) {
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
-    // Show discount (detail) view and hide chart view.
+    // Show detail view and hide chart view.
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '1';
@@ -344,7 +344,7 @@ function switchToDetail(btn) {
 
 /**
  * Toggle switch handler:
- * When toggled, hide discount view and show chart view.
+ * When toggled, hide discount view and show chart view immediately.
  * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
  */
 function toggleMonYr(checkbox) {
@@ -377,25 +377,25 @@ function toggleMonYr(checkbox) {
         delete chartInstances[productId];
     }
 
-    setTimeout(function() {
-        if (checkbox.checked) {
-            toggleLabel.textContent = "1 Yr";
-            var filtered = data1yr.filter(function(d) {
-                return d.was_price > 0 && d.now_price > 0;
-            });
-            renderLineChart(productId, filtered);
-        } else {
-            toggleLabel.textContent = "1 Mon";
-            var filtered = data1mon.filter(function(d) {
-                return d.was_price > 0 && d.now_price > 0;
-            });
-            renderStackedBarChart(productId, filtered);
-        }
-    }, 400);
+    // Immediately render the chart based on the toggle state.
+    if (checkbox.checked) {
+        toggleLabel.textContent = "1 Yr";
+        var filtered = data1yr.filter(function(d) {
+            return d.was_price > 0 && d.now_price > 0;
+        });
+        renderLineChart(productId, filtered);
+    } else {
+        toggleLabel.textContent = "1 Mon";
+        var filtered = data1mon.filter(function(d) {
+            return d.was_price > 0 && d.now_price > 0;
+        });
+        renderStackedBarChart(productId, filtered);
+    }
 }
 
 /**
  * Renders a stacked bar chart (1 Mon data) using Chart.js.
+ * Legend is disabled.
  */
 function renderStackedBarChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -426,6 +426,11 @@ function renderStackedBarChart(productId, data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
             scales: {
                 x: {
                     stacked: true,
@@ -449,6 +454,7 @@ function renderStackedBarChart(productId, data) {
 
 /**
  * Renders a two-line chart (1 Yr data) using Chart.js.
+ * Legend is disabled.
  */
 function renderLineChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -483,6 +489,11 @@ function renderLineChart(productId, data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
             scales: {
                 x: {
                     title: {
@@ -576,7 +587,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_intnfood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 20:52:51</div>
+  <div class="creation-time">Created on: 2025-02-28 21:00:54</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
