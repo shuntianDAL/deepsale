@@ -179,8 +179,8 @@ body.page-loaded .fade-on-load {
     position: relative;
 }
 .toggle-switch.disabled {
-    /* When disabled, make the toggle background a darker gray */
-    background-color: transparent;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 .toggle-input {
     display: none;
@@ -197,10 +197,6 @@ body.page-loaded .fade-on-load {
 }
 .toggle-switch:not(.disabled) .toggle-label {
     background-color: #3e7d53;
-}
-.toggle-switch.disabled .toggle-label {
-    /* When disabled, use a darker gray */
-    background-color: #bbb;
 }
 .toggle-label .toggle-circle {
     position: absolute;
@@ -224,12 +220,8 @@ body.page-loaded .fade-on-load {
     text-align: center;
     line-height: 28px;
     font-size: 12px;
-    /* When disabled, force text color to black */
     color: #fff;
     pointer-events: none;
-}
-.toggle-switch.disabled .toggle-label .toggle-text {
-    color: #000;
 }
 .right-side {
     flex: 1;
@@ -403,6 +395,7 @@ function toggleMonYr(checkbox) {
 
 /**
  * Renders a stacked bar chart (1 Mon data) using Chart.js.
+ * Legend is disabled.
  */
 function renderStackedBarChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -461,6 +454,7 @@ function renderStackedBarChart(productId, data) {
 
 /**
  * Renders a two-line chart (1 Yr data) using Chart.js.
+ * Legend is disabled.
  */
 function renderLineChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -593,7 +587,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_dairy</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 21:07:18</div>
+  <div class="creation-time">Created on: 2025-02-28 21:12:42</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
