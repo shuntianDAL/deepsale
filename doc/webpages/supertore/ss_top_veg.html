@@ -179,8 +179,8 @@ body.page-loaded .fade-on-load {
     position: relative;
 }
 .toggle-switch.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    /* When disabled, use a slightly lighter gray */
+    background-color: transparent;
 }
 .toggle-input {
     display: none;
@@ -197,6 +197,10 @@ body.page-loaded .fade-on-load {
 }
 .toggle-switch:not(.disabled) .toggle-label {
     background-color: #3e7d53;
+}
+.toggle-switch.disabled .toggle-label {
+    /* When disabled, use a lighter gray */
+    background-color: #ccc;
 }
 .toggle-label .toggle-circle {
     position: absolute;
@@ -220,8 +224,12 @@ body.page-loaded .fade-on-load {
     text-align: center;
     line-height: 28px;
     font-size: 12px;
+    /* When disabled, force text color to black */
     color: #fff;
     pointer-events: none;
+}
+.toggle-switch.disabled .toggle-label .toggle-text {
+    color: #000;
 }
 .right-side {
     flex: 1;
@@ -289,6 +297,34 @@ body.page-loaded .fade-on-load {
 </style>
 
 <script>
+// Custom plugin to render labels on the line chart.
+var lineChartLabelsPlugin = {
+    id: 'lineChartLabelsPlugin',
+    afterDatasetsDraw: function(chart, args, options) {
+        var ctx = chart.ctx;
+        chart.data.datasets.forEach(function(dataset, datasetIndex) {
+            if (dataset.label === 'Was Price' || dataset.label === 'Now Price') {
+                var meta = chart.getDatasetMeta(datasetIndex);
+                meta.data.forEach(function(element, index) {
+                    var dataValue = dataset.data[index];
+                    ctx.font = Chart.helpers.fontString(12, 'normal', 'Arial');
+                    ctx.fillStyle = (dataset.label === 'Was Price') ? '#0077cc' : '#009900';
+                    ctx.textAlign = 'center';
+                    // Get the tooltip position of the element
+                    var pos = element.tooltipPosition();
+                    if (dataset.label === 'Was Price') {
+                        // Draw value above the point
+                        ctx.fillText(dataValue.toFixed(2), pos.x, pos.y - 10);
+                    } else {
+                        // Draw value below the point
+                        ctx.fillText(dataValue.toFixed(2), pos.x, pos.y + 15);
+                    }
+                });
+            }
+        });
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     // Add 'page-loaded' class to body for fade-on-load effects.
     document.body.classList.add('page-loaded');
@@ -302,7 +338,7 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.display = 'none';
     });
     // Provide chart data as a global variable.
-    window.priceHistoryData = {"20143381001_KG": {"1mon": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}], "1yr": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}]}, "20811994001_EA": {"1mon": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}], "1yr": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}]}, "21626132_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}]}, "20186654_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21022511001_KG": {"1mon": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}], "1yr": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}]}, "21023094001_KG": {"1mon": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}], "1yr": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}]}, "20070132001_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}]}, "20020863001_KG": {"1mon": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}], "1yr": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}]}, "20162500001_KG": {"1mon": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}], "1yr": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}]}, "20119813001_EA": {"1mon": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}], "1yr": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}]}, "20005774001_EA": {"1mon": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}], "1yr": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}]}, "20119760001_EA": {"1mon": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}], "1yr": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}]}, "20167017001_EA": {"1mon": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "20039812_EA": {"1mon": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "21121560001_EA": {"1mon": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}], "1yr": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}]}, "20159689001_EA": {"1mon": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}], "1yr": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}]}, "20795315001_EA": {"1mon": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}]}, "20811362001_EA": {"1mon": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}], "1yr": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}]}, "20696626001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20600927001_EA": {"1mon": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20104062_EA": {"1mon": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}], "1yr": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}]}, "20130242001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}]}, "20047112001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}]}, "20959290_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20920821001_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20145379001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "21406192_EA": {"1mon": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362564_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362519_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362499_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362495_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "20033488001_KG": {"1mon": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}], "1yr": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}]}, "20868985001_EA": {"1mon": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}]}, "20045276001_EA": {"1mon": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20168395001_EA": {"1mon": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}], "1yr": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}]}, "21549854001_KG": {"1mon": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}], "1yr": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}]}, "20121509001_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}]}, "20157487001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}]}, "20067389001_EA": {"1mon": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}], "1yr": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}]}, "20649591001_KG": {"1mon": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}], "1yr": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}]}, "20051015001_EA": {"1mon": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}], "1yr": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}]}};
+    window.priceHistoryData = {"20143381001_KG": {"1mon": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}], "1yr": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}]}, "20811994001_EA": {"1mon": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}], "1yr": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}]}, "21626132_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}]}, "20186654_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21022511001_KG": {"1mon": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}], "1yr": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}]}, "21023094001_KG": {"1mon": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}], "1yr": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}]}, "20070132001_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}]}, "20020863001_KG": {"1mon": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}], "1yr": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}]}, "20162500001_KG": {"1mon": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}], "1yr": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}]}, "20119813001_EA": {"1mon": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}], "1yr": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}]}, "20005774001_EA": {"1mon": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}], "1yr": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}]}, "20119760001_EA": {"1mon": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}], "1yr": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}]}, "20167017001_EA": {"1mon": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "20039812_EA": {"1mon": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "21121560001_EA": {"1mon": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}], "1yr": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}]}, "20159689001_EA": {"1mon": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}], "1yr": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}]}, "20795315001_EA": {"1mon": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}]}, "20811362001_EA": {"1mon": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}], "1yr": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}]}, "20696626001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20600927001_EA": {"1mon": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20104062_EA": {"1mon": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}], "1yr": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}]}, "20130242001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}]}, "20047112001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}]}, "20959290_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20920821001_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20145379001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "21406192_EA": {"1mon": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362564_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362519_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362499_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362495_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "20033488001_KG": {"1mon": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}], "1yr": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}]}, "20868985001_EA": {"1mon": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}]}, "20045276001_EA": {"1mon": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20168395001_EA": {"1mon": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}], "1yr": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}]}, "21549854001_KG": {"1mon": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}], "1yr": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}]}, "20121509001_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}]}, "20157487001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}]}, "20067389001_EA": {"1mon": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}, {"date": "12.31", "was_price": 0.0, "now_price": 7.99}], "1yr": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}, {"date": "12.31", "was_price": 0.0, "now_price": 7.99}]}, "20649591001_KG": {"1mon": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}], "1yr": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}]}, "20051015001_EA": {"1mon": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}], "1yr": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}]}};
 });
 
 // Store Chart.js instances by product id.
@@ -377,7 +413,6 @@ function toggleMonYr(checkbox) {
         delete chartInstances[productId];
     }
 
-    // Immediately render the chart based on the toggle state.
     if (checkbox.checked) {
         toggleLabel.textContent = "1 Yr";
         var filtered = data1yr.filter(function(d) {
@@ -395,7 +430,6 @@ function toggleMonYr(checkbox) {
 
 /**
  * Renders a stacked bar chart (1 Mon data) using Chart.js.
- * Legend is disabled.
  */
 function renderStackedBarChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -454,7 +488,7 @@ function renderStackedBarChart(productId, data) {
 
 /**
  * Renders a two-line chart (1 Yr data) using Chart.js.
- * Legend is disabled.
+ * This chart uses a custom plugin to draw numeric labels above/below each dot.
  */
 function renderLineChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -474,7 +508,8 @@ function renderLineChart(productId, data) {
                     borderColor: '#0077cc',
                     backgroundColor: '#0077cc',
                     fill: false,
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 4
                 },
                 {
                     label: 'Now Price',
@@ -482,7 +517,8 @@ function renderLineChart(productId, data) {
                     borderColor: '#009900',
                     backgroundColor: '#009900',
                     fill: false,
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 4
                 }
             ]
         },
@@ -509,7 +545,8 @@ function renderLineChart(productId, data) {
                     beginAtZero: true
                 }
             }
-        }
+        },
+        plugins: [lineChartLabelsPlugin]
     });
 }
 
@@ -587,7 +624,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_veg</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 21:12:41</div>
+  <div class="creation-time">Created on: 2025-02-28 21:17:07</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -624,8 +661,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#1</span>
-            <span class="first-word" data-original="Roma">Roma</span>
-            <span class="product-name-text" data-original="Tomatoes">Tomatoes</span>
+            <span class="first-word" data-original="{{first_word}}">Roma</span>
+            <span class="product-name-text" data-original="{{remaining}}">Tomatoes</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 0.79</span></div>
@@ -666,8 +703,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#2</span>
-            <span class="first-word" data-original="Yellow">Yellow</span>
-            <span class="product-name-text" data-original="Onions, 3 lb Bag">Onions, 3 lb Bag</span>
+            <span class="first-word" data-original="{{first_word}}">Yellow</span>
+            <span class="product-name-text" data-original="{{remaining}}">Onions, 3 lb Bag</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -708,8 +745,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#3</span>
-            <span class="first-word" data-original="Brusselslaw">Brusselslaw</span>
-            <span class="product-name-text" data-original=""></span>
+            <span class="first-word" data-original="{{first_word}}">Brusselslaw</span>
+            <span class="product-name-text" data-original="{{remaining}}"></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 6.00</span></div>
@@ -750,8 +787,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#4</span>
-            <span class="first-word" data-original="Vegetable">Vegetable</span>
-            <span class="product-name-text" data-original="Medley">Medley</span>
+            <span class="first-word" data-original="{{first_word}}">Vegetable</span>
+            <span class="product-name-text" data-original="{{remaining}}">Medley</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 6.00</span></div>
@@ -792,8 +829,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#5</span>
-            <span class="first-word" data-original="Canary">Canary</span>
-            <span class="product-name-text" data-original="Melon">Melon</span>
+            <span class="first-word" data-original="{{first_word}}">Canary</span>
+            <span class="product-name-text" data-original="{{remaining}}">Melon</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 5.87</span></div>
@@ -834,8 +871,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#6</span>
-            <span class="first-word" data-original="Santa">Santa</span>
-            <span class="product-name-text" data-original="Claus Melons">Claus Melons</span>
+            <span class="first-word" data-original="{{first_word}}">Santa</span>
+            <span class="product-name-text" data-original="{{remaining}}">Claus Melons</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 10.44</span></div>
@@ -876,8 +913,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#7</span>
-            <span class="first-word" data-original="English">English</span>
-            <span class="product-name-text" data-original="Cucumber">Cucumber</span>
+            <span class="first-word" data-original="{{first_word}}">English</span>
+            <span class="product-name-text" data-original="{{remaining}}">Cucumber</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -918,8 +955,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#8</span>
-            <span class="first-word" data-original="Taiwanese">Taiwanese</span>
-            <span class="product-name-text" data-original="Flat Cabbage">Flat Cabbage</span>
+            <span class="first-word" data-original="{{first_word}}">Taiwanese</span>
+            <span class="product-name-text" data-original="{{remaining}}">Flat Cabbage</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.96</span></div>
@@ -960,8 +997,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#9</span>
-            <span class="first-word" data-original="Guava">Guava</span>
-            <span class="product-name-text" data-original=""></span>
+            <span class="first-word" data-original="{{first_word}}">Guava</span>
+            <span class="product-name-text" data-original="{{remaining}}"></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 8.81</span></div>
@@ -1002,8 +1039,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#10</span>
-            <span class="first-word" data-original="Pineapple">Pineapple</span>
-            <span class="product-name-text" data-original=""></span>
+            <span class="first-word" data-original="{{first_word}}">Pineapple</span>
+            <span class="product-name-text" data-original="{{remaining}}"></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 6.49</span></div>
@@ -1044,8 +1081,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#11</span>
-            <span class="first-word" data-original="Coconuts">Coconuts</span>
-            <span class="product-name-text" data-original=""></span>
+            <span class="first-word" data-original="{{first_word}}">Coconuts</span>
+            <span class="product-name-text" data-original="{{remaining}}"></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 2.50</span></div>
@@ -1086,8 +1123,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#12</span>
-            <span class="first-word" data-original="Caribbean">Caribbean</span>
-            <span class="product-name-text" data-original="Avocado">Avocado</span>
+            <span class="first-word" data-original="{{first_word}}">Caribbean</span>
+            <span class="product-name-text" data-original="{{remaining}}">Avocado</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -1128,8 +1165,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#13</span>
-            <span class="first-word" data-original="Cantaloupe">Cantaloupe</span>
-            <span class="product-name-text" data-original=""></span>
+            <span class="first-word" data-original="{{first_word}}">Cantaloupe</span>
+            <span class="product-name-text" data-original="{{remaining}}"></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -1170,8 +1207,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#14</span>
-            <span class="first-word" data-original="Broccoli">Broccoli</span>
-            <span class="product-name-text" data-original="Florets">Florets</span>
+            <span class="first-word" data-original="{{first_word}}">Broccoli</span>
+            <span class="product-name-text" data-original="{{remaining}}">Florets</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -1212,8 +1249,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#15</span>
-            <span class="first-word" data-original="Broccoli">Broccoli</span>
-            <span class="product-name-text" data-original="Crown">Crown</span>
+            <span class="first-word" data-original="{{first_word}}">Broccoli</span>
+            <span class="product-name-text" data-original="{{remaining}}">Crown</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -1254,8 +1291,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#16</span>
-            <span class="first-word" data-original="Fenugreek">Fenugreek</span>
-            <span class="product-name-text" data-original="Bunch">Bunch</span>
+            <span class="first-word" data-original="{{first_word}}">Fenugreek</span>
+            <span class="product-name-text" data-original="{{remaining}}">Bunch</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.00</span></div>
@@ -1296,8 +1333,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#17</span>
-            <span class="first-word" data-original="Lemons,">Lemons,</span>
-            <span class="product-name-text" data-original="2 lb Bag">2 lb Bag</span>
+            <span class="first-word" data-original="{{first_word}}">Lemons,</span>
+            <span class="product-name-text" data-original="{{remaining}}">2 lb Bag</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 5.99</span></div>
@@ -1338,8 +1375,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#18</span>
-            <span class="first-word" data-original="Red">Red</span>
-            <span class="product-name-text" data-original="Onions, 3 lb Bag">Onions, 3 lb Bag</span>
+            <span class="first-word" data-original="{{first_word}}">Red</span>
+            <span class="product-name-text" data-original="{{remaining}}">Onions, 3 lb Bag</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 6.00</span></div>
@@ -1380,8 +1417,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#19</span>
-            <span class="first-word" data-original="Granadilla">Granadilla</span>
-            <span class="product-name-text" data-original=""></span>
+            <span class="first-word" data-original="{{first_word}}">Granadilla</span>
+            <span class="product-name-text" data-original="{{remaining}}"></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.00</span></div>
@@ -1422,8 +1459,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#20</span>
-            <span class="first-word" data-original="Carrots,">Carrots,</span>
-            <span class="product-name-text" data-original="3 lb Bag">3 lb Bag</span>
+            <span class="first-word" data-original="{{first_word}}">Carrots,</span>
+            <span class="product-name-text" data-original="{{remaining}}">3 lb Bag</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.00</span></div>
@@ -1464,8 +1501,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#21</span>
-            <span class="first-word" data-original="Popeye">Popeye</span>
-            <span class="product-name-text" data-original="Select Spinach">Select Spinach</span>
+            <span class="first-word" data-original="{{first_word}}">Popeye</span>
+            <span class="product-name-text" data-original="{{remaining}}">Select Spinach</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 12.00</span></div>
@@ -1506,8 +1543,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#22</span>
-            <span class="first-word" data-original="Kiwis">Kiwis</span>
-            <span class="product-name-text" data-original=""></span>
+            <span class="first-word" data-original="{{first_word}}">Kiwis</span>
+            <span class="product-name-text" data-original="{{remaining}}"></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 1.19</span></div>
@@ -1548,8 +1585,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#23</span>
-            <span class="first-word" data-original="Quince">Quince</span>
-            <span class="product-name-text" data-original=""></span>
+            <span class="first-word" data-original="{{first_word}}">Quince</span>
+            <span class="product-name-text" data-original="{{remaining}}"></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.49</span></div>
@@ -1590,8 +1627,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#24</span>
-            <span class="first-word" data-original="Organic">Organic</span>
-            <span class="product-name-text" data-original="Broccoli Florets">Broccoli Florets</span>
+            <span class="first-word" data-original="{{first_word}}">Organic</span>
+            <span class="product-name-text" data-original="{{remaining}}">Broccoli Florets</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 7.00</span></div>
@@ -1632,8 +1669,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#25</span>
-            <span class="first-word" data-original="Mini">Mini</span>
-            <span class="product-name-text" data-original="Sweet Peppers">Sweet Peppers</span>
+            <span class="first-word" data-original="{{first_word}}">Mini</span>
+            <span class="product-name-text" data-original="{{remaining}}">Sweet Peppers</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 6.99</span></div>
@@ -1674,8 +1711,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#26</span>
-            <span class="first-word" data-original="Mini">Mini</span>
-            <span class="product-name-text" data-original="Seedless Watermelon">Seedless Watermelon</span>
+            <span class="first-word" data-original="{{first_word}}">Mini</span>
+            <span class="product-name-text" data-original="{{remaining}}">Seedless Watermelon</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 6.99</span></div>
@@ -1716,8 +1753,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#27</span>
-            <span class="first-word" data-original="Mango">Mango</span>
-            <span class="product-name-text" data-original="Turmeric">Turmeric</span>
+            <span class="first-word" data-original="{{first_word}}">Mango</span>
+            <span class="product-name-text" data-original="{{remaining}}">Turmeric</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.49</span></div>
@@ -1758,8 +1795,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#28</span>
-            <span class="first-word" data-original="Blueberry">Blueberry</span>
-            <span class="product-name-text" data-original="Organic Kombucha">Organic Kombucha</span>
+            <span class="first-word" data-original="{{first_word}}">Blueberry</span>
+            <span class="product-name-text" data-original="{{remaining}}">Organic Kombucha</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.49</span></div>
@@ -1800,8 +1837,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#29</span>
-            <span class="first-word" data-original="Organic">Organic</span>
-            <span class="product-name-text" data-original="Pink Grapefruit Smoothie">Pink Grapefruit Smoothie</span>
+            <span class="first-word" data-original="{{first_word}}">Organic</span>
+            <span class="product-name-text" data-original="{{remaining}}">Pink Grapefruit Smoothie</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.49</span></div>
@@ -1842,8 +1879,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#30</span>
-            <span class="first-word" data-original="Organic">Organic</span>
-            <span class="product-name-text" data-original="Raspberry Lemon Kombucha">Raspberry Lemon Kombucha</span>
+            <span class="first-word" data-original="{{first_word}}">Organic</span>
+            <span class="product-name-text" data-original="{{remaining}}">Raspberry Lemon Kombucha</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.49</span></div>
@@ -1884,8 +1921,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#31</span>
-            <span class="first-word" data-original="Organic">Organic</span>
-            <span class="product-name-text" data-original="Lime Strawberry Kombucha">Lime Strawberry Kombucha</span>
+            <span class="first-word" data-original="{{first_word}}">Organic</span>
+            <span class="product-name-text" data-original="{{remaining}}">Lime Strawberry Kombucha</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.49</span></div>
@@ -1926,8 +1963,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#32</span>
-            <span class="first-word" data-original="Mini">Mini</span>
-            <span class="product-name-text" data-original="Bananas, Bunch">Bananas, Bunch</span>
+            <span class="first-word" data-original="{{first_word}}">Mini</span>
+            <span class="product-name-text" data-original="{{remaining}}">Bananas, Bunch</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 2.17</span></div>
@@ -1968,8 +2005,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#33</span>
-            <span class="first-word" data-original="Imperfect">Imperfect</span>
-            <span class="product-name-text" data-original="Apples, 6 lb bag">Apples, 6 lb bag</span>
+            <span class="first-word" data-original="{{first_word}}">Imperfect</span>
+            <span class="product-name-text" data-original="{{remaining}}">Apples, 6 lb bag</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 8.00</span></div>
@@ -2010,8 +2047,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#34</span>
-            <span class="first-word" data-original="Honeydew">Honeydew</span>
-            <span class="product-name-text" data-original="Melon">Melon</span>
+            <span class="first-word" data-original="{{first_word}}">Honeydew</span>
+            <span class="product-name-text" data-original="{{remaining}}">Melon</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 7.99</span></div>
@@ -2052,8 +2089,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#35</span>
-            <span class="first-word" data-original="Dragon">Dragon</span>
-            <span class="product-name-text" data-original="Fruit">Fruit</span>
+            <span class="first-word" data-original="{{first_word}}">Dragon</span>
+            <span class="product-name-text" data-original="{{remaining}}">Fruit</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -2094,8 +2131,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#36</span>
-            <span class="first-word" data-original="Jackfruit">Jackfruit</span>
-            <span class="product-name-text" data-original="Slice">Slice</span>
+            <span class="first-word" data-original="{{first_word}}">Jackfruit</span>
+            <span class="product-name-text" data-original="{{remaining}}">Slice</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 1.98</span></div>
@@ -2136,8 +2173,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#37</span>
-            <span class="first-word" data-original="Ataulfo">Ataulfo</span>
-            <span class="product-name-text" data-original="Mango">Mango</span>
+            <span class="first-word" data-original="{{first_word}}">Ataulfo</span>
+            <span class="product-name-text" data-original="{{remaining}}">Mango</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -2178,8 +2215,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#38</span>
-            <span class="first-word" data-original="Fresh">Fresh</span>
-            <span class="product-name-text" data-original="Coconut Young">Coconut Young</span>
+            <span class="first-word" data-original="{{first_word}}">Fresh</span>
+            <span class="product-name-text" data-original="{{remaining}}">Coconut Young</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -2220,8 +2257,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#39</span>
-            <span class="first-word" data-original="Romaine">Romaine</span>
-            <span class="product-name-text" data-original="Heart, 3 Pack">Heart, 3 Pack</span>
+            <span class="first-word" data-original="{{first_word}}">Romaine</span>
+            <span class="product-name-text" data-original="{{remaining}}">Heart, 3 Pack</span>
           </div>
           <div>Expire On: 2025-02-28</div>
           <div>WAS: <span class="was-price">$ 5.00</span></div>
@@ -2262,8 +2299,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#40</span>
-            <span class="first-word" data-original="Manzano">Manzano</span>
-            <span class="product-name-text" data-original="Bananas, Bunch">Bananas, Bunch</span>
+            <span class="first-word" data-original="{{first_word}}">Manzano</span>
+            <span class="product-name-text" data-original="{{remaining}}">Bananas, Bunch</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.21</span></div>
@@ -2304,8 +2341,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#41</span>
-            <span class="first-word" data-original="Blackberries">Blackberries</span>
-            <span class="product-name-text" data-original="Half Pint">Half Pint</span>
+            <span class="first-word" data-original="{{first_word}}">Blackberries</span>
+            <span class="product-name-text" data-original="{{remaining}}">Half Pint</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
