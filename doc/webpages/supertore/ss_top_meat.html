@@ -24,16 +24,16 @@ body {
     font-family: 'Montserrat', Arial, sans-serif;
     background-color: #fff;
     overflow-x: hidden;
-}
-body {
     transition: opacity 0.5s ease;
 }
+/* Fade in effect for elements with .fade-on-load */
 .fade-on-load {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.8s ease;
 }
-body.page-loaded .fade-on-load {
-    opacity: 1;
+/* When .fade-out is added, the element fades to 0 */
+.fade-out {
+    opacity: 0;
 }
 .header-container {
     position: fixed;
@@ -283,9 +283,10 @@ body.page-loaded .fade-on-load {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add 'page-loaded' class to body for fade-on-load effect
+    // Add a class to body for global transitions
     document.body.classList.add('page-loaded');
-    // Ensure detail views are visible and chart views are hidden initially
+
+    // Set initial visibility for detail and chart views
     document.querySelectorAll('.detail-view').forEach(function(el) {
         el.style.opacity = '1';
         el.style.display = 'block';
@@ -294,23 +295,32 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.opacity = '0';
         el.style.display = 'none';
     });
+
     // Provide chart data as a global variable
     window.priceHistoryData = {"20822350_KG": {"1mon": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}], "1yr": [{"date": "02.26", "was_price": 13.29, "now_price": 5.35}, {"date": "03.02", "was_price": 13.29, "now_price": 5.35}, {"date": "12.31", "was_price": 0.0, "now_price": 15.02}]}, "20822150_KG": {"1mon": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}], "1yr": [{"date": "02.05", "was_price": 18.48, "now_price": 8.93}, {"date": "02.26", "was_price": 18.48, "now_price": 7.44}, {"date": "03.02", "was_price": 18.48, "now_price": 7.44}, {"date": "12.31", "was_price": 0.0, "now_price": 20.89}]}, "20836762_KG": {"1mon": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}], "1yr": [{"date": "03.05", "was_price": 15.6, "now_price": 6.48}]}, "21618256_KG": {"1mon": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}], "1yr": [{"date": "02.26", "was_price": 24.54, "now_price": 10.74}, {"date": "03.02", "was_price": 24.54, "now_price": 10.74}, {"date": "12.31", "was_price": 0.0, "now_price": 28.02}]}, "20822343_KG": {"1mon": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}], "1yr": [{"date": "02.26", "was_price": 17.41, "now_price": 7.62}, {"date": "03.02", "was_price": 17.41, "now_price": 7.62}, {"date": "12.31", "was_price": 0.0, "now_price": 19.88}]}, "20835855_KG": {"1mon": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}], "1yr": [{"date": "03.05", "was_price": 15.09, "now_price": 6.75}]}, "20822906_KG": {"1mon": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}], "1yr": [{"date": "02.26", "was_price": 7.24, "now_price": 3.24}, {"date": "03.02", "was_price": 7.24, "now_price": 3.24}, {"date": "12.31", "was_price": 0.0, "now_price": 8.11}]}, "20822347_KG": {"1mon": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}], "1yr": [{"date": "02.26", "was_price": 10.9, "now_price": 5.01}, {"date": "03.02", "was_price": 10.9, "now_price": 5.01}, {"date": "12.31", "was_price": 0.0, "now_price": 11.91}]}, "20822459_KG": {"1mon": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}], "1yr": [{"date": "02.26", "was_price": 17.28, "now_price": 8.35}, {"date": "03.02", "was_price": 17.28, "now_price": 8.35}, {"date": "12.31", "was_price": 0.0, "now_price": 19.54}]}, "20822322_KG": {"1mon": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}], "1yr": [{"date": "02.26", "was_price": 9.18, "now_price": 4.44}, {"date": "03.02", "was_price": 9.18, "now_price": 4.44}, {"date": "12.31", "was_price": 0.0, "now_price": 10.38}]}, "20875645_KG": {"1mon": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}], "1yr": [{"date": "03.05", "was_price": 7.18, "now_price": 3.48}]}, "20827782_KG": {"1mon": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}], "1yr": [{"date": "02.05", "was_price": 12.54, "now_price": 5.21}, {"date": "03.05", "was_price": 12.54, "now_price": 6.08}]}, "20827787_KG": {"1mon": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}], "1yr": [{"date": "02.05", "was_price": 14.76, "now_price": 6.14}, {"date": "03.05", "was_price": 14.76, "now_price": 7.16}]}, "20836766_KG": {"1mon": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}], "1yr": [{"date": "03.05", "was_price": 6.04, "now_price": 2.93}]}, "20822452_KG": {"1mon": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}], "1yr": [{"date": "02.26", "was_price": 19.29, "now_price": 9.36}, {"date": "03.02", "was_price": 19.29, "now_price": 9.36}, {"date": "12.31", "was_price": 0.0, "now_price": 21.46}]}, "20823075_KG": {"1mon": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}], "1yr": [{"date": "02.26", "was_price": 15.66, "now_price": 7.6}, {"date": "03.02", "was_price": 15.66, "now_price": 7.6}, {"date": "12.31", "was_price": 0.0, "now_price": 17.42}]}, "20825554_KG": {"1mon": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}], "1yr": [{"date": "02.05", "was_price": 11.68, "now_price": 5.69}, {"date": "03.05", "was_price": 11.68, "now_price": 5.69}]}, "20827788_KG": {"1mon": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}], "1yr": [{"date": "02.05", "was_price": 8.66, "now_price": 4.47}, {"date": "03.05", "was_price": 8.66, "now_price": 4.47}]}, "20823076_KG": {"1mon": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}], "1yr": [{"date": "02.26", "was_price": 12.52, "now_price": 6.47}, {"date": "03.02", "was_price": 12.52, "now_price": 6.47}, {"date": "12.31", "was_price": 0.0, "now_price": 13.69}]}, "20827783_KG": {"1mon": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}], "1yr": [{"date": "02.05", "was_price": 7.46, "now_price": 3.87}, {"date": "03.05", "was_price": 7.46, "now_price": 3.87}]}, "20826506_KG": {"1mon": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}], "1yr": [{"date": "02.05", "was_price": 14.63, "now_price": 6.64}, {"date": "03.05", "was_price": 14.63, "now_price": 7.59}]}, "20822907_KG": {"1mon": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}], "1yr": [{"date": "02.26", "was_price": 8.48, "now_price": 4.4}, {"date": "03.02", "was_price": 8.48, "now_price": 4.4}, {"date": "12.31", "was_price": 0.0, "now_price": 9.37}]}, "20827785_KG": {"1mon": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}], "1yr": [{"date": "02.05", "was_price": 20.27, "now_price": 9.2}, {"date": "03.05", "was_price": 20.27, "now_price": 10.52}]}, "20823073_KG": {"1mon": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}], "1yr": [{"date": "02.26", "was_price": 9.38, "now_price": 5.09}, {"date": "03.02", "was_price": 9.38, "now_price": 5.09}, {"date": "12.31", "was_price": 0.0, "now_price": 8.44}]}, "20416522_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20415978_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 6.0}, {"date": "02.26", "was_price": 10.99, "now_price": 10.0}, {"date": "03.05", "was_price": 10.99, "now_price": 6.0}]}, "20593099_KG": {"1mon": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}], "1yr": [{"date": "02.05", "was_price": 23.09, "now_price": 12.83}, {"date": "03.05", "was_price": 23.09, "now_price": 12.83}]}, "20826455_KG": {"1mon": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}], "1yr": [{"date": "02.05", "was_price": 7.45, "now_price": 4.22}, {"date": "03.05", "was_price": 7.45, "now_price": 4.22}]}, "20794618_KG": {"1mon": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}], "1yr": [{"date": "03.05", "was_price": 20.79, "now_price": 13.85}, {"date": "03.05", "was_price": 20.79, "now_price": 11.88}]}, "20826460_KG": {"1mon": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}], "1yr": [{"date": "02.05", "was_price": 8.83, "now_price": 5.28}, {"date": "03.05", "was_price": 8.83, "now_price": 5.28}]}, "20162170_KG": {"1mon": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}], "1yr": [{"date": "02.05", "was_price": 23.78, "now_price": 14.39}, {"date": "03.05", "was_price": 23.78, "now_price": 14.39}]}, "21601003_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21600979_EA": {"1mon": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 0.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 0.0, "now_price": 6.0}]}, "21352008_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 11.0}, {"date": "03.26", "was_price": 15.99, "now_price": 11.0}]}, "21588066_EA": {"1mon": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}], "1yr": [{"date": "03.05", "was_price": 10.0, "now_price": 7.0}]}, "21290136_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289868_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "21289731_EA": {"1mon": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.99, "now_price": 8.0}, {"date": "02.26", "was_price": 9.99, "now_price": 8.0}, {"date": "03.05", "was_price": 9.99, "now_price": 7.0}]}, "20794616_KG": {"1mon": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}], "1yr": [{"date": "03.05", "was_price": 17.15, "now_price": 12.47}]}, "20315210_KG": {"1mon": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}], "1yr": [{"date": "03.05", "was_price": 3.19, "now_price": 2.39}]}, "21201106_KG": {"1mon": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21061099_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21061096_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21059807_EA": {"1mon": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.99, "now_price": 6.0}]}, "21366170_EA": {"1mon": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}], "1yr": [{"date": "02.12", "was_price": 9.29, "now_price": 8.0}, {"date": "02.26", "was_price": 9.29, "now_price": 8.0}, {"date": "03.05", "was_price": 9.29, "now_price": 7.0}]}, "20321514_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20319035_KG": {"1mon": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}], "1yr": [{"date": "03.19", "was_price": 4.59, "now_price": 3.49}]}, "20794617_KG": {"1mon": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}], "1yr": [{"date": "03.05", "was_price": 8.26, "now_price": 6.46}]}, "20794619_KG": {"1mon": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}], "1yr": [{"date": "03.05", "was_price": 5.87, "now_price": 4.69}]}, "21646160_EA": {"1mon": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}], "1yr": [{"date": "03.05", "was_price": 5.0, "now_price": 4.0}]}, "21201094_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21201089_KG": {"1mon": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}], "1yr": [{"date": "03.05", "was_price": 3.69, "now_price": 2.99}]}, "21570722_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570684_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570639_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21570617_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566593_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21566049_EA": {"1mon": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21539305_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21538773_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178761_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178745_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21178744_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20174909_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20156771_EA": {"1mon": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.12", "was_price": 7.0, "now_price": 6.0}, {"date": "02.26", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20152629_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20117351_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20057892_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "21546108_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20766562_KG": {"1mon": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}], "1yr": [{"date": "03.05", "was_price": 15.12, "now_price": 13.0}]}, "20320534_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20313480_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "20298289_KG": {"1mon": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 2.89, "now_price": 2.5}]}, "21399630_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "21193815_EA": {"1mon": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.19", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20794831_KG": {"1mon": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}], "1yr": [{"date": "03.05", "was_price": 16.22, "now_price": 14.27}]}, "20766602_KG": {"1mon": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}], "1yr": [{"date": "03.05", "was_price": 12.5, "now_price": 11.0}]}, "20794620_KG": {"1mon": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}], "1yr": [{"date": "03.05", "was_price": 10.17, "now_price": 9.04}]}, "21300113_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21300103_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "21220674_EA": {"1mon": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}], "1yr": [{"date": "02.19", "was_price": 9.99, "now_price": 9.0}, {"date": "03.05", "was_price": 9.99, "now_price": 9.0}]}, "20507161_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507160_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "20507159_EA": {"1mon": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}], "1yr": [{"date": "03.05", "was_price": 6.49, "now_price": 6.0}]}, "21076606_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20923814_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903492_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20903241_EA": {"1mon": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}], "1yr": [{"date": "02.26", "was_price": 15.99, "now_price": 14.99}, {"date": "03.05", "was_price": 15.99, "now_price": 15.0}]}, "20798252_KG": {"1mon": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}], "1yr": [{"date": "02.05", "was_price": 14.38, "now_price": 13.52}, {"date": "02.19", "was_price": 14.38, "now_price": 13.55}, {"date": "02.26", "was_price": 14.38, "now_price": 13.52}, {"date": "03.05", "was_price": 14.38, "now_price": 13.55}]}};
+
+    // After 2 seconds, fade out all "On Sale" buttons by adding the 'fade-out' class
+    setTimeout(function(){
+        document.querySelectorAll('.vertical-switch-button[data-type="detail"]').forEach(function(btn) {
+            btn.classList.add('fade-out');
+        });
+    }, 2000);
 });
 
 // Store Chart.js instances by product id
 var chartInstances = {};
 
 /**
- * "Detail" button: show discount detail and hide chart view.
+ * "On Sale" button: When clicked, show discount (detail) view and remove any chart.
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
-    // Reset all toggle buttons in this container
     container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
         b.classList.remove('selected');
     });
     btn.classList.add('selected');
+    // Restore button opacity
+    btn.style.opacity = '1';
 
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
@@ -319,7 +329,6 @@ function switchToDetail(btn) {
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
-    // Show detail view and hide chart view
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '1';
@@ -327,7 +336,7 @@ function switchToDetail(btn) {
     chartView.style.opacity = '0';
     chartView.style.display = 'none';
 
-    // Destroy any existing chart instance
+    // Remove any existing chart
     var productId = container.getAttribute('data-product-id');
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
@@ -337,8 +346,8 @@ function switchToDetail(btn) {
 
 /**
  * Toggle switch handler:
- * When toggled, always show the chart view and hide the discount (detail) view.
- * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
+ * When toggled, hide discount (detail) view and show chart view.
+ * Render Chart.js chart accordingly.
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
@@ -346,12 +355,10 @@ function toggleMonYr(checkbox) {
     if (toggleSwitch.classList.contains('disabled')) {
         toggleSwitch.classList.remove('disabled');
     }
-
-    // Unselect the "Detail" button so discount view stays hidden
+    // Unselect detail button so discount view remains hidden
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
-    // Force chart view visible and discount view hidden
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '0';
@@ -364,7 +371,7 @@ function toggleMonYr(checkbox) {
     var data1mon = window.priceHistoryData[productId]["1mon"] || [];
     var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
 
-    // Destroy any existing chart
+    // Destroy existing chart instance if any
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
         delete chartInstances[productId];
@@ -567,7 +574,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_meat</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 20:05:07</div>
+  <div class="creation-time">Created on: 2025-02-28 20:16:12</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -585,7 +592,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822350/b3/en/front/20822350_front_a06_@2.png' alt='Pork Loin Chop Rib End, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20822350_KG">
@@ -627,7 +634,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822150/b3/en/angle/20822150_angle_a06_@2.png' alt='Pork Sirloin Roast' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20822150_KG">
@@ -669,7 +676,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20836762/b3/en/front/20836762_front_a06_@2.png' alt='Boneless Pork Sirloin Roast' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20836762_KG">
@@ -711,7 +718,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21618256/b3/en/front/21618256_front_a06_@2.png' alt='Pork Loin Combination Chops, Sirloin and Rib' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21618256_KG">
@@ -753,7 +760,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822343/b3/en/angle/20822343_angle_a06_@2.png' alt='Pork Rib Loin & Sirloin Combination Chop' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20822343_KG">
@@ -795,7 +802,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20835855/b3/en/angle/20835855_angle_a06_@2.png' alt='Pork Sirloin Chops Boneless, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20835855_KG">
@@ -837,7 +844,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822906/b3/en/front/20822906_front_a06_@2.png' alt='Pork Loin Rib End Chop' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20822906_KG">
@@ -879,7 +886,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822347/b3/en/front/20822347_front_a06_@2.png' alt='Pork Loin Chop Rib, Fast Fry' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20822347_KG">
@@ -921,7 +928,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822459/b3/en/front/20822459_front_a06_@2.png' alt='Pork Loin Rib Roast Portion' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20822459_KG">
@@ -963,7 +970,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822322/b3/en/front/20822322_front_a06_@2.png' alt='Pork Sirloin Chop, End Portion' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20822322_KG">
@@ -1005,7 +1012,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20875645/b3/en/front/20875645_front_a06_@2.png' alt='Boneless Pork For Stew' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20875645_KG">
@@ -1047,7 +1054,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827782/b3/en/front/20827782_front_a06_@2.png' alt='Boneless Pork Loin Rib Chops, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20827782_KG">
@@ -1089,7 +1096,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827787/b3/en/front/20827787_front_a06_@2.png' alt='Pork Rib Roast, Boneless' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20827787_KG">
@@ -1131,7 +1138,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20836766/b3/en/front/20836766_front_a06_@2.png' alt='Pork Sirloin Chops Boneless' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20836766_KG">
@@ -1173,7 +1180,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822452/b3/en/front/20822452_front_a06_@2.png' alt='Pork Loin Roast, Center Cut with Bone' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20822452_KG">
@@ -1215,7 +1222,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20823075/b3/en/front/20823075_front_a06_@2.png' alt='Pork Loin Chop Center Chop, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20823075_KG">
@@ -1257,7 +1264,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20825554/b3/en/front/20825554_front_a06_@2.png' alt='Pork Loin Butterfly Center Cut Boneless, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20825554_KG">
@@ -1299,7 +1306,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827788/b3/en/front/20827788_front_a06_@2.png' alt='Centre Cut Pork Loin Chop Boneless' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20827788_KG">
@@ -1341,7 +1348,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20823076/b3/en/front/20823076_front_a06_@2.png' alt='Pork Loin Chopfast Fry  Bone In, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20823076_KG">
@@ -1383,7 +1390,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827783/b3/en/front/20827783_front_a06_@2.png' alt='Pork Rib Chops Boneless' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20827783_KG">
@@ -1425,7 +1432,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20826506/b3/en/beauty/20826506_beauty_a06_@2.png' alt='Pork Loin Chop Boneless Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20826506_KG">
@@ -1467,7 +1474,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20822907/b3/en/angle/20822907_angle_a06_@2.png' alt='Pork Loin Chop, Bone In Center Cut' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20822907_KG">
@@ -1509,7 +1516,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20827785/b3/en/beauty/20827785_beauty_a06_@2.png' alt='Centre Cut Pork Loin Roast Boneless' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20827785_KG">
@@ -1551,7 +1558,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20823073/b3/en/front/20823073_front_a06_@2.png' alt='Pork Loin Chop Center Cut Fast Fry' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20823073_KG">
@@ -1593,7 +1600,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20416522/b3/en/front/20416522_front_a06_@2.png' alt='Classic Wieners, Family Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20416522_EA">
@@ -1635,7 +1642,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20415978/b3/en/front/20415978_front_a06_@2.png' alt='Barbecue Style Wieners' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20415978_EA">
@@ -1677,7 +1684,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20593099/b3/en/beauty/20593099_beauty_a06_@2.png' alt='Chicken Breast, Club Pack Boneless Skinless' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20593099_KG">
@@ -1719,7 +1726,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20826455/b3/en/front/20826455_front_a06_@2.png' alt='Pork Loin Center Cut Boneless Cutlet' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20826455_KG">
@@ -1761,7 +1768,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794618/b3/en/angle/20794618_angle_a06_@2.png' alt='Beef Cross Rib Roast, Boneless' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20794618_KG">
@@ -1803,7 +1810,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20826460/b3/en/front/20826460_front_a06_@2.png' alt='Pork Loin Chop, Boneless Butterfly Cut' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20826460_KG">
@@ -1845,7 +1852,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20162170/b3/en/angle/20162170_angle_a06_@2.png' alt='Chicken Thigh  Boneless Skinless Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20162170_KG">
@@ -1887,7 +1894,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21601003/b3/en/front/21601003_front_a06_@2.png' alt='Extra Lean Ground Chicken' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21601003_EA">
@@ -1929,7 +1936,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21600979/b3/en/front/21600979_front_a06_@2.png' alt='Extra Lean Ground Turkey' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21600979_EA">
@@ -1971,7 +1978,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21352008/b3/en/angle/21352008_angle_a06_@2.png' alt='Free From Australian Lean Ground Lamb' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21352008_EA">
@@ -2013,7 +2020,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21588066/b3/en/angle/21588066_angle_a06_@2.png' alt='Chicken Breast Schnitzel' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21588066_EA">
@@ -2055,7 +2062,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21290136/b3/en/front/21290136_front_a06_@2.png' alt='Frozen Twisters Jumbo Sausage' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21290136_EA">
@@ -2097,7 +2104,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21289868/b3/en/front/21289868_front_a06_@2.png' alt='Hot Italian Jumbo Sausage' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21289868_EA">
@@ -2139,7 +2146,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21289731/b3/en/front/21289731_front_a06_@2.png' alt='Sweet Italian Jumbo Sausage' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21289731_EA">
@@ -2181,7 +2188,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794616/b3/en/angle/20794616_angle_a06_@2.png' alt='Beef Cross Rib Steak Boneless, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20794616_KG">
@@ -2223,7 +2230,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20315210/b3/en/angle/20315210_angle_a06_@2.png' alt='Big Stick Large Wax Bologna' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20315210_KG">
@@ -2265,7 +2272,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21201106/b3/en/angle/21201106_angle_a06_@2.png' alt='Small Batch Oven Roasted Ham' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21201106_KG">
@@ -2307,7 +2314,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21061099/b3/en/front/21061099_front_a06_@2.png' alt='Genoa Salami    ' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21061099_EA">
@@ -2349,7 +2356,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21061096/b3/en/front/21061096_front_a06_@2.png' alt='Genoa Hot Salami' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21061096_EA">
@@ -2391,7 +2398,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21059807/b3/en/front/21059807_front_a06_@2.png' alt='Calabrese Salami, Hot' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21059807_EA">
@@ -2433,7 +2440,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21366170/b3/en/front/21366170_front_a06_@2.png' alt='Marc Angelo Pork Sausages with Rapini and Parmigiano Reggiano Cheese 675 g' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21366170_EA">
@@ -2475,7 +2482,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20321514/b3/en/angle/20321514_angle_a06_@2.png' alt='Calabrese Spicy Salami (Thin Sliced)' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20321514_KG">
@@ -2517,7 +2524,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20319035/b3/en/angle/20319035_angle_a06_@2.png' alt='Soppressata (Thin Sliced)' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20319035_KG">
@@ -2559,7 +2566,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794617/b3/en/angle/20794617_angle_a06_@2.png' alt='Beef Cross Rib Steak, Boneless' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20794617_KG">
@@ -2601,7 +2608,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794619/b3/en/front/20794619_front_a06_@2.png' alt='Cross Rib Steak Fast Fry' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20794619_KG">
@@ -2643,7 +2650,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21646160/b3/en/front/21646160_front_a06_@2.png' alt='Lean Ground Pork' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21646160_EA">
@@ -2685,7 +2692,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21201094/b3/en/angle/21201094_angle_a06_@2.png' alt='Small Batch Smoked Turkey Breast' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21201094_KG">
@@ -2727,7 +2734,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21201089/b3/en/angle/21201089_angle_a06_@2.png' alt='Small Batch Cajun Turkey Breast' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21201089_KG">
@@ -2769,7 +2776,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21570722/b3/en/front/21570722_front_a06_@2.png' alt='Pastrami Mild' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21570722_EA">
@@ -2811,7 +2818,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21570684/b3/en/front/21570684_front_a06_@2.png' alt='Cajun Turkey Breast Mild' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21570684_EA">
@@ -2853,7 +2860,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21570639/b3/en/front/21570639_front_a06_@2.png' alt='Roast Beef Mild' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21570639_EA">
@@ -2895,7 +2902,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21570617/b3/en/front/21570617_front_a06_@2.png' alt='Smoked Turkey Breast Mild' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21570617_EA">
@@ -2937,7 +2944,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21566593/b3/en/front/21566593_front_a06_@2.png' alt='Pepperoni Toppings Mild' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21566593_EA">
@@ -2979,7 +2986,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21566049/b3/en/front/21566049_front_a06_@2.png' alt='Salami Spicy' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21566049_EA">
@@ -3021,7 +3028,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21539305/b3/en/angle/21539305_angle_a06_@2.png' alt='Smoky Bonfire Double-Smoked Bacon' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21539305_EA">
@@ -3063,7 +3070,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21538773/b3/en/angle/21538773_angle_a06_@2.png' alt='Applewood Smoked Bacon' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21538773_EA">
@@ -3105,7 +3112,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21178761/b3/en/angle/21178761_angle_a06_@2.png' alt='Fully Cooked, Breaded Chicken Burgers' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21178761_EA">
@@ -3147,7 +3154,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21178745/b3/en/angle/21178745_angle_a06_@2.png' alt='Fully Cooked, Breaded Chicken Nuggets Cutlettes' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21178745_EA">
@@ -3189,7 +3196,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21178744/b3/en/angle/21178744_angle_a06_@2.png' alt='Breaded Chicken Cutlettes Chicken Strips' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21178744_EA">
@@ -3231,7 +3238,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20174909/b3/en/front/20174909_front_a06_@2.png' alt='Bacon, Mild Sugar Cured with Reduced Salt, Uncooked' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20174909_EA">
@@ -3273,7 +3280,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20156771/b3/en/angle/20156771_angle_a06_@2.png' alt='Mild Sugar-Cured Bacon' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20156771_EA">
@@ -3315,7 +3322,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20152629/b3/en/angle/20152629_angle_a06_@2.png' alt='Bacon' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20152629_EA">
@@ -3357,7 +3364,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20117351/b3/en/front/20117351_front_a06_@2.png' alt='Maple Flavoured Naturally Smoked Bacon' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20117351_EA">
@@ -3399,7 +3406,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20057892/b3/en/front/20057892_front_a06_@2.png' alt='Reduced Salt Bacon  ' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20057892_EA">
@@ -3441,7 +3448,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21546108/b3/en/angle/21546108_angle_a06_@2.png' alt='Wiltshire Bacon Rashers' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21546108_EA">
@@ -3483,7 +3490,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20766562/b3/en/angle/20766562_angle_a06_@2.png' alt='Stewing Beef Cubes, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20766562_KG">
@@ -3525,7 +3532,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20320534/b3/en/angle/20320534_angle_a06_@2.png' alt='Black Forest Ham, Traditional' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20320534_KG">
@@ -3567,7 +3574,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20313480/b3/en/angle/20313480_angle_a06_@2.png' alt='Extra Lean Cooked Ham' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20313480_KG">
@@ -3609,7 +3616,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20298289/b3/en/angle/20298289_angle_a06_@2.png' alt='Honey Maple Ham (Thin Sliced)' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20298289_KG">
@@ -3651,7 +3658,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21399630/b3/en/front/21399630_front_a06_@2.png' alt='Breakfast Sausage' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21399630_EA">
@@ -3693,7 +3700,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21193815/b3/en/angle/21193815_angle_a06_@2.png' alt='Beyond Burger Plant-Based' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21193815_EA">
@@ -3735,7 +3742,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794831/b3/en/front/20794831_front_a06_@2.png' alt='Deluxe Stewing Beef Cubes, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20794831_KG">
@@ -3777,7 +3784,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20766602/b3/en/angle/20766602_angle_a06_@2.png' alt='Stewing Beef Cubes' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20766602_KG">
@@ -3819,7 +3826,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20794620/b3/en/front/20794620_front_a06_@2.png' alt='Deluxe Stewing Beef Cubes' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20794620_KG">
@@ -3861,7 +3868,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21300113/b3/en/front/21300113_front_a06_@2.png' alt='Sausage Mild Italian' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21300113_EA">
@@ -3903,7 +3910,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21300103/b3/en/front/21300103_front_a06_@2.png' alt='Beyond Sausage Hot Italian' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21300103_EA">
@@ -3945,7 +3952,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21220674/b3/en/front/21220674_front_a06_@2.png' alt='Beyond Beef Grounds' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21220674_EA">
@@ -3987,7 +3994,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20507161/b3/en/angle/20507161_angle_a06_@2.png' alt='Veggie Ground Round, Mexican' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20507161_EA">
@@ -4029,7 +4036,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20507160/b3/en/angle/20507160_angle_a06_@2.png' alt='Veggie Ground Round, Italian' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20507160_EA">
@@ -4071,7 +4078,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20507159/b3/en/angle/20507159_angle_a06_@2.png' alt='Veggie Ground Round, Original' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20507159_EA">
@@ -4113,7 +4120,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21076606/b3/en/front/21076606_front_a06_@2.png' alt='Free From Oven-Roasted Chicken Breast' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21076606_EA">
@@ -4155,7 +4162,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20923814/b3/en/front/20923814_front_a06_@2.png' alt='Free From Oven Roasted Turkey, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20923814_EA">
@@ -4197,7 +4204,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20903492/b3/en/front/20903492_front_a06_@2.png' alt='Free From Black Forrest Ham, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20903492_EA">
@@ -4239,7 +4246,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20903241/b3/en/front/20903241_front_a06_@2.png' alt='Free From Honey Ham, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20903241_EA">
@@ -4281,7 +4288,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20798252/b3/en/angle/20798252_angle_a06_@2.png' alt='Extra Lean Ground Beef, Club Pack' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20798252_KG">
