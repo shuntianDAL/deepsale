@@ -436,6 +436,19 @@ function renderStackedBarChart(productId, data) {
         ctx.fillText("No 1 Mon data", 10, 50);
         return;
     }
+    
+    // Find the highest "Was" price in the dataset
+    // because the stacked bar's total height = Was Price
+    let maxWas = 0;
+    data.forEach(function(d) {
+        if (d.was_price > maxWas) {
+            maxWas = d.was_price;
+        }
+    });
+
+    // Multiply by 1.2 to give some breathing room
+    let yAxisMax = maxWas * 1.2;
+
     chartInstances[productId] = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -449,6 +462,7 @@ function renderStackedBarChart(productId, data) {
                 },
                 {
                     label: 'Was Price',
+                    // We subtract now_price so the bar on top shows only the difference
                     data: data.map(function(d) { return d.was_price - d.now_price; }),
                     backgroundColor: '#FF9900',
                     stack: 'Stack 0'
@@ -473,16 +487,19 @@ function renderStackedBarChart(productId, data) {
                 },
                 y: {
                     stacked: true,
+                    beginAtZero: true,
                     title: {
                         display: true,
                         text: 'Price'
                     },
-                    beginAtZero: true
+                    // Set the maximum to be 20% higher than the highest Was price
+                    max: yAxisMax 
                 }
             }
         }
     });
 }
+
 
 /**
  * Renders a two-line chart (1 Yr data) using Chart.js.
@@ -619,7 +636,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_intnfood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 23:31:00</div>
+  <div class="creation-time">Created on: 2025-02-28 23:37:55</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
