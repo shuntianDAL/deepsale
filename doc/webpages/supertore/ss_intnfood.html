@@ -179,8 +179,8 @@ body.page-loaded .fade-on-load {
     position: relative;
 }
 .toggle-switch.disabled {
-    /* When disabled, use a slightly lighter gray */
-    background-color: transparent;
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 .toggle-input {
     display: none;
@@ -197,10 +197,6 @@ body.page-loaded .fade-on-load {
 }
 .toggle-switch:not(.disabled) .toggle-label {
     background-color: #3e7d53;
-}
-.toggle-switch.disabled .toggle-label {
-    /* When disabled, use a lighter gray */
-    background-color: #ccc;
 }
 .toggle-label .toggle-circle {
     position: absolute;
@@ -224,12 +220,8 @@ body.page-loaded .fade-on-load {
     text-align: center;
     line-height: 28px;
     font-size: 12px;
-    /* When disabled, force text color to black */
     color: #fff;
     pointer-events: none;
-}
-.toggle-switch.disabled .toggle-label .toggle-text {
-    color: #000;
 }
 .right-side {
     flex: 1;
@@ -297,34 +289,6 @@ body.page-loaded .fade-on-load {
 </style>
 
 <script>
-// Custom plugin to render labels on the line chart.
-var lineChartLabelsPlugin = {
-    id: 'lineChartLabelsPlugin',
-    afterDatasetsDraw: function(chart, args, options) {
-        var ctx = chart.ctx;
-        chart.data.datasets.forEach(function(dataset, datasetIndex) {
-            if (dataset.label === 'Was Price' || dataset.label === 'Now Price') {
-                var meta = chart.getDatasetMeta(datasetIndex);
-                meta.data.forEach(function(element, index) {
-                    var dataValue = dataset.data[index];
-                    ctx.font = Chart.helpers.fontString(12, 'normal', 'Arial');
-                    ctx.fillStyle = (dataset.label === 'Was Price') ? '#0077cc' : '#009900';
-                    ctx.textAlign = 'center';
-                    // Get the tooltip position of the element
-                    var pos = element.tooltipPosition();
-                    if (dataset.label === 'Was Price') {
-                        // Draw value above the point
-                        ctx.fillText(dataValue.toFixed(2), pos.x, pos.y - 10);
-                    } else {
-                        // Draw value below the point
-                        ctx.fillText(dataValue.toFixed(2), pos.x, pos.y + 15);
-                    }
-                });
-            }
-        });
-    }
-};
-
 document.addEventListener('DOMContentLoaded', function() {
     // Add 'page-loaded' class to body for fade-on-load effects.
     document.body.classList.add('page-loaded');
@@ -413,6 +377,7 @@ function toggleMonYr(checkbox) {
         delete chartInstances[productId];
     }
 
+    // Immediately render the chart based on the toggle state.
     if (checkbox.checked) {
         toggleLabel.textContent = "1 Yr";
         var filtered = data1yr.filter(function(d) {
@@ -430,6 +395,7 @@ function toggleMonYr(checkbox) {
 
 /**
  * Renders a stacked bar chart (1 Mon data) using Chart.js.
+ * Legend is disabled.
  */
 function renderStackedBarChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -488,7 +454,7 @@ function renderStackedBarChart(productId, data) {
 
 /**
  * Renders a two-line chart (1 Yr data) using Chart.js.
- * This chart uses a custom plugin to draw numeric labels above/below each dot.
+ * Legend is disabled.
  */
 function renderLineChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -508,8 +474,7 @@ function renderLineChart(productId, data) {
                     borderColor: '#0077cc',
                     backgroundColor: '#0077cc',
                     fill: false,
-                    tension: 0.1,
-                    pointRadius: 4
+                    tension: 0.1
                 },
                 {
                     label: 'Now Price',
@@ -517,8 +482,7 @@ function renderLineChart(productId, data) {
                     borderColor: '#009900',
                     backgroundColor: '#009900',
                     fill: false,
-                    tension: 0.1,
-                    pointRadius: 4
+                    tension: 0.1
                 }
             ]
         },
@@ -545,8 +509,7 @@ function renderLineChart(productId, data) {
                     beginAtZero: true
                 }
             }
-        },
-        plugins: [lineChartLabelsPlugin]
+        }
     });
 }
 
@@ -624,7 +587,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_intnfood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 22:27:26</div>
+  <div class="creation-time">Created on: 2025-02-28 22:49:20</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -661,8 +624,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#1</span>
-            <span class="first-word" data-original="{{first_word}}">Frozen</span>
-            <span class="product-name-text" data-original="{{remaining}}">Samosa</span>
+            <span class="first-word" data-original="Frozen">Frozen</span>
+            <span class="product-name-text" data-original="Samosa">Samosa</span>
           </div>
           <div>Expire On: 2025-03-12</div>
           <div>WAS: <span class="was-price">$ 4.79</span></div>
@@ -703,8 +666,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#2</span>
-            <span class="first-word" data-original="{{first_word}}">Veg</span>
-            <span class="product-name-text" data-original="{{remaining}}">Spring Roll</span>
+            <span class="first-word" data-original="Veg">Veg</span>
+            <span class="product-name-text" data-original="Spring Roll">Spring Roll</span>
           </div>
           <div>Expire On: 2025-03-12</div>
           <div>WAS: <span class="was-price">$ 4.79</span></div>
@@ -745,8 +708,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#3</span>
-            <span class="first-word" data-original="{{first_word}}">Roma</span>
-            <span class="product-name-text" data-original="{{remaining}}">Tomatoes</span>
+            <span class="first-word" data-original="Roma">Roma</span>
+            <span class="product-name-text" data-original="Tomatoes">Tomatoes</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 0.79</span></div>
@@ -787,8 +750,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#4</span>
-            <span class="first-word" data-original="{{first_word}}">Sweet</span>
-            <span class="product-name-text" data-original="{{remaining}}">Potato Vermicelli, Wide</span>
+            <span class="first-word" data-original="Sweet">Sweet</span>
+            <span class="product-name-text" data-original="Potato Vermicelli, Wide">Potato Vermicelli, Wide</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -829,8 +792,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#5</span>
-            <span class="first-word" data-original="{{first_word}}">Mix,</span>
-            <span class="product-name-text" data-original="{{remaining}}">Super Extra</span>
+            <span class="first-word" data-original="Mix,">Mix,</span>
+            <span class="product-name-text" data-original="Super Extra">Super Extra</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 12.99</span></div>
@@ -871,8 +834,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#6</span>
-            <span class="first-word" data-original="{{first_word}}">Couscous</span>
-            <span class="product-name-text" data-original="{{remaining}}">     </span>
+            <span class="first-word" data-original="Couscous">Couscous</span>
+            <span class="product-name-text" data-original="     ">     </span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 5.49</span></div>
@@ -913,8 +876,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#7</span>
-            <span class="first-word" data-original="{{first_word}}">Pasta,</span>
-            <span class="product-name-text" data-original="{{remaining}}">Vermicelli Longkou Pancit Sotanghon</span>
+            <span class="first-word" data-original="Pasta,">Pasta,</span>
+            <span class="product-name-text" data-original="Vermicelli Longkou Pancit Sotanghon">Vermicelli Longkou Pancit Sotanghon</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.29</span></div>
@@ -955,8 +918,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#8</span>
-            <span class="first-word" data-original="{{first_word}}">Sushi</span>
-            <span class="product-name-text" data-original="{{remaining}}">Ginger</span>
+            <span class="first-word" data-original="Sushi">Sushi</span>
+            <span class="product-name-text" data-original="Ginger">Ginger</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.29</span></div>
@@ -997,8 +960,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#9</span>
-            <span class="first-word" data-original="{{first_word}}">Premium</span>
-            <span class="product-name-text" data-original="{{remaining}}">Unsweetened Coconut Milk</span>
+            <span class="first-word" data-original="Premium">Premium</span>
+            <span class="product-name-text" data-original="Unsweetened Coconut Milk">Unsweetened Coconut Milk</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.29</span></div>
@@ -1039,8 +1002,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#10</span>
-            <span class="first-word" data-original="{{first_word}}">Beef</span>
-            <span class="product-name-text" data-original="{{remaining}}">Bouillon Cubes</span>
+            <span class="first-word" data-original="Beef">Beef</span>
+            <span class="product-name-text" data-original="Bouillon Cubes">Bouillon Cubes</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 1.49</span></div>
@@ -1081,8 +1044,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#11</span>
-            <span class="first-word" data-original="{{first_word}}">Chicken</span>
-            <span class="product-name-text" data-original="{{remaining}}">Bouillon Cubes</span>
+            <span class="first-word" data-original="Chicken">Chicken</span>
+            <span class="product-name-text" data-original="Bouillon Cubes">Bouillon Cubes</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 1.49</span></div>
@@ -1123,8 +1086,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#12</span>
-            <span class="first-word" data-original="{{first_word}}">Sriracha</span>
-            <span class="product-name-text" data-original="{{remaining}}">Hot Chili Sauce Original</span>
+            <span class="first-word" data-original="Sriracha">Sriracha</span>
+            <span class="product-name-text" data-original="Hot Chili Sauce Original">Hot Chili Sauce Original</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 5.99</span></div>
@@ -1165,8 +1128,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#13</span>
-            <span class="first-word" data-original="{{first_word}}">Free</span>
-            <span class="product-name-text" data-original="{{remaining}}">From Australian Lean Ground Lamb</span>
+            <span class="first-word" data-original="Free">Free</span>
+            <span class="product-name-text" data-original="From Australian Lean Ground Lamb">From Australian Lean Ground Lamb</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 15.99</span></div>
@@ -1207,8 +1170,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#14</span>
-            <span class="first-word" data-original="{{first_word}}">Punjabi</span>
-            <span class="product-name-text" data-original="{{remaining}}">Samosa</span>
+            <span class="first-word" data-original="Punjabi">Punjabi</span>
+            <span class="product-name-text" data-original="Samosa">Samosa</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 6.99</span></div>
@@ -1249,8 +1212,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#15</span>
-            <span class="first-word" data-original="{{first_word}}">Thickened</span>
-            <span class="product-name-text" data-original="{{remaining}}">Creamy Product</span>
+            <span class="first-word" data-original="Thickened">Thickened</span>
+            <span class="product-name-text" data-original="Creamy Product">Creamy Product</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -1291,8 +1254,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#16</span>
-            <span class="first-word" data-original="{{first_word}}">Crispy</span>
-            <span class="product-name-text" data-original="{{remaining}}">Coconut Rolls</span>
+            <span class="first-word" data-original="Crispy">Crispy</span>
+            <span class="product-name-text" data-original="Coconut Rolls">Coconut Rolls</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 5.49</span></div>
@@ -1333,8 +1296,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#17</span>
-            <span class="first-word" data-original="{{first_word}}">Biscuits</span>
-            <span class="product-name-text" data-original="{{remaining}}">with Malt</span>
+            <span class="first-word" data-original="Biscuits">Biscuits</span>
+            <span class="product-name-text" data-original="with Malt">with Malt</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.29</span></div>
@@ -1375,8 +1338,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#18</span>
-            <span class="first-word" data-original="{{first_word}}">Taiwanese</span>
-            <span class="product-name-text" data-original="{{remaining}}">Flat Cabbage</span>
+            <span class="first-word" data-original="Taiwanese">Taiwanese</span>
+            <span class="product-name-text" data-original="Flat Cabbage">Flat Cabbage</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.96</span></div>
@@ -1417,8 +1380,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#19</span>
-            <span class="first-word" data-original="{{first_word}}">Faba</span>
-            <span class="product-name-text" data-original="{{remaining}}">Beans Foul Medamas</span>
+            <span class="first-word" data-original="Faba">Faba</span>
+            <span class="product-name-text" data-original="Beans Foul Medamas">Beans Foul Medamas</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -1459,8 +1422,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#20</span>
-            <span class="first-word" data-original="{{first_word}}">Chickpeas</span>
-            <span class="product-name-text" data-original="{{remaining}}"></span>
+            <span class="first-word" data-original="Chickpeas">Chickpeas</span>
+            <span class="product-name-text" data-original=""></span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -1501,8 +1464,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#21</span>
-            <span class="first-word" data-original="{{first_word}}">Red</span>
-            <span class="product-name-text" data-original="{{remaining}}">Kidney Beans</span>
+            <span class="first-word" data-original="Red">Red</span>
+            <span class="product-name-text" data-original="Kidney Beans">Kidney Beans</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -1543,8 +1506,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#22</span>
-            <span class="first-word" data-original="{{first_word}}">Small</span>
-            <span class="product-name-text" data-original="{{remaining}}">Red Beans</span>
+            <span class="first-word" data-original="Small">Small</span>
+            <span class="product-name-text" data-original="Red Beans">Red Beans</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -1585,8 +1548,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#23</span>
-            <span class="first-word" data-original="{{first_word}}">White</span>
-            <span class="product-name-text" data-original="{{remaining}}">Kidney Beans</span>
+            <span class="first-word" data-original="White">White</span>
+            <span class="product-name-text" data-original="Kidney Beans">Kidney Beans</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -1627,8 +1590,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#24</span>
-            <span class="first-word" data-original="{{first_word}}">Green</span>
-            <span class="product-name-text" data-original="{{remaining}}">Lentils</span>
+            <span class="first-word" data-original="Green">Green</span>
+            <span class="product-name-text" data-original="Lentils">Lentils</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -1669,8 +1632,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#25</span>
-            <span class="first-word" data-original="{{first_word}}">Blaturtle</span>
-            <span class="product-name-text" data-original="{{remaining}}">Beans     </span>
+            <span class="first-word" data-original="Blaturtle">Blaturtle</span>
+            <span class="product-name-text" data-original="Beans     ">Beans     </span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -1711,8 +1674,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#26</span>
-            <span class="first-word" data-original="{{first_word}}">Pancit</span>
-            <span class="product-name-text" data-original="{{remaining}}">Canton Instant Noodles Hot Chilli Flavour</span>
+            <span class="first-word" data-original="Pancit">Pancit</span>
+            <span class="product-name-text" data-original="Canton Instant Noodles Hot Chilli Flavour">Canton Instant Noodles Hot Chilli Flavour</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -1753,8 +1716,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#27</span>
-            <span class="first-word" data-original="{{first_word}}">Lucky</span>
-            <span class="product-name-text" data-original="{{remaining}}">Me Original Chow Mein</span>
+            <span class="first-word" data-original="Lucky">Lucky</span>
+            <span class="product-name-text" data-original="Me Original Chow Mein">Me Original Chow Mein</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -1795,8 +1758,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#28</span>
-            <span class="first-word" data-original="{{first_word}}">Instant</span>
-            <span class="product-name-text" data-original="{{remaining}}">Pancit Canton Chow Mein</span>
+            <span class="first-word" data-original="Instant">Instant</span>
+            <span class="product-name-text" data-original="Pancit Canton Chow Mein">Pancit Canton Chow Mein</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -1837,8 +1800,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#29</span>
-            <span class="first-word" data-original="{{first_word}}">Guava</span>
-            <span class="product-name-text" data-original="{{remaining}}"></span>
+            <span class="first-word" data-original="Guava">Guava</span>
+            <span class="product-name-text" data-original=""></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 8.81</span></div>
@@ -1879,8 +1842,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#30</span>
-            <span class="first-word" data-original="{{first_word}}">Organic</span>
-            <span class="product-name-text" data-original="{{remaining}}">Coconut Sugar</span>
+            <span class="first-word" data-original="Organic">Organic</span>
+            <span class="product-name-text" data-original="Coconut Sugar">Coconut Sugar</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 8.99</span></div>
@@ -1921,8 +1884,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#31</span>
-            <span class="first-word" data-original="{{first_word}}">Coconut</span>
-            <span class="product-name-text" data-original="{{remaining}}">Milk Unsweetened</span>
+            <span class="first-word" data-original="Coconut">Coconut</span>
+            <span class="product-name-text" data-original="Milk Unsweetened">Milk Unsweetened</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 1.29</span></div>
@@ -1963,8 +1926,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#32</span>
-            <span class="first-word" data-original="{{first_word}}">Sushi</span>
-            <span class="product-name-text" data-original="{{remaining}}">Nori Roasted Seaweed Sheets</span>
+            <span class="first-word" data-original="Sushi">Sushi</span>
+            <span class="product-name-text" data-original="Nori Roasted Seaweed Sheets">Nori Roasted Seaweed Sheets</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 3.79</span></div>
@@ -2005,8 +1968,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#33</span>
-            <span class="first-word" data-original="{{first_word}}">Chipotle</span>
-            <span class="product-name-text" data-original="{{remaining}}">Pepper Sauce</span>
+            <span class="first-word" data-original="Chipotle">Chipotle</span>
+            <span class="product-name-text" data-original="Pepper Sauce">Pepper Sauce</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -2047,8 +2010,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#34</span>
-            <span class="first-word" data-original="{{first_word}}">Corned</span>
-            <span class="product-name-text" data-original="{{remaining}}">Beef Halal</span>
+            <span class="first-word" data-original="Corned">Corned</span>
+            <span class="product-name-text" data-original="Beef Halal">Beef Halal</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -2089,8 +2052,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#35</span>
-            <span class="first-word" data-original="{{first_word}}">Caribbean</span>
-            <span class="product-name-text" data-original="{{remaining}}">Avocado</span>
+            <span class="first-word" data-original="Caribbean">Caribbean</span>
+            <span class="product-name-text" data-original="Avocado">Avocado</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -2131,8 +2094,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#36</span>
-            <span class="first-word" data-original="{{first_word}}">Mix</span>
-            <span class="product-name-text" data-original="{{remaining}}">Classic </span>
+            <span class="first-word" data-original="Mix">Mix</span>
+            <span class="product-name-text" data-original="Classic ">Classic </span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 9.99</span></div>
@@ -2173,8 +2136,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#37</span>
-            <span class="first-word" data-original="{{first_word}}">Banana</span>
-            <span class="product-name-text" data-original="{{remaining}}">Chili Sauce</span>
+            <span class="first-word" data-original="Banana">Banana</span>
+            <span class="product-name-text" data-original="Chili Sauce">Chili Sauce</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -2215,8 +2178,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#38</span>
-            <span class="first-word" data-original="{{first_word}}">Pre-Cooked</span>
-            <span class="product-name-text" data-original="{{remaining}}">White Corn Meal</span>
+            <span class="first-word" data-original="Pre-Cooked">Pre-Cooked</span>
+            <span class="product-name-text" data-original="White Corn Meal">White Corn Meal</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 4.79</span></div>
@@ -2257,8 +2220,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#39</span>
-            <span class="first-word" data-original="{{first_word}}">Pre-Cooked</span>
-            <span class="product-name-text" data-original="{{remaining}}">Yellow Corn Meal</span>
+            <span class="first-word" data-original="Pre-Cooked">Pre-Cooked</span>
+            <span class="product-name-text" data-original="Yellow Corn Meal">Yellow Corn Meal</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 4.79</span></div>
@@ -2299,8 +2262,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#40</span>
-            <span class="first-word" data-original="{{first_word}}">Basmati</span>
-            <span class="product-name-text" data-original="{{remaining}}">Rice</span>
+            <span class="first-word" data-original="Basmati">Basmati</span>
+            <span class="product-name-text" data-original="Rice">Rice</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 16.99</span></div>
@@ -2341,8 +2304,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#41</span>
-            <span class="first-word" data-original="{{first_word}}">Jamaican</span>
-            <span class="product-name-text" data-original="{{remaining}}">Water Crackers</span>
+            <span class="first-word" data-original="Jamaican">Jamaican</span>
+            <span class="product-name-text" data-original="Water Crackers">Water Crackers</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.29</span></div>
@@ -2383,8 +2346,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#42</span>
-            <span class="first-word" data-original="{{first_word}}">Fenugreek</span>
-            <span class="product-name-text" data-original="{{remaining}}">Bunch</span>
+            <span class="first-word" data-original="Fenugreek">Fenugreek</span>
+            <span class="product-name-text" data-original="Bunch">Bunch</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.00</span></div>
@@ -2425,8 +2388,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#43</span>
-            <span class="first-word" data-original="{{first_word}}">Sunflower</span>
-            <span class="product-name-text" data-original="{{remaining}}">Seeds, Original</span>
+            <span class="first-word" data-original="Sunflower">Sunflower</span>
+            <span class="product-name-text" data-original="Seeds, Original">Seeds, Original</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.99</span></div>
@@ -2467,8 +2430,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#44</span>
-            <span class="first-word" data-original="{{first_word}}">Premium</span>
-            <span class="product-name-text" data-original="{{remaining}}">Unsweetened Coconut Milk</span>
+            <span class="first-word" data-original="Premium">Premium</span>
+            <span class="product-name-text" data-original="Unsweetened Coconut Milk">Unsweetened Coconut Milk</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.99</span></div>
@@ -2509,8 +2472,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#45</span>
-            <span class="first-word" data-original="{{first_word}}">Lite</span>
-            <span class="product-name-text" data-original="{{remaining}}">Coconut Milk</span>
+            <span class="first-word" data-original="Lite">Lite</span>
+            <span class="product-name-text" data-original="Coconut Milk">Coconut Milk</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.99</span></div>
@@ -2551,8 +2514,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#46</span>
-            <span class="first-word" data-original="{{first_word}}">Sweet</span>
-            <span class="product-name-text" data-original="{{remaining}}">Chili Sauce for Chicken</span>
+            <span class="first-word" data-original="Sweet">Sweet</span>
+            <span class="product-name-text" data-original="Chili Sauce for Chicken">Chili Sauce for Chicken</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 2.99</span></div>
@@ -2593,8 +2556,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#47</span>
-            <span class="first-word" data-original="{{first_word}}">Tocino</span>
-            <span class="product-name-text" data-original="{{remaining}}">Flavoured</span>
+            <span class="first-word" data-original="Tocino">Tocino</span>
+            <span class="product-name-text" data-original="Flavoured">Flavoured</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 5.99</span></div>
@@ -2635,8 +2598,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#48</span>
-            <span class="first-word" data-original="{{first_word}}">Red</span>
-            <span class="product-name-text" data-original="{{remaining}}">Onions, 3 lb Bag</span>
+            <span class="first-word" data-original="Red">Red</span>
+            <span class="product-name-text" data-original="Onions, 3 lb Bag">Onions, 3 lb Bag</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 6.00</span></div>
@@ -2677,8 +2640,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#49</span>
-            <span class="first-word" data-original="{{first_word}}">Granadilla</span>
-            <span class="product-name-text" data-original="{{remaining}}"></span>
+            <span class="first-word" data-original="Granadilla">Granadilla</span>
+            <span class="product-name-text" data-original=""></span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.00</span></div>
@@ -2719,8 +2682,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#50</span>
-            <span class="first-word" data-original="{{first_word}}">Raw</span>
-            <span class="product-name-text" data-original="{{remaining}}">Honey</span>
+            <span class="first-word" data-original="Raw">Raw</span>
+            <span class="product-name-text" data-original="Honey">Honey</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 12.99</span></div>
@@ -2761,8 +2724,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#51</span>
-            <span class="first-word" data-original="{{first_word}}">Gulab</span>
-            <span class="product-name-text" data-original="{{remaining}}">Jamun</span>
+            <span class="first-word" data-original="Gulab">Gulab</span>
+            <span class="product-name-text" data-original="Jamun">Jamun</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 6.99</span></div>
@@ -2803,8 +2766,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#52</span>
-            <span class="first-word" data-original="{{first_word}}">Pastrami</span>
-            <span class="product-name-text" data-original="{{remaining}}">Mild</span>
+            <span class="first-word" data-original="Pastrami">Pastrami</span>
+            <span class="product-name-text" data-original="Mild">Mild</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 7.00</span></div>
@@ -2845,8 +2808,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#53</span>
-            <span class="first-word" data-original="{{first_word}}">Cajun</span>
-            <span class="product-name-text" data-original="{{remaining}}">Turkey Breast Mild</span>
+            <span class="first-word" data-original="Cajun">Cajun</span>
+            <span class="product-name-text" data-original="Turkey Breast Mild">Turkey Breast Mild</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 7.00</span></div>
@@ -2887,8 +2850,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#54</span>
-            <span class="first-word" data-original="{{first_word}}">Roast</span>
-            <span class="product-name-text" data-original="{{remaining}}">Beef Mild</span>
+            <span class="first-word" data-original="Roast">Roast</span>
+            <span class="product-name-text" data-original="Beef Mild">Beef Mild</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 7.00</span></div>
@@ -2929,8 +2892,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#55</span>
-            <span class="first-word" data-original="{{first_word}}">Smoked</span>
-            <span class="product-name-text" data-original="{{remaining}}">Turkey Breast Mild</span>
+            <span class="first-word" data-original="Smoked">Smoked</span>
+            <span class="product-name-text" data-original="Turkey Breast Mild">Turkey Breast Mild</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 7.00</span></div>
@@ -2971,8 +2934,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#56</span>
-            <span class="first-word" data-original="{{first_word}}">Ground</span>
-            <span class="product-name-text" data-original="{{remaining}}">Chili Paste With Extra Garlic Sambal Oelek</span>
+            <span class="first-word" data-original="Ground">Ground</span>
+            <span class="product-name-text" data-original="Chili Paste With Extra Garlic Sambal Oelek">Chili Paste With Extra Garlic Sambal Oelek</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 6.99</span></div>
@@ -3013,8 +2976,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#57</span>
-            <span class="first-word" data-original="{{first_word}}">Ground</span>
-            <span class="product-name-text" data-original="{{remaining}}">Chili Sauce Sambal Oelek</span>
+            <span class="first-word" data-original="Ground">Ground</span>
+            <span class="product-name-text" data-original="Chili Sauce Sambal Oelek">Chili Sauce Sambal Oelek</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 6.99</span></div>
@@ -3055,8 +3018,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#58</span>
-            <span class="first-word" data-original="{{first_word}}">Vinegar</span>
-            <span class="product-name-text" data-original="{{remaining}}">Salta</span>
+            <span class="first-word" data-original="Vinegar">Vinegar</span>
+            <span class="product-name-text" data-original="Salta">Salta</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -3097,8 +3060,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#59</span>
-            <span class="first-word" data-original="{{first_word}}">100%</span>
-            <span class="product-name-text" data-original="{{remaining}}">Pure Coconut Water</span>
+            <span class="first-word" data-original="100%">100%</span>
+            <span class="product-name-text" data-original="Pure Coconut Water">Pure Coconut Water</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 1.49</span></div>
@@ -3139,8 +3102,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#60</span>
-            <span class="first-word" data-original="{{first_word}}">Salsa,</span>
-            <span class="product-name-text" data-original="{{remaining}}">Medium</span>
+            <span class="first-word" data-original="Salsa,">Salsa,</span>
+            <span class="product-name-text" data-original="Medium">Medium</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 5.49</span></div>
@@ -3181,8 +3144,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#61</span>
-            <span class="first-word" data-original="{{first_word}}">Salsa,</span>
-            <span class="product-name-text" data-original="{{remaining}}">Hot</span>
+            <span class="first-word" data-original="Salsa,">Salsa,</span>
+            <span class="product-name-text" data-original="Hot">Hot</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 5.49</span></div>
@@ -3223,8 +3186,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#62</span>
-            <span class="first-word" data-original="{{first_word}}">Hoisin</span>
-            <span class="product-name-text" data-original="{{remaining}}">Squeeze Sauce</span>
+            <span class="first-word" data-original="Hoisin">Hoisin</span>
+            <span class="product-name-text" data-original="Squeeze Sauce">Squeeze Sauce</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -3265,8 +3228,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#63</span>
-            <span class="first-word" data-original="{{first_word}}">Iodized</span>
-            <span class="product-name-text" data-original="{{remaining}}">Himalayan Pink Salt </span>
+            <span class="first-word" data-original="Iodized">Iodized</span>
+            <span class="product-name-text" data-original="Himalayan Pink Salt ">Himalayan Pink Salt </span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 7.99</span></div>
@@ -3307,8 +3270,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#64</span>
-            <span class="first-word" data-original="{{first_word}}">Dragon</span>
-            <span class="product-name-text" data-original="{{remaining}}">Fruit</span>
+            <span class="first-word" data-original="Dragon">Dragon</span>
+            <span class="product-name-text" data-original="Fruit">Fruit</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -3349,8 +3312,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#65</span>
-            <span class="first-word" data-original="{{first_word}}">Ataulfo</span>
-            <span class="product-name-text" data-original="{{remaining}}">Mango</span>
+            <span class="first-word" data-original="Ataulfo">Ataulfo</span>
+            <span class="product-name-text" data-original="Mango">Mango</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -3391,8 +3354,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#66</span>
-            <span class="first-word" data-original="{{first_word}}">Sweetened</span>
-            <span class="product-name-text" data-original="{{remaining}}">Condensed Whitener</span>
+            <span class="first-word" data-original="Sweetened">Sweetened</span>
+            <span class="product-name-text" data-original="Condensed Whitener">Condensed Whitener</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -3433,8 +3396,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#67</span>
-            <span class="first-word" data-original="{{first_word}}">Pure</span>
-            <span class="product-name-text" data-original="{{remaining}}">Sesame Oil</span>
+            <span class="first-word" data-original="Pure">Pure</span>
+            <span class="product-name-text" data-original="Sesame Oil">Sesame Oil</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 8.49</span></div>
@@ -3475,8 +3438,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#68</span>
-            <span class="first-word" data-original="{{first_word}}">Cashews,</span>
-            <span class="product-name-text" data-original="{{remaining}}">Salted</span>
+            <span class="first-word" data-original="Cashews,">Cashews,</span>
+            <span class="product-name-text" data-original="Salted">Salted</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 16.99</span></div>
@@ -3517,8 +3480,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#69</span>
-            <span class="first-word" data-original="{{first_word}}">Panda</span>
-            <span class="product-name-text" data-original="{{remaining}}">Oyster Sauce</span>
+            <span class="first-word" data-original="Panda">Panda</span>
+            <span class="product-name-text" data-original="Oyster Sauce">Oyster Sauce</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 6.79</span></div>
@@ -3559,8 +3522,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#70</span>
-            <span class="first-word" data-original="{{first_word}}">Jerk</span>
-            <span class="product-name-text" data-original="{{remaining}}">Marinade</span>
+            <span class="first-word" data-original="Jerk">Jerk</span>
+            <span class="product-name-text" data-original="Marinade">Marinade</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 5.49</span></div>
@@ -3601,8 +3564,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#71</span>
-            <span class="first-word" data-original="{{first_word}}">Wjx</span>
-            <span class="product-name-text" data-original="{{remaining}}">Soy Sauce</span>
+            <span class="first-word" data-original="Wjx">Wjx</span>
+            <span class="product-name-text" data-original="Soy Sauce">Soy Sauce</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -3643,8 +3606,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#72</span>
-            <span class="first-word" data-original="{{first_word}}">Fresh</span>
-            <span class="product-name-text" data-original="{{remaining}}">Coconut Young</span>
+            <span class="first-word" data-original="Fresh">Fresh</span>
+            <span class="product-name-text" data-original="Coconut Young">Coconut Young</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -3685,8 +3648,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#73</span>
-            <span class="first-word" data-original="{{first_word}}">Manzano</span>
-            <span class="product-name-text" data-original="{{remaining}}">Bananas, Bunch</span>
+            <span class="first-word" data-original="Manzano">Manzano</span>
+            <span class="product-name-text" data-original="Bananas, Bunch">Bananas, Bunch</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.21</span></div>
@@ -3727,8 +3690,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#74</span>
-            <span class="first-word" data-original="{{first_word}}">Liquid</span>
-            <span class="product-name-text" data-original="{{remaining}}">Honey     </span>
+            <span class="first-word" data-original="Liquid">Liquid</span>
+            <span class="product-name-text" data-original="Honey     ">Honey     </span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 9.99</span></div>
@@ -3769,8 +3732,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#75</span>
-            <span class="first-word" data-original="{{first_word}}">Cream</span>
-            <span class="product-name-text" data-original="{{remaining}}">Of Coconut Beverage Base</span>
+            <span class="first-word" data-original="Cream">Cream</span>
+            <span class="product-name-text" data-original="Of Coconut Beverage Base">Of Coconut Beverage Base</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 6.49</span></div>
@@ -3811,8 +3774,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#76</span>
-            <span class="first-word" data-original="{{first_word}}">Kesar</span>
-            <span class="product-name-text" data-original="{{remaining}}">Rasmalai    </span>
+            <span class="first-word" data-original="Kesar">Kesar</span>
+            <span class="product-name-text" data-original="Rasmalai    ">Rasmalai    </span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 10.99</span></div>
@@ -3853,8 +3816,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#77</span>
-            <span class="first-word" data-original="{{first_word}}">Pure</span>
-            <span class="product-name-text" data-original="{{remaining}}">Natural White Honey</span>
+            <span class="first-word" data-original="Pure">Pure</span>
+            <span class="product-name-text" data-original="Natural White Honey">Natural White Honey</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 10.99</span></div>
@@ -3895,8 +3858,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#78</span>
-            <span class="first-word" data-original="{{first_word}}">Noodles,</span>
-            <span class="product-name-text" data-original="{{remaining}}">Masala</span>
+            <span class="first-word" data-original="Noodles,">Noodles,</span>
+            <span class="product-name-text" data-original="Masala">Masala</span>
           </div>
           <div>Expire On: 2025-04-02</div>
           <div>WAS: <span class="was-price">$ 0.49</span></div>
@@ -3937,8 +3900,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#79</span>
-            <span class="first-word" data-original="{{first_word}}">Young</span>
-            <span class="product-name-text" data-original="{{remaining}}">Green Jackfruit In Brine</span>
+            <span class="first-word" data-original="Young">Young</span>
+            <span class="product-name-text" data-original="Green Jackfruit In Brine">Green Jackfruit In Brine</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -3979,8 +3942,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#80</span>
-            <span class="first-word" data-original="{{first_word}}">Coconut</span>
-            <span class="product-name-text" data-original="{{remaining}}">Milk Organic</span>
+            <span class="first-word" data-original="Coconut">Coconut</span>
+            <span class="product-name-text" data-original="Milk Organic">Milk Organic</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -4021,8 +3984,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#81</span>
-            <span class="first-word" data-original="{{first_word}}">Bouillon</span>
-            <span class="product-name-text" data-original="{{remaining}}">Cubes, Pork</span>
+            <span class="first-word" data-original="Bouillon">Bouillon</span>
+            <span class="product-name-text" data-original="Cubes, Pork">Cubes, Pork</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -4063,8 +4026,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#82</span>
-            <span class="first-word" data-original="{{first_word}}">Bouillon</span>
-            <span class="product-name-text" data-original="{{remaining}}">Cubes, Beef</span>
+            <span class="first-word" data-original="Bouillon">Bouillon</span>
+            <span class="product-name-text" data-original="Cubes, Beef">Cubes, Beef</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -4105,8 +4068,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#83</span>
-            <span class="first-word" data-original="{{first_word}}">Bouillon</span>
-            <span class="product-name-text" data-original="{{remaining}}">Cubes, Chicken</span>
+            <span class="first-word" data-original="Bouillon">Bouillon</span>
+            <span class="product-name-text" data-original="Cubes, Chicken">Cubes, Chicken</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -4147,8 +4110,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#84</span>
-            <span class="first-word" data-original="{{first_word}}">Rice</span>
-            <span class="product-name-text" data-original="{{remaining}}">Vermicelli Noodles</span>
+            <span class="first-word" data-original="Rice">Rice</span>
+            <span class="product-name-text" data-original="Vermicelli Noodles">Vermicelli Noodles</span>
           </div>
           <div>Expire On: 2025-03-12</div>
           <div>WAS: <span class="was-price">$ 2.49</span></div>
@@ -4189,8 +4152,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#85</span>
-            <span class="first-word" data-original="{{first_word}}">Grand</span>
-            <span class="product-name-text" data-original="{{remaining}}">Extra Basmati Rice</span>
+            <span class="first-word" data-original="Grand">Grand</span>
+            <span class="product-name-text" data-original="Extra Basmati Rice">Extra Basmati Rice</span>
           </div>
           <div>Expire On: 2025-03-12</div>
           <div>WAS: <span class="was-price">$ 18.99</span></div>
@@ -4231,8 +4194,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#86</span>
-            <span class="first-word" data-original="{{first_word}}">Coconut</span>
-            <span class="product-name-text" data-original="{{remaining}}">Milk, Powdered</span>
+            <span class="first-word" data-original="Coconut">Coconut</span>
+            <span class="product-name-text" data-original="Milk, Powdered">Milk, Powdered</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 1.29</span></div>
@@ -4273,8 +4236,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#87</span>
-            <span class="first-word" data-original="{{first_word}}">Shirley</span>
-            <span class="product-name-text" data-original="{{remaining}}">Biscuits, Coconut</span>
+            <span class="first-word" data-original="Shirley">Shirley</span>
+            <span class="product-name-text" data-original="Biscuits, Coconut">Biscuits, Coconut</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 1.29</span></div>
@@ -4315,8 +4278,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#88</span>
-            <span class="first-word" data-original="{{first_word}}">Medium</span>
-            <span class="product-name-text" data-original="{{remaining}}">Grain Sushi Rice </span>
+            <span class="first-word" data-original="Medium">Medium</span>
+            <span class="product-name-text" data-original="Grain Sushi Rice ">Grain Sushi Rice </span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 6.49</span></div>
@@ -4357,8 +4320,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#89</span>
-            <span class="first-word" data-original="{{first_word}}">Thai</span>
-            <span class="product-name-text" data-original="{{remaining}}">Hom Mali Brown Jasmine Rice</span>
+            <span class="first-word" data-original="Thai">Thai</span>
+            <span class="product-name-text" data-original="Hom Mali Brown Jasmine Rice">Hom Mali Brown Jasmine Rice</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 12.99</span></div>
@@ -4399,8 +4362,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#90</span>
-            <span class="first-word" data-original="{{first_word}}">Chili</span>
-            <span class="product-name-text" data-original="{{remaining}}">Paste</span>
+            <span class="first-word" data-original="Chili">Chili</span>
+            <span class="product-name-text" data-original="Paste">Paste</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 3.79</span></div>
@@ -4441,8 +4404,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#91</span>
-            <span class="first-word" data-original="{{first_word}}">Chow</span>
-            <span class="product-name-text" data-original="{{remaining}}">Style Chili</span>
+            <span class="first-word" data-original="Chow">Chow</span>
+            <span class="product-name-text" data-original="Style Chili">Style Chili</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 6.49</span></div>
@@ -4483,8 +4446,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#92</span>
-            <span class="first-word" data-original="{{first_word}}">Dressing</span>
-            <span class="product-name-text" data-original="{{remaining}}">& Marinade Roasted Garlic Onion</span>
+            <span class="first-word" data-original="Dressing">Dressing</span>
+            <span class="product-name-text" data-original="& Marinade Roasted Garlic Onion">& Marinade Roasted Garlic Onion</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 6.99</span></div>
@@ -4525,8 +4488,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#93</span>
-            <span class="first-word" data-original="{{first_word}}">Crispy</span>
-            <span class="product-name-text" data-original="{{remaining}}">Shrimp Cheeks Snacks Original</span>
+            <span class="first-word" data-original="Crispy">Crispy</span>
+            <span class="product-name-text" data-original="Shrimp Cheeks Snacks Original">Shrimp Cheeks Snacks Original</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 6.99</span></div>
@@ -4567,8 +4530,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#94</span>
-            <span class="first-word" data-original="{{first_word}}">Instant</span>
-            <span class="product-name-text" data-original="{{remaining}}">Coffee & Roasted Chicory</span>
+            <span class="first-word" data-original="Instant">Instant</span>
+            <span class="product-name-text" data-original="Coffee & Roasted Chicory">Coffee & Roasted Chicory</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 6.99</span></div>
@@ -4609,8 +4572,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#95</span>
-            <span class="first-word" data-original="{{first_word}}">Green</span>
-            <span class="product-name-text" data-original="{{remaining}}">Olives with Garlic</span>
+            <span class="first-word" data-original="Green">Green</span>
+            <span class="product-name-text" data-original="Olives with Garlic">Olives with Garlic</span>
           </div>
           <div>Expire On: 2025-04-16</div>
           <div>WAS: <span class="was-price">$ 13.99</span></div>
@@ -4651,8 +4614,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#96</span>
-            <span class="first-word" data-original="{{first_word}}">Green</span>
-            <span class="product-name-text" data-original="{{remaining}}">Olives with Almonds</span>
+            <span class="first-word" data-original="Green">Green</span>
+            <span class="product-name-text" data-original="Olives with Almonds">Olives with Almonds</span>
           </div>
           <div>Expire On: 2025-04-16</div>
           <div>WAS: <span class="was-price">$ 13.99</span></div>
@@ -4693,8 +4656,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#97</span>
-            <span class="first-word" data-original="{{first_word}}">Plantain</span>
-            <span class="product-name-text" data-original="{{remaining}}">Chips</span>
+            <span class="first-word" data-original="Plantain">Plantain</span>
+            <span class="product-name-text" data-original="Chips">Chips</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 1.49</span></div>
@@ -4735,8 +4698,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#98</span>
-            <span class="first-word" data-original="{{first_word}}">Sweet</span>
-            <span class="product-name-text" data-original="{{remaining}}">Plantain Chips</span>
+            <span class="first-word" data-original="Sweet">Sweet</span>
+            <span class="product-name-text" data-original="Plantain Chips">Plantain Chips</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 1.49</span></div>
@@ -4777,8 +4740,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#99</span>
-            <span class="first-word" data-original="{{first_word}}">Halal</span>
-            <span class="product-name-text" data-original="{{remaining}}">Yogurt 2% Plain</span>
+            <span class="first-word" data-original="Halal">Halal</span>
+            <span class="product-name-text" data-original="Yogurt 2% Plain">Yogurt 2% Plain</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 3.19</span></div>
@@ -4819,8 +4782,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#100</span>
-            <span class="first-word" data-original="{{first_word}}">Halal</span>
-            <span class="product-name-text" data-original="{{remaining}}">Yogurt 3% Plain</span>
+            <span class="first-word" data-original="Halal">Halal</span>
+            <span class="product-name-text" data-original="Yogurt 3% Plain">Yogurt 3% Plain</span>
           </div>
           <div>Expire On: 2025-03-26</div>
           <div>WAS: <span class="was-price">$ 3.19</span></div>
@@ -4861,8 +4824,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#101</span>
-            <span class="first-word" data-original="{{first_word}}">Organic</span>
-            <span class="product-name-text" data-original="{{remaining}}">Virgin Coconut Oil</span>
+            <span class="first-word" data-original="Organic">Organic</span>
+            <span class="product-name-text" data-original="Virgin Coconut Oil">Virgin Coconut Oil</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 16.99</span></div>
@@ -4903,8 +4866,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#102</span>
-            <span class="first-word" data-original="{{first_word}}">Jack</span>
-            <span class="product-name-text" data-original="{{remaining}}">Mackerel In Brine</span>
+            <span class="first-word" data-original="Jack">Jack</span>
+            <span class="product-name-text" data-original="Mackerel In Brine">Mackerel In Brine</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 3.49</span></div>
@@ -4945,8 +4908,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#103</span>
-            <span class="first-word" data-original="{{first_word}}">Cream</span>
-            <span class="product-name-text" data-original="{{remaining}}">Crackers </span>
+            <span class="first-word" data-original="Cream">Cream</span>
+            <span class="product-name-text" data-original="Crackers ">Crackers </span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -4987,8 +4950,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#104</span>
-            <span class="first-word" data-original="{{first_word}}">Festival</span>
-            <span class="product-name-text" data-original="{{remaining}}">Unique Jamaican Dough Mix</span>
+            <span class="first-word" data-original="Festival">Festival</span>
+            <span class="product-name-text" data-original="Unique Jamaican Dough Mix">Unique Jamaican Dough Mix</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -5029,8 +4992,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#105</span>
-            <span class="first-word" data-original="{{first_word}}">Johnny</span>
-            <span class="product-name-text" data-original="{{remaining}}">Cake Mix</span>
+            <span class="first-word" data-original="Johnny">Johnny</span>
+            <span class="product-name-text" data-original="Cake Mix">Cake Mix</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 1.99</span></div>
@@ -5071,8 +5034,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#106</span>
-            <span class="first-word" data-original="{{first_word}}">Panda</span>
-            <span class="product-name-text" data-original="{{remaining}}">Brand Oyster Sauce</span>
+            <span class="first-word" data-original="Panda">Panda</span>
+            <span class="product-name-text" data-original="Brand Oyster Sauce">Brand Oyster Sauce</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -5113,8 +5076,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#107</span>
-            <span class="first-word" data-original="{{first_word}}">M.Y</span>
-            <span class="product-name-text" data-original="{{remaining}}">Sans Crackers</span>
+            <span class="first-word" data-original="M.Y">M.Y</span>
+            <span class="product-name-text" data-original="Sans Crackers">Sans Crackers</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 7.29</span></div>
@@ -5155,8 +5118,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#108</span>
-            <span class="first-word" data-original="{{first_word}}">Diced</span>
-            <span class="product-name-text" data-original="{{remaining}}">Chipotle Peppers</span>
+            <span class="first-word" data-original="Diced">Diced</span>
+            <span class="product-name-text" data-original="Chipotle Peppers">Chipotle Peppers</span>
           </div>
           <div>Expire On: 2025-03-19</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
@@ -5197,8 +5160,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#109</span>
-            <span class="first-word" data-original="{{first_word}}">Green</span>
-            <span class="product-name-text" data-original="{{remaining}}">Mexican Sauce</span>
+            <span class="first-word" data-original="Green">Green</span>
+            <span class="product-name-text" data-original="Mexican Sauce">Mexican Sauce</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 4.99</span></div>
