@@ -12,16 +12,7 @@
 <link href='https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap' rel='stylesheet'>
 
 <!-- Load Chart.js from CDN -->
-<!-- Load Chart.js (already in your code) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
-
-<!-- Load the Chart.js DataLabels plugin -->
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0/dist/chartjs-plugin-datalabels.min.js"></script>
-
-<script>
-  // Register the plugin with Chart.js
-  Chart.register(ChartDataLabels);
-</script>
 
 <style>
 html {
@@ -439,128 +430,59 @@ function toggleMonYr(checkbox) {
  * Legend is disabled.
  */
 function renderStackedBarChart(productId, data) {
-  const ctx = document.getElementById('canvas-' + productId).getContext('2d');
-  if (!data || data.length === 0) {
-    ctx.font = "14px Arial";
-    ctx.fillText("No 1 Mon data", 10, 50);
-    return;
-  }
-
-  // Find the highest "Was" price for some extra headroom
-  let maxWas = 0;
-  data.forEach(d => {
-    if (d.was_price > maxWas) {
-      maxWas = d.was_price;
+    var ctx = document.getElementById('canvas-' + productId).getContext('2d');
+    if (!data || data.length === 0) {
+        ctx.font = "14px Arial";
+        ctx.fillText("No 1 Mon data", 10, 50);
+        return;
     }
-  });
-  const yAxisMax = maxWas * 1.1; // 10% extra space at the top
-
-  chartInstances[productId] = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: data.map(d => d.date),
-      datasets: [
-        // Green bar (Now Price)
-        {
-          label: 'Now Price',
-          data: data.map(d => d.now_price),
-          backgroundColor: '#009900',
-          stack: 'Stack 0',
-          datalabels: {
-            formatter: (value, context) => {
-              return data[context.dataIndex].now_price.toFixed(2);
+    chartInstances[productId] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: data.map(function(d) { return d.date; }),
+            datasets: [
+                {
+                    label: 'Now Price',
+                    data: data.map(function(d) { return d.now_price; }),
+                    backgroundColor: '#009900',
+                    stack: 'Stack 0'
+                },
+                {
+                    label: 'Was Price',
+                    data: data.map(function(d) { return d.was_price - d.now_price; }),
+                    backgroundColor: '#FF9900',
+                    stack: 'Stack 0'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
             },
-            color: '#000', // White text
-            font: { size: 10, weight: 'normal' },
-            /*
-              anchor: 'end'  -> reference the top edge of the green bar
-              align:  'end'  -> place the label outward from that edge
-              offset: -4     -> nudge the label inside the bar (negative pushes it downward)
-            */
-            anchor: 'end',
-            align: 'end',
-            offset: -4
-          }
-        },
-        // Orange bar (difference: Was - Now)
-        {
-          label: 'Was Price',
-          data: data.map(d => d.was_price - d.now_price),
-          backgroundColor: '#FF9900',
-          stack: 'Stack 0',
-          datalabels: {
-            formatter: (value, context) => {
-              return data[context.dataIndex].was_price.toFixed(2);
-            },
-            color: '#000',
-            font: { size: 10, weight: 'normal' },
-            anchor: 'end',
-            align: 'end',
-            offset: 2
-          }
-        },
-        // Optional line to show Now Price trend on top
-        {
-          type: 'line',
-          label: 'Now Price Trend',
-          data: data.map(d => d.now_price),
-          borderColor: '#000',
-          borderWidth: 1,
-          fill: false,
-          tension: 0.1,
-          pointBackgroundColor: '#000',
-          order: 99,
-          z: 9999,
-          yAxisID: 'yLine',
-          datalabels: {
-            display: false
-          }
+            scales: {
+                x: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    }
+                },
+                y: {
+                    stacked: true,
+                    title: {
+                        display: true,
+                        text: 'Price'
+                    },
+                    beginAtZero: true
+                }
+            }
         }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        datalabels: {
-          clip: false // keeps labels from being clipped at chart edges
-        },
-        legend: {
-          display: false
-        }
-      },
-      scales: {
-        x: {
-          stacked: true,
-          title: {
-            display: true,
-            text: 'Date'
-          }
-        },
-        // Stacked bar axis
-        y: {
-          stacked: true,
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Price'
-          },
-          max: yAxisMax
-        },
-        // Separate axis for the line dataset
-        yLine: {
-          beginAtZero: true,
-          display: false,
-          min: 0,
-          max: yAxisMax
-        }
-      }
-    }
-  });
+    });
 }
-
-
-
 
 /**
  * Renders a two-line chart (1 Yr data) using Chart.js.
@@ -697,7 +619,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_intnfood</div>
   </div>
-  <div class="creation-time">Created on: 2025-03-01 00:16:12</div>
+  <div class="creation-time">Created on: 2025-03-01 00:17:13</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
