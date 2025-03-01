@@ -179,8 +179,8 @@ body.page-loaded .fade-on-load {
     position: relative;
 }
 .toggle-switch.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    /* When disabled, use a slightly lighter gray */
+    background-color: transparent;
 }
 .toggle-input {
     display: none;
@@ -197,6 +197,10 @@ body.page-loaded .fade-on-load {
 }
 .toggle-switch:not(.disabled) .toggle-label {
     background-color: #3e7d53;
+}
+.toggle-switch.disabled .toggle-label {
+    /* When disabled, use a lighter gray */
+    background-color: #ccc;
 }
 .toggle-label .toggle-circle {
     position: absolute;
@@ -220,8 +224,12 @@ body.page-loaded .fade-on-load {
     text-align: center;
     line-height: 28px;
     font-size: 12px;
+    /* When disabled, force text color to black */
     color: #fff;
     pointer-events: none;
+}
+.toggle-switch.disabled .toggle-label .toggle-text {
+    color: #000;
 }
 .right-side {
     flex: 1;
@@ -289,6 +297,34 @@ body.page-loaded .fade-on-load {
 </style>
 
 <script>
+// Custom plugin to render labels on the line chart.
+var lineChartLabelsPlugin = {
+    id: 'lineChartLabelsPlugin',
+    afterDatasetsDraw: function(chart, args, options) {
+        var ctx = chart.ctx;
+        chart.data.datasets.forEach(function(dataset, datasetIndex) {
+            if (dataset.label === 'Was Price' || dataset.label === 'Now Price') {
+                var meta = chart.getDatasetMeta(datasetIndex);
+                meta.data.forEach(function(element, index) {
+                    var dataValue = dataset.data[index];
+                    ctx.font = Chart.helpers.fontString(12, 'normal', 'Arial');
+                    ctx.fillStyle = (dataset.label === 'Was Price') ? '#0077cc' : '#009900';
+                    ctx.textAlign = 'center';
+                    // Get the tooltip position of the element
+                    var pos = element.tooltipPosition();
+                    if (dataset.label === 'Was Price') {
+                        // Draw value above the point
+                        ctx.fillText(dataValue.toFixed(2), pos.x, pos.y - 10);
+                    } else {
+                        // Draw value below the point
+                        ctx.fillText(dataValue.toFixed(2), pos.x, pos.y + 15);
+                    }
+                });
+            }
+        });
+    }
+};
+
 document.addEventListener('DOMContentLoaded', function() {
     // Add 'page-loaded' class to body for fade-on-load effects.
     document.body.classList.add('page-loaded');
@@ -377,7 +413,6 @@ function toggleMonYr(checkbox) {
         delete chartInstances[productId];
     }
 
-    // Immediately render the chart based on the toggle state.
     if (checkbox.checked) {
         toggleLabel.textContent = "1 Yr";
         var filtered = data1yr.filter(function(d) {
@@ -395,7 +430,6 @@ function toggleMonYr(checkbox) {
 
 /**
  * Renders a stacked bar chart (1 Mon data) using Chart.js.
- * Legend is disabled.
  */
 function renderStackedBarChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -454,7 +488,7 @@ function renderStackedBarChart(productId, data) {
 
 /**
  * Renders a two-line chart (1 Yr data) using Chart.js.
- * Legend is disabled.
+ * This chart uses a custom plugin to draw numeric labels above/below each dot.
  */
 function renderLineChart(productId, data) {
     var ctx = document.getElementById('canvas-' + productId).getContext('2d');
@@ -474,7 +508,8 @@ function renderLineChart(productId, data) {
                     borderColor: '#0077cc',
                     backgroundColor: '#0077cc',
                     fill: false,
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 4
                 },
                 {
                     label: 'Now Price',
@@ -482,7 +517,8 @@ function renderLineChart(productId, data) {
                     borderColor: '#009900',
                     backgroundColor: '#009900',
                     fill: false,
-                    tension: 0.1
+                    tension: 0.1,
+                    pointRadius: 4
                 }
             ]
         },
@@ -509,7 +545,8 @@ function renderLineChart(productId, data) {
                     beginAtZero: true
                 }
             }
-        }
+        },
+        plugins: [lineChartLabelsPlugin]
     });
 }
 
@@ -587,7 +624,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 21:12:43</div>
+  <div class="creation-time">Created on: 2025-02-28 21:17:12</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -624,8 +661,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#1</span>
-            <span class="first-word" data-original="Fresh">Fresh</span>
-            <span class="product-name-text" data-original="Atlantic Salmon Fillets, Skin On, Packaged, Club Size">Atlantic Salmon Fillets, Skin On, Packaged, Club Size</span>
+            <span class="first-word" data-original="{{first_word}}">Fresh</span>
+            <span class="product-name-text" data-original="{{remaining}}">Atlantic Salmon Fillets, Skin On, Packaged, Club Size</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 29.79</span></div>
@@ -666,8 +703,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#2</span>
-            <span class="first-word" data-original="Fresh">Fresh</span>
-            <span class="product-name-text" data-original="Atlantic Salmon Fillets, Skin On, Packaged">Atlantic Salmon Fillets, Skin On, Packaged</span>
+            <span class="first-word" data-original="{{first_word}}">Fresh</span>
+            <span class="product-name-text" data-original="{{remaining}}">Atlantic Salmon Fillets, Skin On, Packaged</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 11.95</span></div>
@@ -708,8 +745,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#3</span>
-            <span class="first-word" data-original="Pacific">Pacific</span>
-            <span class="product-name-text" data-original="White Shrimp Raw 16-20/LB">White Shrimp Raw 16-20/LB</span>
+            <span class="first-word" data-original="{{first_word}}">Pacific</span>
+            <span class="product-name-text" data-original="{{remaining}}">White Shrimp Raw 16-20/LB</span>
           </div>
           <div>Expire On: 2025-03-12</div>
           <div>WAS: <span class="was-price">$ 9.49</span></div>
@@ -750,8 +787,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#4</span>
-            <span class="first-word" data-original="Wild">Wild</span>
-            <span class="product-name-text" data-original="Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g">Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g</span>
+            <span class="first-word" data-original="{{first_word}}">Wild</span>
+            <span class="product-name-text" data-original="{{remaining}}">Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 13.49</span></div>
@@ -792,8 +829,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#5</span>
-            <span class="first-word" data-original="Crab">Crab</span>
-            <span class="product-name-text" data-original="Flavoured Wild Alaska Pollock Chunks">Flavoured Wild Alaska Pollock Chunks</span>
+            <span class="first-word" data-original="{{first_word}}">Crab</span>
+            <span class="product-name-text" data-original="{{remaining}}">Flavoured Wild Alaska Pollock Chunks</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -834,8 +871,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#6</span>
-            <span class="first-word" data-original="Lobster">Lobster</span>
-            <span class="product-name-text" data-original="Flavoured Wild Alaska Pollock Chunks">Flavoured Wild Alaska Pollock Chunks</span>
+            <span class="first-word" data-original="{{first_word}}">Lobster</span>
+            <span class="product-name-text" data-original="{{remaining}}">Flavoured Wild Alaska Pollock Chunks</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -876,8 +913,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#7</span>
-            <span class="first-word" data-original="Leg-Style">Leg-Style</span>
-            <span class="product-name-text" data-original="Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
+            <span class="first-word" data-original="{{first_word}}">Leg-Style</span>
+            <span class="product-name-text" data-original="{{remaining}}">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -918,8 +955,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#8</span>
-            <span class="first-word" data-original="Flake-Style">Flake-Style</span>
-            <span class="product-name-text" data-original="Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
+            <span class="first-word" data-original="{{first_word}}">Flake-Style</span>
+            <span class="product-name-text" data-original="{{remaining}}">Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 3.99</span></div>
@@ -960,8 +997,8 @@ function inPageSearch() {
         
           <div class="item-name">
             <span class="item-number">#9</span>
-            <span class="first-word" data-original="Breaded">Breaded</span>
-            <span class="product-name-text" data-original="Cod Bites With Sauce">Cod Bites With Sauce</span>
+            <span class="first-word" data-original="{{first_word}}">Breaded</span>
+            <span class="product-name-text" data-original="{{remaining}}">Cod Bites With Sauce</span>
           </div>
           <div>Expire On: 2025-03-05</div>
           <div>WAS: <span class="was-price">$ 10.99</span></div>
