@@ -24,27 +24,17 @@ body {
     font-family: 'Montserrat', Arial, sans-serif;
     background-color: #fff;
     overflow-x: hidden;
+}
+body {
     transition: opacity 0.5s ease;
 }
-/* Fade-in effect for the On Sale button */
 .fade-on-load {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity 0.8s ease;
 }
 body.page-loaded .fade-on-load {
     opacity: 1;
-    transform: translateY(0);
 }
-/* New: Fade-out effect for On Sale button (longer duration) */
-.on-sale-fade-out {
-    animation: fadeOutLong 3s forwards;
-}
-@keyframes fadeOutLong {
-    from { opacity: 1; }
-    to   { opacity: 0; }
-}
-
 .header-container {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -293,10 +283,9 @@ body.page-loaded .fade-on-load {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add 'page-loaded' class to trigger fade-in transitions.
+    // Add 'page-loaded' class to body for fade-on-load effect
     document.body.classList.add('page-loaded');
-
-    // Set initial visibility for detail and chart views.
+    // Ensure detail views are visible and chart views are hidden initially
     document.querySelectorAll('.detail-view').forEach(function(el) {
         el.style.opacity = '1';
         el.style.display = 'block';
@@ -305,30 +294,21 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.opacity = '0';
         el.style.display = 'none';
     });
-
-    // Provide chart data globally.
+    // Provide chart data as a global variable
     window.priceHistoryData = {"20143381001_KG": {"1mon": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}], "1yr": [{"date": "02.19", "was_price": 0.79, "now_price": 0.53}, {"date": "02.26", "was_price": 0.79, "now_price": 0.66}, {"date": "03.05", "was_price": 0.79, "now_price": 0.47}]}, "20811994001_EA": {"1mon": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}], "1yr": [{"date": "02.05", "was_price": 3.99, "now_price": 3.5}, {"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 2.5}]}, "21626132_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 3.99}, {"date": "02.12", "was_price": 6.0, "now_price": 3.99}, {"date": "02.19", "was_price": 6.0, "now_price": 3.99}, {"date": "02.26", "was_price": 6.0, "now_price": 3.99}, {"date": "03.05", "was_price": 6.0, "now_price": 3.99}]}, "20186654_EA": {"1mon": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 6.0, "now_price": 4.0}, {"date": "03.05", "was_price": 6.0, "now_price": 4.0}]}, "21022511001_KG": {"1mon": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}], "1yr": [{"date": "02.26", "was_price": 5.87, "now_price": 3.82}, {"date": "03.05", "was_price": 5.87, "now_price": 4.1}]}, "21023094001_KG": {"1mon": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}], "1yr": [{"date": "02.26", "was_price": 10.44, "now_price": 7.87}, {"date": "03.05", "was_price": 10.44, "now_price": 7.34}]}, "20070132001_EA": {"1mon": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}], "1yr": [{"date": "02.05", "was_price": 2.49, "now_price": 2.0}, {"date": "03.05", "was_price": 2.49, "now_price": 1.79}]}, "20020863001_KG": {"1mon": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}], "1yr": [{"date": "02.05", "was_price": 4.96, "now_price": 3.19}, {"date": "02.12", "was_price": 4.96, "now_price": 3.68}, {"date": "02.26", "was_price": 4.96, "now_price": 2.49}, {"date": "03.05", "was_price": 4.96, "now_price": 3.68}]}, "20162500001_KG": {"1mon": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}], "1yr": [{"date": "02.05", "was_price": 8.81, "now_price": 7.72}, {"date": "02.26", "was_price": 8.81, "now_price": 5.51}, {"date": "03.05", "was_price": 8.81, "now_price": 6.62}]}, "20119813001_EA": {"1mon": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}], "1yr": [{"date": "02.05", "was_price": 6.49, "now_price": 4.0}, {"date": "02.26", "was_price": 6.49, "now_price": 5.0}, {"date": "03.05", "was_price": 6.49, "now_price": 5.0}]}, "20005774001_EA": {"1mon": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}], "1yr": [{"date": "02.26", "was_price": 2.5, "now_price": 1.99}, {"date": "03.05", "was_price": 2.5, "now_price": 1.99}]}, "20119760001_EA": {"1mon": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}], "1yr": [{"date": "02.26", "was_price": 4.99, "now_price": 3.5}, {"date": "03.05", "was_price": 4.99, "now_price": 3.99}]}, "20167017001_EA": {"1mon": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.12", "was_price": 4.99, "now_price": 4.5}, {"date": "02.19", "was_price": 4.99, "now_price": 4.5}, {"date": "02.26", "was_price": 4.99, "now_price": 4.5}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "20039812_EA": {"1mon": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}], "1yr": [{"date": "02.05", "was_price": 4.99, "now_price": 4.0}, {"date": "03.05", "was_price": 4.99, "now_price": 4.0}]}, "21121560001_EA": {"1mon": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}], "1yr": [{"date": "02.19", "was_price": 2.49, "now_price": 1.99}, {"date": "03.05", "was_price": 2.49, "now_price": 2.0}]}, "20159689001_EA": {"1mon": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}], "1yr": [{"date": "02.26", "was_price": 3.0, "now_price": 2.49}, {"date": "03.05", "was_price": 3.0, "now_price": 2.49}]}, "20795315001_EA": {"1mon": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}], "1yr": [{"date": "02.12", "was_price": 5.99, "now_price": 5.0}, {"date": "03.05", "was_price": 5.99, "now_price": 4.99}]}, "20811362001_EA": {"1mon": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}], "1yr": [{"date": "02.19", "was_price": 6.0, "now_price": 5.0}, {"date": "02.26", "was_price": 6.0, "now_price": 5.0}, {"date": "03.05", "was_price": 6.0, "now_price": 5.0}]}, "20696626001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20600927001_EA": {"1mon": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}], "1yr": [{"date": "03.05", "was_price": 3.0, "now_price": 2.5}]}, "20104062_EA": {"1mon": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}], "1yr": [{"date": "02.12", "was_price": 12.0, "now_price": 10.0}, {"date": "03.05", "was_price": 12.0, "now_price": 10.0}]}, "20130242001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 1.19}, {"date": "02.26", "was_price": 1.19, "now_price": 1.0}, {"date": "03.05", "was_price": 1.19, "now_price": 1.0}]}, "20047112001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 3.0}, {"date": "03.05", "was_price": 3.49, "now_price": 2.99}]}, "20959290_EA": {"1mon": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 7.0, "now_price": 6.0}, {"date": "03.05", "was_price": 7.0, "now_price": 6.0}]}, "20920821001_EA": {"1mon": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 6.99, "now_price": 6.0}, {"date": "02.26", "was_price": 6.99, "now_price": 6.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "20145379001_EA": {"1mon": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}], "1yr": [{"date": "02.05", "was_price": 0.0, "now_price": 7.0}, {"date": "03.05", "was_price": 6.99, "now_price": 6.0}]}, "21406192_EA": {"1mon": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362564_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362519_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362499_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "21362495_EA": {"1mon": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}], "1yr": [{"date": "02.19", "was_price": 0.0, "now_price": 3.5}, {"date": "03.05", "was_price": 3.49, "now_price": 3.0}]}, "20033488001_KG": {"1mon": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}], "1yr": [{"date": "02.26", "was_price": 2.17, "now_price": 1.89}, {"date": "03.05", "was_price": 2.17, "now_price": 1.89}]}, "20868985001_EA": {"1mon": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 8.0, "now_price": 7.0}, {"date": "02.12", "was_price": 8.0, "now_price": 7.0}, {"date": "02.19", "was_price": 8.0, "now_price": 7.0}, {"date": "02.26", "was_price": 8.0, "now_price": 7.0}, {"date": "03.05", "was_price": 8.0, "now_price": 7.0}]}, "20045276001_EA": {"1mon": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}], "1yr": [{"date": "02.26", "was_price": 7.99, "now_price": 7.0}, {"date": "03.05", "was_price": 7.99, "now_price": 7.0}]}, "20168395001_EA": {"1mon": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}], "1yr": [{"date": "02.26", "was_price": 3.99, "now_price": 3.5}, {"date": "03.05", "was_price": 3.99, "now_price": 3.5}]}, "21549854001_KG": {"1mon": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}], "1yr": [{"date": "02.26", "was_price": 1.98, "now_price": 1.74}, {"date": "03.05", "was_price": 1.98, "now_price": 1.74}]}, "20121509001_EA": {"1mon": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}], "1yr": [{"date": "02.26", "was_price": 1.99, "now_price": 1.75}, {"date": "03.05", "was_price": 1.99, "now_price": 1.75}]}, "20157487001_EA": {"1mon": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}], "1yr": [{"date": "02.26", "was_price": 0.0, "now_price": 4.49}, {"date": "03.05", "was_price": 4.99, "now_price": 4.49}]}, "20067389001_EA": {"1mon": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}, {"date": "12.31", "was_price": 0.0, "now_price": 7.99}], "1yr": [{"date": "02.19", "was_price": 5.0, "now_price": 4.49}, {"date": "02.22", "was_price": 5.0, "now_price": 4.49}, {"date": "02.28", "was_price": 5.0, "now_price": 4.5}, {"date": "12.31", "was_price": 0.0, "now_price": 7.99}]}, "20649591001_KG": {"1mon": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}], "1yr": [{"date": "02.26", "was_price": 4.21, "now_price": 3.79}, {"date": "03.05", "was_price": 4.21, "now_price": 3.79}]}, "20051015001_EA": {"1mon": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}], "1yr": [{"date": "03.05", "was_price": 4.99, "now_price": 4.5}]}};
-
-    // After a delay, add the fade-out class to all On Sale buttons so they fade out slowly.
-    setTimeout(function() {
-        document.querySelectorAll('.vertical-switch-button').forEach(function(btn) {
-            btn.classList.add('on-sale-fade-out');
-        });
-    }, 3000);
 });
 
-// Store Chart.js instances by product id.
+// Store Chart.js instances by product id
 var chartInstances = {};
 
 /**
- * "On Sale" button: When clicked, show discount (detail) view and remove any chart.
+ * "Detail" button: show discount detail and hide chart view.
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
+    // Reset all toggle buttons in this container
     container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
         b.classList.remove('selected');
-        // Also remove any fade-out class to ensure visibility
-        b.classList.remove('on-sale-fade-out');
     });
     btn.classList.add('selected');
 
@@ -339,6 +319,7 @@ function switchToDetail(btn) {
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
+    // Show detail view and hide chart view
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '1';
@@ -346,7 +327,7 @@ function switchToDetail(btn) {
     chartView.style.opacity = '0';
     chartView.style.display = 'none';
 
-    // Destroy any existing chart
+    // Destroy any existing chart instance
     var productId = container.getAttribute('data-product-id');
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
@@ -356,8 +337,8 @@ function switchToDetail(btn) {
 
 /**
  * Toggle switch handler:
- * When toggled, hide discount (detail) view and show chart view.
- * Render Chart.js chart accordingly.
+ * When toggled, always show the chart view and hide the discount (detail) view.
+ * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
@@ -365,10 +346,12 @@ function toggleMonYr(checkbox) {
     if (toggleSwitch.classList.contains('disabled')) {
         toggleSwitch.classList.remove('disabled');
     }
-    // Unselect detail button so discount view remains hidden.
+
+    // Unselect the "Detail" button so discount view stays hidden
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
+    // Force chart view visible and discount view hidden
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '0';
@@ -381,7 +364,7 @@ function toggleMonYr(checkbox) {
     var data1mon = window.priceHistoryData[productId]["1mon"] || [];
     var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
 
-    // Destroy existing chart instance if any.
+    // Destroy any existing chart
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
         delete chartInstances[productId];
@@ -406,8 +389,7 @@ function toggleMonYr(checkbox) {
  * Renders a stacked bar chart (1 Mon data) using Chart.js.
  */
 function renderStackedBarChart(productId, data) {
-    var canvas = document.getElementById('canvas-' + productId);
-    var ctx = canvas.getContext('2d');
+    var ctx = document.getElementById('canvas-' + productId).getContext('2d');
     if (!data || data.length === 0) {
         ctx.font = "14px Arial";
         ctx.fillText("No 1 Mon data", 10, 50);
@@ -460,8 +442,7 @@ function renderStackedBarChart(productId, data) {
  * Renders a two-line chart (1 Yr data) using Chart.js.
  */
 function renderLineChart(productId, data) {
-    var canvas = document.getElementById('canvas-' + productId);
-    var ctx = canvas.getContext('2d');
+    var ctx = document.getElementById('canvas-' + productId).getContext('2d');
     if (!data || data.length === 0) {
         ctx.font = "14px Arial";
         ctx.fillText("No 1 Yr data", 10, 50);
@@ -538,9 +519,9 @@ function hideSearchBar() {
     }
     var items = document.getElementsByClassName('item-container');
     for (var i = 0; i < items.length; i++) {
-        items[i].style.display = '';
+        items[i].style.display = "";
     }
-    document.getElementById('searchCount').innerText = '';
+    document.getElementById('searchCount').innerText = "";
     searchBar.style.opacity = '0';
     setTimeout(function() {
         searchBar.style.display = 'none';
@@ -586,7 +567,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_veg</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 20:24:40</div>
+  <div class="creation-time">Created on: 2025-02-28 20:25:58</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -604,8 +585,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20143381001/b3/en/front/20143381001_front_a06_@2.png' alt='Roma Tomatoes' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20143381001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20143381001_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -646,8 +627,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20811994001/b3/en/front/20811994001_front_a06_@2.png' alt='Yellow Onions, 3 lb Bag' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20811994001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811994001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -688,8 +669,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21626132/b3/en/front/21626132_front_a06_@2.png' alt='Brusselslaw' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21626132_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21626132_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -730,8 +711,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20186654/b3/en/front/20186654_front_a06_@2.png' alt='Vegetable Medley' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20186654_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20186654_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -772,8 +753,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21022511001/b3/en/front/21022511001_front_a06_@2.png' alt='Canary Melon' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21022511001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21022511001_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -814,8 +795,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21023094001/b3/en/front/21023094001_front_a06_@2.png' alt='Santa Claus Melons' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21023094001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21023094001_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -856,8 +837,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20070132001/b3/en/front/20070132001_front_a06_@2.png' alt='English Cucumber' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20070132001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20070132001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -898,8 +879,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20020863001/b3/en/front/20020863001_front_a06_@2.png' alt='Taiwanese Flat Cabbage' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20020863001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20020863001_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -940,8 +921,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20162500001/b3/en/front/20162500001_front_a06_@2.png' alt='Guava' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20162500001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20162500001_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -982,8 +963,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20119813001/b3/en/angle/20119813001_angle_a06_@2.png' alt='Pineapple' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20119813001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119813001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1024,8 +1005,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20005774001/b3/en/front/20005774001_front_a06_@2.png' alt='Coconuts' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20005774001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20005774001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1066,8 +1047,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20119760001/b3/en/front/20119760001_front_a06_@2.png' alt='Caribbean Avocado' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20119760001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20119760001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1108,8 +1089,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20167017001/b3/en/front/20167017001_front_a06_@2.png' alt='Cantaloupe' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20167017001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20167017001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1150,8 +1131,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20039812/b3/en/front/20039812_front_a06_@2.png' alt='Broccoli Florets' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20039812_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20039812_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1192,8 +1173,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21121560001/b3/en/front/21121560001_front_a06_@2.png' alt='Broccoli Crown' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21121560001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21121560001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1234,8 +1215,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20159689001/b3/en/front/20159689001_front_a06_@2.png' alt='Fenugreek Bunch' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20159689001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20159689001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1276,8 +1257,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20795315001/b3/en/front/20795315001_front_a06_@2.png' alt='Lemons, 2 lb Bag' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20795315001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20795315001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1318,8 +1299,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20811362001/b3/en/front/20811362001_front_a06_@2.png' alt='Red Onions, 3 lb Bag' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20811362001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20811362001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1360,8 +1341,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20696626001/b3/en/front/20696626001_front_a06_@2.png' alt='Granadilla' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20696626001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20696626001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1402,8 +1383,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20600927001/b3/en/front/20600927001_front_a06_@2.png' alt='Carrots, 3 lb Bag' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20600927001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20600927001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1444,8 +1425,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20104062/b3/en/front/20104062_front_a06_@2.png' alt='Popeye Select Spinach' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20104062_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20104062_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1486,8 +1467,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20130242001/b3/en/front/20130242001_front_a06_@2.png' alt='Kiwis' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20130242001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20130242001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1528,8 +1509,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20047112001/b3/en/beauty/20047112001_beauty_a06_@2.png' alt='Quince' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20047112001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20047112001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1570,8 +1551,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20959290/b3/en/front/20959290_front_a06_@2.png' alt='Organic Broccoli Florets' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20959290_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20959290_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1612,8 +1593,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20920821001/b3/en/front/20920821001_front_a06_@2.png' alt='Mini Sweet Peppers' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20920821001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20920821001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1654,8 +1635,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20145379001/b3/en/front/20145379001_front_a06_@2.png' alt='Mini Seedless Watermelon' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20145379001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20145379001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1696,8 +1677,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21406192/b3/en/front/21406192_front_a06_@2.png' alt='Mango Turmeric' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21406192_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21406192_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1738,8 +1719,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362564/b3/en/front/21362564_front_a06_@2.png' alt='Blueberry Organic Kombucha' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21362564_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362564_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1780,8 +1761,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362519/b3/en/front/21362519_front_a06_@2.png' alt='Organic Pink Grapefruit Smoothie' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21362519_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362519_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1822,8 +1803,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362499/b3/en/front/21362499_front_a06_@2.png' alt='Organic Raspberry Lemon Kombucha' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21362499_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362499_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1864,8 +1845,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21362495/b3/en/front/21362495_front_a06_@2.png' alt='Organic Lime Strawberry Kombucha' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21362495_EA">
       <input type="checkbox" class="toggle-input" id="toggle-21362495_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1906,8 +1887,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20033488001/b3/en/front/20033488001_front_a06_@2.png' alt='Mini Bananas, Bunch' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20033488001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20033488001_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1948,8 +1929,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20868985001/b3/en/front/20868985001_front_a06_@2.png' alt='Imperfect Apples, 6 lb bag' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20868985001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20868985001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -1990,8 +1971,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20045276001/b3/en/front/20045276001_front_a06_@2.png' alt='Honeydew Melon' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20045276001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20045276001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -2032,8 +2013,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20168395001/b3/en/angle/20168395001_angle_a06_@2.png' alt='Dragon Fruit' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20168395001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20168395001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -2074,8 +2055,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21549854001/b3/en/front/21549854001_front_a06_@2.png' alt='Jackfruit Slice' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21549854001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-21549854001_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -2116,8 +2097,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20121509001/b3/en/front/20121509001_front_a06_@2.png' alt='Ataulfo Mango' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20121509001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20121509001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -2158,8 +2139,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20157487001/b3/en/front/20157487001_front_a06_@2.png' alt='Fresh Coconut Young' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20157487001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20157487001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -2200,8 +2181,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20067389001/b3/en/front/20067389001_front_a06_@2.png' alt='Romaine Heart, 3 Pack' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20067389001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20067389001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -2242,8 +2223,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20649591001/b3/en/front/20649591001_front_a06_@2.png' alt='Manzano Bananas, Bunch' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20649591001_KG">
       <input type="checkbox" class="toggle-input" id="toggle-20649591001_KG" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
@@ -2284,8 +2265,8 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20051015001/b3/en/front/20051015001_front_a06_@2.png' alt='Blackberries Half Pint' />
     </div>
-    <!-- "On Sale" button with fade-in and later fade-out effect -->
-    <button class="vertical-switch-button fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
+    <!-- "Detail" button (selected by default) -->
+    <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20051015001_EA">
       <input type="checkbox" class="toggle-input" id="toggle-20051015001_EA" onchange="toggleMonYr(this)" ontouchend="toggleMonYr(this)">
