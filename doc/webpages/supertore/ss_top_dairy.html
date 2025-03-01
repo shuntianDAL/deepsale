@@ -234,21 +234,24 @@ body.page-loaded .fade-on-load {
     pointer-events: none;
 }
 
-/* 1) By default, display an arrow pointing right */
+/* By default, display an arrow pointing right in bold black */
 .toggle-circle::before {
-    content: "→";              /* Arrow symbol */
-    color: #666;               /* Arrow color */
-    font-size: 14px;           /* Adjust as needed */
+    content: "→";
+    color: #000;
+    font-size: 14px;
+    font-weight: 700; /* or "bold" */
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    pointer-events: none;      /* So the arrow doesn't interfere with clicking */
+    pointer-events: none; 
 }
 
-/* 2) When the toggle is checked, flip the arrow to point left */
+/* When the toggle is checked, flip the arrow to point left (also bold black) */
 .toggle-input:checked + .toggle-label .toggle-circle::before {
     content: "←";
+    color: #000;
+    font-weight: 700;
 }
 
 .right-side {
@@ -615,7 +618,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_dairy</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 23:23:34</div>
+  <div class="creation-time">Created on: 2025-02-28 23:25:44</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
