@@ -624,7 +624,7 @@ function renderStackedBarChart(productId, data) {
  * Legend is disabled.
  */
 function renderLineChart(productId, data) {
-  var ctx = document.getElementById('canvas-' + productId).getContext('2d');
+  const ctx = document.getElementById('canvas-' + productId).getContext('2d');
   if (!data || data.length === 0) {
     ctx.font = "14px Arial";
     ctx.fillText("No 1 Yr data", 10, 50);
@@ -634,18 +634,14 @@ function renderLineChart(productId, data) {
   // 1) Find the highest price among was_price and now_price
   let maxPrice = 0;
   data.forEach(d => {
-    if (d.was_price > maxPrice) {
-      maxPrice = d.was_price;
-    }
-    if (d.now_price > maxPrice) {
-      maxPrice = d.now_price;
-    }
+    if (d.was_price > maxPrice) maxPrice = d.was_price;
+    if (d.now_price > maxPrice) maxPrice = d.now_price;
   });
 
   // 2) Add 20% headroom
-  let yAxisMax = maxPrice * 1.2;
+  const yAxisMax = maxPrice * 1.2;
 
-  // 3) Create the line chart with max = yAxisMax
+  // 3) Create the line chart with DataLabels
   chartInstances[productId] = new Chart(ctx, {
     type: 'line',
     data: {
@@ -657,7 +653,15 @@ function renderLineChart(productId, data) {
           borderColor: '#0077cc',
           backgroundColor: '#0077cc',
           fill: false,
-          tension: 0.1
+          tension: 0.1,
+          // DataLabels: was price above the line in blue
+          datalabels: {
+            color: '#0077cc',
+            anchor: 'end',   // place label above the point
+            align: 'end',    // outward from that anchor
+            offset: 4,       // move label a bit away from the point
+            formatter: (value) => value.toFixed(2)
+          }
         },
         {
           label: 'Now Price',
@@ -665,7 +669,15 @@ function renderLineChart(productId, data) {
           borderColor: '#009900',
           backgroundColor: '#009900',
           fill: false,
-          tension: 0.1
+          tension: 0.1,
+          // DataLabels: now price below the line in green
+          datalabels: {
+            color: '#009900',
+            anchor: 'start', // place label below the point
+            align: 'start',  // outward from that anchor
+            offset: 4,       // move label a bit away from the point
+            formatter: (value) => value.toFixed(2)
+          }
         }
       ]
     },
@@ -673,6 +685,10 @@ function renderLineChart(productId, data) {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
+        // Enable the DataLabels plugin globally or per-dataset
+        datalabels: {
+          clip: false // prevents labels from being cut off at edges
+        },
         legend: {
           display: false
         }
@@ -680,17 +696,17 @@ function renderLineChart(productId, data) {
       scales: {
         x: {
           title: {
-            display: true,
+            display: false,
             text: 'Date'
           }
         },
         y: {
           title: {
-            display: true,
+            display: false,
             text: 'Price'
           },
           beginAtZero: true,
-          max: yAxisMax // The top boundary is now 20% above the highest price
+          max: yAxisMax
         }
       }
     }
@@ -772,7 +788,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_intnfood</div>
   </div>
-  <div class="creation-time">Created on: 2025-03-01 00:42:15</div>
+  <div class="creation-time">Created on: 2025-03-01 00:45:34</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
