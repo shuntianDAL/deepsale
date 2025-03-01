@@ -24,16 +24,16 @@ body {
     font-family: 'Montserrat', Arial, sans-serif;
     background-color: #fff;
     overflow-x: hidden;
-}
-body {
     transition: opacity 0.5s ease;
 }
+/* Fade in effect for elements with .fade-on-load */
 .fade-on-load {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.8s ease;
 }
-body.page-loaded .fade-on-load {
-    opacity: 1;
+/* When .fade-out is added, the element fades to 0 */
+.fade-out {
+    opacity: 0;
 }
 .header-container {
     position: fixed;
@@ -283,9 +283,10 @@ body.page-loaded .fade-on-load {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Add 'page-loaded' class to body for fade-on-load effect
+    // Add a class to body for global transitions
     document.body.classList.add('page-loaded');
-    // Ensure detail views are visible and chart views are hidden initially
+
+    // Set initial visibility for detail and chart views
     document.querySelectorAll('.detail-view').forEach(function(el) {
         el.style.opacity = '1';
         el.style.display = 'block';
@@ -294,23 +295,32 @@ document.addEventListener('DOMContentLoaded', function() {
         el.style.opacity = '0';
         el.style.display = 'none';
     });
+
     // Provide chart data as a global variable
     window.priceHistoryData = {"20720065_KG": {"1mon": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}], "1yr": [{"date": "02.19", "was_price": 29.79, "now_price": 20.47}, {"date": "03.05", "was_price": 29.79, "now_price": 20.47}]}, "20852143_KG": {"1mon": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}], "1yr": [{"date": "02.19", "was_price": 11.95, "now_price": 8.79}, {"date": "03.05", "was_price": 11.95, "now_price": 8.79}]}, "21043887_EA": {"1mon": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}], "1yr": [{"date": "02.05", "was_price": 9.49, "now_price": 5.99}, {"date": "03.12", "was_price": 9.49, "now_price": 7.0}]}, "21211819_EA": {"1mon": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 13.49, "now_price": 9.99}, {"date": "03.05", "was_price": 13.49, "now_price": 9.99}]}, "20750012_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749901_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20749798_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "20699832_EA": {"1mon": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}], "1yr": [{"date": "02.12", "was_price": 3.99, "now_price": 2.99}, {"date": "03.05", "was_price": 3.99, "now_price": 2.99}]}, "21108887_EA": {"1mon": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}], "1yr": [{"date": "02.05", "was_price": 10.99, "now_price": 9.99}, {"date": "03.05", "was_price": 10.99, "now_price": 9.99}]}};
+
+    // After 2 seconds, fade out all "On Sale" buttons by adding the 'fade-out' class
+    setTimeout(function(){
+        document.querySelectorAll('.vertical-switch-button[data-type="detail"]').forEach(function(btn) {
+            btn.classList.add('fade-out');
+        });
+    }, 2000);
 });
 
 // Store Chart.js instances by product id
 var chartInstances = {};
 
 /**
- * "Detail" button: show discount detail and hide chart view.
+ * "On Sale" button: When clicked, show discount (detail) view and remove any chart.
  */
 function switchToDetail(btn) {
     var container = btn.closest('.item-container');
-    // Reset all toggle buttons in this container
     container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
         b.classList.remove('selected');
     });
     btn.classList.add('selected');
+    // Restore button opacity
+    btn.style.opacity = '1';
 
     var toggleSwitch = container.querySelector('.toggle-switch');
     toggleSwitch.classList.add('disabled');
@@ -319,7 +329,6 @@ function switchToDetail(btn) {
     var toggleLabel = toggleSwitch.querySelector('.toggle-text');
     toggleLabel.textContent = "1 Yr";
 
-    // Show detail view and hide chart view
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '1';
@@ -327,7 +336,7 @@ function switchToDetail(btn) {
     chartView.style.opacity = '0';
     chartView.style.display = 'none';
 
-    // Destroy any existing chart instance
+    // Remove any existing chart
     var productId = container.getAttribute('data-product-id');
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
@@ -337,8 +346,8 @@ function switchToDetail(btn) {
 
 /**
  * Toggle switch handler:
- * When toggled, always show the chart view and hide the discount (detail) view.
- * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
+ * When toggled, hide discount (detail) view and show chart view.
+ * Render Chart.js chart accordingly.
  */
 function toggleMonYr(checkbox) {
     var container = checkbox.closest('.item-container');
@@ -346,12 +355,10 @@ function toggleMonYr(checkbox) {
     if (toggleSwitch.classList.contains('disabled')) {
         toggleSwitch.classList.remove('disabled');
     }
-
-    // Unselect the "Detail" button so discount view stays hidden
+    // Unselect detail button so discount view remains hidden
     var detailBtn = container.querySelector('[data-type="detail"]');
     detailBtn.classList.remove('selected');
 
-    // Force chart view visible and discount view hidden
     var detailView = container.querySelector('.detail-view');
     var chartView = container.querySelector('.chart-view');
     detailView.style.opacity = '0';
@@ -364,7 +371,7 @@ function toggleMonYr(checkbox) {
     var data1mon = window.priceHistoryData[productId]["1mon"] || [];
     var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
 
-    // Destroy any existing chart
+    // Destroy existing chart instance if any
     if (chartInstances[productId]) {
         chartInstances[productId].destroy();
         delete chartInstances[productId];
@@ -567,7 +574,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_seafood</div>
   </div>
-  <div class="creation-time">Created on: 2025-02-28 20:05:15</div>
+  <div class="creation-time">Created on: 2025-02-28 20:16:20</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
@@ -585,7 +592,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20720065/b3/en/beauty/20720065_beauty_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20720065_KG">
@@ -627,7 +634,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20852143/b3/en/angle/20852143_angle_a06_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20852143_KG">
@@ -669,7 +676,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21043887/b3/en/angle/21043887_angle_a06_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21043887_EA">
@@ -711,7 +718,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21211819/b3/en/front/21211819_front_a06_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21211819_EA">
@@ -753,7 +760,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20750012/b3/en/angle/20750012_angle_a06_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20750012_EA">
@@ -795,7 +802,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749901/b3/en/front/20749901_front_a06_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20749901_EA">
@@ -837,7 +844,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20749798/b3/en/angle/20749798_angle_a06_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20749798_EA">
@@ -879,7 +886,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/20699832/b3/en/angle/20699832_angle_a06_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="20699832_EA">
@@ -921,7 +928,7 @@ function inPageSearch() {
     <div class="item-image">
       <img src='https://assets.shop.loblaws.ca/products/21108887/b3/en/angle/21108887_angle_a06_@2.png' alt='Breaded Cod Bites With Sauce' />
     </div>
-    <!-- "Detail" button (selected by default) -->
+    <!-- "On Sale" button (detail button); it is marked with fade-on-load -->
     <button class="vertical-switch-button selected fade-on-load" data-type="detail" onclick="switchToDetail(this)">On Sale</button>
     <!-- Toggle switch (disabled by default, label "1 Yr") -->
     <div class="toggle-switch disabled" data-product-id="21108887_EA">
