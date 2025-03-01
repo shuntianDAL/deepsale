@@ -439,53 +439,50 @@ function toggleMonYr(checkbox) {
  * Legend is disabled.
  */
 function renderStackedBarChart(productId, data) {
-  var ctx = document.getElementById('canvas-' + productId).getContext('2d');
+  const ctx = document.getElementById('canvas-' + productId).getContext('2d');
   if (!data || data.length === 0) {
     ctx.font = "14px Arial";
     ctx.fillText("No 1 Mon data", 10, 50);
     return;
   }
 
-  // Find the highest "Was" price to give some extra headroom
+  // Find the highest "Was" price to give some headroom
   let maxWas = 0;
-  data.forEach(function(d) {
+  data.forEach(d => {
     if (d.was_price > maxWas) {
       maxWas = d.was_price;
     }
   });
-  // Use 1.1 instead of 1.2 so there's less extra space at the top
-  let yAxisMax = maxWas * 1.1;
+  let yAxisMax = maxWas * 1.1; // 10% extra space at the top
 
   chartInstances[productId] = new Chart(ctx, {
-    type: 'bar',
+    type: 'bar', // Overall chart type is bar
     data: {
       labels: data.map(d => d.date),
       datasets: [
-        // Green bar for the NOW price
+        // Green bar (Now Price)
         {
           label: 'Now Price',
           data: data.map(d => d.now_price),
           backgroundColor: '#009900',
           stack: 'Stack 0',
           datalabels: {
-            // Show the actual now_price in the middle of the green bar
             formatter: (value, context) => {
               return data[context.dataIndex].now_price.toFixed(2);
             },
-            color: '#fff',              // White text inside green bar
+            color: '#fff',
             font: { size: 10, weight: 'normal' },
             align: 'center',
             anchor: 'center'
           }
         },
-        // Orange bar for the difference (Was - Now)
+        // Orange bar (Was - Now)
         {
           label: 'Was Price',
           data: data.map(d => d.was_price - d.now_price),
           backgroundColor: '#FF9900',
           stack: 'Stack 0',
           datalabels: {
-            // Show the full was_price on top of the orange bar
             formatter: (value, context) => {
               return data[context.dataIndex].was_price.toFixed(2);
             },
@@ -493,10 +490,10 @@ function renderStackedBarChart(productId, data) {
             font: { size: 10, weight: 'normal' },
             align: 'end',
             anchor: 'end',
-            offset: 2 // reduce gap between the number and the top edge
+            offset: 2
           }
         },
-        // Additional dataset for the line connecting Now Price values
+        // Line dataset on a separate y-axis
         {
           type: 'line',
           label: 'Now Price Trend',
@@ -506,8 +503,11 @@ function renderStackedBarChart(productId, data) {
           fill: false,
           tension: 0.1,
           pointBackgroundColor: '#000',
-          z: 10, // This ensures the line is drawn on top of the bars
-          // Disable data labels for the line dataset
+          // Force the line to draw last & on top
+          order: 99,
+          z: 9999,
+          // Use the separate (non-stacked) y-axis
+          yAxisID: 'yLine',
           datalabels: {
             display: false
           }
@@ -519,7 +519,7 @@ function renderStackedBarChart(productId, data) {
       maintainAspectRatio: false,
       plugins: {
         datalabels: {
-          clip: false // ensures labels aren't clipped at chart edges
+          clip: false
         },
         legend: {
           display: false
@@ -533,6 +533,7 @@ function renderStackedBarChart(productId, data) {
             text: 'Date'
           }
         },
+        // The stacked bar axis
         y: {
           stacked: true,
           beginAtZero: true,
@@ -541,11 +542,19 @@ function renderStackedBarChart(productId, data) {
             text: 'Price'
           },
           max: yAxisMax
+        },
+        // A second axis for the line (not stacked)
+        yLine: {
+          beginAtZero: true,
+          display: false,     // hide extra axis visually
+          min: 0,
+          max: yAxisMax
         }
       }
     }
   });
 }
+
 
 
 
@@ -684,7 +693,7 @@ function inPageSearch() {
     </button>
     <div class="page-title">ss_veg</div>
   </div>
-  <div class="creation-time">Created on: 2025-03-01 00:02:13</div>
+  <div class="creation-time">Created on: 2025-03-01 00:05:59</div>
 </div>
 <hr class="divider">
 <div class="header-spacer"></div>
