@@ -154,6 +154,9 @@
       align-items: center;
       gap: 10px;
     }
+    .item-image {
+      position: relative;
+    }
     .item-image img {
       width: 80px;
       height: auto;
@@ -285,7 +288,7 @@
       opacity: 0;
       z-index: 1;
     }
-    /* NEW: Big Picture view (hidden by default) */
+    /* Big picture view without border */
     .big-picture-view {
       background-color: #fff;
       display: none;
@@ -297,8 +300,6 @@
       max-width: 400px;
       width: 100%;
       height: auto;
-      border: 1px solid #ccc;
-      border-radius: 4px;
     }
     .item-name {
       font-size: 14px;
@@ -343,9 +344,12 @@
       padding: 2px 5px;
       font-size: 16px;
     }
-    /* NEW: Plus/Minus Icon Buttons */
+    /* Plus/Minus Icon Buttons (smaller, black/white) */
     .icon-buttons {
-      margin-top: 10px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       display: flex;
       gap: 8px;
     }
@@ -353,21 +357,21 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background-color: #3e7d53;
+      background-color: #000;
       color: #fff;
       border: none;
       border-radius: 50%;
-      width: 36px;
-      height: 36px;
+      width: 24px;
+      height: 24px;
       cursor: pointer;
-      font-size: 20px;
-      font-weight: 600;
     }
     .circle-icon-button:hover {
       opacity: 0.8;
     }
     .icon-plus, .icon-minus {
-      pointer-events: none;
+      font-size: 16px;
+      font-weight: bold;
+      display: inline-block;
     }
   </style>
 
@@ -395,7 +399,7 @@
       </button>
       <div class='page-title'>ss_drinks</div>
     </div>
-    <div class='creation-time'>Created on: 2025-03-04 23:56:03</div>
+    <div class='creation-time'>Created on: 2025-03-05 00:08:39</div>
   </div>
   <hr class='divider'>
   <div class='header-spacer'></div>
@@ -4661,6 +4665,12 @@
      */
     function toggleMonYr(checkbox) {
       var container = checkbox.closest('.item-container');
+      // If big picture view is visible, hide it
+      var bigPictureView = container.querySelector('.big-picture-view');
+      if (bigPictureView) {
+          bigPictureView.style.display = 'none';
+          bigPictureView.style.opacity = '0';
+      }
       var toggleSwitch = container.querySelector('.toggle-switch');
       if (toggleSwitch.classList.contains('disabled')) {
           toggleSwitch.classList.remove('disabled');
@@ -4877,7 +4887,7 @@
     }
 
     /**
-     * NEW: Plus/Minus functions for big picture view.
+     * Plus/Minus functions for big picture view.
      */
     function showBigPicture(button) {
       var container = button.closest('.item-container');
@@ -4922,9 +4932,13 @@
       var minusIcon = container.querySelector('.minus-icon');
       if (plusIcon) { plusIcon.style.display = 'inline-block'; }
       if (minusIcon) { minusIcon.style.display = 'none'; }
-      // Select On Sale button
+      // Restore On Sale button and disable toggle button
       var detailBtn = container.querySelector('[data-type="detail"]');
       detailBtn.classList.add('selected');
+      var toggleSwitch = container.querySelector('.toggle-switch');
+      if (toggleSwitch) { toggleSwitch.classList.add('disabled'); }
+      var toggleInput = container.querySelector('.toggle-input');
+      if (toggleInput) { toggleInput.checked = false; }
     }
 
     function showSearchBar() {
