@@ -159,6 +159,7 @@
       height: auto;
       opacity: 0;
       animation: fadeIn 1.5s ease forwards;
+      cursor: pointer;
     }
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -285,6 +286,31 @@
       opacity: 0;
       z-index: 1;
     }
+    /* New big picture view overlay */
+    .big-picture-view {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 3;
+    }
+    .big-picture-view img {
+      max-width: 90%;
+      max-height: 90%;
+    }
+    .close-bigpic {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 4;
+    }
     .item-name {
       font-size: 14px;
       margin-bottom: 6px;
@@ -341,8 +367,347 @@
             el.style.opacity = '0';
             el.style.display = 'none';
         });
-        window.priceHistoryData = {"20005774001_EA": {"1mon": [{"date": "02.26", "now_price": 1.99, "was_price": 2.5}, {"date": "03.05", "now_price": 1.99, "was_price": 2.5}], "1yr": [{"date": "02.26", "now_price": 1.99, "was_price": 2.5}, {"date": "03.05", "now_price": 1.99, "was_price": 2.5}]}, "20020863001_KG": {"1mon": [{"date": "02.05", "now_price": 3.19, "was_price": 4.96}, {"date": "02.12", "now_price": 3.68, "was_price": 4.96}, {"date": "02.26", "now_price": 2.49, "was_price": 4.96}, {"date": "03.05", "now_price": 3.68, "was_price": 4.96}], "1yr": [{"date": "02.05", "now_price": 3.19, "was_price": 4.96}, {"date": "02.12", "now_price": 3.68, "was_price": 4.96}, {"date": "02.26", "now_price": 2.49, "was_price": 4.96}, {"date": "03.05", "now_price": 3.68, "was_price": 4.96}]}, "20033488001_KG": {"1mon": [{"date": "02.26", "now_price": 1.89, "was_price": 2.17}, {"date": "03.05", "now_price": 1.89, "was_price": 2.17}], "1yr": [{"date": "02.26", "now_price": 1.89, "was_price": 2.17}, {"date": "03.05", "now_price": 1.89, "was_price": 2.17}]}, "20039812_EA": {"1mon": [{"date": "02.05", "now_price": 4.0, "was_price": 4.99}, {"date": "03.05", "now_price": 4.0, "was_price": 4.99}], "1yr": [{"date": "02.05", "now_price": 4.0, "was_price": 4.99}, {"date": "03.05", "now_price": 4.0, "was_price": 4.99}]}, "20045276001_EA": {"1mon": [{"date": "02.26", "now_price": 7.0, "was_price": 7.99}, {"date": "03.05", "now_price": 7.0, "was_price": 7.99}], "1yr": [{"date": "02.26", "now_price": 7.0, "was_price": 7.99}, {"date": "03.05", "now_price": 7.0, "was_price": 7.99}]}, "20047112001_EA": {"1mon": [{"date": "02.26", "now_price": 3.0, "was_price": 0.0}, {"date": "03.05", "now_price": 2.99, "was_price": 3.49}], "1yr": [{"date": "02.26", "now_price": 3.0, "was_price": 0.0}, {"date": "03.05", "now_price": 2.99, "was_price": 3.49}]}, "20051015001_EA": {"1mon": [{"date": "03.05", "now_price": 4.5, "was_price": 4.99}], "1yr": [{"date": "03.05", "now_price": 4.5, "was_price": 4.99}]}, "20067389001_EA": {"1mon": [{"date": "02.19", "now_price": 4.49, "was_price": 5.0}, {"date": "02.22", "now_price": 4.49, "was_price": 5.0}, {"date": "02.28", "now_price": 4.5, "was_price": 5.0}, {"date": "03.05", "now_price": 4.46, "was_price": 5.0}], "1yr": [{"date": "02.19", "now_price": 4.49, "was_price": 5.0}, {"date": "02.22", "now_price": 4.49, "was_price": 5.0}, {"date": "02.28", "now_price": 4.5, "was_price": 5.0}, {"date": "03.05", "now_price": 4.46, "was_price": 5.0}]}, "20070132001_EA": {"1mon": [{"date": "02.05", "now_price": 2.0, "was_price": 2.49}, {"date": "03.05", "now_price": 1.79, "was_price": 2.49}], "1yr": [{"date": "02.05", "now_price": 2.0, "was_price": 2.49}, {"date": "03.05", "now_price": 1.79, "was_price": 2.49}]}, "20104062_EA": {"1mon": [{"date": "02.12", "now_price": 10.0, "was_price": 12.0}, {"date": "03.05", "now_price": 10.0, "was_price": 12.0}], "1yr": [{"date": "02.12", "now_price": 10.0, "was_price": 12.0}, {"date": "03.05", "now_price": 10.0, "was_price": 12.0}]}, "20119760001_EA": {"1mon": [{"date": "02.26", "now_price": 3.5, "was_price": 4.99}, {"date": "03.05", "now_price": 3.99, "was_price": 4.99}], "1yr": [{"date": "02.26", "now_price": 3.5, "was_price": 4.99}, {"date": "03.05", "now_price": 3.99, "was_price": 4.99}]}, "20119813001_EA": {"1mon": [{"date": "02.05", "now_price": 4.0, "was_price": 6.49}, {"date": "02.26", "now_price": 5.0, "was_price": 6.49}, {"date": "03.05", "now_price": 5.0, "was_price": 6.49}], "1yr": [{"date": "02.05", "now_price": 4.0, "was_price": 6.49}, {"date": "02.26", "now_price": 5.0, "was_price": 6.49}, {"date": "03.05", "now_price": 5.0, "was_price": 6.49}]}, "20121509001_EA": {"1mon": [{"date": "02.26", "now_price": 1.75, "was_price": 1.99}, {"date": "03.05", "now_price": 1.75, "was_price": 1.99}], "1yr": [{"date": "02.26", "now_price": 1.75, "was_price": 1.99}, {"date": "03.05", "now_price": 1.75, "was_price": 1.99}]}, "20130242001_EA": {"1mon": [{"date": "02.05", "now_price": 1.19, "was_price": 0.0}, {"date": "02.26", "now_price": 1.0, "was_price": 1.19}, {"date": "03.05", "now_price": 1.0, "was_price": 1.19}], "1yr": [{"date": "02.05", "now_price": 1.19, "was_price": 0.0}, {"date": "02.26", "now_price": 1.0, "was_price": 1.19}, {"date": "03.05", "now_price": 1.0, "was_price": 1.19}]}, "20143381001_KG": {"1mon": [{"date": "02.19", "now_price": 0.53, "was_price": 0.79}, {"date": "02.26", "now_price": 0.66, "was_price": 0.79}, {"date": "03.05", "now_price": 0.47, "was_price": 0.79}], "1yr": [{"date": "02.19", "now_price": 0.53, "was_price": 0.79}, {"date": "02.26", "now_price": 0.66, "was_price": 0.79}, {"date": "03.05", "now_price": 0.47, "was_price": 0.79}]}, "20145379001_EA": {"1mon": [{"date": "02.05", "now_price": 7.0, "was_price": 0.0}, {"date": "03.05", "now_price": 6.0, "was_price": 6.99}], "1yr": [{"date": "02.05", "now_price": 7.0, "was_price": 0.0}, {"date": "03.05", "now_price": 6.0, "was_price": 6.99}]}, "20157487001_EA": {"1mon": [{"date": "02.26", "now_price": 4.49, "was_price": 0.0}, {"date": "03.05", "now_price": 4.49, "was_price": 4.99}], "1yr": [{"date": "02.26", "now_price": 4.49, "was_price": 0.0}, {"date": "03.05", "now_price": 4.49, "was_price": 4.99}]}, "20159689001_EA": {"1mon": [{"date": "02.26", "now_price": 2.49, "was_price": 3.0}, {"date": "03.05", "now_price": 2.49, "was_price": 3.0}], "1yr": [{"date": "02.26", "now_price": 2.49, "was_price": 3.0}, {"date": "03.05", "now_price": 2.49, "was_price": 3.0}]}, "20162500001_KG": {"1mon": [{"date": "02.05", "now_price": 7.72, "was_price": 8.81}, {"date": "02.26", "now_price": 5.51, "was_price": 8.81}, {"date": "03.05", "now_price": 6.62, "was_price": 8.81}], "1yr": [{"date": "02.05", "now_price": 7.72, "was_price": 8.81}, {"date": "02.26", "now_price": 5.51, "was_price": 8.81}, {"date": "03.05", "now_price": 6.62, "was_price": 8.81}]}, "20167017001_EA": {"1mon": [{"date": "02.12", "now_price": 4.5, "was_price": 4.99}, {"date": "02.19", "now_price": 4.5, "was_price": 4.99}, {"date": "02.26", "now_price": 4.5, "was_price": 4.99}, {"date": "03.05", "now_price": 4.0, "was_price": 4.99}], "1yr": [{"date": "02.12", "now_price": 4.5, "was_price": 4.99}, {"date": "02.19", "now_price": 4.5, "was_price": 4.99}, {"date": "02.26", "now_price": 4.5, "was_price": 4.99}, {"date": "03.05", "now_price": 4.0, "was_price": 4.99}]}, "20168395001_EA": {"1mon": [{"date": "02.26", "now_price": 3.5, "was_price": 3.99}, {"date": "03.05", "now_price": 3.5, "was_price": 3.99}], "1yr": [{"date": "02.26", "now_price": 3.5, "was_price": 3.99}, {"date": "03.05", "now_price": 3.5, "was_price": 3.99}]}, "20186654_EA": {"1mon": [{"date": "02.05", "now_price": 4.0, "was_price": 6.0}, {"date": "03.05", "now_price": 4.0, "was_price": 6.0}], "1yr": [{"date": "02.05", "now_price": 4.0, "was_price": 6.0}, {"date": "03.05", "now_price": 4.0, "was_price": 6.0}]}, "20600927001_EA": {"1mon": [{"date": "03.05", "now_price": 2.5, "was_price": 3.0}], "1yr": [{"date": "03.05", "now_price": 2.5, "was_price": 3.0}]}, "20649591001_KG": {"1mon": [{"date": "02.26", "now_price": 3.79, "was_price": 4.21}, {"date": "03.05", "now_price": 3.79, "was_price": 4.21}], "1yr": [{"date": "02.26", "now_price": 3.79, "was_price": 4.21}, {"date": "03.05", "now_price": 3.79, "was_price": 4.21}]}, "20696626001_EA": {"1mon": [{"date": "02.26", "now_price": 3.0, "was_price": 0.0}, {"date": "03.05", "now_price": 2.5, "was_price": 3.0}], "1yr": [{"date": "02.26", "now_price": 3.0, "was_price": 0.0}, {"date": "03.05", "now_price": 2.5, "was_price": 3.0}]}, "20795315001_EA": {"1mon": [{"date": "02.12", "now_price": 5.0, "was_price": 5.99}, {"date": "03.05", "now_price": 4.99, "was_price": 5.99}], "1yr": [{"date": "02.12", "now_price": 5.0, "was_price": 5.99}, {"date": "03.05", "now_price": 4.99, "was_price": 5.99}]}, "20811362001_EA": {"1mon": [{"date": "02.19", "now_price": 5.0, "was_price": 6.0}, {"date": "02.26", "now_price": 5.0, "was_price": 6.0}, {"date": "03.05", "now_price": 5.0, "was_price": 6.0}], "1yr": [{"date": "02.19", "now_price": 5.0, "was_price": 6.0}, {"date": "02.26", "now_price": 5.0, "was_price": 6.0}, {"date": "03.05", "now_price": 5.0, "was_price": 6.0}]}, "20811994001_EA": {"1mon": [{"date": "02.05", "now_price": 3.5, "was_price": 3.99}, {"date": "02.26", "now_price": 3.5, "was_price": 3.99}, {"date": "03.05", "now_price": 2.5, "was_price": 3.99}], "1yr": [{"date": "02.05", "now_price": 3.5, "was_price": 3.99}, {"date": "02.26", "now_price": 3.5, "was_price": 3.99}, {"date": "03.05", "now_price": 2.5, "was_price": 3.99}]}, "20868985001_EA": {"1mon": [{"date": "02.05", "now_price": 7.0, "was_price": 8.0}, {"date": "02.12", "now_price": 7.0, "was_price": 8.0}, {"date": "02.19", "now_price": 7.0, "was_price": 8.0}, {"date": "02.26", "now_price": 7.0, "was_price": 8.0}, {"date": "03.05", "now_price": 7.0, "was_price": 8.0}], "1yr": [{"date": "02.05", "now_price": 7.0, "was_price": 8.0}, {"date": "02.12", "now_price": 7.0, "was_price": 8.0}, {"date": "02.19", "now_price": 7.0, "was_price": 8.0}, {"date": "02.26", "now_price": 7.0, "was_price": 8.0}, {"date": "03.05", "now_price": 7.0, "was_price": 8.0}]}, "20920821001_EA": {"1mon": [{"date": "02.05", "now_price": 6.0, "was_price": 6.99}, {"date": "02.26", "now_price": 6.0, "was_price": 6.99}, {"date": "03.05", "now_price": 6.0, "was_price": 6.99}], "1yr": [{"date": "02.05", "now_price": 6.0, "was_price": 6.99}, {"date": "02.26", "now_price": 6.0, "was_price": 6.99}, {"date": "03.05", "now_price": 6.0, "was_price": 6.99}]}, "20959290_EA": {"1mon": [{"date": "02.05", "now_price": 6.0, "was_price": 7.0}, {"date": "03.05", "now_price": 6.0, "was_price": 7.0}], "1yr": [{"date": "02.05", "now_price": 6.0, "was_price": 7.0}, {"date": "03.05", "now_price": 6.0, "was_price": 7.0}]}, "21022511001_KG": {"1mon": [{"date": "02.26", "now_price": 3.82, "was_price": 5.87}, {"date": "03.05", "now_price": 4.1, "was_price": 5.87}], "1yr": [{"date": "02.26", "now_price": 3.82, "was_price": 5.87}, {"date": "03.05", "now_price": 4.1, "was_price": 5.87}]}, "21023094001_KG": {"1mon": [{"date": "02.26", "now_price": 7.87, "was_price": 10.44}, {"date": "03.05", "now_price": 7.34, "was_price": 10.44}], "1yr": [{"date": "02.26", "now_price": 7.87, "was_price": 10.44}, {"date": "03.05", "now_price": 7.34, "was_price": 10.44}]}, "21121560001_EA": {"1mon": [{"date": "02.19", "now_price": 1.99, "was_price": 2.49}, {"date": "03.05", "now_price": 2.0, "was_price": 2.49}], "1yr": [{"date": "02.19", "now_price": 1.99, "was_price": 2.49}, {"date": "03.05", "now_price": 2.0, "was_price": 2.49}]}, "21362495_EA": {"1mon": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21362499_EA": {"1mon": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21362519_EA": {"1mon": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21362564_EA": {"1mon": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21406192_EA": {"1mon": [{"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21549854001_KG": {"1mon": [{"date": "02.26", "now_price": 1.74, "was_price": 1.98}, {"date": "03.05", "now_price": 1.74, "was_price": 1.98}], "1yr": [{"date": "02.26", "now_price": 1.74, "was_price": 1.98}, {"date": "03.05", "now_price": 1.74, "was_price": 1.98}]}, "21626132_EA": {"1mon": [{"date": "02.05", "now_price": 3.99, "was_price": 6.0}, {"date": "02.12", "now_price": 3.99, "was_price": 6.0}, {"date": "02.19", "now_price": 3.99, "was_price": 6.0}, {"date": "02.26", "now_price": 3.99, "was_price": 6.0}, {"date": "03.05", "now_price": 3.99, "was_price": 6.0}], "1yr": [{"date": "02.05", "now_price": 3.99, "was_price": 6.0}, {"date": "02.12", "now_price": 3.99, "was_price": 6.0}, {"date": "02.19", "now_price": 3.99, "was_price": 6.0}, {"date": "02.26", "now_price": 3.99, "was_price": 6.0}, {"date": "03.05", "now_price": 3.99, "was_price": 6.0}]}};
+        window.priceHistoryData = {"20005774001_EA": {"1mon": [{"date": "02.26", "now_price": 1.99, "was_price": 2.5}, {"date": "03.05", "now_price": 1.99, "was_price": 2.5}], "1yr": [{"date": "02.26", "now_price": 1.99, "was_price": 2.5}, {"date": "03.05", "now_price": 1.99, "was_price": 2.5}]}, "20020863001_KG": {"1mon": [{"date": "02.05", "now_price": 3.19, "was_price": 4.96}, {"date": "02.12", "now_price": 3.68, "was_price": 4.96}, {"date": "02.26", "now_price": 2.49, "was_price": 4.96}, {"date": "03.05", "now_price": 3.68, "was_price": 4.96}], "1yr": [{"date": "02.05", "now_price": 3.19, "was_price": 4.96}, {"date": "02.12", "now_price": 3.68, "was_price": 4.96}, {"date": "02.26", "now_price": 2.49, "was_price": 4.96}, {"date": "03.05", "now_price": 3.68, "was_price": 4.96}]}, "20033488001_KG": {"1mon": [{"date": "02.26", "now_price": 1.89, "was_price": 2.17}, {"date": "03.05", "now_price": 1.89, "was_price": 2.17}], "1yr": [{"date": "02.26", "now_price": 1.89, "was_price": 2.17}, {"date": "03.05", "now_price": 1.89, "was_price": 2.17}]}, "20039812_EA": {"1mon": [{"date": "02.05", "now_price": 4.0, "was_price": 4.99}, {"date": "03.05", "now_price": 4.0, "was_price": 4.99}], "1yr": [{"date": "02.05", "now_price": 4.0, "was_price": 4.99}, {"date": "03.05", "now_price": 4.0, "was_price": 4.99}]}, "20045276001_EA": {"1mon": [{"date": "02.26", "now_price": 7.0, "was_price": 7.99}, {"date": "03.05", "now_price": 7.0, "was_price": 7.99}], "1yr": [{"date": "02.26", "now_price": 7.0, "was_price": 7.99}, {"date": "03.05", "now_price": 7.0, "was_price": 7.99}]}, "20047112001_EA": {"1mon": [{"date": "02.26", "now_price": 3.0, "was_price": 0.0}, {"date": "03.05", "now_price": 2.99, "was_price": 3.49}], "1yr": [{"date": "02.26", "now_price": 3.0, "was_price": 0.0}, {"date": "03.05", "now_price": 2.99, "was_price": 3.49}]}, "20051015001_EA": {"1mon": [{"date": "03.05", "now_price": 4.5, "was_price": 4.99}], "1yr": [{"date": "03.05", "now_price": 4.5, "was_price": 4.99}]}, "20067389001_EA": {"1mon": [{"date": "02.19", "now_price": 4.49, "was_price": 5.0}, {"date": "02.22", "now_price": 4.49, "was_price": 5.0}, {"date": "02.28", "now_price": 4.5, "was_price": 5.0}, {"date": "03.05", "now_price": 4.46, "was_price": 5.0}, {"date": "12.31", "now_price": 7.99, "was_price": 0.0}], "1yr": [{"date": "02.19", "now_price": 4.49, "was_price": 5.0}, {"date": "02.22", "now_price": 4.49, "was_price": 5.0}, {"date": "02.28", "now_price": 4.5, "was_price": 5.0}, {"date": "03.05", "now_price": 4.46, "was_price": 5.0}, {"date": "12.31", "now_price": 7.99, "was_price": 0.0}]}, "20070132001_EA": {"1mon": [{"date": "02.05", "now_price": 2.0, "was_price": 2.49}, {"date": "03.05", "now_price": 1.79, "was_price": 2.49}], "1yr": [{"date": "02.05", "now_price": 2.0, "was_price": 2.49}, {"date": "03.05", "now_price": 1.79, "was_price": 2.49}]}, "20104062_EA": {"1mon": [{"date": "02.12", "now_price": 10.0, "was_price": 12.0}, {"date": "03.05", "now_price": 10.0, "was_price": 12.0}], "1yr": [{"date": "02.12", "now_price": 10.0, "was_price": 12.0}, {"date": "03.05", "now_price": 10.0, "was_price": 12.0}]}, "20119760001_EA": {"1mon": [{"date": "02.26", "now_price": 3.5, "was_price": 4.99}, {"date": "03.05", "now_price": 3.99, "was_price": 4.99}], "1yr": [{"date": "02.26", "now_price": 3.5, "was_price": 4.99}, {"date": "03.05", "now_price": 3.99, "was_price": 4.99}]}, "20119813001_EA": {"1mon": [{"date": "02.05", "now_price": 4.0, "was_price": 6.49}, {"date": "02.26", "now_price": 5.0, "was_price": 6.49}, {"date": "03.05", "now_price": 5.0, "was_price": 6.49}], "1yr": [{"date": "02.05", "now_price": 4.0, "was_price": 6.49}, {"date": "02.26", "now_price": 5.0, "was_price": 6.49}, {"date": "03.05", "now_price": 5.0, "was_price": 6.49}]}, "20121509001_EA": {"1mon": [{"date": "02.26", "now_price": 1.75, "was_price": 1.99}, {"date": "03.05", "now_price": 1.75, "was_price": 1.99}], "1yr": [{"date": "02.26", "now_price": 1.75, "was_price": 1.99}, {"date": "03.05", "now_price": 1.75, "was_price": 1.99}]}, "20130242001_EA": {"1mon": [{"date": "02.05", "now_price": 1.19, "was_price": 0.0}, {"date": "02.26", "now_price": 1.0, "was_price": 1.19}, {"date": "03.05", "now_price": 1.0, "was_price": 1.19}], "1yr": [{"date": "02.05", "now_price": 1.19, "was_price": 0.0}, {"date": "02.26", "now_price": 1.0, "was_price": 1.19}, {"date": "03.05", "now_price": 1.0, "was_price": 1.19}]}, "20143381001_KG": {"1mon": [{"date": "02.19", "now_price": 0.53, "was_price": 0.79}, {"date": "02.26", "now_price": 0.66, "was_price": 0.79}, {"date": "03.05", "now_price": 0.47, "was_price": 0.79}], "1yr": [{"date": "02.19", "now_price": 0.53, "was_price": 0.79}, {"date": "02.26", "now_price": 0.66, "was_price": 0.79}, {"date": "03.05", "now_price": 0.47, "was_price": 0.79}]}, "20145379001_EA": {"1mon": [{"date": "02.05", "now_price": 7.0, "was_price": 0.0}, {"date": "03.05", "now_price": 6.0, "was_price": 6.99}], "1yr": [{"date": "02.05", "now_price": 7.0, "was_price": 0.0}, {"date": "03.05", "now_price": 6.0, "was_price": 6.99}]}, "20157487001_EA": {"1mon": [{"date": "02.26", "now_price": 4.49, "was_price": 0.0}, {"date": "03.05", "now_price": 4.49, "was_price": 4.99}], "1yr": [{"date": "02.26", "now_price": 4.49, "was_price": 0.0}, {"date": "03.05", "now_price": 4.49, "was_price": 4.99}]}, "20159689001_EA": {"1mon": [{"date": "02.26", "now_price": 2.49, "was_price": 3.0}, {"date": "03.05", "now_price": 2.49, "was_price": 3.0}], "1yr": [{"date": "02.26", "now_price": 2.49, "was_price": 3.0}, {"date": "03.05", "now_price": 2.49, "was_price": 3.0}]}, "20162500001_KG": {"1mon": [{"date": "02.05", "now_price": 7.72, "was_price": 8.81}, {"date": "02.26", "now_price": 5.51, "was_price": 8.81}, {"date": "03.05", "now_price": 6.62, "was_price": 8.81}], "1yr": [{"date": "02.05", "now_price": 7.72, "was_price": 8.81}, {"date": "02.26", "now_price": 5.51, "was_price": 8.81}, {"date": "03.05", "now_price": 6.62, "was_price": 8.81}]}, "20167017001_EA": {"1mon": [{"date": "02.12", "now_price": 4.5, "was_price": 4.99}, {"date": "02.19", "now_price": 4.5, "was_price": 4.99}, {"date": "02.26", "now_price": 4.5, "was_price": 4.99}, {"date": "03.05", "now_price": 4.0, "was_price": 4.99}], "1yr": [{"date": "02.12", "now_price": 4.5, "was_price": 4.99}, {"date": "02.19", "now_price": 4.5, "was_price": 4.99}, {"date": "02.26", "now_price": 4.5, "was_price": 4.99}, {"date": "03.05", "now_price": 4.0, "was_price": 4.99}]}, "20168395001_EA": {"1mon": [{"date": "02.26", "now_price": 3.5, "was_price": 3.99}, {"date": "03.05", "now_price": 3.5, "was_price": 3.99}], "1yr": [{"date": "02.26", "now_price": 3.5, "was_price": 3.99}, {"date": "03.05", "now_price": 3.5, "was_price": 3.99}]}, "20186654_EA": {"1mon": [{"date": "02.05", "now_price": 4.0, "was_price": 6.0}, {"date": "03.05", "now_price": 4.0, "was_price": 6.0}], "1yr": [{"date": "02.05", "now_price": 4.0, "was_price": 6.0}, {"date": "03.05", "now_price": 4.0, "was_price": 6.0}]}, "20600927001_EA": {"1mon": [{"date": "03.05", "now_price": 2.5, "was_price": 3.0}], "1yr": [{"date": "03.05", "now_price": 2.5, "was_price": 3.0}]}, "20649591001_KG": {"1mon": [{"date": "02.26", "now_price": 3.79, "was_price": 4.21}, {"date": "03.05", "now_price": 3.79, "was_price": 4.21}], "1yr": [{"date": "02.26", "now_price": 3.79, "was_price": 4.21}, {"date": "03.05", "now_price": 3.79, "was_price": 4.21}]}, "20696626001_EA": {"1mon": [{"date": "02.26", "now_price": 3.0, "was_price": 0.0}, {"date": "03.05", "now_price": 2.5, "was_price": 3.0}], "1yr": [{"date": "02.26", "now_price": 3.0, "was_price": 0.0}, {"date": "03.05", "now_price": 2.5, "was_price": 3.0}]}, "20795315001_EA": {"1mon": [{"date": "02.12", "now_price": 5.0, "was_price": 5.99}, {"date": "03.05", "now_price": 4.99, "was_price": 5.99}], "1yr": [{"date": "02.12", "now_price": 5.0, "was_price": 5.99}, {"date": "03.05", "now_price": 4.99, "was_price": 5.99}]}, "20811362001_EA": {"1mon": [{"date": "02.19", "now_price": 5.0, "was_price": 6.0}, {"date": "02.26", "now_price": 5.0, "was_price": 6.0}, {"date": "03.05", "now_price": 5.0, "was_price": 6.0}], "1yr": [{"date": "02.19", "now_price": 5.0, "was_price": 6.0}, {"date": "02.26", "now_price": 5.0, "was_price": 6.0}, {"date": "03.05", "now_price": 5.0, "was_price": 6.0}]}, "20811994001_EA": {"1mon": [{"date": "02.05", "now_price": 3.5, "was_price": 3.99}, {"date": "02.26", "now_price": 3.5, "was_price": 3.99}, {"date": "03.05", "now_price": 2.5, "was_price": 3.99}], "1yr": [{"date": "02.05", "now_price": 3.5, "was_price": 3.99}, {"date": "02.26", "now_price": 3.5, "was_price": 3.99}, {"date": "03.05", "now_price": 2.5, "was_price": 3.99}]}, "20868985001_EA": {"1mon": [{"date": "02.05", "now_price": 7.0, "was_price": 8.0}, {"date": "02.12", "now_price": 7.0, "was_price": 8.0}, {"date": "02.19", "now_price": 7.0, "was_price": 8.0}, {"date": "02.26", "now_price": 7.0, "was_price": 8.0}, {"date": "03.05", "now_price": 7.0, "was_price": 8.0}], "1yr": [{"date": "02.05", "now_price": 7.0, "was_price": 8.0}, {"date": "02.12", "now_price": 7.0, "was_price": 8.0}, {"date": "02.19", "now_price": 7.0, "was_price": 8.0}, {"date": "02.26", "now_price": 7.0, "was_price": 8.0}, {"date": "03.05", "now_price": 7.0, "was_price": 8.0}]}, "20920821001_EA": {"1mon": [{"date": "02.05", "now_price": 6.0, "was_price": 6.99}, {"date": "02.26", "now_price": 6.0, "was_price": 6.99}, {"date": "03.05", "now_price": 6.0, "was_price": 6.99}], "1yr": [{"date": "02.05", "now_price": 6.0, "was_price": 6.99}, {"date": "02.26", "now_price": 6.0, "was_price": 6.99}, {"date": "03.05", "now_price": 6.0, "was_price": 6.99}]}, "20959290_EA": {"1mon": [{"date": "02.05", "now_price": 6.0, "was_price": 7.0}, {"date": "03.05", "now_price": 6.0, "was_price": 7.0}], "1yr": [{"date": "02.05", "now_price": 6.0, "was_price": 7.0}, {"date": "03.05", "now_price": 6.0, "was_price": 7.0}]}, "21022511001_KG": {"1mon": [{"date": "02.26", "now_price": 3.82, "was_price": 5.87}, {"date": "03.05", "now_price": 4.1, "was_price": 5.87}], "1yr": [{"date": "02.26", "now_price": 3.82, "was_price": 5.87}, {"date": "03.05", "now_price": 4.1, "was_price": 5.87}]}, "21023094001_KG": {"1mon": [{"date": "02.26", "now_price": 7.87, "was_price": 10.44}, {"date": "03.05", "now_price": 7.34, "was_price": 10.44}], "1yr": [{"date": "02.26", "now_price": 7.87, "was_price": 10.44}, {"date": "03.05", "now_price": 7.34, "was_price": 10.44}]}, "21121560001_EA": {"1mon": [{"date": "02.19", "now_price": 1.99, "was_price": 2.49}, {"date": "03.05", "now_price": 2.0, "was_price": 2.49}], "1yr": [{"date": "02.19", "now_price": 1.99, "was_price": 2.49}, {"date": "03.05", "now_price": 2.0, "was_price": 2.49}]}, "21362495_EA": {"1mon": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21362499_EA": {"1mon": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21362519_EA": {"1mon": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21362564_EA": {"1mon": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "02.19", "now_price": 3.5, "was_price": 0.0}, {"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21406192_EA": {"1mon": [{"date": "03.05", "now_price": 3.0, "was_price": 3.49}], "1yr": [{"date": "03.05", "now_price": 3.0, "was_price": 3.49}]}, "21549854001_KG": {"1mon": [{"date": "02.26", "now_price": 1.74, "was_price": 1.98}, {"date": "03.05", "now_price": 1.74, "was_price": 1.98}], "1yr": [{"date": "02.26", "now_price": 1.74, "was_price": 1.98}, {"date": "03.05", "now_price": 1.74, "was_price": 1.98}]}, "21626132_EA": {"1mon": [{"date": "02.05", "now_price": 3.99, "was_price": 6.0}, {"date": "02.12", "now_price": 3.99, "was_price": 6.0}, {"date": "02.19", "now_price": 3.99, "was_price": 6.0}, {"date": "02.26", "now_price": 3.99, "was_price": 6.0}, {"date": "03.05", "now_price": 3.99, "was_price": 6.0}], "1yr": [{"date": "02.05", "now_price": 3.99, "was_price": 6.0}, {"date": "02.12", "now_price": 3.99, "was_price": 6.0}, {"date": "02.19", "now_price": 3.99, "was_price": 6.0}, {"date": "02.26", "now_price": 3.99, "was_price": 6.0}, {"date": "03.05", "now_price": 3.99, "was_price": 6.0}]}};
     });
+
+    // Opens the big picture overlay when a product image is clicked.
+    function openBigPicture(imgElement) {
+        var container = imgElement.closest('.item-container');
+        var bigPicView = container.querySelector('.big-picture-view');
+        var bigPicImg = bigPicView.querySelector('img');
+        bigPicImg.src = imgElement.src;
+        bigPicView.style.display = 'flex';
+    }
+
+    // Closes the big picture overlay.
+    function closeBigPicture(closeElement) {
+        var container = closeElement.closest('.item-container');
+        var bigPicView = container.querySelector('.big-picture-view');
+        bigPicView.style.display = 'none';
+    }
+
+    /**
+     * "Detail" button: show discount (detail) view and hide chart view.
+     * Also closes any open big picture.
+     */
+    function switchToDetail(btn) {
+        var container = btn.closest('.item-container');
+        // Close big picture view if open.
+        var bigPicView = container.querySelector('.big-picture-view');
+        if (bigPicView) { bigPicView.style.display = 'none'; }
+
+        container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
+            b.classList.remove('selected');
+        });
+        btn.classList.add('selected');
+
+        var toggleSwitch = container.querySelector('.toggle-switch');
+        toggleSwitch.classList.add('disabled');
+        var toggleInput = container.querySelector('.toggle-input');
+        toggleInput.checked = false;
+        var toggleLabel = toggleSwitch.querySelector('.toggle-text');
+        toggleLabel.textContent = "1 Yr";
+
+        var detailView = container.querySelector('.detail-view');
+        var chartView = container.querySelector('.chart-view');
+        detailView.style.opacity = '1';
+        detailView.style.display = 'block';
+        chartView.style.opacity = '0';
+        chartView.style.display = 'none';
+
+        var productId = container.getAttribute('data-product-id');
+        if (window.chartInstances && window.chartInstances[productId]) {
+            window.chartInstances[productId].destroy();
+            delete window.chartInstances[productId];
+        }
+    }
+
+    /**
+     * Toggle switch handler:
+     * When toggled, hide discount view and show chart view immediately.
+     * Also closes any open big picture.
+     * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
+     */
+    function toggleMonYr(checkbox) {
+        var container = checkbox.closest('.item-container');
+        // Close big picture view if open.
+        var bigPicView = container.querySelector('.big-picture-view');
+        if (bigPicView) { bigPicView.style.display = 'none'; }
+
+        var toggleSwitch = container.querySelector('.toggle-switch');
+        if (toggleSwitch.classList.contains('disabled')) {
+            toggleSwitch.classList.remove('disabled');
+        }
+        var detailBtn = container.querySelector('[data-type="detail"]');
+        detailBtn.classList.remove('selected');
+
+        var detailView = container.querySelector('.detail-view');
+        var chartView = container.querySelector('.chart-view');
+        detailView.style.opacity = '0';
+        detailView.style.display = 'none';
+        chartView.style.opacity = '1';
+        chartView.style.display = 'block';
+
+        var productId = container.getAttribute('data-product-id');
+        var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
+        var data1mon = window.priceHistoryData[productId]["1mon"] || [];
+        var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
+
+        if (window.chartInstances && window.chartInstances[productId]) {
+            window.chartInstances[productId].destroy();
+            delete window.chartInstances[productId];
+        }
+
+        if (checkbox.checked) {
+            toggleLabel.textContent = "Yr.";
+            var filtered = data1yr.filter(function(d) {
+                return d.was_price > 0 && d.now_price > 0;
+            });
+            renderLineChart(productId, filtered);
+        } else {
+            toggleLabel.textContent = "Mon";
+            var filtered = data1mon.filter(function(d) {
+                return d.was_price > 0 && d.now_price > 0;
+            });
+            renderStackedBarChart(productId, filtered);
+        }
+    }
+
+    /**
+     * Renders a stacked bar chart (1 Mon data) using Chart.js.
+     * Legend is disabled.
+     */
+    function renderStackedBarChart(productId, data) {
+      const ctx = document.getElementById('canvas-' + productId).getContext('2d');
+      if (!data || data.length === 0) {
+        ctx.font = "14px Arial";
+        ctx.fillText("No 1 Mon data", 10, 50);
+        return;
+      }
+      let maxWas = 0;
+      data.forEach(function(d) {
+        if (d.was_price > maxWas) { maxWas = d.was_price; }
+      });
+      const yAxisMax = maxWas * 1.1;
+      window.chartInstances = window.chartInstances || {};
+      window.chartInstances[productId] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: data.map(function(d) { return d.date; }),
+          datasets: [
+            {
+              label: 'Now Price',
+              data: data.map(function(d) { return d.now_price; }),
+              backgroundColor: '#009900',
+              stack: 'Stack 0',
+              datalabels: {
+                formatter: function(value, context) {
+                  return data[context.dataIndex].now_price.toFixed(2);
+                },
+                color: '#000',
+                font: { size: 10, weight: 'normal' },
+                anchor: 'end',
+                align: 'end',
+                offset: -4
+              }
+            },
+            {
+              label: 'Was Price',
+              data: data.map(function(d) { return d.was_price - d.now_price; }),
+              backgroundColor: '#FF9900',
+              stack: 'Stack 0',
+              datalabels: {
+                formatter: function(value, context) {
+                  return data[context.dataIndex].was_price.toFixed(2);
+                },
+                color: '#000',
+                font: { size: 10, weight: 'normal' },
+                anchor: 'end',
+                align: 'end',
+                offset: 2
+              }
+            },
+            {
+              type: 'line',
+              label: 'Now Price Trend',
+              data: data.map(function(d) { return d.now_price; }),
+              borderColor: '#000',
+              borderWidth: 1,
+              fill: false,
+              tension: 0.1,
+              pointBackgroundColor: '#000',
+              order: 99,
+              z: 9999,
+              yAxisID: 'yLine',
+              datalabels: { display: false }
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            axisTitleBackgroundPlugin: { backgroundColor: '#ddd' },
+            datalabels: { clip: false },
+            legend: { display: false }
+          },
+          scales: {
+            x: {
+              stacked: true,
+              title: { display: false, text: 'Date' }
+            },
+            y: {
+              stacked: true,
+              beginAtZero: true,
+              title: { display: false, text: 'Price' },
+              max: yAxisMax
+            },
+            yLine: {
+              beginAtZero: true,
+              display: false,
+              min: 0,
+              max: yAxisMax
+            }
+          }
+        }
+      });
+    }
+
+    /**
+     * Renders a two-line chart (1 Yr data) using Chart.js.
+     * Legend is disabled.
+     */
+    function renderLineChart(productId, data) {
+      const ctx = document.getElementById('canvas-' + productId).getContext('2d');
+      if (!data || data.length === 0) {
+        ctx.font = "14px Arial";
+        ctx.fillText("No 1 Yr data", 10, 50);
+        return;
+      }
+      let maxPrice = 0;
+      data.forEach(function(d) {
+        if (d.was_price > maxPrice) { maxPrice = d.was_price; }
+        if (d.now_price > maxPrice) { maxPrice = d.now_price; }
+      });
+      const yAxisMax = maxPrice * 1.2;
+      window.chartInstances = window.chartInstances || {};
+      window.chartInstances[productId] = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: data.map(function(d) { return d.date; }),
+          datasets: [
+            {
+              label: 'Was Price',
+              data: data.map(function(d) { return d.was_price; }),
+              borderColor: '#0077cc',
+              backgroundColor: '#0077cc',
+              fill: false,
+              tension: 0.1,
+              datalabels: {
+                color: '#0077cc',
+                anchor: 'end',
+                align: 'end',
+                offset: 4,
+                font: { size: 10, weight: 'normal' },
+                formatter: function(value) { return value.toFixed(2); }
+              }
+            },
+            {
+              label: 'Now Price',
+              data: data.map(function(d) { return d.now_price; }),
+              borderColor: '#009900',
+              backgroundColor: '#009900',
+              fill: false,
+              tension: 0.1,
+              datalabels: {
+                color: '#009900',
+                anchor: 'start',
+                align: 'start',
+                offset: 4,
+                font: { size: 10, weight: 'normal' },
+                formatter: function(value) { return value.toFixed(2); }
+              }
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            datalabels: { clip: false },
+            legend: { display: false }
+          },
+          scales: {
+            x: { title: { display: false, text: 'Date' } },
+            y: { title: { display: false, text: 'Price' }, beginAtZero: true, max: yAxisMax }
+          }
+        }
+      });
+    }
+
+    function showSearchBar() {
+        var header = document.querySelector('.header-container');
+        header.style.display = 'none';
+        var searchBar = document.getElementById('searchBarContainer');
+        searchBar.style.display = 'flex';
+        setTimeout(function() {
+            searchBar.style.opacity = '1';
+        }, 10);
+        document.getElementById('searchInput').focus();
+    }
+
+    function hideSearchBar() {
+        var searchBar = document.getElementById('searchBarContainer');
+        var header = document.querySelector('.header-container');
+        var searchInput = document.getElementById('searchInput');
+        searchInput.value = '';
+        var firstElems = document.getElementsByClassName('first-word');
+        var secondElems = document.getElementsByClassName('product-name-text');
+        for (var i = 0; i < firstElems.length; i++) {
+            firstElems[i].innerHTML = firstElems[i].dataset.original || firstElems[i].innerHTML;
+        }
+        for (var i = 0; i < secondElems.length; i++) {
+            secondElems[i].innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
+        }
+        var items = document.getElementsByClassName('item-container');
+        for (var i = 0; i < items.length; i++) {
+            items[i].style.display = '';
+        }
+        document.getElementById('searchCount').innerText = '';
+        searchBar.style.opacity = '0';
+        setTimeout(function() {
+            searchBar.style.display = 'none';
+            header.style.display = 'flex';
+        }, 500);
+    }
+
+    function inPageSearch() {
+        var input = document.getElementById('searchInput').value.trim();
+        var term = input.toLowerCase();
+        var items = document.getElementsByClassName('item-container');
+        var visibleCount = 0;
+        for (var i = 0; i < items.length; i++) {
+            var firstElem = items[i].querySelector('.first-word');
+            var secondElem = items[i].querySelector('.product-name-text');
+            var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+            if (term === '' || fullName.indexOf(term) > -1) {
+                items[i].style.display = '';
+                visibleCount++;
+                if (term !== '') {
+                    firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent)
+                                          .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                    secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent)
+                                          .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                } else {
+                    firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
+                    secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
+                }
+            } else {
+                items[i].style.display = 'none';
+            }
+        }
+        document.getElementById('searchCount').innerText = visibleCount + " found";
+    }
   </script>
 
 </head>
@@ -354,7 +719,7 @@
     </button>
     <div class='page-title'>ss_veg</div>
   </div>
-  <div class='creation-time'>Created on: 2025-03-05 00:19:21</div>
+  <div class='creation-time'>Created on: 2025-03-05 00:33:03</div>
 </div>
 <hr class='divider'>
 <div class='header-spacer'></div>
@@ -368,7 +733,7 @@
 <div class='item-container' data-product-id='20143381001_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20143381001/b1/en/front/20143381001_front_a01_@2.png' alt='Roma Tomatoes' />
+    <img src='https://assets.shop.loblaws.ca/products/20143381001/b1/en/front/20143381001_front_a01_@2.png' alt='Roma Tomatoes' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -399,6 +764,11 @@
     <div class='chart-view' id='chart-20143381001_KG'>
       <canvas id='canvas-20143381001_KG' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20143381001_KG'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -406,7 +776,7 @@
 <div class='item-container' data-product-id='20811994001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20811994001/b1/en/front/20811994001_front_a01_@2.png' alt='Yellow Onions, 3 lb Bag' />
+    <img src='https://assets.shop.loblaws.ca/products/20811994001/b1/en/front/20811994001_front_a01_@2.png' alt='Yellow Onions, 3 lb Bag' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -437,6 +807,11 @@
     <div class='chart-view' id='chart-20811994001_EA'>
       <canvas id='canvas-20811994001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20811994001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -444,7 +819,7 @@
 <div class='item-container' data-product-id='21626132_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21626132/b1/en/front/21626132_front_a01_@2.png' alt='Brusselslaw' />
+    <img src='https://assets.shop.loblaws.ca/products/21626132/b1/en/front/21626132_front_a01_@2.png' alt='Brusselslaw' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -475,6 +850,11 @@
     <div class='chart-view' id='chart-21626132_EA'>
       <canvas id='canvas-21626132_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21626132_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -482,7 +862,7 @@
 <div class='item-container' data-product-id='20186654_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20186654/b1/en/front/20186654_front_a01_@2.png' alt='Vegetable Medley' />
+    <img src='https://assets.shop.loblaws.ca/products/20186654/b1/en/front/20186654_front_a01_@2.png' alt='Vegetable Medley' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -513,6 +893,11 @@
     <div class='chart-view' id='chart-20186654_EA'>
       <canvas id='canvas-20186654_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20186654_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -520,7 +905,7 @@
 <div class='item-container' data-product-id='21022511001_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21022511001/b1/en/front/21022511001_front_a01_@2.png' alt='Canary Melon' />
+    <img src='https://assets.shop.loblaws.ca/products/21022511001/b1/en/front/21022511001_front_a01_@2.png' alt='Canary Melon' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -551,6 +936,11 @@
     <div class='chart-view' id='chart-21022511001_KG'>
       <canvas id='canvas-21022511001_KG' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21022511001_KG'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -558,7 +948,7 @@
 <div class='item-container' data-product-id='21023094001_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21023094001/b1/en/front/21023094001_front_a01_@2.png' alt='Santa Claus Melons' />
+    <img src='https://assets.shop.loblaws.ca/products/21023094001/b1/en/front/21023094001_front_a01_@2.png' alt='Santa Claus Melons' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -589,6 +979,11 @@
     <div class='chart-view' id='chart-21023094001_KG'>
       <canvas id='canvas-21023094001_KG' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21023094001_KG'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -596,7 +991,7 @@
 <div class='item-container' data-product-id='20070132001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20070132001/b1/en/front/20070132001_front_a01_@2.png' alt='English Cucumber' />
+    <img src='https://assets.shop.loblaws.ca/products/20070132001/b1/en/front/20070132001_front_a01_@2.png' alt='English Cucumber' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -627,6 +1022,11 @@
     <div class='chart-view' id='chart-20070132001_EA'>
       <canvas id='canvas-20070132001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20070132001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -634,7 +1034,7 @@
 <div class='item-container' data-product-id='20020863001_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20020863001/b1/en/front/20020863001_front_a01_@2.png' alt='Taiwanese Flat Cabbage' />
+    <img src='https://assets.shop.loblaws.ca/products/20020863001/b1/en/front/20020863001_front_a01_@2.png' alt='Taiwanese Flat Cabbage' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -665,6 +1065,11 @@
     <div class='chart-view' id='chart-20020863001_KG'>
       <canvas id='canvas-20020863001_KG' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20020863001_KG'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -672,7 +1077,7 @@
 <div class='item-container' data-product-id='20162500001_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20162500001/b1/en/front/20162500001_front_a01_@2.png' alt='Guava' />
+    <img src='https://assets.shop.loblaws.ca/products/20162500001/b1/en/front/20162500001_front_a01_@2.png' alt='Guava' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -703,6 +1108,11 @@
     <div class='chart-view' id='chart-20162500001_KG'>
       <canvas id='canvas-20162500001_KG' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20162500001_KG'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -710,7 +1120,7 @@
 <div class='item-container' data-product-id='20119813001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20119813001/b1/en/angle/20119813001_angle_a01_@2.png' alt='Pineapple' />
+    <img src='https://assets.shop.loblaws.ca/products/20119813001/b1/en/angle/20119813001_angle_a01_@2.png' alt='Pineapple' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -741,6 +1151,11 @@
     <div class='chart-view' id='chart-20119813001_EA'>
       <canvas id='canvas-20119813001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20119813001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -748,7 +1163,7 @@
 <div class='item-container' data-product-id='20005774001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20005774001/b1/en/front/20005774001_front_a01_@2.png' alt='Coconuts' />
+    <img src='https://assets.shop.loblaws.ca/products/20005774001/b1/en/front/20005774001_front_a01_@2.png' alt='Coconuts' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -779,6 +1194,11 @@
     <div class='chart-view' id='chart-20005774001_EA'>
       <canvas id='canvas-20005774001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20005774001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -786,7 +1206,7 @@
 <div class='item-container' data-product-id='20119760001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20119760001/b1/en/front/20119760001_front_a01_@2.png' alt='Caribbean Avocado' />
+    <img src='https://assets.shop.loblaws.ca/products/20119760001/b1/en/front/20119760001_front_a01_@2.png' alt='Caribbean Avocado' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -817,6 +1237,11 @@
     <div class='chart-view' id='chart-20119760001_EA'>
       <canvas id='canvas-20119760001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20119760001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -824,7 +1249,7 @@
 <div class='item-container' data-product-id='20167017001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20167017001/b1/en/front/20167017001_front_a01_@2.png' alt='Cantaloupe' />
+    <img src='https://assets.shop.loblaws.ca/products/20167017001/b1/en/front/20167017001_front_a01_@2.png' alt='Cantaloupe' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -855,6 +1280,11 @@
     <div class='chart-view' id='chart-20167017001_EA'>
       <canvas id='canvas-20167017001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20167017001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -862,7 +1292,7 @@
 <div class='item-container' data-product-id='20039812_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20039812/b1/en/front/20039812_front_a01_@2.png' alt='Broccoli Florets' />
+    <img src='https://assets.shop.loblaws.ca/products/20039812/b1/en/front/20039812_front_a01_@2.png' alt='Broccoli Florets' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -893,6 +1323,11 @@
     <div class='chart-view' id='chart-20039812_EA'>
       <canvas id='canvas-20039812_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20039812_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -900,7 +1335,7 @@
 <div class='item-container' data-product-id='21121560001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21121560001/b1/en/front/21121560001_front_a01_@2.png' alt='Broccoli Crown' />
+    <img src='https://assets.shop.loblaws.ca/products/21121560001/b1/en/front/21121560001_front_a01_@2.png' alt='Broccoli Crown' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -931,6 +1366,11 @@
     <div class='chart-view' id='chart-21121560001_EA'>
       <canvas id='canvas-21121560001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21121560001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -938,7 +1378,7 @@
 <div class='item-container' data-product-id='20159689001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20159689001/b1/en/front/20159689001_front_a01_@2.png' alt='Fenugreek Bunch' />
+    <img src='https://assets.shop.loblaws.ca/products/20159689001/b1/en/front/20159689001_front_a01_@2.png' alt='Fenugreek Bunch' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -969,6 +1409,11 @@
     <div class='chart-view' id='chart-20159689001_EA'>
       <canvas id='canvas-20159689001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20159689001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -976,7 +1421,7 @@
 <div class='item-container' data-product-id='20795315001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20795315001/b1/en/front/20795315001_front_a01_@2.png' alt='Lemons, 2 lb Bag' />
+    <img src='https://assets.shop.loblaws.ca/products/20795315001/b1/en/front/20795315001_front_a01_@2.png' alt='Lemons, 2 lb Bag' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1007,6 +1452,11 @@
     <div class='chart-view' id='chart-20795315001_EA'>
       <canvas id='canvas-20795315001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20795315001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1014,7 +1464,7 @@
 <div class='item-container' data-product-id='20811362001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20811362001/b1/en/front/20811362001_front_a01_@2.png' alt='Red Onions, 3 lb Bag' />
+    <img src='https://assets.shop.loblaws.ca/products/20811362001/b1/en/front/20811362001_front_a01_@2.png' alt='Red Onions, 3 lb Bag' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1045,6 +1495,11 @@
     <div class='chart-view' id='chart-20811362001_EA'>
       <canvas id='canvas-20811362001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20811362001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1052,7 +1507,7 @@
 <div class='item-container' data-product-id='20696626001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20696626001/b1/en/front/20696626001_front_a01_@2.png' alt='Granadilla' />
+    <img src='https://assets.shop.loblaws.ca/products/20696626001/b1/en/front/20696626001_front_a01_@2.png' alt='Granadilla' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1083,6 +1538,11 @@
     <div class='chart-view' id='chart-20696626001_EA'>
       <canvas id='canvas-20696626001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20696626001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1090,7 +1550,7 @@
 <div class='item-container' data-product-id='20600927001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20600927001/b1/en/front/20600927001_front_a01_@2.png' alt='Carrots, 3 lb Bag' />
+    <img src='https://assets.shop.loblaws.ca/products/20600927001/b1/en/front/20600927001_front_a01_@2.png' alt='Carrots, 3 lb Bag' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1121,6 +1581,11 @@
     <div class='chart-view' id='chart-20600927001_EA'>
       <canvas id='canvas-20600927001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20600927001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1128,7 +1593,7 @@
 <div class='item-container' data-product-id='20104062_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20104062/b1/en/front/20104062_front_a01_@2.png' alt='Popeye Select Spinach' />
+    <img src='https://assets.shop.loblaws.ca/products/20104062/b1/en/front/20104062_front_a01_@2.png' alt='Popeye Select Spinach' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1159,6 +1624,11 @@
     <div class='chart-view' id='chart-20104062_EA'>
       <canvas id='canvas-20104062_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20104062_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1166,7 +1636,7 @@
 <div class='item-container' data-product-id='20130242001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20130242001/b1/en/front/20130242001_front_a01_@2.png' alt='Kiwis' />
+    <img src='https://assets.shop.loblaws.ca/products/20130242001/b1/en/front/20130242001_front_a01_@2.png' alt='Kiwis' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1197,6 +1667,11 @@
     <div class='chart-view' id='chart-20130242001_EA'>
       <canvas id='canvas-20130242001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20130242001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1204,7 +1679,7 @@
 <div class='item-container' data-product-id='20047112001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20047112001/b1/en/beauty/20047112001_beauty_a01_@2.png' alt='Quince' />
+    <img src='https://assets.shop.loblaws.ca/products/20047112001/b1/en/beauty/20047112001_beauty_a01_@2.png' alt='Quince' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1235,6 +1710,11 @@
     <div class='chart-view' id='chart-20047112001_EA'>
       <canvas id='canvas-20047112001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20047112001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1242,7 +1722,7 @@
 <div class='item-container' data-product-id='20959290_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20959290/b1/en/front/20959290_front_a01_@2.png' alt='Organic Broccoli Florets' />
+    <img src='https://assets.shop.loblaws.ca/products/20959290/b1/en/front/20959290_front_a01_@2.png' alt='Organic Broccoli Florets' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1273,6 +1753,11 @@
     <div class='chart-view' id='chart-20959290_EA'>
       <canvas id='canvas-20959290_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20959290_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1280,7 +1765,7 @@
 <div class='item-container' data-product-id='20920821001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20920821001/b1/en/front/20920821001_front_a01_@2.png' alt='Mini Sweet Peppers' />
+    <img src='https://assets.shop.loblaws.ca/products/20920821001/b1/en/front/20920821001_front_a01_@2.png' alt='Mini Sweet Peppers' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1311,6 +1796,11 @@
     <div class='chart-view' id='chart-20920821001_EA'>
       <canvas id='canvas-20920821001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20920821001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1318,7 +1808,7 @@
 <div class='item-container' data-product-id='20145379001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20145379001/b1/en/front/20145379001_front_a01_@2.png' alt='Mini Seedless Watermelon' />
+    <img src='https://assets.shop.loblaws.ca/products/20145379001/b1/en/front/20145379001_front_a01_@2.png' alt='Mini Seedless Watermelon' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1349,6 +1839,11 @@
     <div class='chart-view' id='chart-20145379001_EA'>
       <canvas id='canvas-20145379001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20145379001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1356,7 +1851,7 @@
 <div class='item-container' data-product-id='21406192_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21406192/b1/en/front/21406192_front_a01_@2.png' alt='Mango Turmeric' />
+    <img src='https://assets.shop.loblaws.ca/products/21406192/b1/en/front/21406192_front_a01_@2.png' alt='Mango Turmeric' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1387,6 +1882,11 @@
     <div class='chart-view' id='chart-21406192_EA'>
       <canvas id='canvas-21406192_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21406192_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1394,7 +1894,7 @@
 <div class='item-container' data-product-id='21362564_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21362564/b1/en/front/21362564_front_a01_@2.png' alt='Blueberry Organic Kombucha' />
+    <img src='https://assets.shop.loblaws.ca/products/21362564/b1/en/front/21362564_front_a01_@2.png' alt='Blueberry Organic Kombucha' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1425,6 +1925,11 @@
     <div class='chart-view' id='chart-21362564_EA'>
       <canvas id='canvas-21362564_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21362564_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1432,7 +1937,7 @@
 <div class='item-container' data-product-id='21362519_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21362519/b1/en/front/21362519_front_a01_@2.png' alt='Organic Pink Grapefruit Smoothie' />
+    <img src='https://assets.shop.loblaws.ca/products/21362519/b1/en/front/21362519_front_a01_@2.png' alt='Organic Pink Grapefruit Smoothie' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1463,6 +1968,11 @@
     <div class='chart-view' id='chart-21362519_EA'>
       <canvas id='canvas-21362519_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21362519_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1470,7 +1980,7 @@
 <div class='item-container' data-product-id='21362499_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21362499/b1/en/front/21362499_front_a01_@2.png' alt='Organic Raspberry Lemon Kombucha' />
+    <img src='https://assets.shop.loblaws.ca/products/21362499/b1/en/front/21362499_front_a01_@2.png' alt='Organic Raspberry Lemon Kombucha' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1501,6 +2011,11 @@
     <div class='chart-view' id='chart-21362499_EA'>
       <canvas id='canvas-21362499_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21362499_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1508,7 +2023,7 @@
 <div class='item-container' data-product-id='21362495_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21362495/b1/en/front/21362495_front_a01_@2.png' alt='Organic Lime Strawberry Kombucha' />
+    <img src='https://assets.shop.loblaws.ca/products/21362495/b1/en/front/21362495_front_a01_@2.png' alt='Organic Lime Strawberry Kombucha' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1539,6 +2054,11 @@
     <div class='chart-view' id='chart-21362495_EA'>
       <canvas id='canvas-21362495_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21362495_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1546,7 +2066,7 @@
 <div class='item-container' data-product-id='20033488001_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20033488001/b1/en/front/20033488001_front_a01_@2.png' alt='Mini Bananas, Bunch' />
+    <img src='https://assets.shop.loblaws.ca/products/20033488001/b1/en/front/20033488001_front_a01_@2.png' alt='Mini Bananas, Bunch' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1577,6 +2097,11 @@
     <div class='chart-view' id='chart-20033488001_KG'>
       <canvas id='canvas-20033488001_KG' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20033488001_KG'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1584,7 +2109,7 @@
 <div class='item-container' data-product-id='20868985001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20868985001/b1/en/front/20868985001_front_a01_@2.png' alt='Imperfect Apples, 6 lb bag' />
+    <img src='https://assets.shop.loblaws.ca/products/20868985001/b1/en/front/20868985001_front_a01_@2.png' alt='Imperfect Apples, 6 lb bag' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1615,6 +2140,11 @@
     <div class='chart-view' id='chart-20868985001_EA'>
       <canvas id='canvas-20868985001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20868985001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1622,7 +2152,7 @@
 <div class='item-container' data-product-id='20045276001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20045276001/b1/en/front/20045276001_front_a01_@2.png' alt='Honeydew Melon' />
+    <img src='https://assets.shop.loblaws.ca/products/20045276001/b1/en/front/20045276001_front_a01_@2.png' alt='Honeydew Melon' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1653,6 +2183,11 @@
     <div class='chart-view' id='chart-20045276001_EA'>
       <canvas id='canvas-20045276001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20045276001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1660,7 +2195,7 @@
 <div class='item-container' data-product-id='20168395001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20168395001/b1/en/angle/20168395001_angle_a01_@2.png' alt='Dragon Fruit' />
+    <img src='https://assets.shop.loblaws.ca/products/20168395001/b1/en/angle/20168395001_angle_a01_@2.png' alt='Dragon Fruit' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1691,6 +2226,11 @@
     <div class='chart-view' id='chart-20168395001_EA'>
       <canvas id='canvas-20168395001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20168395001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1698,7 +2238,7 @@
 <div class='item-container' data-product-id='21549854001_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/21549854001/b1/en/front/21549854001_front_a01_@2.png' alt='Jackfruit Slice' />
+    <img src='https://assets.shop.loblaws.ca/products/21549854001/b1/en/front/21549854001_front_a01_@2.png' alt='Jackfruit Slice' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1729,6 +2269,11 @@
     <div class='chart-view' id='chart-21549854001_KG'>
       <canvas id='canvas-21549854001_KG' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-21549854001_KG'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1736,7 +2281,7 @@
 <div class='item-container' data-product-id='20121509001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20121509001/b1/en/front/20121509001_front_a01_@2.png' alt='Ataulfo Mango' />
+    <img src='https://assets.shop.loblaws.ca/products/20121509001/b1/en/front/20121509001_front_a01_@2.png' alt='Ataulfo Mango' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1767,6 +2312,11 @@
     <div class='chart-view' id='chart-20121509001_EA'>
       <canvas id='canvas-20121509001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20121509001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1774,7 +2324,7 @@
 <div class='item-container' data-product-id='20067389001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20067389001/b1/en/front/20067389001_front_a01_@2.png' alt='Romaine Heart, 3 Pack' />
+    <img src='https://assets.shop.loblaws.ca/products/20067389001/b1/en/front/20067389001_front_a01_@2.png' alt='Romaine Heart, 3 Pack' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1805,6 +2355,11 @@
     <div class='chart-view' id='chart-20067389001_EA'>
       <canvas id='canvas-20067389001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20067389001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1812,7 +2367,7 @@
 <div class='item-container' data-product-id='20157487001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20157487001/b1/en/front/20157487001_front_a01_@2.png' alt='Fresh Coconut Young' />
+    <img src='https://assets.shop.loblaws.ca/products/20157487001/b1/en/front/20157487001_front_a01_@2.png' alt='Fresh Coconut Young' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1843,6 +2398,11 @@
     <div class='chart-view' id='chart-20157487001_EA'>
       <canvas id='canvas-20157487001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20157487001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1850,7 +2410,7 @@
 <div class='item-container' data-product-id='20649591001_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20649591001/b1/en/front/20649591001_front_a01_@2.png' alt='Manzano Bananas, Bunch' />
+    <img src='https://assets.shop.loblaws.ca/products/20649591001/b1/en/front/20649591001_front_a01_@2.png' alt='Manzano Bananas, Bunch' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1881,6 +2441,11 @@
     <div class='chart-view' id='chart-20649591001_KG'>
       <canvas id='canvas-20649591001_KG' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20649591001_KG'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
@@ -1888,7 +2453,7 @@
 <div class='item-container' data-product-id='20051015001_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src='https://assets.shop.loblaws.ca/products/20051015001/b1/en/front/20051015001_front_a01_@2.png' alt='Blackberries Half Pint' />
+    <img src='https://assets.shop.loblaws.ca/products/20051015001/b1/en/front/20051015001_front_a01_@2.png' alt='Blackberries Half Pint' onclick='openBigPicture(this)' />
   </div>
   <!-- "Detail" button (selected by default) -->
   <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
@@ -1919,326 +2484,16 @@
     <div class='chart-view' id='chart-20051015001_EA'>
       <canvas id='canvas-20051015001_EA' width='400' height='200'></canvas>
     </div>
+    <!-- Big picture view overlay -->
+    <div class='big-picture-view' id='bigpic-20051015001_EA'>
+      <span class='close-bigpic' onclick='closeBigPicture(this)'>×</span>
+      <img src='' alt='Big Picture' />
+    </div>
   </div>
 </div>
 
 </div>
 
-
-<script>
-var chartInstances = {};
-
-/**
- * "Detail" button: show discount (detail) view and hide chart view.
- */
-function switchToDetail(btn) {
-    var container = btn.closest('.item-container');
-    container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
-        b.classList.remove('selected');
-    });
-    btn.classList.add('selected');
-
-    var toggleSwitch = container.querySelector('.toggle-switch');
-    toggleSwitch.classList.add('disabled');
-    var toggleInput = container.querySelector('.toggle-input');
-    toggleInput.checked = false;
-    var toggleLabel = toggleSwitch.querySelector('.toggle-text');
-    toggleLabel.textContent = "1 Yr";
-
-    var detailView = container.querySelector('.detail-view');
-    var chartView = container.querySelector('.chart-view');
-    detailView.style.opacity = '1';
-    detailView.style.display = 'block';
-    chartView.style.opacity = '0';
-    chartView.style.display = 'none';
-
-    var productId = container.getAttribute('data-product-id');
-    if (chartInstances[productId]) {
-        chartInstances[productId].destroy();
-        delete chartInstances[productId];
-    }
-}
-
-/**
- * Toggle switch handler:
- * When toggled, hide discount view and show chart view immediately.
- * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
- */
-function toggleMonYr(checkbox) {
-    var container = checkbox.closest('.item-container');
-    var toggleSwitch = container.querySelector('.toggle-switch');
-    if (toggleSwitch.classList.contains('disabled')) {
-        toggleSwitch.classList.remove('disabled');
-    }
-    var detailBtn = container.querySelector('[data-type="detail"]');
-    detailBtn.classList.remove('selected');
-
-    var detailView = container.querySelector('.detail-view');
-    var chartView = container.querySelector('.chart-view');
-    detailView.style.opacity = '0';
-    detailView.style.display = 'none';
-    chartView.style.opacity = '1';
-    chartView.style.display = 'block';
-
-    var productId = container.getAttribute('data-product-id');
-    var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
-    var data1mon = window.priceHistoryData[productId]["1mon"] || [];
-    var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
-
-    if (chartInstances[productId]) {
-        chartInstances[productId].destroy();
-        delete chartInstances[productId];
-    }
-
-    if (checkbox.checked) {
-        toggleLabel.textContent = "Yr.";
-        var filtered = data1yr.filter(function(d) {
-            return d.was_price > 0 && d.now_price > 0;
-        });
-        renderLineChart(productId, filtered);
-    } else {
-        toggleLabel.textContent = "Mon";
-        var filtered = data1mon.filter(function(d) {
-            return d.was_price > 0 && d.now_price > 0;
-        });
-        renderStackedBarChart(productId, filtered);
-    }
-}
-
-/**
- * Renders a stacked bar chart (1 Mon data) using Chart.js.
- * Legend is disabled.
- */
-function renderStackedBarChart(productId, data) {
-  const ctx = document.getElementById('canvas-' + productId).getContext('2d');
-  if (!data || data.length === 0) {
-    ctx.font = "14px Arial";
-    ctx.fillText("No 1 Mon data", 10, 50);
-    return;
-  }
-  let maxWas = 0;
-  data.forEach(function(d) {
-    if (d.was_price > maxWas) { maxWas = d.was_price; }
-  });
-  const yAxisMax = maxWas * 1.1;
-  chartInstances[productId] = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: data.map(function(d) { return d.date; }),
-      datasets: [
-        {
-          label: 'Now Price',
-          data: data.map(function(d) { return d.now_price; }),
-          backgroundColor: '#009900',
-          stack: 'Stack 0',
-          datalabels: {
-            formatter: function(value, context) {
-              return data[context.dataIndex].now_price.toFixed(2);
-            },
-            color: '#000',
-            font: { size: 10, weight: 'normal' },
-            anchor: 'end',
-            align: 'end',
-            offset: -4
-          }
-        },
-        {
-          label: 'Was Price',
-          data: data.map(function(d) { return d.was_price - d.now_price; }),
-          backgroundColor: '#FF9900',
-          stack: 'Stack 0',
-          datalabels: {
-            formatter: function(value, context) {
-              return data[context.dataIndex].was_price.toFixed(2);
-            },
-            color: '#000',
-            font: { size: 10, weight: 'normal' },
-            anchor: 'end',
-            align: 'end',
-            offset: 2
-          }
-        },
-        {
-          type: 'line',
-          label: 'Now Price Trend',
-          data: data.map(function(d) { return d.now_price; }),
-          borderColor: '#000',
-          borderWidth: 1,
-          fill: false,
-          tension: 0.1,
-          pointBackgroundColor: '#000',
-          order: 99,
-          z: 9999,
-          yAxisID: 'yLine',
-          datalabels: { display: false }
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        axisTitleBackgroundPlugin: { backgroundColor: '#ddd' },
-        datalabels: { clip: false },
-        legend: { display: false }
-      },
-      scales: {
-        x: {
-          stacked: true,
-          title: { display: false, text: 'Date' }
-        },
-        y: {
-          stacked: true,
-          beginAtZero: true,
-          title: { display: false, text: 'Price' },
-          max: yAxisMax
-        },
-        yLine: {
-          beginAtZero: true,
-          display: false,
-          min: 0,
-          max: yAxisMax
-        }
-      }
-    }
-  });
-}
-
-/**
- * Renders a two-line chart (1 Yr data) using Chart.js.
- * Legend is disabled.
- */
-function renderLineChart(productId, data) {
-  const ctx = document.getElementById('canvas-' + productId).getContext('2d');
-  if (!data || data.length === 0) {
-    ctx.font = "14px Arial";
-    ctx.fillText("No 1 Yr data", 10, 50);
-    return;
-  }
-  let maxPrice = 0;
-  data.forEach(function(d) {
-    if (d.was_price > maxPrice) { maxPrice = d.was_price; }
-    if (d.now_price > maxPrice) { maxPrice = d.now_price; }
-  });
-  const yAxisMax = maxPrice * 1.2;
-  chartInstances[productId] = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: data.map(function(d) { return d.date; }),
-      datasets: [
-        {
-          label: 'Was Price',
-          data: data.map(function(d) { return d.was_price; }),
-          borderColor: '#0077cc',
-          backgroundColor: '#0077cc',
-          fill: false,
-          tension: 0.1,
-          datalabels: {
-            color: '#0077cc',
-            anchor: 'end',
-            align: 'end',
-            offset: 4,
-            font: { size: 10, weight: 'normal' },
-            formatter: function(value) { return value.toFixed(2); }
-          }
-        },
-        {
-          label: 'Now Price',
-          data: data.map(function(d) { return d.now_price; }),
-          borderColor: '#009900',
-          backgroundColor: '#009900',
-          fill: false,
-          tension: 0.1,
-          datalabels: {
-            color: '#009900',
-            anchor: 'start',
-            align: 'start',
-            offset: 4,
-            font: { size: 10, weight: 'normal' },
-            formatter: function(value) { return value.toFixed(2); }
-          }
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        datalabels: { clip: false },
-        legend: { display: false }
-      },
-      scales: {
-        x: { title: { display: false, text: 'Date' } },
-        y: { title: { display: false, text: 'Price' }, beginAtZero: true, max: yAxisMax }
-      }
-    }
-  });
-}
-
-function showSearchBar() {
-    var header = document.querySelector('.header-container');
-    header.style.display = 'none';
-    var searchBar = document.getElementById('searchBarContainer');
-    searchBar.style.display = 'flex';
-    setTimeout(function() {
-        searchBar.style.opacity = '1';
-    }, 10);
-    document.getElementById('searchInput').focus();
-}
-
-function hideSearchBar() {
-    var searchBar = document.getElementById('searchBarContainer');
-    var header = document.querySelector('.header-container');
-    var searchInput = document.getElementById('searchInput');
-    searchInput.value = '';
-    var firstElems = document.getElementsByClassName('first-word');
-    var secondElems = document.getElementsByClassName('product-name-text');
-    for (var i = 0; i < firstElems.length; i++) {
-        firstElems[i].innerHTML = firstElems[i].dataset.original || firstElems[i].innerHTML;
-    }
-    for (var i = 0; i < secondElems.length; i++) {
-        secondElems[i].innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
-    }
-    var items = document.getElementsByClassName('item-container');
-    for (var i = 0; i < items.length; i++) {
-        items[i].style.display = '';
-    }
-    document.getElementById('searchCount').innerText = '';
-    searchBar.style.opacity = '0';
-    setTimeout(function() {
-        searchBar.style.display = 'none';
-        header.style.display = 'flex';
-    }, 500);
-}
-
-function inPageSearch() {
-    var input = document.getElementById('searchInput').value.trim();
-    var term = input.toLowerCase();
-    var items = document.getElementsByClassName('item-container');
-    var visibleCount = 0;
-    for (var i = 0; i < items.length; i++) {
-        var firstElem = items[i].querySelector('.first-word');
-        var secondElem = items[i].querySelector('.product-name-text');
-        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-        if (term === '' || fullName.indexOf(term) > -1) {
-            items[i].style.display = '';
-            visibleCount++;
-            if (term !== '') {
-                firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent)
-                                      .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-                secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent)
-                                      .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-            } else {
-                firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
-                secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
-            }
-        } else {
-            items[i].style.display = 'none';
-        }
-    }
-    document.getElementById('searchCount').innerText = visibleCount + " found";
-}
-</script>
 
 </body>
 </html>
