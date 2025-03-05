@@ -154,9 +154,6 @@
       align-items: center;
       gap: 10px;
     }
-    .item-image {
-      position: relative;
-    }
     .item-image img {
       width: 80px;
       height: auto;
@@ -270,7 +267,7 @@
       position: relative;
       background-color: #f9f9f9;
     }
-    .detail-view, .chart-view, .big-picture-view {
+    .detail-view, .chart-view {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       transition: opacity 0.5s ease;
@@ -287,19 +284,6 @@
       background-color: #f9f9f9;
       opacity: 0;
       z-index: 1;
-    }
-    /* Big picture view without border */
-    .big-picture-view {
-      background-color: #fff;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 3;
-    }
-    .big-picture-view img {
-      max-width: 400px;
-      width: 100%;
-      height: auto;
     }
     .item-name {
       font-size: 14px;
@@ -344,35 +328,6 @@
       padding: 2px 5px;
       font-size: 16px;
     }
-    /* Plus/Minus Icon Buttons (smaller, black/white) */
-    .icon-buttons {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      gap: 8px;
-    }
-    .circle-icon-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #000;
-      color: #fff;
-      border: none;
-      border-radius: 50%;
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-    }
-    .circle-icon-button:hover {
-      opacity: 0.8;
-    }
-    .icon-plus, .icon-minus {
-      font-size: 16px;
-      font-weight: bold;
-      display: inline-block;
-    }
   </style>
 
   <script>
@@ -380,7 +335,7 @@
         document.body.classList.add('page-loaded');
         document.querySelectorAll('.detail-view').forEach(function(el) {
             el.style.opacity = '1';
-            el.style.display = 'flex';
+            el.style.display = 'block';
         });
         document.querySelectorAll('.chart-view').forEach(function(el) {
             el.style.opacity = '0';
@@ -392,53 +347,44 @@
 
 </head>
 <body>
-  <div class='header-container'>
-    <div class='header-row'>
-      <button class='search-button' onclick='showSearchBar()'>
-        <span class='search-icon'>🔍</span> FIND ➜
-      </button>
-      <div class='page-title'>ss_seafood</div>
-    </div>
-    <div class='creation-time'>Created on: 2025-03-05 00:16:01</div>
+<div class='header-container'>
+  <div class='header-row'>
+    <button class='search-button' onclick='showSearchBar()'>
+      <span class='search-icon'>🔍</span> FIND ➜
+    </button>
+    <div class='page-title'>ss_seafood</div>
   </div>
-  <hr class='divider'>
-  <div class='header-spacer'></div>
+  <div class='creation-time'>Created on: 2025-03-05 00:19:25</div>
+</div>
+<hr class='divider'>
+<div class='header-spacer'></div>
 
-  <div id='searchBarContainer'>
-    <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
-    <span id='searchCount'></span>
-    <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
-  </div>
+<div id='searchBarContainer'>
+  <input type='text' id='searchInput' placeholder='Search in page...' onkeyup='inPageSearch()'>
+  <span id='searchCount'></span>
+  <button id='closeSearchButton' onclick='hideSearchBar()'>×</button>
+</div>
 
-  <div class='item-container' data-product-id='20720065_KG'>
+<div class='item-container' data-product-id='20720065_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src="https://assets.shop.loblaws.ca/products/20720065/b1/en/beauty/20720065_beauty_a01_@2.png" alt="Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size" />
+    <img src='https://assets.shop.loblaws.ca/products/20720065/b1/en/beauty/20720065_beauty_a01_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' />
   </div>
   <!-- "Detail" button (selected by default) -->
-  <button class='vertical-switch-button selected fade-on-load'           data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
-  <!-- Toggle switch (disabled by default, label "Yr.") -->
+  <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
+  <!-- Toggle switch (disabled by default, label "1 Yr") -->
   <div class='toggle-switch disabled' data-product-id='20720065_KG'>
-    <input type='checkbox' class='toggle-input' id='toggle-20720065_KG'            onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
+    <input type='checkbox' class='toggle-input' id='toggle-20720065_KG' onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
     <label class='toggle-label' for='toggle-20720065_KG'>
       <span class='toggle-circle'></span>
       <span class='toggle-text'>Yr.</span>
     </label>
   </div>
-  <!-- plus/minus icons -->
-  <div class='icon-buttons'>
-    <button class='circle-icon-button plus-icon' data-product-id='20720065_KG'             onclick='showBigPicture(this)' style='display:inline-block;'>
-      <span class='icon-plus'>+</span>
-    </button>
-    <button class='circle-icon-button minus-icon' data-product-id='20720065_KG'             onclick='hideBigPicture(this)' style='display:none;'>
-      <span class='icon-minus'>-</span>
-    </button>
-  </div>
 </div>
 
   <div class='right-side'>
   <div class='view-container'>
-    <div class='detail-view' id='detail-20720065_KG' style='display:block;'>
+    <div class='detail-view' id='detail-20720065_KG'>
       <div class='item-name'>
   <span class='item-number'>#1</span>
   <span class='first-word' data-original='Fresh'>Fresh</span>
@@ -450,11 +396,8 @@
 <div class='discount-badge' style='border: 2px solid red; border-radius: 50%; padding: 5px; display: inline-block;'>31.2% OFF</div>
 
     </div>
-    <div class='chart-view' id='chart-20720065_KG' style='display:none;'>
+    <div class='chart-view' id='chart-20720065_KG'>
       <canvas id='canvas-20720065_KG' width='400' height='200'></canvas>
-    </div>
-    <div class='big-picture-view' id='big-picture-20720065_KG' style='display:none;'>
-      <img src='https://assets.shop.loblaws.ca/products/20720065/b1/en/beauty/20720065_beauty_a01_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged, Club Size' style='max-width:400px;' />
     </div>
   </div>
 </div>
@@ -463,32 +406,23 @@
 <div class='item-container' data-product-id='20852143_KG'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src="https://assets.shop.loblaws.ca/products/20852143/b1/en/angle/20852143_angle_a01_@2.png" alt="Fresh Atlantic Salmon Fillets, Skin On, Packaged" />
+    <img src='https://assets.shop.loblaws.ca/products/20852143/b1/en/angle/20852143_angle_a01_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' />
   </div>
   <!-- "Detail" button (selected by default) -->
-  <button class='vertical-switch-button selected fade-on-load'           data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
-  <!-- Toggle switch (disabled by default, label "Yr.") -->
+  <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
+  <!-- Toggle switch (disabled by default, label "1 Yr") -->
   <div class='toggle-switch disabled' data-product-id='20852143_KG'>
-    <input type='checkbox' class='toggle-input' id='toggle-20852143_KG'            onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
+    <input type='checkbox' class='toggle-input' id='toggle-20852143_KG' onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
     <label class='toggle-label' for='toggle-20852143_KG'>
       <span class='toggle-circle'></span>
       <span class='toggle-text'>Yr.</span>
     </label>
   </div>
-  <!-- plus/minus icons -->
-  <div class='icon-buttons'>
-    <button class='circle-icon-button plus-icon' data-product-id='20852143_KG'             onclick='showBigPicture(this)' style='display:inline-block;'>
-      <span class='icon-plus'>+</span>
-    </button>
-    <button class='circle-icon-button minus-icon' data-product-id='20852143_KG'             onclick='hideBigPicture(this)' style='display:none;'>
-      <span class='icon-minus'>-</span>
-    </button>
-  </div>
 </div>
 
   <div class='right-side'>
   <div class='view-container'>
-    <div class='detail-view' id='detail-20852143_KG' style='display:block;'>
+    <div class='detail-view' id='detail-20852143_KG'>
       <div class='item-name'>
   <span class='item-number'>#2</span>
   <span class='first-word' data-original='Fresh'>Fresh</span>
@@ -500,11 +434,8 @@
 <div class='discount-badge' style='border: 2px solid red; border-radius: 50%; padding: 5px; display: inline-block;'>26.4% OFF</div>
 
     </div>
-    <div class='chart-view' id='chart-20852143_KG' style='display:none;'>
+    <div class='chart-view' id='chart-20852143_KG'>
       <canvas id='canvas-20852143_KG' width='400' height='200'></canvas>
-    </div>
-    <div class='big-picture-view' id='big-picture-20852143_KG' style='display:none;'>
-      <img src='https://assets.shop.loblaws.ca/products/20852143/b1/en/angle/20852143_angle_a01_@2.png' alt='Fresh Atlantic Salmon Fillets, Skin On, Packaged' style='max-width:400px;' />
     </div>
   </div>
 </div>
@@ -513,32 +444,23 @@
 <div class='item-container' data-product-id='21043887_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src="https://assets.shop.loblaws.ca/products/21043887/b1/en/angle/21043887_angle_a01_@2.png" alt="Pacific White Shrimp Raw 16-20/LB" />
+    <img src='https://assets.shop.loblaws.ca/products/21043887/b1/en/angle/21043887_angle_a01_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' />
   </div>
   <!-- "Detail" button (selected by default) -->
-  <button class='vertical-switch-button selected fade-on-load'           data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
-  <!-- Toggle switch (disabled by default, label "Yr.") -->
+  <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
+  <!-- Toggle switch (disabled by default, label "1 Yr") -->
   <div class='toggle-switch disabled' data-product-id='21043887_EA'>
-    <input type='checkbox' class='toggle-input' id='toggle-21043887_EA'            onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
+    <input type='checkbox' class='toggle-input' id='toggle-21043887_EA' onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
     <label class='toggle-label' for='toggle-21043887_EA'>
       <span class='toggle-circle'></span>
       <span class='toggle-text'>Yr.</span>
     </label>
   </div>
-  <!-- plus/minus icons -->
-  <div class='icon-buttons'>
-    <button class='circle-icon-button plus-icon' data-product-id='21043887_EA'             onclick='showBigPicture(this)' style='display:inline-block;'>
-      <span class='icon-plus'>+</span>
-    </button>
-    <button class='circle-icon-button minus-icon' data-product-id='21043887_EA'             onclick='hideBigPicture(this)' style='display:none;'>
-      <span class='icon-minus'>-</span>
-    </button>
-  </div>
 </div>
 
   <div class='right-side'>
   <div class='view-container'>
-    <div class='detail-view' id='detail-21043887_EA' style='display:block;'>
+    <div class='detail-view' id='detail-21043887_EA'>
       <div class='item-name'>
   <span class='item-number'>#3</span>
   <span class='first-word' data-original='Pacific'>Pacific</span>
@@ -550,11 +472,8 @@
 <div class='discount-badge' style='border: 2px solid red; border-radius: 50%; padding: 5px; display: inline-block;'>26.2% OFF</div>
 
     </div>
-    <div class='chart-view' id='chart-21043887_EA' style='display:none;'>
+    <div class='chart-view' id='chart-21043887_EA'>
       <canvas id='canvas-21043887_EA' width='400' height='200'></canvas>
-    </div>
-    <div class='big-picture-view' id='big-picture-21043887_EA' style='display:none;'>
-      <img src='https://assets.shop.loblaws.ca/products/21043887/b1/en/angle/21043887_angle_a01_@2.png' alt='Pacific White Shrimp Raw 16-20/LB' style='max-width:400px;' />
     </div>
   </div>
 </div>
@@ -563,32 +482,23 @@
 <div class='item-container' data-product-id='21211819_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src="https://assets.shop.loblaws.ca/products/21211819/b1/en/front/21211819_front_a01_@2.png" alt="Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g" />
+    <img src='https://assets.shop.loblaws.ca/products/21211819/b1/en/front/21211819_front_a01_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' />
   </div>
   <!-- "Detail" button (selected by default) -->
-  <button class='vertical-switch-button selected fade-on-load'           data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
-  <!-- Toggle switch (disabled by default, label "Yr.") -->
+  <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
+  <!-- Toggle switch (disabled by default, label "1 Yr") -->
   <div class='toggle-switch disabled' data-product-id='21211819_EA'>
-    <input type='checkbox' class='toggle-input' id='toggle-21211819_EA'            onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
+    <input type='checkbox' class='toggle-input' id='toggle-21211819_EA' onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
     <label class='toggle-label' for='toggle-21211819_EA'>
       <span class='toggle-circle'></span>
       <span class='toggle-text'>Yr.</span>
     </label>
   </div>
-  <!-- plus/minus icons -->
-  <div class='icon-buttons'>
-    <button class='circle-icon-button plus-icon' data-product-id='21211819_EA'             onclick='showBigPicture(this)' style='display:inline-block;'>
-      <span class='icon-plus'>+</span>
-    </button>
-    <button class='circle-icon-button minus-icon' data-product-id='21211819_EA'             onclick='hideBigPicture(this)' style='display:none;'>
-      <span class='icon-minus'>-</span>
-    </button>
-  </div>
 </div>
 
   <div class='right-side'>
   <div class='view-container'>
-    <div class='detail-view' id='detail-21211819_EA' style='display:block;'>
+    <div class='detail-view' id='detail-21211819_EA'>
       <div class='item-name'>
   <span class='item-number'>#4</span>
   <span class='first-word' data-original='Wild'>Wild</span>
@@ -600,11 +510,8 @@
 <div class='discount-badge' style='border: 2px solid red; border-radius: 50%; padding: 5px; display: inline-block;'>25.9% OFF</div>
 
     </div>
-    <div class='chart-view' id='chart-21211819_EA' style='display:none;'>
+    <div class='chart-view' id='chart-21211819_EA'>
       <canvas id='canvas-21211819_EA' width='400' height='200'></canvas>
-    </div>
-    <div class='big-picture-view' id='big-picture-21211819_EA' style='display:none;'>
-      <img src='https://assets.shop.loblaws.ca/products/21211819/b1/en/front/21211819_front_a01_@2.png' alt='Wild Yellowfin Tuna Skinless Boneless Steaks, Sustainably Sourced 280g' style='max-width:400px;' />
     </div>
   </div>
 </div>
@@ -613,32 +520,23 @@
 <div class='item-container' data-product-id='20750012_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src="https://assets.shop.loblaws.ca/products/20750012/b1/en/angle/20750012_angle_a01_@2.png" alt="Crab Flavoured Wild Alaska Pollock Chunks" />
+    <img src='https://assets.shop.loblaws.ca/products/20750012/b1/en/angle/20750012_angle_a01_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' />
   </div>
   <!-- "Detail" button (selected by default) -->
-  <button class='vertical-switch-button selected fade-on-load'           data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
-  <!-- Toggle switch (disabled by default, label "Yr.") -->
+  <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
+  <!-- Toggle switch (disabled by default, label "1 Yr") -->
   <div class='toggle-switch disabled' data-product-id='20750012_EA'>
-    <input type='checkbox' class='toggle-input' id='toggle-20750012_EA'            onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
+    <input type='checkbox' class='toggle-input' id='toggle-20750012_EA' onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
     <label class='toggle-label' for='toggle-20750012_EA'>
       <span class='toggle-circle'></span>
       <span class='toggle-text'>Yr.</span>
     </label>
   </div>
-  <!-- plus/minus icons -->
-  <div class='icon-buttons'>
-    <button class='circle-icon-button plus-icon' data-product-id='20750012_EA'             onclick='showBigPicture(this)' style='display:inline-block;'>
-      <span class='icon-plus'>+</span>
-    </button>
-    <button class='circle-icon-button minus-icon' data-product-id='20750012_EA'             onclick='hideBigPicture(this)' style='display:none;'>
-      <span class='icon-minus'>-</span>
-    </button>
-  </div>
 </div>
 
   <div class='right-side'>
   <div class='view-container'>
-    <div class='detail-view' id='detail-20750012_EA' style='display:block;'>
+    <div class='detail-view' id='detail-20750012_EA'>
       <div class='item-name'>
   <span class='item-number'>#5</span>
   <span class='first-word' data-original='Crab'>Crab</span>
@@ -650,11 +548,8 @@
 <div class='discount-badge' style='border: 2px solid red; border-radius: 50%; padding: 5px; display: inline-block;'>25.1% OFF</div>
 
     </div>
-    <div class='chart-view' id='chart-20750012_EA' style='display:none;'>
+    <div class='chart-view' id='chart-20750012_EA'>
       <canvas id='canvas-20750012_EA' width='400' height='200'></canvas>
-    </div>
-    <div class='big-picture-view' id='big-picture-20750012_EA' style='display:none;'>
-      <img src='https://assets.shop.loblaws.ca/products/20750012/b1/en/angle/20750012_angle_a01_@2.png' alt='Crab Flavoured Wild Alaska Pollock Chunks' style='max-width:400px;' />
     </div>
   </div>
 </div>
@@ -663,32 +558,23 @@
 <div class='item-container' data-product-id='20749901_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src="https://assets.shop.loblaws.ca/products/20749901/b1/en/front/20749901_front_a01_@2.png" alt="Lobster Flavoured Wild Alaska Pollock Chunks" />
+    <img src='https://assets.shop.loblaws.ca/products/20749901/b1/en/front/20749901_front_a01_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' />
   </div>
   <!-- "Detail" button (selected by default) -->
-  <button class='vertical-switch-button selected fade-on-load'           data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
-  <!-- Toggle switch (disabled by default, label "Yr.") -->
+  <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
+  <!-- Toggle switch (disabled by default, label "1 Yr") -->
   <div class='toggle-switch disabled' data-product-id='20749901_EA'>
-    <input type='checkbox' class='toggle-input' id='toggle-20749901_EA'            onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
+    <input type='checkbox' class='toggle-input' id='toggle-20749901_EA' onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
     <label class='toggle-label' for='toggle-20749901_EA'>
       <span class='toggle-circle'></span>
       <span class='toggle-text'>Yr.</span>
     </label>
   </div>
-  <!-- plus/minus icons -->
-  <div class='icon-buttons'>
-    <button class='circle-icon-button plus-icon' data-product-id='20749901_EA'             onclick='showBigPicture(this)' style='display:inline-block;'>
-      <span class='icon-plus'>+</span>
-    </button>
-    <button class='circle-icon-button minus-icon' data-product-id='20749901_EA'             onclick='hideBigPicture(this)' style='display:none;'>
-      <span class='icon-minus'>-</span>
-    </button>
-  </div>
 </div>
 
   <div class='right-side'>
   <div class='view-container'>
-    <div class='detail-view' id='detail-20749901_EA' style='display:block;'>
+    <div class='detail-view' id='detail-20749901_EA'>
       <div class='item-name'>
   <span class='item-number'>#6</span>
   <span class='first-word' data-original='Lobster'>Lobster</span>
@@ -700,11 +586,8 @@
 <div class='discount-badge' style='border: 2px solid red; border-radius: 50%; padding: 5px; display: inline-block;'>25.1% OFF</div>
 
     </div>
-    <div class='chart-view' id='chart-20749901_EA' style='display:none;'>
+    <div class='chart-view' id='chart-20749901_EA'>
       <canvas id='canvas-20749901_EA' width='400' height='200'></canvas>
-    </div>
-    <div class='big-picture-view' id='big-picture-20749901_EA' style='display:none;'>
-      <img src='https://assets.shop.loblaws.ca/products/20749901/b1/en/front/20749901_front_a01_@2.png' alt='Lobster Flavoured Wild Alaska Pollock Chunks' style='max-width:400px;' />
     </div>
   </div>
 </div>
@@ -713,32 +596,23 @@
 <div class='item-container' data-product-id='20749798_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src="https://assets.shop.loblaws.ca/products/20749798/b1/en/angle/20749798_angle_a01_@2.png" alt="Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting" />
+    <img src='https://assets.shop.loblaws.ca/products/20749798/b1/en/angle/20749798_angle_a01_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
   </div>
   <!-- "Detail" button (selected by default) -->
-  <button class='vertical-switch-button selected fade-on-load'           data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
-  <!-- Toggle switch (disabled by default, label "Yr.") -->
+  <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
+  <!-- Toggle switch (disabled by default, label "1 Yr") -->
   <div class='toggle-switch disabled' data-product-id='20749798_EA'>
-    <input type='checkbox' class='toggle-input' id='toggle-20749798_EA'            onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
+    <input type='checkbox' class='toggle-input' id='toggle-20749798_EA' onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
     <label class='toggle-label' for='toggle-20749798_EA'>
       <span class='toggle-circle'></span>
       <span class='toggle-text'>Yr.</span>
     </label>
   </div>
-  <!-- plus/minus icons -->
-  <div class='icon-buttons'>
-    <button class='circle-icon-button plus-icon' data-product-id='20749798_EA'             onclick='showBigPicture(this)' style='display:inline-block;'>
-      <span class='icon-plus'>+</span>
-    </button>
-    <button class='circle-icon-button minus-icon' data-product-id='20749798_EA'             onclick='hideBigPicture(this)' style='display:none;'>
-      <span class='icon-minus'>-</span>
-    </button>
-  </div>
 </div>
 
   <div class='right-side'>
   <div class='view-container'>
-    <div class='detail-view' id='detail-20749798_EA' style='display:block;'>
+    <div class='detail-view' id='detail-20749798_EA'>
       <div class='item-name'>
   <span class='item-number'>#7</span>
   <span class='first-word' data-original='Leg-Style'>Leg-Style</span>
@@ -750,11 +624,8 @@
 <div class='discount-badge' style='border: 2px solid red; border-radius: 50%; padding: 5px; display: inline-block;'>25.1% OFF</div>
 
     </div>
-    <div class='chart-view' id='chart-20749798_EA' style='display:none;'>
+    <div class='chart-view' id='chart-20749798_EA'>
       <canvas id='canvas-20749798_EA' width='400' height='200'></canvas>
-    </div>
-    <div class='big-picture-view' id='big-picture-20749798_EA' style='display:none;'>
-      <img src='https://assets.shop.loblaws.ca/products/20749798/b1/en/angle/20749798_angle_a01_@2.png' alt='Leg-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' style='max-width:400px;' />
     </div>
   </div>
 </div>
@@ -763,32 +634,23 @@
 <div class='item-container' data-product-id='20699832_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src="https://assets.shop.loblaws.ca/products/20699832/b1/en/angle/20699832_angle_a01_@2.png" alt="Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting" />
+    <img src='https://assets.shop.loblaws.ca/products/20699832/b1/en/angle/20699832_angle_a01_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' />
   </div>
   <!-- "Detail" button (selected by default) -->
-  <button class='vertical-switch-button selected fade-on-load'           data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
-  <!-- Toggle switch (disabled by default, label "Yr.") -->
+  <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
+  <!-- Toggle switch (disabled by default, label "1 Yr") -->
   <div class='toggle-switch disabled' data-product-id='20699832_EA'>
-    <input type='checkbox' class='toggle-input' id='toggle-20699832_EA'            onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
+    <input type='checkbox' class='toggle-input' id='toggle-20699832_EA' onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
     <label class='toggle-label' for='toggle-20699832_EA'>
       <span class='toggle-circle'></span>
       <span class='toggle-text'>Yr.</span>
     </label>
   </div>
-  <!-- plus/minus icons -->
-  <div class='icon-buttons'>
-    <button class='circle-icon-button plus-icon' data-product-id='20699832_EA'             onclick='showBigPicture(this)' style='display:inline-block;'>
-      <span class='icon-plus'>+</span>
-    </button>
-    <button class='circle-icon-button minus-icon' data-product-id='20699832_EA'             onclick='hideBigPicture(this)' style='display:none;'>
-      <span class='icon-minus'>-</span>
-    </button>
-  </div>
 </div>
 
   <div class='right-side'>
   <div class='view-container'>
-    <div class='detail-view' id='detail-20699832_EA' style='display:block;'>
+    <div class='detail-view' id='detail-20699832_EA'>
       <div class='item-name'>
   <span class='item-number'>#8</span>
   <span class='first-word' data-original='Flake-Style'>Flake-Style</span>
@@ -800,11 +662,8 @@
 <div class='discount-badge' style='border: 2px solid red; border-radius: 50%; padding: 5px; display: inline-block;'>25.1% OFF</div>
 
     </div>
-    <div class='chart-view' id='chart-20699832_EA' style='display:none;'>
+    <div class='chart-view' id='chart-20699832_EA'>
       <canvas id='canvas-20699832_EA' width='400' height='200'></canvas>
-    </div>
-    <div class='big-picture-view' id='big-picture-20699832_EA' style='display:none;'>
-      <img src='https://assets.shop.loblaws.ca/products/20699832/b1/en/angle/20699832_angle_a01_@2.png' alt='Flake-Style Crab Flavoured Wild Alaska Pollock and Wild Pacific Whiting' style='max-width:400px;' />
     </div>
   </div>
 </div>
@@ -813,32 +672,23 @@
 <div class='item-container' data-product-id='21108887_EA'>
   <div class='left-side'>
   <div class='item-image'>
-    <img src="https://assets.shop.loblaws.ca/products/21108887/b1/en/angle/21108887_angle_a01_@2.png" alt="Breaded Cod Bites With Sauce" />
+    <img src='https://assets.shop.loblaws.ca/products/21108887/b1/en/angle/21108887_angle_a01_@2.png' alt='Breaded Cod Bites With Sauce' />
   </div>
   <!-- "Detail" button (selected by default) -->
-  <button class='vertical-switch-button selected fade-on-load'           data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
-  <!-- Toggle switch (disabled by default, label "Yr.") -->
+  <button class='vertical-switch-button selected fade-on-load' data-type='detail' onclick='switchToDetail(this)'>On Sale</button>
+  <!-- Toggle switch (disabled by default, label "1 Yr") -->
   <div class='toggle-switch disabled' data-product-id='21108887_EA'>
-    <input type='checkbox' class='toggle-input' id='toggle-21108887_EA'            onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
+    <input type='checkbox' class='toggle-input' id='toggle-21108887_EA' onchange='toggleMonYr(this)' ontouchend='toggleMonYr(this)'>
     <label class='toggle-label' for='toggle-21108887_EA'>
       <span class='toggle-circle'></span>
       <span class='toggle-text'>Yr.</span>
     </label>
   </div>
-  <!-- plus/minus icons -->
-  <div class='icon-buttons'>
-    <button class='circle-icon-button plus-icon' data-product-id='21108887_EA'             onclick='showBigPicture(this)' style='display:inline-block;'>
-      <span class='icon-plus'>+</span>
-    </button>
-    <button class='circle-icon-button minus-icon' data-product-id='21108887_EA'             onclick='hideBigPicture(this)' style='display:none;'>
-      <span class='icon-minus'>-</span>
-    </button>
-  </div>
 </div>
 
   <div class='right-side'>
   <div class='view-container'>
-    <div class='detail-view' id='detail-21108887_EA' style='display:block;'>
+    <div class='detail-view' id='detail-21108887_EA'>
       <div class='item-name'>
   <span class='item-number'>#9</span>
   <span class='first-word' data-original='Breaded'>Breaded</span>
@@ -850,11 +700,8 @@
 <div class='discount-badge' style='border: 2px solid red; border-radius: 50%; padding: 5px; display: inline-block;'>9.1% OFF</div>
 
     </div>
-    <div class='chart-view' id='chart-21108887_EA' style='display:none;'>
+    <div class='chart-view' id='chart-21108887_EA'>
       <canvas id='canvas-21108887_EA' width='400' height='200'></canvas>
-    </div>
-    <div class='big-picture-view' id='big-picture-21108887_EA' style='display:none;'>
-      <img src='https://assets.shop.loblaws.ca/products/21108887/b1/en/angle/21108887_angle_a01_@2.png' alt='Breaded Cod Bites With Sauce' style='max-width:400px;' />
     </div>
   </div>
 </div>
@@ -862,399 +709,320 @@
 </div>
 
 
-  <script>
-    var chartInstances = {};
+<script>
+var chartInstances = {};
 
-    /**
-     * "Detail" button: show discount (detail) view and hide chart view.
-     */
-    function switchToDetail(btn) {
-      var container = btn.closest('.item-container');
-      container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
-          b.classList.remove('selected');
-      });
-      btn.classList.add('selected');
+/**
+ * "Detail" button: show discount (detail) view and hide chart view.
+ */
+function switchToDetail(btn) {
+    var container = btn.closest('.item-container');
+    container.querySelectorAll('.vertical-switch-button').forEach(function(b) {
+        b.classList.remove('selected');
+    });
+    btn.classList.add('selected');
 
-      var toggleSwitch = container.querySelector('.toggle-switch');
-      toggleSwitch.classList.add('disabled');
-      var toggleInput = container.querySelector('.toggle-input');
-      toggleInput.checked = false;
-      var toggleLabel = toggleSwitch.querySelector('.toggle-text');
-      toggleLabel.textContent = "1 Yr";
+    var toggleSwitch = container.querySelector('.toggle-switch');
+    toggleSwitch.classList.add('disabled');
+    var toggleInput = container.querySelector('.toggle-input');
+    toggleInput.checked = false;
+    var toggleLabel = toggleSwitch.querySelector('.toggle-text');
+    toggleLabel.textContent = "1 Yr";
 
-      var detailView = container.querySelector('.detail-view');
-      var chartView = container.querySelector('.chart-view');
-      detailView.style.opacity = '1';
-      detailView.style.display = 'flex';
-      chartView.style.opacity = '0';
-      chartView.style.display = 'none';
+    var detailView = container.querySelector('.detail-view');
+    var chartView = container.querySelector('.chart-view');
+    detailView.style.opacity = '1';
+    detailView.style.display = 'block';
+    chartView.style.opacity = '0';
+    chartView.style.display = 'none';
 
-      // Hide big picture view if visible
-      var bigPictureView = container.querySelector('.big-picture-view');
-      if(bigPictureView) {
-          bigPictureView.style.display = 'none';
-      }
+    var productId = container.getAttribute('data-product-id');
+    if (chartInstances[productId]) {
+        chartInstances[productId].destroy();
+        delete chartInstances[productId];
+    }
+}
 
-      // Revert plus/minus icons to plus
-      var plusIcon = container.querySelector('.plus-icon');
-      var minusIcon = container.querySelector('.minus-icon');
-      if (plusIcon) { plusIcon.style.display = 'inline-block'; }
-      if (minusIcon) { minusIcon.style.display = 'none'; }
+/**
+ * Toggle switch handler:
+ * When toggled, hide discount view and show chart view immediately.
+ * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
+ */
+function toggleMonYr(checkbox) {
+    var container = checkbox.closest('.item-container');
+    var toggleSwitch = container.querySelector('.toggle-switch');
+    if (toggleSwitch.classList.contains('disabled')) {
+        toggleSwitch.classList.remove('disabled');
+    }
+    var detailBtn = container.querySelector('[data-type="detail"]');
+    detailBtn.classList.remove('selected');
 
-      var productId = container.getAttribute('data-product-id');
-      if (chartInstances[productId]) {
-          chartInstances[productId].destroy();
-          delete chartInstances[productId];
-      }
+    var detailView = container.querySelector('.detail-view');
+    var chartView = container.querySelector('.chart-view');
+    detailView.style.opacity = '0';
+    detailView.style.display = 'none';
+    chartView.style.opacity = '1';
+    chartView.style.display = 'block';
+
+    var productId = container.getAttribute('data-product-id');
+    var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
+    var data1mon = window.priceHistoryData[productId]["1mon"] || [];
+    var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
+
+    if (chartInstances[productId]) {
+        chartInstances[productId].destroy();
+        delete chartInstances[productId];
     }
 
-    /**
-     * Toggle switch handler:
-     * When toggled, hide discount view and show chart view immediately.
-     * If checked, render a 1 Yr line chart; if unchecked, render a 1 Mon stacked bar chart.
-     */
-    function toggleMonYr(checkbox) {
-      var container = checkbox.closest('.item-container');
-      // If big picture view is visible, hide it
-      var bigPictureView = container.querySelector('.big-picture-view');
-      if (bigPictureView) {
-          bigPictureView.style.display = 'none';
-          bigPictureView.style.opacity = '0';
-      }
-      var toggleSwitch = container.querySelector('.toggle-switch');
-      if (toggleSwitch.classList.contains('disabled')) {
-          toggleSwitch.classList.remove('disabled');
-      }
-      var detailBtn = container.querySelector('[data-type="detail"]');
-      detailBtn.classList.remove('selected');
-
-      var detailView = container.querySelector('.detail-view');
-      var chartView = container.querySelector('.chart-view');
-      detailView.style.opacity = '0';
-      detailView.style.display = 'none';
-      chartView.style.opacity = '1';
-      chartView.style.display = 'block';
-
-      // Revert plus/minus icons to plus if any
-      var plusIcon = container.querySelector('.plus-icon');
-      var minusIcon = container.querySelector('.minus-icon');
-      if (plusIcon) { plusIcon.style.display = 'inline-block'; }
-      if (minusIcon) { minusIcon.style.display = 'none'; }
-
-      var productId = container.getAttribute('data-product-id');
-      var toggleLabel = checkbox.nextElementSibling.querySelector('.toggle-text');
-      var data1mon = window.priceHistoryData[productId]["1mon"] || [];
-      var data1yr  = window.priceHistoryData[productId]["1yr"]  || [];
-
-      if (chartInstances[productId]) {
-          chartInstances[productId].destroy();
-          delete chartInstances[productId];
-      }
-
-      if (checkbox.checked) {
-          toggleLabel.textContent = "Yr.";
-          var filtered = data1yr.filter(function(d) {
-              return d.was_price > 0 && d.now_price > 0;
-          });
-          renderLineChart(productId, filtered);
-      } else {
-          toggleLabel.textContent = "Mon";
-          var filtered = data1mon.filter(function(d) {
-              return d.was_price > 0 && d.now_price > 0;
-          });
-          renderStackedBarChart(productId, filtered);
-      }
+    if (checkbox.checked) {
+        toggleLabel.textContent = "Yr.";
+        var filtered = data1yr.filter(function(d) {
+            return d.was_price > 0 && d.now_price > 0;
+        });
+        renderLineChart(productId, filtered);
+    } else {
+        toggleLabel.textContent = "Mon";
+        var filtered = data1mon.filter(function(d) {
+            return d.was_price > 0 && d.now_price > 0;
+        });
+        renderStackedBarChart(productId, filtered);
     }
+}
 
-    /**
-     * Renders a stacked bar chart (1 Mon data) using Chart.js.
-     * Legend is disabled.
-     */
-    function renderStackedBarChart(productId, data) {
-      const ctx = document.getElementById('canvas-' + productId).getContext('2d');
-      if (!data || data.length === 0) {
-        ctx.font = "14px Arial";
-        ctx.fillText("No 1 Mon data", 10, 50);
-        return;
-      }
-      let maxWas = 0;
-      data.forEach(function(d) {
-        if (d.was_price > maxWas) { maxWas = d.was_price; }
-      });
-      const yAxisMax = maxWas * 1.1;
-      chartInstances[productId] = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: data.map(function(d) { return d.date; }),
-          datasets: [
-            {
-              label: 'Now Price',
-              data: data.map(function(d) { return d.now_price; }),
-              backgroundColor: '#009900',
-              stack: 'Stack 0',
-              datalabels: {
-                formatter: function(value, context) {
-                  return data[context.dataIndex].now_price.toFixed(2);
-                },
-                color: '#000',
-                font: { size: 10, weight: 'normal' },
-                anchor: 'end',
-                align: 'end',
-                offset: -4
-              }
+/**
+ * Renders a stacked bar chart (1 Mon data) using Chart.js.
+ * Legend is disabled.
+ */
+function renderStackedBarChart(productId, data) {
+  const ctx = document.getElementById('canvas-' + productId).getContext('2d');
+  if (!data || data.length === 0) {
+    ctx.font = "14px Arial";
+    ctx.fillText("No 1 Mon data", 10, 50);
+    return;
+  }
+  let maxWas = 0;
+  data.forEach(function(d) {
+    if (d.was_price > maxWas) { maxWas = d.was_price; }
+  });
+  const yAxisMax = maxWas * 1.1;
+  chartInstances[productId] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(function(d) { return d.date; }),
+      datasets: [
+        {
+          label: 'Now Price',
+          data: data.map(function(d) { return d.now_price; }),
+          backgroundColor: '#009900',
+          stack: 'Stack 0',
+          datalabels: {
+            formatter: function(value, context) {
+              return data[context.dataIndex].now_price.toFixed(2);
             },
-            {
-              label: 'Was Price',
-              data: data.map(function(d) { return d.was_price - d.now_price; }),
-              backgroundColor: '#FF9900',
-              stack: 'Stack 0',
-              datalabels: {
-                formatter: function(value, context) {
-                  return data[context.dataIndex].was_price.toFixed(2);
-                },
-                color: '#000',
-                font: { size: 10, weight: 'normal' },
-                anchor: 'end',
-                align: 'end',
-                offset: 2
-              }
-            },
-            {
-              type: 'line',
-              label: 'Now Price Trend',
-              data: data.map(function(d) { return d.now_price; }),
-              borderColor: '#000',
-              borderWidth: 1,
-              fill: false,
-              tension: 0.1,
-              pointBackgroundColor: '#000',
-              order: 99,
-              z: 9999,
-              yAxisID: 'yLine',
-              datalabels: { display: false }
-            }
-          ]
+            color: '#000',
+            font: { size: 10, weight: 'normal' },
+            anchor: 'end',
+            align: 'end',
+            offset: -4
+          }
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            axisTitleBackgroundPlugin: { backgroundColor: '#ddd' },
-            datalabels: { clip: false },
-            legend: { display: false }
-          },
-          scales: {
-            x: {
-              stacked: true,
-              title: { display: false, text: 'Date' }
+        {
+          label: 'Was Price',
+          data: data.map(function(d) { return d.was_price - d.now_price; }),
+          backgroundColor: '#FF9900',
+          stack: 'Stack 0',
+          datalabels: {
+            formatter: function(value, context) {
+              return data[context.dataIndex].was_price.toFixed(2);
             },
-            y: {
-              stacked: true,
-              beginAtZero: true,
-              title: { display: false, text: 'Price' },
-              max: yAxisMax
-            },
-            yLine: {
-              beginAtZero: true,
-              display: false,
-              min: 0,
-              max: yAxisMax
-            }
+            color: '#000',
+            font: { size: 10, weight: 'normal' },
+            anchor: 'end',
+            align: 'end',
+            offset: 2
+          }
+        },
+        {
+          type: 'line',
+          label: 'Now Price Trend',
+          data: data.map(function(d) { return d.now_price; }),
+          borderColor: '#000',
+          borderWidth: 1,
+          fill: false,
+          tension: 0.1,
+          pointBackgroundColor: '#000',
+          order: 99,
+          z: 9999,
+          yAxisID: 'yLine',
+          datalabels: { display: false }
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        axisTitleBackgroundPlugin: { backgroundColor: '#ddd' },
+        datalabels: { clip: false },
+        legend: { display: false }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          title: { display: false, text: 'Date' }
+        },
+        y: {
+          stacked: true,
+          beginAtZero: true,
+          title: { display: false, text: 'Price' },
+          max: yAxisMax
+        },
+        yLine: {
+          beginAtZero: true,
+          display: false,
+          min: 0,
+          max: yAxisMax
+        }
+      }
+    }
+  });
+}
+
+/**
+ * Renders a two-line chart (1 Yr data) using Chart.js.
+ * Legend is disabled.
+ */
+function renderLineChart(productId, data) {
+  const ctx = document.getElementById('canvas-' + productId).getContext('2d');
+  if (!data || data.length === 0) {
+    ctx.font = "14px Arial";
+    ctx.fillText("No 1 Yr data", 10, 50);
+    return;
+  }
+  let maxPrice = 0;
+  data.forEach(function(d) {
+    if (d.was_price > maxPrice) { maxPrice = d.was_price; }
+    if (d.now_price > maxPrice) { maxPrice = d.now_price; }
+  });
+  const yAxisMax = maxPrice * 1.2;
+  chartInstances[productId] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: data.map(function(d) { return d.date; }),
+      datasets: [
+        {
+          label: 'Was Price',
+          data: data.map(function(d) { return d.was_price; }),
+          borderColor: '#0077cc',
+          backgroundColor: '#0077cc',
+          fill: false,
+          tension: 0.1,
+          datalabels: {
+            color: '#0077cc',
+            anchor: 'end',
+            align: 'end',
+            offset: 4,
+            font: { size: 10, weight: 'normal' },
+            formatter: function(value) { return value.toFixed(2); }
+          }
+        },
+        {
+          label: 'Now Price',
+          data: data.map(function(d) { return d.now_price; }),
+          borderColor: '#009900',
+          backgroundColor: '#009900',
+          fill: false,
+          tension: 0.1,
+          datalabels: {
+            color: '#009900',
+            anchor: 'start',
+            align: 'start',
+            offset: 4,
+            font: { size: 10, weight: 'normal' },
+            formatter: function(value) { return value.toFixed(2); }
           }
         }
-      });
-    }
-
-    /**
-     * Renders a two-line chart (1 Yr data) using Chart.js.
-     * Legend is disabled.
-     */
-    function renderLineChart(productId, data) {
-      const ctx = document.getElementById('canvas-' + productId).getContext('2d');
-      if (!data || data.length === 0) {
-        ctx.font = "14px Arial";
-        ctx.fillText("No 1 Yr data", 10, 50);
-        return;
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        datalabels: { clip: false },
+        legend: { display: false }
+      },
+      scales: {
+        x: { title: { display: false, text: 'Date' } },
+        y: { title: { display: false, text: 'Price' }, beginAtZero: true, max: yAxisMax }
       }
-      let maxPrice = 0;
-      data.forEach(function(d) {
-        if (d.was_price > maxPrice) { maxPrice = d.was_price; }
-        if (d.now_price > maxPrice) { maxPrice = d.now_price; }
-      });
-      const yAxisMax = maxPrice * 1.2;
-      chartInstances[productId] = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: data.map(function(d) { return d.date; }),
-          datasets: [
-            {
-              label: 'Was Price',
-              data: data.map(function(d) { return d.was_price; }),
-              borderColor: '#0077cc',
-              backgroundColor: '#0077cc',
-              fill: false,
-              tension: 0.1,
-              datalabels: {
-                color: '#0077cc',
-                anchor: 'end',
-                align: 'end',
-                offset: 4,
-                font: { size: 10, weight: 'normal' },
-                formatter: function(value) { return value.toFixed(2); }
-              }
-            },
-            {
-              label: 'Now Price',
-              data: data.map(function(d) { return d.now_price; }),
-              borderColor: '#009900',
-              backgroundColor: '#009900',
-              fill: false,
-              tension: 0.1,
-              datalabels: {
-                color: '#009900',
-                anchor: 'start',
-                align: 'start',
-                offset: 4,
-                font: { size: 10, weight: 'normal' },
-                formatter: function(value) { return value.toFixed(2); }
-              }
+    }
+  });
+}
+
+function showSearchBar() {
+    var header = document.querySelector('.header-container');
+    header.style.display = 'none';
+    var searchBar = document.getElementById('searchBarContainer');
+    searchBar.style.display = 'flex';
+    setTimeout(function() {
+        searchBar.style.opacity = '1';
+    }, 10);
+    document.getElementById('searchInput').focus();
+}
+
+function hideSearchBar() {
+    var searchBar = document.getElementById('searchBarContainer');
+    var header = document.querySelector('.header-container');
+    var searchInput = document.getElementById('searchInput');
+    searchInput.value = '';
+    var firstElems = document.getElementsByClassName('first-word');
+    var secondElems = document.getElementsByClassName('product-name-text');
+    for (var i = 0; i < firstElems.length; i++) {
+        firstElems[i].innerHTML = firstElems[i].dataset.original || firstElems[i].innerHTML;
+    }
+    for (var i = 0; i < secondElems.length; i++) {
+        secondElems[i].innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
+    }
+    var items = document.getElementsByClassName('item-container');
+    for (var i = 0; i < items.length; i++) {
+        items[i].style.display = '';
+    }
+    document.getElementById('searchCount').innerText = '';
+    searchBar.style.opacity = '0';
+    setTimeout(function() {
+        searchBar.style.display = 'none';
+        header.style.display = 'flex';
+    }, 500);
+}
+
+function inPageSearch() {
+    var input = document.getElementById('searchInput').value.trim();
+    var term = input.toLowerCase();
+    var items = document.getElementsByClassName('item-container');
+    var visibleCount = 0;
+    for (var i = 0; i < items.length; i++) {
+        var firstElem = items[i].querySelector('.first-word');
+        var secondElem = items[i].querySelector('.product-name-text');
+        var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
+        if (term === '' || fullName.indexOf(term) > -1) {
+            items[i].style.display = '';
+            visibleCount++;
+            if (term !== '') {
+                firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent)
+                                      .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+                secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent)
+                                      .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
+            } else {
+                firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
+                secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
             }
-          ]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            datalabels: { clip: false },
-            legend: { display: false }
-          },
-          scales: {
-            x: { title: { display: false, text: 'Date' } },
-            y: { title: { display: false, text: 'Price' }, beginAtZero: true, max: yAxisMax }
-          }
+        } else {
+            items[i].style.display = 'none';
         }
-      });
     }
-
-    /**
-     * Plus/Minus functions for big picture view.
-     */
-    function showBigPicture(button) {
-      var container = button.closest('.item-container');
-      // Hide detail and chart views
-      var detailView = container.querySelector('.detail-view');
-      var chartView = container.querySelector('.chart-view');
-      detailView.style.display = 'none';
-      detailView.style.opacity = '0';
-      chartView.style.display = 'none';
-      chartView.style.opacity = '0';
-      // Show big picture view
-      var bigPictureView = container.querySelector('.big-picture-view');
-      if (bigPictureView) {
-        bigPictureView.style.display = 'flex';
-        bigPictureView.style.opacity = '1';
-      }
-      // Switch icons: hide plus, show minus
-      var plusIcon = container.querySelector('.plus-icon');
-      var minusIcon = container.querySelector('.minus-icon');
-      if (plusIcon) { plusIcon.style.display = 'none'; }
-      if (minusIcon) { minusIcon.style.display = 'inline-block'; }
-      // Unselect On Sale button and uncheck toggle switch
-      var detailBtn = container.querySelector('[data-type="detail"]');
-      detailBtn.classList.remove('selected');
-      var toggleInput = container.querySelector('.toggle-input');
-      if (toggleInput) { toggleInput.checked = false; }
-    }
-
-    function hideBigPicture(button) {
-      var container = button.closest('.item-container');
-      // Hide big picture view, show detail view
-      var bigPictureView = container.querySelector('.big-picture-view');
-      if (bigPictureView) {
-        bigPictureView.style.display = 'none';
-        bigPictureView.style.opacity = '0';
-      }
-      var detailView = container.querySelector('.detail-view');
-      detailView.style.display = 'flex';
-      detailView.style.opacity = '1';
-      // Switch icons: show plus, hide minus
-      var plusIcon = container.querySelector('.plus-icon');
-      var minusIcon = container.querySelector('.minus-icon');
-      if (plusIcon) { plusIcon.style.display = 'inline-block'; }
-      if (minusIcon) { minusIcon.style.display = 'none'; }
-      // Restore On Sale button and disable toggle button
-      var detailBtn = container.querySelector('[data-type="detail"]');
-      detailBtn.classList.add('selected');
-      var toggleSwitch = container.querySelector('.toggle-switch');
-      if (toggleSwitch) { toggleSwitch.classList.add('disabled'); }
-      var toggleInput = container.querySelector('.toggle-input');
-      if (toggleInput) { toggleInput.checked = false; }
-    }
-
-    function showSearchBar() {
-      var header = document.querySelector('.header-container');
-      header.style.display = 'none';
-      var searchBar = document.getElementById('searchBarContainer');
-      searchBar.style.display = 'flex';
-      setTimeout(function() {
-          searchBar.style.opacity = '1';
-      }, 10);
-      document.getElementById('searchInput').focus();
-    }
-
-    function hideSearchBar() {
-      var searchBar = document.getElementById('searchBarContainer');
-      var header = document.querySelector('.header-container');
-      var searchInput = document.getElementById('searchInput');
-      searchInput.value = '';
-      var firstElems = document.getElementsByClassName('first-word');
-      var secondElems = document.getElementsByClassName('product-name-text');
-      for (var i = 0; i < firstElems.length; i++) {
-          firstElems[i].innerHTML = firstElems[i].dataset.original || firstElems[i].innerHTML;
-      }
-      for (var i = 0; i < secondElems.length; i++) {
-          secondElems[i].innerHTML = secondElems[i].dataset.original || secondElems[i].innerHTML;
-      }
-      var items = document.getElementsByClassName('item-container');
-      for (var i = 0; i < items.length; i++) {
-          items[i].style.display = '';
-      }
-      document.getElementById('searchCount').innerText = '';
-      searchBar.style.opacity = '0';
-      setTimeout(function() {
-          searchBar.style.display = 'none';
-          header.style.display = 'flex';
-      }, 500);
-    }
-
-    function inPageSearch() {
-      var input = document.getElementById('searchInput').value.trim();
-      var term = input.toLowerCase();
-      var items = document.getElementsByClassName('item-container');
-      var visibleCount = 0;
-      for (var i = 0; i < items.length; i++) {
-          var firstElem = items[i].querySelector('.first-word');
-          var secondElem = items[i].querySelector('.product-name-text');
-          var fullName = (firstElem.textContent + ' ' + secondElem.textContent).toLowerCase();
-          if (term === '' || fullName.indexOf(term) > -1) {
-              items[i].style.display = '';
-              visibleCount++;
-              if (term !== '') {
-                  firstElem.innerHTML = (firstElem.dataset.original || firstElem.textContent)
-                                        .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-                  secondElem.innerHTML = (secondElem.dataset.original || secondElem.textContent)
-                                        .replace(new RegExp('('+term+')', 'gi'), '<mark>$1</mark>');
-              } else {
-                  firstElem.innerHTML = firstElem.dataset.original || firstElem.innerHTML;
-                  secondElem.innerHTML = secondElem.dataset.original || secondElem.innerHTML;
-              }
-          } else {
-              items[i].style.display = 'none';
-          }
-      }
-      document.getElementById('searchCount').innerText = visibleCount + " found";
-    }
-  </script>
+    document.getElementById('searchCount').innerText = visibleCount + " found";
+}
+</script>
 
 </body>
 </html>
